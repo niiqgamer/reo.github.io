@@ -1,0 +1,99 @@
+A game design document. (GDD)
+
+---
+title: "REO (Rare Earth Online)"
+description: "A game design document for a MMORPG game on web"
+version: "0.1.0"
+status: "Draft"
+language: "th-TH & en-EN"
+updated: "2026-11-09"
+---
+
+build a web browser game, mmorpg & idle, 2.5D quarter view similar to Ragnarok Online and whole arts is 2.5D anime-style chibi-proportional semi-realism, inspired by Tree of Savior, can swap horizontal (if on desktop web app) and vartical (if on mobile web or app) mode, main language is THAI and ENGLISH (can swap anytime with no need to restart), all new players start wihtin 'Gadolinium' - a town of begining, and test with character at the center of the map, camera always follow the character at center, can click anywhere on map and walk to, mockup UI
+
+Core Loop:
+1. Kill monsters
+2. Get Base & Job EXPs, Items, Coins
+3. Level Up
+4. Better Equipments = Better CP (Refine Equipments & Card Slot & Equipments Options)
+5. Do Quests
+6. Instance Boss
+7. Daily Dungeons
+8. Idle Farming for Materials
+
+Meta Loop:
+Future updates.
+
+Jobs: (1 Beginner | 4 Archetypes | 16 Upper classes | 32 Jobs)
+1. Fighter // a 'MELEE' Archetype - specializes in melee physical close-quarters combat within a 1–3 tile range.
+	1.1) 'Tanker' Class 
+		1.1.1) Defender*
+		1.1.2) Paladin*
+	1.2) 'Swordman' Class
+		1.2.1) Knight*
+		1.2.2) Duelist*
+	1.3) 'Thief' Class
+		1.3.1) Assassin*
+		1.3.2) Pirate*
+	1.4) 'Monk' Class
+		1.3.1) Hermit*
+		1.3.2) Inquisitor*
+2. Ranger // a 'RANGED' Archetype - dominates a physical long-range engagements from 1–12 tiles away.
+	2.1) 'Hunter' Class
+		2.1.1) Warden*
+		2.1.2) Artillerist*
+	2.2) 'Gunslinger' Class
+		2.2.1) Pistoleer*
+		2.2.2) Sniper*
+	2.3) 'Ninja' Class
+		2.3.1) Shinobi*
+		2.4.2) Zephyr*
+	2.4) 'Robotic' Class
+		2.5.1) Juggernaut*
+		2.5.2) Programer*
+3. Spellcaster // a 'MAGIC' Archetype - who unleashes combat spells at a medium range of 1–7 tiles.
+	3.1) 'Magician' Class
+		3.1.1) Wizard*
+		3.1.2) Warlock*
+	3.2) '' Class
+		3.2.1) Wizard*
+		3.2.2) Warlock*
+	3.3) 'Witch' Class
+		3.3.1) Shaman*
+		3.3.2) Necromancer*
+	3.4) 'Illusionist' Class
+		3.4.1) Creator*
+		3.4.2) Summoner*
+4. Supporter // a 'SUPPORT' Archetype - who provides team assistance across a massive 1–15 tile range.
+*Future jobs availability and details may change.
+
+Task Scope:
+1. Archetype Mechanics & Prototypes: Design distinct combat mechanics and build baseline job prototypes for all 4 Archetypes (Fighter | Ranger | Spellcaster | Supporter).
+2. Skill Sets: Define 3–4 unique active combat skills and 1–2 unique passive skills per prototype to ensure clear playstyle identity.
+3. Damage Formulas: Formulate stat-based damage scaling derived from Primary Stats and Substats, using classic iRO stat conventions as reference. (ref: https://irowiki.org/classic/Stats)
+4. Simplify the server status bar by removing the status icons (signal, Wi-Fi, battery). Display only a ultra-minimal 2-line readout: Line 1 showing FPS, PING, and local time, e.g. 52 FPS / 15 ms / 12:55 PM; Line 2 showing global online user count and current map player count, e.g. User Online: 579 | This map: 2.
+
+How to change jobs:
+1. At new game, everyone is a Beginner (called 'C0')
+2. Leveling to Base Level at 10+ & Job Level at Max(10)
+3. Do an archetype change quest, change to 1st Class (called 'C1')
+4. Leveling to Base Level at 50+ & Job Level Max(50)
+5. Do an upper classes change quest, change to 2nd Class (called 'C2')
+6. Leveling to Base Level Max(99)** & Job Level Max(50)
+**The current level cap is set at 99 and will be expanded in future updates.
+
+Major Currencies:
+1. Scandium: Common In-game Gold (General trading & NPC fees)
+2. Yttrium: Untradable In-game Cash (Earnable bound currency)
+3. Lanthanum: Tradable Premium Cash (Player trading & Premium shop)
+
+Primary Stats:
+Stats are the six fundamental character statistics that make (or break) a character. Stats start out with a base value of 1 and can be raised as far as 99. With bonuses, the effective value can pass 100. Base stats are increased by spending stat points, higher stats costing more to raise. Stat points are gained with base level increases, the amount increasing with higher levels.
+
+Leveling Up:
+	- Going from level x to x+1 gives ROUNDDOWN( x / 5 ) + 3 stat points. ( ex. from level 94 to 95 is ROUNDDOWN( 94 / 5 ) + 3 = 21 status points gained )
+	- Going from level 1 to 99 gives a total of 1225 stat points.
+	- Stats increased during character creation are worth another 48 points, for a total of 1273 stat points.
+
+Character Status:
+1. STR (Strength) 
