@@ -1157,6 +1157,8 @@ D2.en.tJob="Test: set Job Lv 10";D2.th.tJob="ทดสอบ: ตั้ง Job L
 D2.en.tElite="Test: +10 Elite kills";D2.th.tElite="ทดสอบ: Elite +10 ตัว";
 D2.en.tEliteNeed="Accept the Archetype Trial first.";D2.th.tEliteNeed="รับบททดสอบอาร์คีไทป์ก่อน";
 D2.en.archSet="You are now a {a}!";D2.th.archSet="ตอนนี้เจ้าคือ {a} แล้ว!";
+D2.en.autoIdleOn="Standing still for 5 minutes: Idle started automatically.";D2.th.autoIdleOn="ยืนเฉย 5 นาที: เปิด Idle อัตโนมัติแล้ว";
+D2.en.set_autoIdle="Auto-idle after 5 min standing still";D2.th.set_autoIdle="เปิด Idle อัตโนมัติเมื่อยืนเฉย 5 นาที";
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
 let lang="th";
@@ -1428,7 +1430,7 @@ const SAVE_KEY="reo.gameState.v2",OLD_KEY="reo.gameState.v1";
 const gameState={lv:1,exp:0,jlv:1,jexp:0,hp:420,sp:120,sc:1250,y:0,la:0,arch:"beginner",stats:REOC.autoStats("beginner",1),autoStat:true,
   inv:{red:3,blue:2,wing:2,apple:8,mat_gel:0,mat_shell:0,mat_lens:0,mat_ore:0,mat_gel2:0,mat_amber:0,mat_frost:0,mat_core:0},
   q:{main:{s:"active",st:0,p:0,n:0}},pins:["main"],kills:0,deaths:0,idle:false,vip:false,sess:{t:0,kills:0,base:0,job:0,sc:0,mats:0},offline:null,
-  sound:true,music:true,gfx:"hi"};
+  sound:true,music:true,gfx:"hi",autoIdle:true};
 const S=gameState;
 /* ---- combat state: buffs, cooldowns, derived stats (REOC) ---- */
 const BF={warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null};
@@ -1443,6 +1445,7 @@ const statFree=()=>REOC.statPointsTotal(S.lv)-REOC.spent(S.stats);
 const need=lv=>Math.round(60*Math.pow(lv,1.5)),jneed=jl=>Math.round(20*Math.pow(jl,1.5));
 const jcap=()=>S.arch==="beginner"?10:50;
 const ZL=[.6,.8,1,1.25,1.55];
+let stillT=0,autoIdleBlock=false;
 let lastSave=0,layoutMode="auto",zIdx=2,chatMode="min",mmOpen=true,qOpen=true;
 function snapshot(){
   const inField=cur!==town&&!player.dead;
@@ -2610,6 +2613,15 @@ function idleStatus(){
   if(player.target)return fmt("st_fight",{m:(player.target.elite?t("elite")+" ":"")+t(MON[player.target.type].nameK)});
   return t("st_seek");
 }
+/* Auto-idle: standing still for 5 min in a field with monsters starts Idle by itself */
+const AUTO_IDLE_SECS=300;
+function updateStill(dt){
+  if(player.path.length||player.moving)autoIdleBlock=false;   // moving again re-arms the rule after a manual stop
+  const still=S.autoIdle&&!S.idle&&!player.dead&&!warping&&!dlg&&!player.path.length&&!player.moving&&!player.target&&!player.casting&&!player.nav&&isField()&&!autoIdleBlock;
+  if(!still){stillT=0;return}
+  stillT+=dt;
+  if(stillT>=AUTO_IDLE_SECS){stillT=0;setIdle(true);toast(t("autoIdleOn"),true)}
+}
 function updateIdle(dt){
   if(!S.idle||player.dead||warping||dlg)return;
   if(!isField()){setIdle(false,true);return}
@@ -2635,6 +2647,7 @@ function update(dt){
   for(const c of [player,...town.wanderers])if(c.bubble){c.bubble.t-=dt;if(c.bubble.t<=0)c.bubble=null}
   for(const s of SLOTS)if(s.left>0)s.left=Math.max(0,s.left-dt);
   if(!player.dead){const d=pd();S.sp=Math.min(spMax(),S.sp+dt*Math.max(d.spRegen,1.5+S.lv*.2));if(player.combatT>4)S.hp=Math.min(hpMax(),S.hp+(d.hpRegen+hpMax()*(cur===town?.08:.015))*dt)}
+  updateStill(dt);
   updateIdle(dt);updateNav(dt);
   for(const f of fx)f.t+=dt;fx=fx.filter(f=>f.t<f.d);
   ambT-=dt;if(ambT<=0){ambT=7+Math.random()*8;const m=AMB[(Math.random()*AMB.length)|0],w=town.wanderers[(Math.random()*town.wanderers.length)|0];
@@ -2749,7 +2762,7 @@ const WIN={
   <div class="w-sec">${t("layout")}</div><div class="seg" style="display:inline-flex">${["auto","h","v"].map(m=>`<button data-act="lay" data-v="${m}" class="${layoutMode===m?"on":""}">${t("lay_"+m)}</button>`).join("")}</div>
   <div class="w-sec">${t("set_gfx")}</div><div class="seg" style="display:inline-flex">${["hi","lo"].map(m=>`<button data-act="gfx" data-v="${m}" class="${S.gfx===m?"on":""}">${t("gfx_"+m)}</button>`).join("")}</div>
   <div class="w-sec">${t("set_zoom")}</div><div class="seg" style="display:inline-flex;flex-wrap:wrap">${ZL.map((_,i)=>`<button data-act="zoomL" data-v="${i}" class="${zIdx===i?"on":""}">${t("z"+i)}</button>`).join("")}</div>
-  <div class="rows" style="margin-top:10px"><div class="row"><div class="grow">${t("set_sound")}</div><button class="tog ${S.sound?"on":""}" data-act="snd"><i></i></button></div><div class="row"><div class="grow">${t("set_music")}</div><button class="tog ${S.music?"on":""}" data-act="mus"><i></i></button></div><div class="row"><div class="grow">${t("set_vip")}</div><button class="tog ${S.vip?"on":""}" data-act="vip"><i></i></button></div></div>
+  <div class="rows" style="margin-top:10px"><div class="row"><div class="grow">${t("set_sound")}</div><button class="tog ${S.sound?"on":""}" data-act="snd"><i></i></button></div><div class="row"><div class="grow">${t("set_music")}</div><button class="tog ${S.music?"on":""}" data-act="mus"><i></i></button></div><div class="row"><div class="grow">${t("set_vip")}</div><button class="tog ${S.vip?"on":""}" data-act="vip"><i></i></button></div><div class="row"><div class="grow">${t("set_autoIdle")}</div><button class="tog ${S.autoIdle?"on":""}" data-act="autoIdle"><i></i></button></div></div>
   <div class="w-sec">${t("save_sec")}</div><p class="muted" style="margin:0 0 8px">${lastSave?fmt("save_last",{t:new Date(lastSave).toLocaleTimeString(lang==="th"?"th-TH":"en-US")}):t("save_never")}</p>
   <div class="w-dev"><button class="btn" data-act="tJob">${t("tJob")}</button><button class="btn" data-act="tElite">${t("tElite")}</button><button class="btn" data-act="save">${t("save_now")}</button><button class="btn" data-act="sim">${t("sim_off")}</button><button class="btn danger" data-act="reset">${t(resetArm?"reset_confirm":"reset")}</button></div>`
 };
@@ -2772,6 +2785,7 @@ $("#winB").addEventListener("click",e=>{const b=e.target.closest("[data-act]");i
   else if(a==="rwYes")settleIdle(true);
   else if(a==="rwNo")settleIdle(false);
   else if(a==="vip"){S.vip=!S.vip;renderWin();renderIdle();save()}
+  else if(a==="autoIdle"){S.autoIdle=!S.autoIdle;stillT=0;renderWin();save()}
   else if(a==="zoomL"){setZoom(+b.dataset.v);renderWin()}
   else if(a==="accept"){acceptQuest(b.dataset.q);renderWin()}
   else if(a==="abandon"){abandonQuest(b.dataset.q);renderWin()}
@@ -2812,7 +2826,7 @@ $("#idleBtn").addEventListener("click",()=>{
   setIdle(true);
 });
 $("#idleStop").addEventListener("click",()=>{
-  if(S.idle){setIdle(false);toast(t("idleStopped"))}
+  if(S.idle){autoIdleBlock=true;setIdle(false);toast(t("idleStopped"))}
   else if(wantIdle){wantIdle=false;renderIdle()}
 });
 $("#claimBtn").addEventListener("click",()=>{if(S.pending)openWin("idlerew")});
@@ -2905,6 +2919,7 @@ try{if(saved){
   if(S.arch!=="beginner"&&(!S.q.arch||S.q.arch.s!=="done"))S.q.arch={s:"done",st:2,p:0,n:1};
   {const st={};for(const k of REOC.STATS)st[k]=Math.max(1,Math.min(99,Math.floor(+(S.stats&&S.stats[k])||1)));S.stats=st}
   if(typeof S.autoStat!=="boolean")S.autoStat=true;
+  if(typeof S.autoIdle!=="boolean")S.autoIdle=true;
   if(S.autoStat||REOC.spent(S.stats)>REOC.statPointsTotal(Math.max(1,Math.floor(+S.lv||1))))S.stats=REOC.autoStats(S.arch,Math.max(1,Math.floor(+S.lv||1)));
   for(const k of ["lv","jlv"])S[k]=Math.max(1,Math.floor(+S[k]||1));S.jlv=Math.min(jcap(),S.jlv);
   for(const k of ["exp","jexp","sc","y","la","kills","deaths","hp","sp"])S[k]=Math.max(0,+S[k]||0);
@@ -2950,7 +2965,7 @@ function frame(now){
 $("#errReset").addEventListener("click",()=>{try{localStorage.removeItem(SAVE_KEY);localStorage.removeItem(OLD_KEY)}catch(_){}resetDone=true;location.reload()});
 $("#errHide").addEventListener("click",()=>$("#errBox").classList.add("hidden"));
 window.addEventListener("error",e=>showErr(e.error||e.message));
-window.__reo={talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
+window.__reo={getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
 requestAnimationFrame(frame);
 })();
 
