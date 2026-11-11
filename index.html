@@ -155,11 +155,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .d-name{font-weight:600;color:var(--gold);margin-bottom:2px}
 .d-text{font-size:14.5px;line-height:1.6;min-height:46px}
 .d-act{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
-#win{left:50%;top:50%;transform:translate(-50%,-50%);width:min(540px,calc(100% - 24px));max-height:min(80%,580px);display:flex;flex-direction:column;overflow:hidden;z-index:5}
+.win{left:50%;top:50%;transform:translate(-50%,-50%);width:min(540px,calc(100% - 24px));max-height:min(80%,580px);display:flex;flex-direction:column;overflow:hidden;z-index:5}
 .win-h{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 16px;border-bottom:1px solid var(--line);font-weight:600;font-size:15px;cursor:move;touch-action:none}
-#winX{border:0;background:none;font-size:24px;color:var(--ink2);cursor:pointer;line-height:1;width:32px;height:32px;border-radius:8px}
-#winX:hover{background:var(--panel2)}
-#winB{padding:12px 16px 16px;overflow:auto;font-size:13.5px}
+.win-x{border:0;background:none;font-size:24px;color:var(--ink2);cursor:pointer;line-height:1;width:32px;height:32px;border-radius:8px}
+.win-x:hover{background:var(--panel2)}
+.win-b{padding:12px 16px 16px;overflow:auto;font-size:13.5px}
 .w-sec{font-weight:600;color:var(--gold);margin:10px 0 6px;font-size:13px}
 .w-sec:first-child{margin-top:0}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
@@ -528,7 +528,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .P .eq-doll canvas{max-width:190px}
 .P .eq-mid{gap:4px}
 /* ---- v7 inventory + items ---- */
-#win.invwin{width:min(780px,calc(100% - 24px))}
+.win.invwin{width:min(780px,calc(100% - 24px))}
 .inv-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
 .inv-tabs{display:flex;flex-wrap:wrap;gap:2px}
 .inv-tabs button{font-size:12px;padding:3px 9px}
@@ -675,20 +675,20 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 /* ================= v15 window system: navy frame + periwinkle (after the character-info reference) =================
    Surfaces:  --nv1 frame/body  --nv2 raised  --nv3 buttons-dark   Accent: --pv periwinkle (active)   Neutral: --wh off-white (idle)
    Muted accents by job: gold = level/reward, mint = gain, rose = loss. Always dark, whatever the page theme. */
-#win,#dlg{--nv0:#0a0f3a;--nv1:#101a5c;--nv2:#1a2780;--nv3:#2b3a9a;--pv:#7c88d8;--pv2:#aab4f0;--wh:#f2f4ff;--navy-ink:#13206f;
+.win,#dlg{--nv0:#0a0f3a;--nv1:#101a5c;--nv2:#1a2780;--nv3:#2b3a9a;--pv:#7c88d8;--pv2:#aab4f0;--wh:#f2f4ff;--navy-ink:#13206f;
  --panel:#111a5e;--panel2:rgba(96,112,214,.24);--ink:#eef0ff;--ink2:#aab4ea;--line:rgba(150,165,240,.3);--slot:#16217a;--slotb:rgba(150,165,240,.4);
  --accent:#7c88d8;--gold:#e8cb78;--gold2:#f6e1a0;--sys:#7ae6ac;--good:#7ae6ac;--bad:#f2909c;color:var(--ink)}
-#win{width:min(480px,calc(100% - 20px));max-height:min(94%,760px);padding:10px;border-radius:20px;border:2px solid rgba(124,136,216,.6);
+.win{width:min(480px,calc(100% - 20px));max-height:min(94%,760px);padding:10px;border-radius:20px;border:2px solid rgba(124,136,216,.6);
  background:linear-gradient(180deg,#16227a 0%,#0f1860 55%,#0a1042 100%);box-shadow:0 18px 50px rgba(0,0,22,.62),inset 0 0 0 1px rgba(255,255,255,.07);
  -webkit-backdrop-filter:none;backdrop-filter:none}
-#win.invwin{width:min(780px,calc(100% - 20px))}
+.win.invwin{width:min(780px,calc(100% - 20px))}
 .win-h{margin:0 0 10px;padding:6px 8px 6px 16px;border:0;border-radius:14px;background:linear-gradient(180deg,#8a95e2,#7480d0);color:#fff;font-size:21px;font-weight:700;letter-spacing:.01em;
  text-shadow:0 1px 0 rgba(20,30,120,.4);box-shadow:0 2px 0 rgba(8,12,64,.5),inset 0 1px 0 rgba(255,255,255,.35)}
-#winX{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.24);color:#fff;font-size:22px;display:grid;place-items:center;padding:0}
-#winX:hover{background:rgba(255,255,255,.38)}
-#winB{padding:12px;border-radius:16px;background:rgba(6,10,52,.55);border:1px solid rgba(124,136,216,.32);flex:1 1 auto;min-height:0}
-#winNav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;flex:none}
-#winNav.hidden{display:none !important}
+.win-x{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.24);color:#fff;font-size:22px;display:grid;place-items:center;padding:0}
+.win-x:hover{background:rgba(255,255,255,.38)}
+.win-b{padding:12px;border-radius:16px;background:rgba(6,10,52,.55);border:1px solid rgba(124,136,216,.32);flex:1 1 auto;min-height:0}
+.win-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;flex:none}
+.win-nav.hidden{display:none !important}
 .wn{display:flex;align-items:center;justify-content:center;gap:7px;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#34449f,#26358f);color:#fff;font:inherit;font-size:16px;font-weight:700;
  letter-spacing:.03em;text-transform:uppercase;cursor:pointer;box-shadow:0 2px 0 rgba(8,12,64,.55),inset 0 1px 0 rgba(255,255,255,.16)}
 .wn:hover{filter:brightness(1.1)}
@@ -696,32 +696,32 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .wni svg{width:24px;height:24px;display:block;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
 .wn-status .wni{color:#7ee0a8}.wn-skill .wni{color:#f09ac0}.wn-inv .wni{color:#b9c1ff}.wn.on .wni{color:#fff}
 /* buttons: periwinkle = main, off-white = neutral */
-#win .btn{border:0;border-radius:12px;background:var(--wh);color:var(--navy-ink);font-weight:600;padding:7px 14px;box-shadow:0 2px 0 rgba(8,12,64,.5)}
-#win .btn:hover{filter:brightness(1.06)}
-#win .btn.pri{background:var(--pv);color:#fff;text-shadow:0 1px 0 rgba(20,30,120,.3)}
-#win .btn.gold,#win .btn.gold.sm{background:linear-gradient(#f3dd98,#d9b04a);color:#3a2a06}
-#win .btn.danger{background:#f7d9de;color:#8a1d2e}
-#win .btn:disabled{opacity:.45;box-shadow:none}
-#win .btn.sm{padding:5px 11px;font-size:12px}
-#win .seg{background:none;border:0;box-shadow:none;padding:0;gap:6px;flex-wrap:wrap}
-#win .seg button{border-radius:12px;background:var(--wh);color:var(--navy-ink);padding:6px 14px;font-weight:600;font-size:13px;box-shadow:0 2px 0 rgba(8,12,64,.5)}
-#win .seg button.on{background:var(--pv);color:#fff}
-#win .tog{background:rgba(255,255,255,.22)}
-#win .tog.on{background:linear-gradient(90deg,#7c88d8,#5fcfae)}
+.win .btn{border:0;border-radius:12px;background:var(--wh);color:var(--navy-ink);font-weight:600;padding:7px 14px;box-shadow:0 2px 0 rgba(8,12,64,.5)}
+.win .btn:hover{filter:brightness(1.06)}
+.win .btn.pri{background:var(--pv);color:#fff;text-shadow:0 1px 0 rgba(20,30,120,.3)}
+.win .btn.gold,.win .btn.gold.sm{background:linear-gradient(#f3dd98,#d9b04a);color:#3a2a06}
+.win .btn.danger{background:#f7d9de;color:#8a1d2e}
+.win .btn:disabled{opacity:.45;box-shadow:none}
+.win .btn.sm{padding:5px 11px;font-size:12px}
+.win .seg{background:none;border:0;box-shadow:none;padding:0;gap:6px;flex-wrap:wrap}
+.win .seg button{border-radius:12px;background:var(--wh);color:var(--navy-ink);padding:6px 14px;font-weight:600;font-size:13px;box-shadow:0 2px 0 rgba(8,12,64,.5)}
+.win .seg button.on{background:var(--pv);color:#fff}
+.win .tog{background:rgba(255,255,255,.22)}
+.win .tog.on{background:linear-gradient(90deg,#7c88d8,#5fcfae)}
 /* section bars, rows, tiles */
-#win .w-sec{display:block;margin:14px 0 8px;padding:5px 12px;border-radius:11px;background:linear-gradient(90deg,#7c88d8,rgba(124,136,216,.22));color:#fff;font-size:13.5px;font-weight:600;border-top:0}
-#win .w-sec:first-child{margin-top:0}
-#win .w-sec .muted{color:rgba(255,255,255,.82)}
-#win .w-sec.sub{padding-top:5px;background:linear-gradient(90deg,#3a4cb0,rgba(58,76,176,.2));color:#fff}
-#win .row{background:rgba(96,112,214,.2);border:1px solid rgba(150,165,240,.3);border-radius:12px}
-#win .stat{background:rgba(96,112,214,.22);border-color:rgba(150,165,240,.3)}
-#win .muted{color:var(--ink2)}
-#win .det-stats div,#win .det-req .ok,#win .eq-good,#win .cmp-row.up b{color:var(--good) !important}
-#win .det-req .no,#win .cmp-row.down b{color:var(--bad) !important}
-#win .det-stats div.ab{color:#c9b6ff !important}
-#win .det-stats{background:rgba(255,255,255,.06)}
-#win .cmp{background:rgba(255,255,255,.05)}
-#win .inv-multi{background:rgba(95,207,174,.14);border-color:rgba(95,207,174,.45)}
+.win .w-sec{display:block;margin:14px 0 8px;padding:5px 12px;border-radius:11px;background:linear-gradient(90deg,#7c88d8,rgba(124,136,216,.22));color:#fff;font-size:13.5px;font-weight:600;border-top:0}
+.win .w-sec:first-child{margin-top:0}
+.win .w-sec .muted{color:rgba(255,255,255,.82)}
+.win .w-sec.sub{padding-top:5px;background:linear-gradient(90deg,#3a4cb0,rgba(58,76,176,.2));color:#fff}
+.win .row{background:rgba(96,112,214,.2);border:1px solid rgba(150,165,240,.3);border-radius:12px}
+.win .stat{background:rgba(96,112,214,.22);border-color:rgba(150,165,240,.3)}
+.win .muted{color:var(--ink2)}
+.win .det-stats div,.win .det-req .ok,.win .eq-good,.win .cmp-row.up b{color:var(--good) !important}
+.win .det-req .no,.win .cmp-row.down b{color:var(--bad) !important}
+.win .det-stats div.ab{color:#c9b6ff !important}
+.win .det-stats{background:rgba(255,255,255,.06)}
+.win .cmp{background:rgba(255,255,255,.05)}
+.win .inv-multi{background:rgba(95,207,174,.14);border-color:rgba(95,207,174,.45)}
 /* ---- character info ---- */
 .chr-name{display:flex;align-items:center;gap:10px;padding:6px 10px;margin-bottom:10px;border-radius:14px;background:linear-gradient(180deg,#3d4fb2,#2c3b9c);box-shadow:0 2px 0 rgba(8,12,64,.5),inset 0 1px 0 rgba(255,255,255,.18)}
 .chr-name>b{flex:1;min-width:0;text-align:center;font-size:19px;font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -774,9 +774,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 #dlg .btn{border:0;border-radius:12px;background:var(--pv);color:#fff;box-shadow:0 2px 0 rgba(8,12,64,.5)}
 .d-por{border-color:var(--pv2)}
 /* phones */
-.P #win{width:calc(100% - 12px);max-height:94%;padding:8px}
+.P .win{width:calc(100% - 12px);max-height:94%;padding:8px}
 .P .win-h{font-size:19px;margin-bottom:8px}
-.P #winB{padding:9px}
+.P .win-b{padding:9px}
 .P .chr-name>b{font-size:16px}
 .P .chr-tabs button{height:40px;font-size:17px}
 .P .eq-board{grid-template-columns:62px minmax(0,1fr) 62px;grid-template-rows:repeat(5,62px);gap:6px}
@@ -786,7 +786,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .P .wni svg{width:21px;height:21px}
 .P .eq-doll canvas{max-width:190px}
 /* v15 spacing pass */
-#win{max-height:min(96%,800px)}
+.win{max-height:min(96%,800px)}
 .eq-board{grid-template-rows:repeat(5,66px);grid-template-columns:68px minmax(0,1fr) 68px}
 .eq-row.quick{margin-top:8px}
 .qk{width:40px;height:40px}
@@ -800,6 +800,258 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .chr-tabs button{height:40px;font-size:19px}
 .chr-panel{padding:8px}
 .eq-board{grid-template-rows:repeat(5,64px)}
+
+/* ================= v17: windows (3 at once, fixed sizes), HUD islands, monster panel, idle toggle ================= */
+#wins{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;gap:12px;padding:10px;pointer-events:none;z-index:6}
+#wins.hidden{display:none !important}
+#wins .win{pointer-events:auto;position:relative;left:auto;top:auto;transform:none;flex:0 1 auto;min-width:300px;display:flex;flex-direction:column;min-height:0;max-height:100%;
+ width:var(--wiw,480px);height:var(--wih,auto);padding:8px;overflow:hidden;border-radius:18px;z-index:1}
+#wins .win.hidden{display:none !important}
+#wins .win[data-w=itemdet]{z-index:3}
+#wins .win-h{margin:0 0 8px;flex:none;cursor:move}
+#wins .win-b{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain}
+#wins .win-nav{flex:none;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin-top:8px}
+#wins .win-nav.hidden{display:none !important}
+#wins .wn{flex-direction:column;height:44px;gap:1px;font-size:10.5px;letter-spacing:.02em;padding:0 2px;min-width:0}
+#wins .wn b{font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#wins .wni svg{width:19px;height:19px}
+.wn-ic{}
+.win[data-w=char]{--wiw:480px;--wih:700px;zoom:.8}   /* 20% smaller than before */
+.win[data-w=status]{--wiw:480px;--wih:560px}
+.win[data-w=inv]{--wiw:640px;--wih:520px}
+.win[data-w=itemdet]{--wiw:320px;--wih:520px}
+.win[data-w=skill],.win[data-w=quest],.win[data-w=archpick]{--wiw:480px;--wih:560px}
+.win[data-w=party],.win[data-w=guild]{--wiw:440px;--wih:420px}
+.win[data-w=shop]{--wiw:460px;--wih:480px}
+.win[data-w=set]{--wiw:520px;--wih:540px}
+.win[data-w=worldmap]{--wiw:640px;--wih:500px}
+.win[data-w=mapinfo]{--wiw:420px;--wih:500px}
+.win[data-w=idlesum]{--wiw:400px;--wih:480px}
+.win[data-w=idleset]{--wiw:450px;--wih:520px}
+.win[data-w=idlerew]{--wiw:440px;--wih:460px}
+.cmp #wins.three .win[data-w=itemdet]{position:absolute;right:10px;top:50%;transform:translateY(-50%)}   /* only on narrow screens the detail floats over the right edge */
+/* phones: windows stack in one scrolling column, always above the menu bar */
+.P #wins{inset:6px 6px 70px 6px;flex-direction:column;justify-content:flex-start;align-items:stretch;overflow-y:auto;overflow-x:hidden;gap:8px;padding:0;-webkit-overflow-scrolling:touch}
+.P #wins .win{width:100%;height:min(var(--wih,auto),calc(var(--sh,800px) - 84px));max-height:none;padding:7px}
+.P #wins.pair .win{height:auto;min-height:0}
+.P #wins .win[data-w=char]{height:auto}
+.P #wins .win-h{cursor:default}
+.P #wins .win[data-w=itemdet]{position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);width:min(340px,calc(100% - 20px));height:min(62vh,470px);z-index:9;box-shadow:0 0 0 100vmax rgba(4,6,30,.55),0 18px 50px rgba(0,0,22,.6)}
+.P #wins.three .win[data-w=itemdet]{right:auto;top:46%}
+.P #wins .wn{height:42px;font-size:10px}
+
+/* ---- map name shows only when entering a map ---- */
+#banner{transition:opacity .8s,visibility 0s}
+#banner.away{opacity:0;visibility:hidden;transition:opacity .8s,visibility 0s .8s}
+#topC{transition:transform .35s ease}
+#topC.down{transform:translate(-50%,60px)}
+.P #topC.down{transform:translateY(60px)}
+
+/* ---- monster panel (top centre) ---- */
+#mobBar{width:min(430px,62vw);padding:7px 12px 9px;border-radius:14px;background:linear-gradient(180deg,rgba(20,28,84,.93),rgba(10,14,48,.95));border:1.5px solid rgba(150,165,240,.5);box-shadow:0 6px 22px rgba(0,0,30,.5);color:#eef0ff;pointer-events:none}
+#mobBar.hidden{display:none !important}
+.mo-l1{display:flex;align-items:center;gap:7px;margin-bottom:5px;flex-wrap:wrap}
+.mo-name{font-size:15.5px;font-weight:700;letter-spacing:.01em}
+.mo-lv{font-size:12px;font-weight:700;padding:1px 8px;border-radius:9px;background:rgba(255,255,255,.14);color:#dfe4ff}
+.mo-el{--ec:#ccc;font-size:11.5px;font-weight:700;color:var(--ec);padding:1px 8px;border-radius:9px;border:1px solid var(--ec);background:rgba(0,0,0,.28)}
+.mo-tag{font-size:11.5px;font-weight:800;color:#ffd76a;letter-spacing:.03em}
+.mo-hp{position:relative;height:21px;border-radius:11px;background:rgba(255,255,255,.14)}
+.mo-hp i{position:absolute;left:0;top:0;bottom:0;border-radius:11px}
+.mo-trail{background:linear-gradient(#fff,#ffc0c0);opacity:.92}
+.mo-fill{background:linear-gradient(#ff8a7a,#d0343c);transition:width .08s linear}
+#mobBar.elite .mo-fill{background:linear-gradient(#ffe08a,#d99a2a)}
+#mobBar.boss{width:min(540px,72vw);border-color:rgba(255,150,176,.75);box-shadow:0 6px 26px rgba(210,42,90,.4)}
+#mobBar.boss .mo-fill{background:linear-gradient(#ff9ab8,#d22a5a)}
+.mo-t{position:absolute;inset:0;display:grid;place-items:center;font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px #000,0 0 3px #000;z-index:2}
+.mo-dmg{position:absolute;inset:0;pointer-events:none;z-index:3}
+.mo-d{position:absolute;top:-5px;font-size:16px;font-weight:800;color:#ffe08a;text-shadow:0 0 3px #000,0 1px 0 #000;animation:moDmg .95s ease-out forwards}
+@keyframes moDmg{0%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),6px) scale(.7)}15%{opacity:1;transform:translate(calc(-50% + var(--dx,0px)),-6px) scale(1.2)}100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),-32px) scale(1)}}
+#mobBar.hit .mo-hp{animation:moHit .22s}
+@keyframes moHit{35%{box-shadow:0 0 0 2px rgba(255,255,255,.85)}}
+.mo-warn{text-align:center;font-weight:700;color:#ffb09a;font-size:12.5px}
+.mo-warn.on{margin-top:5px;animation:bbblink .5s steps(2) infinite}
+.P #mobBar{width:100%;padding:6px 9px 8px}
+.P .mo-name{font-size:14px}
+
+/* ---- announcement ---- */
+#announce{top:10px;left:50%;transform:translate(-50%,-24px);opacity:0;display:flex;align-items:center;gap:10px;max-width:min(740px,92%);padding:9px 20px 9px 12px;border-radius:999px;
+ background:linear-gradient(90deg,#7a1f3a,#b8581f 55%,#e0a23a);color:#fff;box-shadow:0 8px 30px rgba(120,30,40,.55),0 0 0 2px rgba(255,230,160,.55);z-index:20;pointer-events:none;transition:opacity .35s,transform .35s}
+#announce.hidden{display:none !important}
+#announce.on{opacity:1;transform:translate(-50%,0)}
+#announce.gm{background:linear-gradient(90deg,#1f3a8a,#4a58e0 55%,#8a7af0);box-shadow:0 8px 30px rgba(40,50,160,.55),0 0 0 2px rgba(190,200,255,.55)}
+.an-ic svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+.an-tag{font-size:11.5px;font-weight:800;letter-spacing:.05em;padding:2px 9px;border-radius:999px;background:rgba(0,0,0,.3);white-space:nowrap}
+.an-txt{font-size:14px;font-weight:600;line-height:1.3}
+.P #announce{top:6px;padding:7px 14px 7px 10px;max-width:calc(100% - 12px)}
+.P .an-txt{font-size:12.5px}
+
+/* ---- status islands (top right) ---- */
+#netBar.panel{background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0;display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end}
+.isl{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px 0 8px;border-radius:13px;font-size:12px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.28);white-space:nowrap;font-variant-numeric:tabular-nums;pointer-events:auto}
+.isl svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.isl em{font-style:normal;font-weight:500;opacity:.85;font-size:10.5px}
+.isl.g{background:#1f8a63}.isl.y{background:#b8851f}.isl.r{background:#b8324a}.isl.n{background:#5a5f78}
+.isl.clk{background:#454c9a}.isl.onl{background:#1d8a98}.isl.mp{background:#7a4ab8}
+.P .isl{height:22px;padding:0 7px 0 6px;font-size:10.5px;gap:4px}.P .isl svg{width:12px;height:12px}.P .isl em{display:none}
+
+/* ---- bottom: hotbar + idle toggle (separate) ---- */
+#botC{bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;gap:12px}
+#idleDock{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:6px;pointer-events:none}
+#idleDock .id-row{display:flex;gap:6px;align-items:stretch;pointer-events:auto}
+#idleDock .idle-btn{height:60px;min-width:140px;padding:0 18px 0 10px;display:flex;align-items:center;gap:10px;border:0;border-radius:16px;color:#fff;cursor:pointer;font:inherit;position:relative;overflow:hidden;
+ background:linear-gradient(110deg,#6e58e8,#3fc6a8);box-shadow:0 6px 18px rgba(80,70,230,.5),inset 0 1px 0 rgba(255,255,255,.38)}
+#idleDock .idle-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-100%);animation:shine 2.8s ease-in-out infinite}
+#idleDock .ib-play{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.26);display:grid;place-items:center;font-size:15px;flex:none}
+#idleDock .ib-txt{display:flex;flex-direction:column;text-align:left;line-height:1.12;position:relative;z-index:1}
+#idleDock .ib-txt b{font-size:19px;font-weight:700;letter-spacing:.01em}
+#idleDock .ib-txt em{font-style:normal;font-size:10.5px;opacity:.92;font-weight:500;font-variant-numeric:tabular-nums}
+#idleDock.on .idle-btn{background:linear-gradient(110deg,#1b7f66,#3fd6a8);box-shadow:0 0 0 3px rgba(63,214,168,.38),0 6px 18px rgba(30,150,110,.5)}
+#idleDock.on .idle-btn::after{animation:none;display:none}
+.ib-ring{width:36px;height:36px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;animation:idSpin 1s linear infinite;flex:none}
+@keyframes idSpin{to{transform:rotate(360deg)}}
+#idleDock.wait .idle-btn{background:linear-gradient(110deg,#b8851f,#e0b04a);color:#2f1d02}
+#idleDock.town .idle-btn{background:linear-gradient(110deg,#5a5f9a,#7b6fb0)}
+#idleDock .idle-btn:hover{filter:brightness(1.08)}
+.idle-cfg{width:42px;border-radius:14px;background:var(--panel);color:var(--ink);cursor:pointer;border:1px solid var(--line);box-shadow:var(--shadow);display:grid;place-items:center;padding:0}
+.idle-cfg svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.idle-cfg:hover{color:var(--accent);border-color:var(--accent)}
+#claimBtn{display:none;pointer-events:auto}
+#claimBtn.has{display:block;width:100%;padding:5px 8px;font-size:11.5px}
+.cmp #botC{left:128px;transform:none}
+.cmp #hotbar .slot{width:40px;height:40px}.cmp #hotbar .slot .ic{width:30px;height:30px}
+.cmp #idleDock .idle-btn{min-width:118px}
+.P #botC{bottom:70px;left:auto;right:8px;transform:none;gap:8px}
+.P #idleDock .id-row{flex-direction:column}
+.P #idleDock .idle-btn{min-width:100px;height:62px;padding:0 10px 0 8px;gap:7px}
+.P #idleDock .ib-txt b{font-size:16.5px}.P #idleDock .ib-play,.P .ib-ring{width:30px;height:30px}
+.P .idle-cfg{width:100%;height:34px}
+.P #botL.cm-min{bottom:182px}
+
+/* ---- menu: collapsible in landscape ---- */
+#botR{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.menu-tog{display:flex;align-items:center;gap:5px;height:26px;padding:0 9px;border-radius:13px;border:1px solid var(--line);background:var(--panel);color:var(--ink2);cursor:pointer;font:inherit;font-size:11.5px;pointer-events:auto;box-shadow:var(--shadow)}
+.menu-tog svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.menu-tog:hover{color:var(--accent);border-color:var(--accent)}
+#botR.menu-off #menu{display:none}
+.P .menu-tog{display:none}.P #botR.menu-off #menu{display:grid}
+
+/* ---- inventory: fixed size, 50 cells per page ---- */
+.inv-fix{height:100%;display:flex;flex-direction:column;gap:7px;min-height:0}
+.inv-top{margin:0}
+.inv-bar{display:flex;align-items:center;gap:6px;flex:none}
+.inv-bar .grow{flex:1}
+.inv-cap{font-size:12.5px;color:var(--ink2);font-weight:600}.inv-cap.full{color:var(--bad)}
+.inv-fix .inv-grid{flex:1;min-height:0;max-height:none;display:grid;grid-template-columns:repeat(10,1fr);gap:5px;align-content:start;overflow:auto;padding:0 2px 2px}
+.inv-fix .ii{aspect-ratio:1}
+.inv-fix .ii-ic svg{width:70%;height:70%}
+.inv-pager{flex:none;display:flex;justify-content:center;align-items:center;gap:14px;font-size:12.5px;color:var(--ink2)}
+.inv-multi{margin:0;flex:none}
+.P .inv-fix .inv-grid{grid-template-columns:repeat(5,1fr)}
+.det{font-size:12.5px;line-height:1.5}
+.det .det-btns{margin-top:10px}
+
+/* ---- settings ---- */
+.set-tabs{display:flex;gap:6px;margin-bottom:10px}
+.set-body{display:flex;flex-direction:column}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:12px;background:rgba(96,112,214,.18);border:1px solid rgba(150,165,240,.28);margin-bottom:6px}
+.srow .sl{min-width:0}.srow .sl b{font-size:13.5px;font-weight:600}.srow .sl small{display:block;color:var(--ink2);font-size:11.5px;line-height:1.3}
+.srow .sctl{display:flex;align-items:center;gap:8px;flex:none}
+.srow .seg{flex-wrap:wrap;justify-content:flex-end}
+.srow .seg button{padding:5px 10px;font-size:12px}
+.tst{font-size:11px;font-weight:800;min-width:26px;color:var(--ink2);letter-spacing:.03em}.tst.on{color:var(--good)}
+.srow.dim{opacity:.6}.srow.dim .tog{opacity:.7}
+.fake{padding:3px 10px;border-radius:9px;background:rgba(255,255,255,.12);font-size:12px;font-weight:600}
+.et-soon{font-size:10px;font-weight:800;letter-spacing:.04em;padding:2px 7px;border-radius:8px;background:rgba(232,203,120,.2);color:#f3dca0;text-transform:uppercase}
+.soon-banner{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;background:rgba(232,203,120,.12);border:1px dashed rgba(232,203,120,.5);color:#f3dca0;font-size:12px;margin-bottom:8px}
+.soon-banner svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex:none}
+.gm-box{padding:8px 10px;border-radius:12px;background:rgba(96,112,214,.12);border:1px dashed rgba(150,165,240,.4);margin-bottom:6px}
+.gm-box input{width:100%;box-sizing:border-box;height:36px;border-radius:9px;border:1px solid rgba(150,165,240,.4);background:#0a1042;color:#fff;font:inherit;font-size:14px;padding:0 10px;margin-bottom:6px}
+
+/* ---- idle summary ---- */
+.isum-head{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.isum-ic{width:42px;height:42px;border-radius:13px;background:linear-gradient(110deg,#1f8a6e,#3fc6a8);display:grid;place-items:center;flex:none}
+.isum-ic svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.isum-head small{display:block;color:var(--ink2);font-size:11.5px}
+.isum-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.isum-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:6px}
+.isum-it{position:relative;display:flex;flex-direction:column;align-items:center;padding:6px 4px;border-radius:10px;background:rgba(255,255,255,.07)}
+.isum-it .ii-ic svg{width:34px;height:34px}.isum-it b{position:absolute;top:2px;right:5px;font-size:11px;text-shadow:0 1px 2px #000}
+.isum-it small{font-size:10px;text-align:center;line-height:1.1;color:var(--ink2);margin-top:2px}
+
+/* ---- equipment window: title row (replaces the potion row) ---- */
+.eq-title{display:flex;align-items:center;gap:8px;width:100%;margin-top:8px;padding:8px 10px;border:0;border-radius:11px;background:rgba(255,255,255,.07);color:var(--ink);font:inherit;font-size:13px;cursor:pointer;text-align:left}
+.eq-title:hover{background:rgba(255,255,255,.12)}
+.eq-title .et-l{display:flex;align-items:center;gap:6px;color:var(--ink2);font-size:12px}
+.eq-title .et-l svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+.eq-title b{flex:1;font-weight:500;color:var(--ink2)}
+.chr-name .ptr{width:36px;height:36px;border-radius:50%;flex:none}
+
+/* ---- cash shop ---- */
+.shop-tabs{margin-bottom:10px}
+.cash-wal{display:flex;gap:12px;margin:0 0 10px}
+.cash-card{display:flex;gap:10px;align-items:center;padding:10px;border-radius:12px;background:rgba(96,112,214,.2);border:1px solid rgba(150,165,240,.3)}
+.cash-ic svg{width:52px;height:52px;display:block}.cash-card small{display:block;color:var(--ink2);font-size:11.5px}
+.cap-bar{position:relative;height:20px;border-radius:10px;background:#050830;border:1px solid var(--line);margin:10px 0;overflow:hidden}
+.cap-bar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(#b4bff8,#6e7ee0)}
+.cap-bar span{position:relative;display:block;text-align:center;font-size:11px;line-height:20px;font-weight:700;text-shadow:0 1px 1px #000}
+
+/* ---- world map ---- */
+.wm-chart{position:relative;height:310px;border-radius:14px;background:radial-gradient(70% 90% at 30% 20%,rgba(110,125,230,.18),transparent),linear-gradient(#0e1658,#0a1042);border:1px solid rgba(124,136,216,.3);overflow:hidden}
+.wm-lines{position:absolute;inset:0;width:100%;height:100%}
+.wm-lines line{stroke:rgba(170,180,240,.3);stroke-width:1.6;stroke-dasharray:4 3;vector-effect:non-scaling-stroke}
+.wm-lines line.on{stroke:#9fb0ff;stroke-dasharray:none;stroke-width:2.6}
+.wm-lines.wp{display:none}.P .wm-lines.wl{display:none}.P .wm-lines.wp{display:block}
+.wm-node{position:absolute;left:var(--lx);top:var(--ly);transform:translate(-50%,-50%);width:122px;display:grid;grid-template-columns:38px 1fr;column-gap:7px;align-items:center;text-align:left;padding:6px 8px 8px 6px;border-radius:13px;border:1.5px solid rgba(150,165,240,.5);background:rgba(14,20,76,.96);color:#eef0ff;cursor:pointer;font:inherit;box-shadow:0 4px 14px rgba(0,0,30,.5)}
+.wm-node:hover{border-color:#cfd6ff}
+.wm-th{grid-row:1/3;width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--c0),var(--c1) 55%,var(--c2));box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
+.wm-node b{font-size:12px;line-height:1.15;font-weight:700;overflow:hidden;text-overflow:ellipsis}
+.wm-node small{font-size:10px;color:#aab4ea;line-height:1.1}
+.wm-node em{position:absolute;right:8px;bottom:-9px;font-style:normal;font-size:10px;font-weight:800;padding:1px 8px;border-radius:9px;white-space:nowrap}
+.wm-cost{background:#e0b04a;color:#3a2a06}.wm-here{background:#3fd6a8;color:#06382a}.wm-lock{background:#5a5f78;color:#fff;padding:2px 7px !important}
+.wm-lock svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.4;display:block}
+.wm-node.lock{filter:grayscale(.85) brightness(.75)}
+.wm-node.here{box-shadow:0 0 0 3px rgba(63,214,168,.5),0 4px 14px rgba(0,0,30,.5)}
+.wm-node.sel{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.55),0 4px 14px rgba(0,0,30,.5)}
+.wm-note{margin:10px 2px 0}
+.P .wm-chart{height:390px}
+.P .wm-node{left:var(--px);top:var(--py)}
+.mi-head{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.mi-th{width:44px;height:44px;border-radius:12px;flex:none;background:linear-gradient(135deg,var(--c0),var(--c1) 55%,var(--c2));box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
+.mi-head small{display:block;color:var(--ink2);font-size:11.5px}
+.mi-tabs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.mi-tabs button{padding:4px 10px !important;font-size:12px !important}
+.mi-desc{margin:0 0 8px;font-size:12.5px;line-height:1.5;color:var(--ink)}
+.kvs .kv{padding:3px 0;border-bottom:1px solid rgba(150,165,240,.15)}
+.mi-foot{position:sticky;bottom:0;display:flex;flex-direction:column;gap:4px;margin-top:10px;padding-top:12px;background:linear-gradient(transparent,rgba(6,10,52,.96) 32%)}
+.mi-tp{width:100%;height:42px;font-size:14px}
+.mi-foot small{text-align:center;color:var(--ink2);font-size:11.5px}
+.mi-lock{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:24px 12px;border-radius:12px;background:rgba(255,255,255,.05);color:var(--ink2)}
+.mi-lock svg{width:30px;height:30px;stroke:var(--pv2);fill:none;stroke-width:1.8}
+.mi-lock b{color:var(--ink)}
+.m-dot{width:14px;height:14px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c);flex:none}
+.el{--ec:#ccc;display:inline-block;margin-left:4px;font-size:11px;font-weight:700;color:var(--ec);padding:0 7px;border-radius:8px;border:1px solid var(--ec)}
+.boss-card{padding:10px;border-radius:12px;background:rgba(210,42,90,.1);border:1px solid rgba(255,150,176,.4);margin-bottom:8px}
+.bc-h{display:flex;align-items:center;gap:10px;margin-bottom:6px}.bc-h small{display:block;color:var(--ink2);font-size:11.5px}.bc-lv{margin-left:auto;font-weight:800;color:#ffb0c4}
+.dropl{display:flex;flex-direction:column;gap:4px}
+.drop{display:flex;align-items:center;gap:8px;padding:3px 8px;border-radius:9px;background:rgba(255,255,255,.06)}
+.drop .ii-ic svg{width:26px;height:26px;display:block}.drop b{font-weight:600;font-size:12.5px}.drop em{margin-left:auto;font-style:normal;color:var(--gold2);font-size:12px;white-space:nowrap}
+.w-sec.sub2{margin:10px 0 6px;background:linear-gradient(90deg,#3a4cb0,rgba(58,76,176,.2));font-size:12.5px}
+.qs{font-size:11px;font-weight:800;padding:2px 8px;border-radius:8px}.qs.done{background:rgba(122,230,172,.18);color:var(--good)}.qs.act{background:rgba(124,136,216,.3);color:#dfe4ff}
+
+/* v17 fixes */
+.P #botR{align-items:stretch}
+.P #topC{top:150px}
+
+.win[data-w=status]{min-width:380px}
+.win[data-w=char]{min-width:0}
+
+/* v17 polish */
+.win[data-w=inv]{--wih:556px}
+.inv-fix .ii{aspect-ratio:1/.86}
+.P .inv-fix .ii{aspect-ratio:1}
+.wm-node{width:152px}
+.wm-node b{overflow:visible;text-overflow:clip;white-space:normal}
+.mi-th.lock{background:linear-gradient(135deg,#5a5f78,#8a8fa8)}
 </style>
 </head>
 <body>
@@ -825,26 +1077,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
           </div>
         </div>
         <div id="fxRow" class="fx-row"></div>
-        <div id="idle">
-          <div class="idle-row"><button id="idleBtn" class="idle-btn"></button><button id="idleStop" class="idle-stop hidden"></button></div>
-          <div id="idlePanel" class="panel">
-            <div class="idle-status" id="idleStatus"></div>
-            <div class="idle-rows">
-              <div><span data-i18n="idleTime"></span><b id="iTime">00:00:00</b></div>
-              <div><span data-i18n="idleKills"></span><b id="iKills">0</b></div>
-              <div><span>Base EXP</span><b id="iBase">0</b></div>
-              <div><span>Job EXP</span><b id="iJob">0</b></div>
-              <div><span>Scandium</span><b id="iSc">0</b></div>
-              <div><span data-i18n="mats"></span><b id="iMat">0</b></div>
-            </div>
-            <div class="idle-rate" id="iRate"></div>
-            <div class="idle-rate" id="iVipRate"></div>
-            <div class="idle-vip" id="iVip"></div>
-            <div class="idle-rule" id="iRule"></div>
-          </div>
-          <button id="claimBtn" class="btn gold"></button>
-        </div>
       </div>
+
+      <div id="announce" class="hidden" role="status" aria-live="polite"><span class="an-ic"><svg viewBox="0 0 24 24"><path d="M4 10v4h3l6 4V6L7 10z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></span><span class="an-tag" id="anTag"></span><span class="an-txt" id="anTxt"></span></div>
 
       <div id="topC">
         <div id="banner">
@@ -853,13 +1088,13 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
           <div class="b-meta"><span id="coord">24, 24</span><span>Ch.1</span><span id="bRec"></span><span id="online"></span></div>
         </div>
         <div id="hint"></div>
-        <div id="bossBar" class="hidden"><div class="bb-h"><b id="bbName"></b><span id="bbLv"></span></div><div class="bb-bar"><i id="bbF"></i><span id="bbT"></span></div><div class="bb-warn" id="bbWarn"></div></div>
+        <div id="mobBar" class="hidden"><div class="mo-l1"><span class="mo-tag" id="moTag"></span><b class="mo-name" id="moName"></b><span class="mo-lv" id="moLv"></span><span class="mo-el" id="moEl"></span></div><div class="mo-hp"><i class="mo-trail" id="moTrail"></i><i class="mo-fill" id="moFill"></i><span class="mo-t" id="moT"></span><div class="mo-dmg" id="moDmg"></div></div><div class="mo-warn" id="moWarn"></div></div>
       </div>
 
       <div id="topR">
         <div id="netBar" class="panel net"></div>
         <div id="mmWrap" class="panel">
-          <div class="mm-head"><span class="mm-name" id="mmName"></span><button class="mmb" id="mmTog" aria-label="Map"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button></div>
+          <div class="mm-head"><span class="mm-name" id="mmName"></span><button class="mmb" id="mmWorld" aria-label="World Map"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c3 3 3 13 0 16M12 4c-3 3-3 13 0 16"/></svg></button><button class="mmb" id="mmTog" aria-label="Map"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button></div>
           <div class="mm-body"><canvas id="mm"></canvas>
             <button class="mmb mm-home" id="mmHome"><svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-5h4v5"/></svg></button>
             <div class="mm-zoom"><button class="mmb" id="zIn">+</button><span id="zLbl"></span><button class="mmb" id="zOut">−</button></div>
@@ -877,8 +1112,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
         </div>
       </div>
 
-      <div id="botC"><div id="hotbar"></div></div>
-      <div id="botR"><div id="menu"></div></div>
+      <div id="botC"><div id="hotbar"></div><div id="idleDock"><button id="claimBtn" class="btn gold"></button><div class="id-row"><button id="idleBtn" class="idle-btn" aria-pressed="false"></button><button id="idleCfg" class="idle-cfg" aria-label="Idle settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg></button></div></div></div>
+      <div id="botR"><button id="menuTog" class="menu-tog" aria-label="Menu"></button><div id="menu"></div></div>
 
       <div id="dlg" class="panel hidden">
         <canvas class="d-por" id="dPor" width="152" height="152"></canvas>
@@ -889,10 +1124,22 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
         </div>
       </div>
 
-      <div id="win" class="panel hidden">
-        <div class="win-h" id="winH"><span id="winT"></span><button id="winX" aria-label="Close">×</button></div>
-        <div id="winB"></div>
-        <div id="winNav" class="hidden"></div>
+      <div id="wins" class="hidden">
+        <section id="win" class="win panel hidden" data-w="">
+          <div class="win-h" id="winH"><span id="winT"></span><button id="winX" class="win-x" aria-label="Close">×</button></div>
+          <div id="winB" class="win-b"></div>
+          <div id="winNav" class="win-nav hidden"></div>
+        </section>
+        <section id="winS" class="win panel hidden" data-w="">
+          <div class="win-h" id="winSH"><span id="winST"></span><button id="winSX" class="win-x" aria-label="Close">×</button></div>
+          <div id="winSB" class="win-b"></div>
+          <div id="winSNav" class="win-nav hidden"></div>
+        </section>
+        <section id="winD" class="win panel hidden" data-w="">
+          <div class="win-h" id="winDH"><span id="winDT"></span><button id="winDX" class="win-x" aria-label="Close">×</button></div>
+          <div id="winDB" class="win-b"></div>
+          <div id="winDNav" class="win-nav hidden"></div>
+        </section>
       </div>
 
       <div id="toasts"></div>
@@ -1705,6 +1952,133 @@ D2.en.sl_headLow="Lower Headgear";D2.th.sl_headLow="หมวกล่าง";
 D2.en.sl_shield="Shield";D2.th.sl_shield="โล่";
 D2.en.sl_garment="Garment";D2.th.sl_garment="ผ้าคลุม";
 D2.en.sl_shoes="Shoes";D2.th.sl_shoes="รองเท้า";
+D2.en.idle_on="Idling…";D2.th.idle_on="กำลัง Idle…";
+D2.en.idle_walk="To field…";D2.th.idle_walk="ไปทุ่ง…";
+D2.en.idle_start_s="Tap to start";D2.th.idle_start_s="แตะเพื่อเริ่ม";
+D2.en.idle_go_s="Go to field";D2.th.idle_go_s="ไปทุ่งก่อน";
+D2.en.idle_tip_start="Start idle (auto-fight)";D2.th.idle_tip_start="เริ่ม Idle (สู้อัตโนมัติ)";
+D2.en.idle_tip_stop="Stop idle and see the summary";D2.th.idle_tip_stop="หยุด Idle และดูสรุป";
+D2.en.idle_cfg="Idle settings";D2.th.idle_cfg="ตั้งค่า Idle";
+D2.en.net_fps="Frames per second";D2.th.net_fps="เฟรมต่อวินาที";
+D2.en.net_ping="Latency (ping)";D2.th.net_ping="ความหน่วง (ปิง)";
+D2.en.net_clock="Time";D2.th.net_clock="เวลา";
+D2.en.net_on="Players online";D2.th.net_on="ผู้เล่นออนไลน์";
+D2.en.net_map="Players on this map";D2.th.net_map="ผู้เล่นในแมพนี้";
+D2.en.menu_open="Menu";D2.th.menu_open="เมนู";
+D2.en.menu_hide="Hide menu";D2.th.menu_hide="ซ่อนเมนู";
+D2.en.ann_sys="System";D2.th.ann_sys="ระบบ";
+D2.en.ann_gm="GM";D2.th.ann_gm="GM";
+D2.en.ann_1="Welcome to Rare Earth Online! Gadolith, the Crystal Warden, waits in Gadolinium Field 03.";D2.th.ann_1="ยินดีต้อนรับสู่ Rare Earth Online! กาโดลิธ ผู้พิทักษ์คริสตัล รออยู่ที่ทุ่งแกโดลิเนียม 03";
+D2.en.ann_2="Server maintenance is planned for Sunday 04:00–06:00. (mock-up)";D2.th.ann_2="ปิดปรับปรุงเซิร์ฟเวอร์วันอาทิตย์ 04:00–06:00 น. (ข้อความตัวอย่าง)";
+D2.en.ann_3="Event: Elite monsters drop extra Refine Ore this weekend! (mock-up)";D2.th.ann_3="กิจกรรม: มอนสเตอร์ Elite ดรอปแร่ตีบวกเพิ่มช่วงสุดสัปดาห์นี้! (ข้อความตัวอย่าง)";
+D2.en.ann_4="Tip: open the World Map (M) to teleport to maps you have visited.";D2.th.ann_4="เคล็ดลับ: เปิดแผนที่โลก (M) เพื่อวาปไปแมพที่เคยไปแล้ว";
+D2.en.m_status="Status";D2.th.m_status="สถานะ";
+D2.en.w_char="Character";D2.th.w_char="ตัวละคร";
+D2.en.w_itemdet="Item Detail";D2.th.w_itemdet="รายละเอียดไอเท็ม";
+D2.en.w_idlesum="Idle Summary";D2.th.w_idlesum="สรุปการ Idle";
+D2.en.w_idleset="Idle Settings";D2.th.w_idleset="ตั้งค่า Idle";
+D2.en.w_worldmap="World Map";D2.th.w_worldmap="แผนที่โลก";
+D2.en.w_mapinfo="Map Info";D2.th.w_mapinfo="ข้อมูลแผนที่";
+D2.en.title_l="Title";D2.th.title_l="ฉายา";
+D2.en.title_none="— None —";D2.th.title_none="— ยังไม่มี —";
+D2.en.soon="Soon";D2.th.soon="เร็ว ๆ นี้";
+D2.en.title_soon_t="Titles are coming soon.";D2.th.title_soon_t="ฉายาจะมาเร็ว ๆ นี้";
+D2.en.inv_sort="Auto sort";D2.th.inv_sort="จัดเรียง";
+D2.en.inv_sorted="Sorted by type, name, stars, then price.";D2.th.inv_sorted="จัดเรียงแล้ว: ประเภท > ชื่อ > ดาว > ราคา";
+D2.en.inv_expand="Expand slots";D2.th.inv_expand="ขยายช่องเก็บของ";
+D2.en.inv_page="Page {p}/{n}";D2.th.inv_page="หน้า {p}/{n}";
+D2.en.shop_sc="Shop";D2.th.shop_sc="ร้านค้า";
+D2.en.shop_cash="Cash Shop";D2.th.shop_cash="Cash Shop";
+D2.en.pack_name="Inventory Expansion Pack";D2.th.pack_name="แพ็กขยายช่องเก็บของ";
+D2.en.pack_desc="+{n} slots per pack. Up to {m} slots per character.";D2.th.pack_desc="+{n} ช่องต่อแพ็ก สูงสุด {m} ช่องต่อตัวละคร";
+D2.en.pack_buy_y="Buy · {n} Yttrium";D2.th.pack_buy_y="ซื้อ · {n} Yttrium";
+D2.en.pack_buy_la="Buy · {n} Lanthanum";D2.th.pack_buy_la="ซื้อ · {n} Lanthanum";
+D2.en.pack_mock="Prices are placeholders and will be reviewed.";D2.th.pack_mock="ราคาเป็นค่าชั่วคราว จะกลับมาปรับอีกครั้ง";
+D2.en.pack_max="Inventory is already at the maximum (500 slots).";D2.th.pack_max="ช่องเก็บของเต็มสูงสุดแล้ว (500 ช่อง)";
+D2.en.pack_bought="+{n} slots! Capacity: {c}";D2.th.pack_bought="ขยาย +{n} ช่อง! ความจุ: {c}";
+D2.en.noY="Not enough Yttrium.";D2.th.noY="Yttrium ไม่พอ";
+D2.en.noLa="Not enough Lanthanum.";D2.th.noLa="Lanthanum ไม่พอ";
+D2.en.cap_now="{c} / {m} slots";D2.th.cap_now="{c} / {m} ช่อง";
+D2.en.set_t_gfx="Graphic";D2.th.set_t_gfx="กราฟิก";
+D2.en.set_t_snd="Sound";D2.th.set_t_snd="เสียง";
+D2.en.set_t_oth="Other";D2.th.set_t_oth="อื่น ๆ";
+D2.en.set_t_acc="Account";D2.th.set_t_acc="บัญชี";
+D2.en.st_on="ON";D2.th.st_on="เปิด";
+D2.en.st_off="OFF";D2.th.st_off="ปิด";
+D2.en.set_gfx_d="Lower it on slow devices.";D2.th.set_gfx_d="ลดลงถ้าเครื่องช้า";
+D2.en.set_lay_d="Auto follows your screen.";D2.th.set_lay_d="อัตโนมัติตามหน้าจอ";
+D2.en.set_zoom_d="How close the camera is.";D2.th.set_zoom_d="ระยะของกล้อง";
+D2.en.set_sound_d="Hits, skills and interface.";D2.th.set_sound_d="เสียงต่อสู้ สกิล และ UI";
+D2.en.set_music_d="Background music.";D2.th.set_music_d="เพลงประกอบ";
+D2.en.set_autoIdle_d="Starts Idle after 5 min standing still in a field.";D2.th.set_autoIdle_d="เริ่ม Idle เมื่อยืนนิ่ง 5 นาทีในทุ่ง";
+D2.en.set_vip_d="Test switch for the VIP idle rules.";D2.th.set_vip_d="สวิตช์ทดสอบกติกา Idle ของ VIP";
+D2.en.set_gm="GM mode (test)";D2.th.set_gm="โหมด GM (ทดสอบ)";
+D2.en.set_gm_d="Only the system and GMs can announce. This switch is for testing until there is a server.";D2.th.set_gm_d="ประกาศได้เฉพาะระบบและ GM สวิตช์นี้ไว้ทดสอบจนกว่าจะมีเซิร์ฟเวอร์";
+D2.en.ann_ph="Announcement text";D2.th.ann_ph="ข้อความประกาศ";
+D2.en.ann_send="Announce";D2.th.ann_send="ประกาศ";
+D2.en.ann_prev="Preview system announcement";D2.th.ann_prev="ดูตัวอย่างประกาศระบบ";
+D2.en.ann_sent="Announcement sent.";D2.th.ann_sent="ส่งประกาศแล้ว";
+D2.en.set_test="Test shortcuts (remove before release)";D2.th.set_test="ปุ่มทดสอบ (ลบก่อนปล่อยจริง)";
+D2.en.min="min";D2.th.min="นาที";
+D2.en.isum_title="This idle session";D2.th.isum_title="รอบ Idle นี้";
+D2.en.isum_time="Time";D2.th.isum_time="เวลา";
+D2.en.isum_kills="Monsters defeated";D2.th.isum_kills="ปราบมอน";
+D2.en.isum_gear="Equipment dropped";D2.th.isum_gear="อุปกรณ์ที่ดรอป";
+D2.en.isum_items="Items gained";D2.th.isum_items="ไอเท็มที่ได้";
+D2.en.isum_none="No items this session.";D2.th.isum_none="รอบนี้ยังไม่ได้ไอเท็ม";
+D2.en.isum_again="Idle again";D2.th.isum_again="Idle อีกครั้ง";
+D2.en.iset_note="Players will be able to tune how their character idles. These options are a preview.";D2.th.iset_note="ผู้เล่นจะตั้งค่าการ Idle ของตัวละครเองได้ ตัวเลือกด้านล่างเป็นตัวอย่าง";
+D2.en.iset_hp="Auto-use Red Potion below";D2.th.iset_hp="ใช้ยาแดงอัตโนมัติเมื่อ HP ต่ำกว่า";
+D2.en.iset_hp_d="Uses a Red Potion when HP drops under this level.";D2.th.iset_hp_d="ใช้ยาแดงเมื่อ HP ต่ำกว่าระดับนี้";
+D2.en.iset_sp="Auto-use Blue Potion below";D2.th.iset_sp="ใช้ยาฟ้าอัตโนมัติเมื่อ SP ต่ำกว่า";
+D2.en.iset_sp_d="Uses a Blue Potion when SP drops under this level.";D2.th.iset_sp_d="ใช้ยาฟ้าเมื่อ SP ต่ำกว่าระดับนี้";
+D2.en.iset_skill="Skill priority";D2.th.iset_skill="ลำดับการใช้สกิล";
+D2.en.iset_skill_d="Choose which skills Idle uses first.";D2.th.iset_skill_d="เลือกสกิลที่ Idle ใช้ก่อน";
+D2.en.iset_skill_v="Default";D2.th.iset_skill_v="ค่าเริ่มต้น";
+D2.en.iset_loot="Loot filter";D2.th.iset_loot="ตัวกรองของที่เก็บ";
+D2.en.iset_loot_d="Only pick up equipment with this many stars or more.";D2.th.iset_loot_d="เก็บเฉพาะอุปกรณ์ที่ดาวถึงเกณฑ์นี้";
+D2.en.iset_town="Return to town when full";D2.th.iset_town="กลับเมืองเมื่อกระเป๋าเต็ม";
+D2.en.iset_town_d="Ends Idle and returns to town when the inventory is full.";D2.th.iset_town_d="จบ Idle และกลับเมืองเมื่อคลังเต็ม";
+D2.en.iset_stop="Stop after";D2.th.iset_stop="หยุดหลังจาก";
+D2.en.iset_stop_d="Stops Idle by itself after this long.";D2.th.iset_stop_d="หยุด Idle เองเมื่อครบเวลา";
+D2.en.iset_now="Working now";D2.th.iset_now="ใช้งานได้ตอนนี้";
+D2.en.iset_auto_d="Same switch as in Settings > Other.";D2.th.iset_auto_d="สวิตช์เดียวกับใน ตั้งค่า > อื่น ๆ";
+D2.en.wm_here="You are here";D2.th.wm_here="คุณอยู่ที่นี่";
+D2.en.wm_locked="Not visited yet";D2.th.wm_locked="ยังไม่เคยไป";
+D2.en.wm_safe="Safe zone";D2.th.wm_safe="เขตปลอดภัย";
+D2.en.wm_unknown="Unknown area";D2.th.wm_unknown="พื้นที่ที่ยังไม่รู้จัก";
+D2.en.wm_unknown_d="Visit this map once to see its info and teleport here.";D2.th.wm_unknown_d="ไปที่แมพนี้สักครั้งเพื่อดูข้อมูลและวาปมาได้";
+D2.en.wm_cost_note="Teleport costs {n} Scandium per map you pass. You can only teleport to maps you have visited.";D2.th.wm_cost_note="วาปคิด {n} Scandium ต่อแมพที่ผ่าน และวาปได้เฉพาะแมพที่เคยไปแล้ว";
+D2.en.mt_info="Map Info";D2.th.mt_info="ข้อมูลแมพ";
+D2.en.mt_mon="Monster";D2.th.mt_mon="มอนสเตอร์";
+D2.en.mt_boss="Boss";D2.th.mt_boss="บอส";
+D2.en.mt_drop="Item Drop";D2.th.mt_drop="ไอเท็มดรอป";
+D2.en.mt_quest="Quests";D2.th.mt_quest="เควสต์";
+D2.en.tp_btn="Teleport · {c} Sc";D2.th.tp_btn="วาป · {c} Sc";
+D2.en.tp_here="You are already here.";D2.th.tp_here="คุณอยู่ที่นี่แล้ว";
+D2.en.tp_need="Not enough Scandium ({c} Sc).";D2.th.tp_need="Scandium ไม่พอ ({c} Sc)";
+D2.en.tp_done="Teleported for {c} Sc.";D2.th.tp_done="วาปแล้ว ใช้ {c} Sc";
+D2.en.tp_busy="You can’t teleport right now.";D2.th.tp_busy="ตอนนี้วาปไม่ได้";
+D2.en.mi_rec="Recommended CP";D2.th.mi_rec="CP แนะนำ";
+D2.en.mi_lv="Monster level";D2.th.mi_lv="เลเวลมอนสเตอร์";
+D2.en.mi_links="Connected to";D2.th.mi_links="เชื่อมกับ";
+D2.en.mi_el="Element";D2.th.mi_el="ธาตุ";
+D2.en.mi_none_mon="No monsters here.";D2.th.mi_none_mon="ไม่มีมอนสเตอร์ที่นี่";
+D2.en.mi_none_boss="No boss on this map.";D2.th.mi_none_boss="แมพนี้ไม่มีบอส";
+D2.en.mi_none_q="No quests for this map.";D2.th.mi_none_q="แมพนี้ไม่มีเควสต์";
+D2.en.mi_elite_note="★ Elite (one per type): HP ×5, EXP ×5, 35% Elite Core.";D2.th.mi_elite_note="★ Elite (ชนิดละ 1 ตัว): HP ×5, EXP ×5, Elite Core 35%";
+D2.en.mi_respawn="Respawn";D2.th.mi_respawn="เกิดใหม่";
+D2.en.mi_boss_rew="Rewards";D2.th.mi_boss_rew="รางวัล";
+D2.en.mi_gear2="Equipment pieces";D2.th.mi_gear2="ชิ้นอุปกรณ์";
+D2.en.mi_gear_h="Equipment";D2.th.mi_gear_h="อุปกรณ์";
+D2.en.mi_gear="Tier Lv {l} pieces of every class: {a}% from normal monsters, {b}% from Elites.";D2.th.mi_gear="อุปกรณ์ระดับ Lv {l} ทุกอาชีพ: {a}% จากมอนปกติ, {b}% จาก Elite";
+D2.en.mi_mech_gadolith="Crystal Slam: every 9–12 s it marks a red circle; step out before it lands. Immune to stun and freeze.";D2.th.mi_mech_gadolith="คริสตัลสแลม: ทุก 9–12 วิ จะมีวงแดงบนพื้น ก้าวออกก่อนมันตกกระทบ ไม่โดนสตันและแช่แข็ง";
+D2.en.mi_q_done="Done";D2.th.mi_q_done="สำเร็จ";
+D2.en.mi_q_act="In progress";D2.th.mi_q_act="กำลังทำ";
+D2.en.mapd_town="The starting town built around the Gadolinium Crystal. The shop, the Archetype Helper and the guide Lumi are here. Monsters never come in.";D2.th.mapd_town="เมืองเริ่มต้นที่สร้างรอบคริสตัลแกโดลิเนียม มีร้านค้า ผู้แนะแนวอาร์คีไทป์ และลูมิ มอนสเตอร์ไม่เข้ามา";
+D2.en.mapd_field1="Teal meadows just east of town. Gentle monsters (Lumite, Crawlix, Oculoth) and the first Elite hunts.";D2.th.mapd_field1="ทุ่งสีเขียวอมฟ้าทางตะวันออกของเมือง มอนสเตอร์ไม่ดุ (ลูไมต์ ครอลลิกซ์ โอคูลอธ) และ Elite ตัวแรก";
+D2.en.mapd_field2="Amber Dusk Meadows. Tougher monsters that hit harder. A portal in the north leads to Field 03.";D2.th.mapd_field2="ทุ่งยามพลบค่ำสีอำพัน มอนสเตอร์แกร่งขึ้นและตีแรงกว่า ประตูทางเหนือไปทุ่ง 03";
+D2.en.mapd_field3="Silverfrost Basin. Icy monsters, and the crystal arena where Gadolith, the Crystal Warden, waits.";D2.th.mapd_field3="แอ่งน้ำแข็งเงิน มอนสเตอร์น้ำแข็ง และลานคริสตัลที่กาโดลิธ ผู้พิทักษ์คริสตัล รออยู่";
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
 let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
@@ -1764,6 +2138,8 @@ const IC={
  coil:'<path d="M8 4c-3 0-3 4 0 4s3 4 0 4-3 4 0 4"/><path d="M16 4c3 0 3 4 0 4s-3 4 0 4 3 4 0 4"/>',
  rock:'<path d="M4 17l4-9 5 3 3-6 4 12z"/>',
  bars:'<path d="M5 20v-8M10 20V5M15 20v-10M20 20V8"/>',
+ menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+ chevD:'<path d="m6 9 6 6 6-6"/>',
  signal:'<path d="M4 20v-3M9 20v-6M14 20v-9M19 20v-12"/>',
  wifi:'<path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/>',
  data:'<path d="M7 7h11l-3-3M17 17H6l3 3"/>',
@@ -2254,7 +2630,8 @@ function itemArt(id){
 }
 
 /* ================= items: consumables, materials, equipment, drops, inventory ================= */
-const INV_MAX=60;
+const INV_BASE=100,INV_PACK=20,INV_CAP=500;
+const invMax=()=>Math.min(INV_CAP,INV_BASE+INV_PACK*((S.invPacks|0)));
 /* stackable items. n = [EN, TH], d = [EN, TH], p = sell price, q = quest item, t = use | mat */
 const ITEMDB={
  red_s:{t:"use",p:15,c:"#f08a9a",ic:"potion",n:["Lesser Red Potion","ยาแดงระดับต้น"],d:["Restores 80 HP.","ฟื้นฟู HP 80"]},
@@ -2471,12 +2848,12 @@ function rollDrops(mk,kind,lv){
 /* ---- inventory storage ---- */
 function invSlots(){return Object.keys(S.inv).filter(k=>S.inv[k]>0).length+S.bag.length}
 function gainItem(id,q){
-  if(!(S.inv[id]>0)&&invSlots()>=INV_MAX){toast(t("inv_full"));return false}
+  if(!(S.inv[id]>0)&&invSlots()>=invMax()){toast(t("inv_full"));return false}
   S.inv[id]=(S.inv[id]||0)+q;return true;
 }
 /* obj = {id, ref, roll} */
 function gainGear(obj){
-  if(invSlots()>=INV_MAX){toast(t("inv_full"));return false}
+  if(invSlots()>=invMax()){toast(t("inv_full"));return false}
   S.bag.push({uid:"u"+(S.uidN++),id:obj.id,ref:obj.ref||0,roll:obj.roll||null});return true;
 }
 function starterEquip(){const e={};for(const sl of EQ_SLOTS)e[sl]=null;for(const s0 of ITEM_SLOTS){const id=gearId("beginner",s0,1,1,0);e[equipSlotOf(id)]={uid:"s"+s0,id,ref:0,roll:null}}return e}
@@ -2526,8 +2903,8 @@ function equipUid(uid){
 }
 function unequipSlot(sl){
   const it=S.equip[sl];if(!it)return;
-  if(invSlots()>=INV_MAX){toast(t("inv_full"));return}
-  S.bag.push(it);S.equip[sl]=null;toast(t("eq_off"));afterGearChange();
+  if(invSlots()>=invMax()){toast(t("inv_full"));return}
+  S.bag.push(it);S.equip[sl]=null;if(eqSel===sl){eqSel=null;winDet=null}toast(t("eq_off"));afterGearChange();
 }
 function afterGearChange(){S.hp=Math.min(S.hp,hpMax());S.sp=Math.min(S.sp,spMax());renderHotbar();renderWin();save()}
 /* refine: consumes one Refine Ore and a fee; success raises +1 (max +10); failure keeps the piece */
@@ -2578,11 +2955,12 @@ function invSellMulti(){
   renderWin();save();
 }
 /* ---- inventory window ---- */
-let invTab="all",invSel=null,invQ=1,invArm=null,invMulti=false,invPick=new Set();
-const INV_TABS=[["all",["Everything","ทั้งหมด"]],["gear",["Equipment","อุปกรณ์"]],["use",["Consumable","ใช้ได้"]],["mat",["Material","วัสดุ"]],["quest",["Quest","เควสต์"]]];
+let invTab="all",invSel=null,invQ=1,invArm=null,invMulti=false,invPick=new Set(),invPage={all:0,gear:0,use:0,mat:0,quest:0};
+const INV_PAGE=50;
+const INV_TABS=[["all",["All","ทั้งหมด"]],["gear",["Equipment","อุปกรณ์"]],["use",["Consumable","ใช้ได้"]],["mat",["Material","วัสดุ"]],["quest",["Quest","เควสต์"]]];
 function invEntries(){
-  const L=[];for(const id in S.inv)if(S.inv[id]>0)L.push({k:"i:"+id,id,qty:S.inv[id],cat:itemCat(id)});
-  for(const g of S.bag)L.push({k:"g:"+g.uid,id:g.id,qty:1,ref:g.ref||0,cat:"gear",uid:g.uid});
+  const L=[];for(const g of S.bag)L.push({k:"g:"+g.uid,id:g.id,qty:1,ref:g.ref||0,cat:"gear",uid:g.uid});
+  for(const id in S.inv)if(S.inv[id]>0)L.push({k:"i:"+id,id,qty:S.inv[id],cat:itemCat(id)});
   return L.filter(e=>invTab==="all"||e.cat===invTab);
 }
 function invFind(k){
@@ -2590,16 +2968,38 @@ function invFind(k){
   if(k[0]==="i"){const q=S.inv[key];return q>0?{k,id:key,qty:q,cat:itemCat(key)}:null}
   const g=S.bag.find(x=>x.uid===key);return g?{k,id:g.id,qty:1,ref:g.ref||0,cat:"gear",uid:key,roll:g.roll}:null;
 }
+/* what the item-detail window shows: a piece that is worn (picked on the Character window) or something in the bag */
+function detEntry(){
+  if(eqSel){const it=S.equip[eqSel];return it?{k:"e:"+eqSel,id:it.id,qty:1,ref:it.ref||0,cat:"gear",uid:it.uid,roll:it.roll,equipped:true,slot:eqSel}:null}
+  return invSel?invFind(invSel):null;
+}
 function invCell(e){
   const col=itemColor(e.id),sel=invSel===e.k?" sel":"",p=e.cat==="gear"?gParse(e.id):null;
   return `<button class="ii${sel}${invPick.has(e.k)?" pick":""}" data-act="invsel" data-k="${e.k}" style="--rc:${col}" title="${itemName(e.id)}"><span class="ii-ic">${itemArt(e.id)}</span>${p?`<span class="ii-st" style="--sc:${RARN[p.r-1][2]}">${"★".repeat(p.r)}</span>`:""}${e.cat!=="gear"&&e.qty>1?`<b>${num(e.qty)}</b>`:""}${e.ref?`<span class="ii-rf">+${e.ref}</span>`:""}</button>`;
 }
 function invWin(){
-  const ents=invEntries(),tabs=INV_TABS.map(([k,n])=>`<button class="${invTab===k?"on":""}" data-act="invtab" data-v="${k}">${lang==="th"?n[1]:n[0]}</button>`).join("");
-  const cells=ents.map(invCell);while(cells.length<24)cells.push(`<div class="ii empty"></div>`);
-  const sel=invFind(invSel);if(invSel&&!sel)invSel=null;
-  return `<div class="inv-top"><div class="seg inv-tabs">${tabs}</div><span class="muted">${fmt("inv_slots",{u:invSlots(),m:INV_MAX})}</span><button class="btn sm ${invMulti?"pri":""}" data-act="invmulti">${t(invMulti?"cmp_off":"cmp_multi")}</button></div>
-   ${invMulti?invMultiBar():""}<div class="inv-body"><div class="inv-grid">${cells.join("")}</div><div class="inv-det">${sel?invDetail(sel):`<p class="muted">${t("inv_pick")}</p>`}</div></div>`;
+  const all=invEntries(),pages=Math.max(1,Math.ceil(all.length/INV_PAGE)),pg=Math.max(0,Math.min(invPage[invTab]|0,pages-1));invPage[invTab]=pg;
+  const cells=all.slice(pg*INV_PAGE,pg*INV_PAGE+INV_PAGE).map(invCell);while(cells.length<INV_PAGE)cells.push(`<div class="ii empty"></div>`);   // always 50 cells, so the window never changes size
+  const tabs=INV_TABS.map(([k,n])=>`<button class="${invTab===k?"on":""}" data-act="invtab" data-v="${k}">${lang==="th"?n[1]:n[0]}</button>`).join("");
+  const used=invSlots(),mx=invMax();
+  return `<div class="inv-fix"><div class="inv-top"><div class="seg inv-tabs">${tabs}</div></div>
+   <div class="inv-bar"><span class="inv-cap${used>=mx?" full":""}">${fmt("inv_slots",{u:used,m:mx})}</span><span class="grow"></span><button class="btn sm" data-act="invsort">${t("inv_sort")}</button><button class="btn sm ${invMulti?"pri":""}" data-act="invmulti">${t(invMulti?"cmp_off":"cmp_multi")}</button><button class="btn sm gold" data-act="invexp" title="${t("inv_expand")}">+</button></div>
+   ${invMulti?invMultiBar():""}<div class="inv-grid">${cells.join("")}</div>
+   <div class="inv-pager"><button class="btn sm" data-act="invpage" data-d="-1" ${pg<=0?"disabled":""}>◀</button><span>${fmt("inv_page",{p:pg+1,n:pages})}</span><button class="btn sm" data-act="invpage" data-d="1" ${pg>=pages-1?"disabled":""}>▶</button></div></div>`;
+}
+/* auto sort: type > name > stars > price. Pieces of equipment come first, then consumables, materials and quest items. */
+function sortInventory(){
+  const loc=lang==="th"?"th":"en",rank=id=>isGear(id)?0:(ITEMDB[id]&&ITEMDB[id].q)?3:(ITEMDB[id]&&ITEMDB[id].t==="use")?1:2;
+  const cmp=(a,b)=>{
+    if(rank(a.id)!==rank(b.id))return rank(a.id)-rank(b.id);
+    if(isGear(a.id)){const sa=EQ_SLOTS.indexOf(equipSlotOf(a.id)),sb=EQ_SLOTS.indexOf(equipSlotOf(b.id));if(sa!==sb)return sa-sb}   // equipment: by slot first
+    const n=itemName(a.id).localeCompare(itemName(b.id),loc,{numeric:true});if(n)return n;
+    const ra=isGear(a.id)?gParse(a.id).r:0,rb=isGear(b.id)?gParse(b.id).r:0;if(ra!==rb)return rb-ra;
+    return itemPrice(b.id,b.ref)-itemPrice(a.id,a.ref);
+  };
+  S.bag.sort((a,b)=>cmp({id:a.id,ref:a.ref||0},{id:b.id,ref:b.ref||0}));
+  const keys=Object.keys(S.inv).sort((a,b)=>cmp({id:a,ref:0},{id:b,ref:0})),n={};for(const k of keys)n[k]=S.inv[k];S.inv=n;
+  for(const k in invPage)invPage[k]=0;
 }
 function invDetail(e){
   const isG=e.cat==="gear",col=itemColor(e.id);
@@ -2608,8 +3008,12 @@ function invDetail(e){
     const p=gParse(e.id),rar=RARN[p.r-1];
     h+=`<div class="det-meta"><span class="stars" style="color:${col}">${"★".repeat(p.r)}</span> ${lang==="th"?rar[1]:rar[0]} · ${t("sl_"+equipSlotOf(e.id))} · ${t("ar_"+p.arch)}${e.ref?` · +${e.ref}`:""}</div>`;
     h+=`<div class="det-stats">${gDescLines(e).map(x=>`<div class="${x.t==="ab"?"ab":""}">${x.s}</div>`).join("")}</div><div class="det-set"><b>${setName(e.id)}</b> · ${setDescLines(p).join(" · ")}</div>`;
-    h+=`<div class="det-req">${gReqs(e.id).map(r=>`<div class="${r.ok?"ok":"no"}">${r.ok?"✓":"✗"} ${r.txt}</div>`).join("")}</div>`;
+    if(!e.equipped)h+=`<div class="det-req">${gReqs(e.id).map(r=>`<div class="${r.ok?"ok":"no"}">${r.ok?"✓":"✗"} ${r.txt}</div>`).join("")}</div>`;
   }else h+=`<div class="det-meta">${t("cat_"+e.cat)}</div><p class="det-desc">${itemDesc(e.id)}</p>`;
+  if(e.equipped){   // a worn piece: take it off or refine it
+    h+=`<div class="det-price">${t("price")}: <b>${num(itemPrice(e.id,e.ref))} Sc</b></div>`;
+    return h+`<div class="det-btns"><button class="btn" data-act="unequip" data-s="${e.slot}">${t("btn_unequip")}</button><button class="btn pri" data-act="eqrefine" data-s="${e.slot}">${t("btn_refine")} (${num(S.inv.refine_ore||0)})</button></div>`;
+  }
   const q=isG?1:Math.max(1,Math.min(invQ,e.qty)),price=itemPrice(e.id,e.ref);
   h+=`<div class="det-price">${t("price")}: <b>${num(price)} Sc</b>${q>1?` · ${num(price*q)} Sc`:""}</div>`;
   if(!isG)h+=`<div class="qty"><button data-act="invq" data-d="-1">−</button><b>${q}</b><button data-act="invq" data-d="1">+</button><button data-act="invq" data-d="max">${t("btn_max")}</button></div>`;
@@ -2623,6 +3027,7 @@ function invDetail(e){
   if(isG)h+=gCompareHtml(e);
   return h+`<div class="det-btns">${b}</div>`+(e.cat==="quest"?`<p class="muted">${t("quest_nosell")}</p>`:"");
 }
+
 function invRemove(e,q){
   if(e.cat==="gear"){S.bag=S.bag.filter(x=>x.uid!==e.uid);return}
   S.inv[e.id]=Math.max(0,(S.inv[e.id]||0)-q);
@@ -2647,7 +3052,7 @@ function invStep(d){const e=invFind(invSel);const mx=!e||e.cat==="gear"?1:e.qty;
 const SAVE_KEY=AUTH.saveKey,OLD_KEY=AUTH.oldKey;
 const gameState={lv:1,exp:0,jlv:1,jexp:0,hp:420,sp:120,sc:1250,y:0,la:0,arch:"beginner",stats:REOC.autoStats("beginner",1),autoStat:true,
   inv:{red:3,blue:2,wing:2,apple:8,mat_gel:0,mat_shell:0,mat_lens:0,mat_ore:0,mat_gel2:0,mat_amber:0,mat_frost:0,mat_core:0,mat_gel3:0,mat_rime:0,mat_mag:0,mat_gheart:0},
-  q:{main:{s:"active",st:0,p:0,n:0}},pins:["main"],kills:0,deaths:0,idle:false,vip:false,sess:{t:0,kills:0,base:0,job:0,sc:0,mats:0},offline:null,
+  q:{main:{s:"active",st:0,p:0,n:0}},pins:["main"],kills:0,deaths:0,idle:false,vip:false,sess:{t:0,kills:0,base:0,job:0,sc:0,mats:0,items:{},gear:0},offline:null,visited:{town:1},invPacks:0,menuHide:false,gm:false,
   sound:true,music:true,gfx:"hi",autoIdle:true,bag:[],equip:null,uidN:1};
 const S=gameState;
 /* ---- combat state: buffs, cooldowns, derived stats (REOC) ---- */
@@ -3277,7 +3682,9 @@ function layout(){
   cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
   baseZoom=mode==="h"?Math.max(.85,Math.min(1.35,H/760)):Math.max(.82,Math.min(1.15,W/440));
   requestAnimationFrame(sizeMM);
+  $("#wins").style.setProperty("--sh",H+"px");
   updateLayoutBtn();
+  if(typeof winId!=="undefined"&&winId&&typeof renderWin==="function")renderWin();
 }
 function sizeMM(){const w=Math.max(1,Math.round(mm.clientWidth*dpr)),h=Math.max(1,Math.round(mm.clientHeight*dpr));if(mm.width!==w)mm.width=w;if(mm.height!==h)mm.height=h}
 function localPt(el,e){const r=el.getBoundingClientRect();if(rotated)return {x:e.clientY-r.top,y:r.right-e.clientX};return {x:e.clientX-r.left,y:e.clientY-r.top}}
@@ -3377,7 +3784,7 @@ function applyMap(id,ax,ay){
   if(S.idle){setIdle(false,true);toast(t("idleEnded"))}
   if(dlg){dlg=null;$("#dlg").classList.add("hidden");stage.classList.remove("dlg-open")}
   if(LITE)for(const m of Object.values(MAPS))if(m.id!==id&&m.id!==AHEAD[id]&&m.ground){m.ground.width=m.ground.height=0;m.ground=null}
-  cur=MAPS[id];buildMini(cur);
+  cur=MAPS[id];S.visited[id]=1;buildMini(cur);
   player.x=ax;player.y=ay;player.path=[];player.target=null;player.onArrive=null;marker=null;fx=[];
   deaggroAll();setBanner();
   questEvent({t:"reach",map:id});renderQuest();renderIdle();renderMM();save();
@@ -3561,7 +3968,7 @@ function killMon(mo){
   const P0=MPAL[mo.type];fx.push({k:"burst",x:mo.x,y:mo.y,t:0,d:.6,c:d.sprite==="lumite"?P0.mid:d.sprite==="crawlix"?P0.c[0]:P0.i1,n:E?28:16,z:d.h*.5});
   if(E)fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:.8,c:"#ffd76a",r:90});
   if(B){fx.push({k:"pillar",x:mo.x,y:mo.y,t:0,d:1.6,c:"#bfe8ff"});fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:1.1,c:"#ffffff",r:170});fx.push({k:"ring",x:mo.x,y:mo.y,t:-.2,d:1.1,c:"#9fd8ff",r:130});toast(t("boss_down"),true);pushChat({ch:"sys",k:"sys_boss"})}
-  if(S.idle){const s=S.sess;s.kills++;s.base+=be;s.job+=S.jlv<jcap()?je:0;s.sc+=sc;s.mats+=got}
+  if(S.idle){const s=S.sess;s.kills++;s.base+=be;s.job+=S.jlv<jcap()?je:0;s.sc+=sc;s.mats+=got;s.items=s.items||{};for(const [id,q] of dr.items)s.items[id]=(s.items[id]||0)+q;s.gear=(s.gear||0)+dr.gear.length}
   questEvent({t:"kill",mo});
 }
 function damagePlayer(dmg,tag){
@@ -3849,15 +4256,7 @@ function measurePing(){
 }
 measurePing();setInterval(measurePing,2000);
 const mapPlayers=()=>cur===town?1+town.wanderers.length:1;   // simulated until the server reports real counts
-function renderNet(){
-  const tm=new Date().toLocaleTimeString(lang==="th"?"th-TH":"en-US",{hour:"numeric",minute:"2-digit"});
-  const l1=`${NET.fps} FPS / ${NET.ping==null?"—":NET.ping} ms / ${tm}`;
-  const l2=`${t("st_online")}: ${num(online)} | ${t("st_thisMap")}: ${num(mapPlayers())}`;
-  const key=l1+"\n"+l2;if(key===renderNet.key)return;renderNet.key=key;
-  const el=$("#netBar");el.innerHTML=`<div>${l1}</div><div>${l2}</div>`;
-  el.title=NET.pingSim?t("st_sim"):"";
-}
-renderNet.key="";
+
 
 /* ================= render ================= */
 const motes=[];for(let i=0;i<(LITE?16:34);i++)motes.push({x:Math.random(),y:Math.random(),s:.4+Math.random()*1.4,v:.01+Math.random()*.02,p:Math.random()*TAU});
@@ -3965,7 +4364,7 @@ function updateIdle(dt){
   autoSkill();
 }
 function update(dt){
-  T+=dt;
+  T+=dt;watchWins(dt);updateMobBar(dt);updateAnn(dt);
   if(player.dead){deathT-=dt;if(deathT<=0)respawn()}
   if(holding&&lastHold&&!player.dead){holdTimer+=dt;if(holdTimer>.3){holdTimer=0;const [wx,wy]=toWorld(lastHold.x,lastHold.y),[tx,ty]=isoToTile(wx,wy),a=Math.floor(tx),b=Math.floor(ty);if(!player.target&&inb(a,b)&&walk(a,b)&&walkTo(player,a,b))setMarker(a+.5,b+.5)}}
   if(!player.dead){updateCombat(dt);moveChar(player,dt)}
@@ -3993,20 +4392,12 @@ function updateUI(){
   $("#hpF").style.width=pc(S.hp,hpMax());$("#hpT").textContent=`${num(S.hp)} / ${num(hpMax())}`;
   $("#spF").style.width=pc(S.sp,spMax());$("#spT").textContent=`${num(S.sp)} / ${num(spMax())}`;
   $("#exF").style.width=pc(S.exp,need(S.lv));$("#exT").textContent=(S.exp/need(S.lv)*100).toFixed(1)+"%";
-  {const bo=cur.monsters.find(m=>m.boss&&!m.dead&&m.dieT<=0),el=$("#bossBar"),show=!!bo&&(bo.aggro||player.target===bo||dist(bo,player)<12);
-    el.classList.toggle("hidden",!show);
-    if(show){$("#bbName").textContent=`${t(MON[bo.type].nameK)} · ${t("bt_"+bo.type)}`;$("#bbLv").textContent="Lv "+mLv(bo);$("#bbF").style.width=Math.max(0,bo.hp/bo.maxHp*100)+"%";$("#bbT").textContent=`${num(Math.max(0,bo.hp))} / ${num(bo.maxHp)}`;const w=$("#bbWarn");w.classList.toggle("on",!!bo.tele);w.textContent=bo.tele?t("slam_warn"):""}}
   $("#jlv").textContent=S.jlv;$("#jcap").textContent=jcap();$("#jxF").style.width=S.jlv>=jcap()?"100%":pc(S.jexp,jneed(S.jlv));$("#jxT").textContent=S.jlv>=jcap()?"MAX":(S.jexp/jneed(S.jlv)*100).toFixed(1)+"%";
   $("#lv").textContent=S.lv;$("#wSc").textContent=num(S.sc);$("#wY").textContent=num(S.y);$("#wLa").textContent=num(S.la);$("#cpV").textContent=num(cpV());
   $("#coord").textContent=`${Math.floor(player.x)}, ${Math.floor(player.y)}`;
   if(Math.random()<.05)online+=Math.round((Math.random()-.5)*6);$("#online").textContent=fmt("online",{n:num(online)});
   renderNet();renderFx();
-  const se=S.sess,s=Math.floor(se.t);
-  $("#iTime").textContent=[s/3600,(s%3600)/60,s%60].map(v=>String(Math.floor(v)).padStart(2,"0")).join(":");
-  $("#iKills").textContent=num(se.kills);$("#iBase").textContent="+"+num(se.base);$("#iJob").textContent="+"+num(se.job);$("#iSc").textContent="+"+num(se.sc);$("#iMat").textContent="+"+num(se.mats);
-  $("#iRate").textContent=se.t>20?fmt("rate",{e:num(se.base/se.t*3600),s:num(se.sc/se.t*3600)}):"";
-  $("#idleStatus").textContent=idleStatus();
-  if(S.idle&&S.vip&&isField()){const o=offlineCalc(cur.id,3600);$("#iVipRate").textContent=o?fmt("vipRate",{k:num(o.kph),p:o.eff}):""}else $("#iVipRate").textContent="";
+  if(S.idle){const e=$("#ibTime");if(e)e.textContent=fmtClock(S.sess.t);$("#idleBtn").title=idleStatus()}
   SLOTS.forEach((sl,i)=>{const b=document.querySelector(`.slot[data-i="${i}"]`);if(!b)return;let v=0;
     if(sl.item)v=sl.left>0?sl.left/sl.cd:0;else if(sl.id&&CD[sl.id]>0)v=CD[sl.id]/REOC.SK[sl.id].cd;b.style.setProperty("--cd",v.toFixed(3));
     if(sl.id&&!sl.item){const k=REOC.SK[sl.id];b.classList.toggle("nosp",S.sp<Math.ceil(k.sp*pd().spCost))}});
@@ -4069,55 +4460,8 @@ function eqSlot(sl,col,row){
   const p=gParse(it.id),c=RARN[p.r-1][2];
   return `<button class="eqs${sel}" style="${pos};--rc:${c};--rb:${RARBG_N[p.r-1]}" data-act="eqsel" data-s="${sl}" title="${itemName(it.id)}"><span class="eqi art">${itemArt(it.id)}</span><span class="lvt">Lv ${p.L}</span>${it.ref?`<span class="rf">+${it.ref}</span>`:""}<span class="cs" style="--sc:${c}">${"★".repeat(p.r)}</span></button>`;
 }
-function eqDetail(){
-  if(!eqSel)return `<span class="muted">${t("eq_hint")}</span>`;
-  const it=S.equip[eqSel];
-  if(!it)return `<b>${t("sl_"+eqSel)}</b> · <span class="muted">${t(HAS_ITEMS.has(eqSel)?"eq_empty":"eq_soon")}</span>`;
-  const p=gParse(it.id),col=RARN[p.r-1][2];
-  return `<b style="color:${col}">${itemName(it.id)}</b> <span class="muted">· ${lang==="th"?RARN[p.r-1][1]:RARN[p.r-1][0]} · ${t("sl_"+eqSel)}</span><br>${fmt("eq_ref",{n:it.ref||0})} · <span class="eq-good">${gDescLines(it).map(x=>x.s).join(" · ")}</span><br><span class="muted">${setName(it.id)} · ${setDescLines(p).join(" · ")}</span>
-   <div class="eq-btns"><button class="btn sm" data-act="unequip" data-s="${eqSel}">${t("btn_unequip")}</button><button class="btn sm" data-act="eqrefine" data-s="${eqSel}">${t("btn_refine")} (${num(S.inv.refine_ore||0)})</button></div>`;
-}
-function equipView(){
-  const quick=[["red"],["blue"],["wing"],["apple"]].map(([k])=>`<div class="qk ${S.inv[k]>0?"":"zero"}" title="${t(k)}"><span class="eqi art">${itemArt(k)}</span><b>${num(S.inv[k])}</b></div>`).join("");
-  const L=SLOT_LAYOUT.left.map((x,i)=>eqSlot(x,1,i+1)).join(""),R=SLOT_LAYOUT.right.map((x,i)=>eqSlot(x,3,i+1)).join("");
-  return `<div class="eq-board">${L}
-   <div class="eq-doll" style="grid-column:2;grid-row:1/5"><canvas id="dollCv" width="260" height="340"></canvas><button class="style-btn" data-act="cview" data-v="costume" title="${t("style_btn")}">${svg("armor")}</button></div>
-   <div class="eq-cpbox" style="grid-column:2;grid-row:5"><div class="cp-l">${t("cp_label")}</div><div class="cp-v">${num(cpV())}</div></div>${R}</div>
-   <div class="eq-row quick">${quick}</div><div class="eq-detail">${eqDetail()}</div>`;
-}
 function costumeView(){
   return `<div class="cos"><div class="eq-doll"><canvas id="dollCv" width="260" height="340"></canvas></div><div class="cos-soon">${svg("lock")}<b>${t("cos_soon_t")}</b><span>${t("cos_soon_d")}</span></div></div>`;
-}
-function statusView(){
-  const d=pd(),A=REOC.ARCH[S.arch],free=statFree(),c1=S.arch!=="beginner";
-  const bonus=k=>(BF.blessing>0&&["str","int","dex"].includes(k))?8:0;
-  const stile=k=>{const v=S.stats[k],c=REOC.raiseCost(v),can=v<99&&free>=c,b=bonus(k);
-    return `<div class="stile"><span class="sn">${k.toUpperCase()}</span><b>${v}${b?`<em>+${b}</em>`:""}</b><button class="st-plus" data-act="st" data-k="${k}" ${can?"":"disabled"} title="${fmt("stCost",{c})}">+</button></div>`};
-  const total=REOC.STATS.reduce((a,k)=>a+S.stats[k],0)+(BF.blessing>0?24:0);
-  const row=(k,v,tip)=>`<div class="dr"${tip?` title="${tip}"`:""}><span>${k}</span><b>${v}</b></div>`;
-  const need0=need(S.lv),jn=jneed(S.jlv),capJ=jcap();
-  const trialBtn=!c1?`<button class="btn gold sm" data-act="trial" ${S.jlv>=10?"":"disabled"} title="${S.jlv>=10?"":t("trial_need")}">${t("btn_trial")}</button>`:`<button class="btn gold sm" disabled title="${t("trial_soon")}">${t("btn_jobchg")}</button>`;
-  return `<div class="st-top"><button class="btn sm" data-act="cview" data-v="equip">◀ ${t("tab_equip")}</button><b>${t("nav_status")}</b></div>
-   <div class="chr-panel st-panel">
-    <div class="rec-row"><span>${t("rec_kills")}</span><b>${num(S.kills)}</b><span class="sp"></span><span>${t("deaths")}</span><b>${num(S.deaths)}</b></div>
-    <div class="cls-head">${svg(ROLE_IC[A.type]||"sword")}<span>${t("role_"+A.type)}</span></div>
-    <div class="cls-line"><span class="cls-name">[${c1?"C1":"C0"}] [<em>Lv ${S.lv}</em>] ${t("ar_"+S.arch)}</span><span class="cls-job">Job Lv ${S.jlv}/${capJ}</span>${trialBtn}</div>
-    <div class="xp"><i style="width:${Math.min(100,S.exp/need0*100)}%"></i><span>${(S.exp/need0*100).toFixed(2)}% (${num(S.exp)}/${num(need0)})</span></div>
-    <div class="xp job"><i style="width:${S.jlv>=capJ?100:Math.min(100,S.jexp/jn*100)}%"></i><span>Job ${S.jlv>=capJ?"MAX":(S.jexp/jn*100).toFixed(2)+"% ("+num(S.jexp)+"/"+num(jn)+")"}</span></div>
-    <div class="st-grid">${REOC.STATS.map(stile).join("")}<div class="stile tot"><span class="sn">${t("stTotal")}</span><b>${total}</b></div></div>
-    <div class="kv"><span>${t("wtype")}</span><b>${t("wt_"+S.arch)}</b></div>
-    <div class="kv"><span>${t("atype")}</span><b>${t("at_"+S.arch)}</b></div>
-    <div class="dh">${t("details")} <span class="muted">· ${fmt("stFree",{n:free})}</span></div>
-    <div class="dl">
-     ${row("ATK",d.statusAtk+d.watk+d.mastery,`${d.statusAtk} + ${d.watk+d.mastery}`)}${row("MATK",`${d.matkMin} ~ ${d.matkMax}`)}
-     ${row("DEF",`${Math.round(d.hardDef*100)}% + ${d.softDef}`)}${row("MDEF",`${Math.round(d.mdef*100)}% + ${d.softMdef}`)}
-     ${row("HP",num(d.maxHP))}${row("SP",num(d.maxSP))}
-     ${row("ASPD",`${d.aspd} (${d.interval.toFixed(2)}s)`)}${row("HIT",d.hit)}${row("FLEE",d.flee)}
-     ${row("CRIT",d.crit.toFixed(1)+"%")}${row(t("pdodge"),d.pdodge.toFixed(1)+"%")}${row(t("castLbl"),Math.round(d.castMul*100)+"%")}
-    </div>
-    ${S.autoStat&&statFree()>0?`<div class="muted auto-left">${fmt("auto_left",{n:statFree()})}</div>`:""}
-    <div class="w-dev" style="margin-top:8px"><button class="btn sm ${S.autoStat?"pri":""}" data-act="stAuto">${t(S.autoStat?"stAutoOn":"stAutoOff")}</button><button class="btn sm" data-act="stReset">${t("stReset")}</button></div>
-   </div>`;
 }
 function trialGo(){
   const h=town.npcs.find(n=>n.id==="helper");closeWin();
@@ -4135,14 +4479,6 @@ function drawDoll(){
   g=old;
 }
 const WIN={
- char:()=>{
-  const c1=S.arch!=="beginner",hpPct=Math.max(0,Math.min(100,S.hp/hpMax()*100));
-  const bar=`<div class="chr-name"><span class="ptrs"><span class="ptr sel"><img alt="" src="${$("#av").toDataURL()}"><span class="phb"><b style="width:${hpPct}%"></b></span></span><span class="ptr lock">${svg("lock")}</span><span class="ptr lock">${svg("lock")}</span></span><b>${esc(player.name)} [${c1?"C1":"C0"}] [${t("ar_"+S.arch)}] Lv ${S.lv}</b></div>`;
-  if(charView==="status")return bar+statusView();
-  const tabs=`<div class="chr-tabs"><button class="${charView==="equip"?"on":""}" data-act="cview" data-v="equip">${t("tab_equip")}</button><button class="${charView==="costume"?"on":""}" data-act="cview" data-v="costume">${t("tab_costume")}</button></div>`;
-  return bar+tabs+`<div class="chr-panel">${charView==="costume"?costumeView():equipView()}</div>`;
-},
- inv:()=>invWin(),
  archpick:()=>{
   const list=["fighter","ranger","spellcaster","supporter"];
   return `<p class="muted" style="margin:0 0 10px">${t("pick_intro")}</p><div class="rows">${list.map(a=>{const A=REOC.ARCH[a];
@@ -4167,37 +4503,292 @@ const WIN={
     <div class="w-sec">${t("q_avail")}</div>${groups||`<p class="muted">—</p>`}
     <p class="muted">${fmt("q_completed",{n:done})}</p>`},
  party:()=>`<div class="rows"><div class="row"><span class="dot" style="--c:#6e58e8">${svg("user")}</span><div class="grow">${player.name} (${t("you")})<small>Lv ${S.lv} · ${t("job")}</small></div></div></div><p class="muted">${t("party_none")}</p><button class="btn pri" data-act="mock">${t("party_inv")}</button>`,
- guild:()=>`<div class="rows"><div class="row"><span class="dot" style="--c:#6e58e8">${svg("flag")}</span><div class="grow"><b>${t("guild_name")}</b><small>${t("guild_desc")}</small></div></div></div><p class="muted">${t("mock")}</p>`,
- shop:()=>`<div class="rows">${SHOP.map(([k,p],i)=>`<div class="row"><span class="dot art">${itemArt(k)}</span><div class="grow">${t(k)}<small>${num(p)} Scandium · x${num(S.inv[k])}</small></div><button class="btn" data-act="buy" data-i="${i}">${t("shopBuy")}</button></div>`).join("")}</div>`,
- set:()=>`<div class="w-sec">${t("language")}</div><div class="seg" style="display:inline-flex">${["th","en"].map(l=>`<button data-act="lang" data-v="${l}" class="${lang===l?"on":""}">${l==="th"?"ไทย":"English"}</button>`).join("")}</div>
-  <div class="w-sec">${t("layout")}</div><div class="seg" style="display:inline-flex">${["auto","h","v"].map(m=>`<button data-act="lay" data-v="${m}" class="${layoutMode===m?"on":""}">${t("lay_"+m)}</button>`).join("")}</div>
-  <div class="w-sec">${t("set_gfx")}</div><div class="seg" style="display:inline-flex">${["hi","lo"].map(m=>`<button data-act="gfx" data-v="${m}" class="${S.gfx===m?"on":""}">${t("gfx_"+m)}</button>`).join("")}</div>
-  <div class="w-sec">${t("set_zoom")}</div><div class="seg" style="display:inline-flex;flex-wrap:wrap">${ZL.map((_,i)=>`<button data-act="zoomL" data-v="${i}" class="${zIdx===i?"on":""}">${t("z"+i)}</button>`).join("")}</div>
-  <div class="rows" style="margin-top:10px"><div class="row"><div class="grow">${t("set_sound")}</div><button class="tog ${S.sound?"on":""}" data-act="snd"><i></i></button></div><div class="row"><div class="grow">${t("set_music")}</div><button class="tog ${S.music?"on":""}" data-act="mus"><i></i></button></div><div class="row"><div class="grow">${t("set_vip")}</div><button class="tog ${S.vip?"on":""}" data-act="vip"><i></i></button></div><div class="row"><div class="grow">${t("set_autoIdle")}</div><button class="tog ${S.autoIdle?"on":""}" data-act="autoIdle"><i></i></button></div></div>
-  <div class="w-sec">${t("acc_title")}</div>
-  <p class="muted" style="margin:0 0 8px">${AUTH.isGuest?fmt("acc_guest",{n:esc(AUTH.session.name)}):fmt("acc_user",{u:esc(AUTH.session.name),n:esc(AUTH.session.charName)})}</p>
-  <div class="w-dev"><button class="btn" data-act="logout">${t("acc_logout")}</button>${AUTH.isGuest?`<button class="btn pri" data-act="accUpgrade">${t("acc_create")}</button>`:`<button class="btn danger" data-act="accDelete">${t(accArm?"acc_del_confirm":"acc_delete")}</button>`}</div>
-  <div class="w-sec">${t("save_sec")}</div><p class="muted" style="margin:0 0 8px">${lastSave?fmt("save_last",{t:new Date(lastSave).toLocaleTimeString(lang==="th"?"th-TH":"en-US")}):t("save_never")}</p>
-  <div class="w-dev"><button class="btn" data-act="tJob">${t("tJob")}</button><button class="btn" data-act="tElite">${t("tElite")}</button><button class="btn" data-act="save">${t("save_now")}</button><button class="btn" data-act="sim">${t("sim_off")}</button><button class="btn danger" data-act="reset">${t(resetArm?"reset_confirm":"reset")}</button></div>`
+ guild:()=>`<div class="rows"><div class="row"><span class="dot" style="--c:#6e58e8">${svg("flag")}</span><div class="grow"><b>${t("guild_name")}</b><small>${t("guild_desc")}</small></div></div></div><p class="muted">${t("mock")}</p>`
 };
-function openWin(k,o){winId=k;accArm=false;resetArm=false;pickArm=null;eqSel=null;if(k==="char")charView=(o&&o.view)||"equip";renderWin();const w=$("#win");w.classList.remove("hidden");w.style.left="";w.style.top="";w.style.transform=""}
-function navHtml(act){return [["status","bars"],["skill","flame"],["inv","bag"]].map(([k,ic])=>`<button class="wn wn-${k}${act===k?" on":""}" data-act="nav" data-w="${k}"><span class="wni">${svg(ic)}</span><b>${t("nav_"+k)}</b></button>`).join("")}
-let _winKey="";
-function renderWin(){
-  if(!winId)return;const w=$("#win");const key=winId+"|"+(winId==="char"?charView:""),B0=$("#winB"),top0=B0.scrollTop;
-  w.classList.toggle("charwin",winId==="char");w.classList.toggle("invwin",winId==="inv");
-  $("#winT").textContent=t(winId==="char"?"w_char":"m_"+winId);$("#winB").innerHTML=WIN[winId]();
-  B0.scrollTop=key===_winKey?top0:0;_winKey=key;   // a new page starts at the top; the same page keeps its place
-  const grp=winId==="char"||winId==="skill"||winId==="inv",nav=$("#winNav");   // the character group shares one bottom bar
-  nav.classList.toggle("hidden",!grp);if(grp)nav.innerHTML=navHtml(winId==="skill"?"skill":winId==="inv"?"inv":(charView==="status"?"status":""));
+/* ================= windows (v17): up to three open at once, each with its own fixed size ================= */
+const NAVSET=[["char","user"],["status","bars"],["inv","bag"],["skill","star"],["quest","scroll"],["party","users"],["guild","flag"]];
+const WSLOT=[{k:"A",el:"win",b:"winB",t:"winT",n:"winNav",h:"winH",x:"winX"},{k:"B",el:"winS",b:"winSB",t:"winST",n:"winSNav",h:"winSH",x:"winSX"},{k:"C",el:"winD",b:"winDB",t:"winDT",n:"winDNav",h:"winDH",x:"winDX"}];
+let winSide=null,winDet=null,_wkey={A:"",B:"",C:""},_wsig={},ptrDown=false,_wwT=0;
+let mapSel=null,mapTab="info",shopTab="sc",setTab="gfx";
+const slotWin=k=>k==="A"?winId:k==="B"?winSide:winDet;
+const WTITLES={itemdet:"w_itemdet",idlesum:"w_idlesum",idleset:"w_idleset",worldmap:"w_worldmap",mapinfo:"w_mapinfo"};
+const winTitle=id=>t(WTITLES[id]||"m_"+id);
+function openWin(k,o){
+  o=o||{};if(k==="char"&&o.view==="status")k="status";
+  accArm=false;resetArm=false;pickArm=null;eqSel=null;invSel=null;invArm=null;invMulti=false;invPick.clear();mapSel=null;winSide=null;winDet=null;
+  if(k==="char"){charView="equip";winId="char";winSide=o.alone?null:"status"}   // Character always opens Equipment + Status together
+  else winId=k;
+  for(const sl of WSLOT){const e=$("#"+sl.el);e.dataset.dx=0;e.dataset.dy=0;e.style.transform=""}
+  _wkey={A:"",B:"",C:""};renderWin();
 }
-function closeWin(){if(winId==="idlerew"&&S.pending){settleIdle(false);return}winId=null;$("#win").classList.add("hidden")}
-$("#winX").addEventListener("click",closeWin);
-$("#winNav").addEventListener("click",e=>{const b=e.target.closest("[data-act=nav]");if(!b)return;const k=b.dataset.w;
-  if(k==="status"){if(winId==="char"){charView=charView==="status"?"equip":"status";renderWin()}else openWin("char",{view:"status"})}
-  else openWin(k)});
-$("#winB").addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;
-  if(a==="lang")setLang(b.dataset.v);
+function closeWin(){if(winId==="idlerew"&&S.pending){settleIdle(false);return}winId=winSide=winDet=null;eqSel=null;invSel=null;mapSel=null;renderWin()}
+function closeSlot(k){
+  if(k==="C"){winDet=null;eqSel=null;invSel=null}
+  else if(k==="B"){if(winSide==="mapinfo")mapSel=null;winSide=null}
+  else{if(winId==="idlerew"&&S.pending){settleIdle(false);return}if(winSide){winId=winSide;winSide=null}else{winId=null;winDet=null}}
+  renderWin();
+}
+function navTo(k){if(k==="char")openWin("char",{alone:true});else openWin(k)}
+/* what each window shows depends on different data; this string changes when something it shows changes */
+function invSig(){let s=invMax()+"|";for(const k in S.inv)if(S.inv[k]>0)s+=k+":"+S.inv[k]+",";s+="|";for(const g of S.bag)s+=g.uid+"#"+(g.ref||0)+",";return s}
+function winSig(id){
+  try{switch(id){
+    case "char":return eqKey()+"|"+S.lv+"|"+S.arch+"|"+cpV()+"|"+player.name;
+    case "status":pd();return [S.lv,Math.floor(S.exp),S.jlv,Math.floor(S.jexp),S.kills,S.deaths,_pdKey,statFree(),S.autoStat?1:0,S.arch].join("|");
+    case "inv":return invSig();
+    case "skill":return S.arch+"|"+S.lv;
+    case "quest":return JSON.stringify(S.q)+"|"+S.pins.join();
+    case "shop":return [S.sc,S.y,S.la,shopTab,S.invPacks,SHOP.map(([k])=>S.inv[k]).join()].join("|");
+    case "set":return [S.sound,S.music,S.vip,S.autoIdle,S.gfx,lang,layoutMode,zIdx,S.gm,setTab,Math.floor(lastSave/30000)].join("|");
+    case "itemdet":{const e=detEntry();return e?[e.id,e.ref,e.qty,S.inv.refine_ore,JSON.stringify(e.roll)].join("|"):"x"}
+    case "worldmap":case "mapinfo":return [S.sc,cur.id,Object.keys(S.visited).join(),mapSel,mapTab,player.dead?1:0,S.log&&0].join("|");
+    default:return "";
+  }}catch(e){return ""}
+}
+function drawSlot(sl,id,portrait){
+  const el=$("#"+sl.el),B=$("#"+sl.b);el.classList.remove("hidden");el.dataset.w=id;
+  const key=id+"|"+(id==="char"?charView:id==="itemdet"?(eqSel||invSel||""):id==="mapinfo"?mapSel+"|"+mapTab:""),top=B.scrollTop;
+  $("#"+sl.t).textContent=winTitle(id);
+  B.innerHTML=WIN[id]();B.scrollTop=_wkey[sl.k]===key?top:0;_wkey[sl.k]=key;   // a new page starts at the top, the same page keeps its place
+  const nav=$("#"+sl.n);let show=NAVSET.some(([k])=>k===id)&&sl.k!=="C";
+  if(show&&portrait&&sl.k==="A"&&winSide)show=false;   // stacked on a phone: one bar at the bottom
+  const list=NAVSET.filter(([k])=>k!==winId&&k!==winSide);   // never a button to a window that is already open
+  nav.classList.toggle("hidden",!show||!list.length);
+  if(show&&list.length)nav.innerHTML=list.map(([k,ic])=>`<button class="wn" data-act="nav" data-w="${k}" title="${t("m_"+k)}"><span class="wni">${svg(ic)}</span><b>${t("m_"+k)}</b></button>`).join("");
+  _wsig[sl.k]=winSig(id);
+}
+function renderWin(){
+  const wins=$("#wins");
+  if(winDet&&!detEntry())winDet=null;
+  if(!winId){winSide=winDet=null;wins.classList.add("hidden");for(const sl of WSLOT)$("#"+sl.el).classList.add("hidden");return}
+  wins.classList.remove("hidden");const portrait=stage.classList.contains("P");
+  wins.classList.toggle("three",!!(winSide&&winDet));wins.classList.toggle("pair",!!winSide);
+  for(const sl of WSLOT){const id=slotWin(sl.k);if(id)drawSlot(sl,id,portrait);else $("#"+sl.el).classList.add("hidden")}
+}
+/* live updates: any open window redraws itself as soon as the data it shows changes (no closing and reopening) */
+function watchWins(dt){
+  _wwT+=dt;if(_wwT<.25)return;_wwT=0;
+  if(!winId||ptrDown)return;
+  const ae=document.activeElement;if(ae&&ae.closest&&ae.closest("#wins")&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))return;   // never redraw under a text field
+  if(winDet&&!detEntry()){winDet=null;renderWin();return}
+  const portrait=stage.classList.contains("P");
+  for(const sl of WSLOT){const id=slotWin(sl.k);if(id&&_wsig[sl.k]!==winSig(id))drawSlot(sl,id,portrait)}
+}
+$("#wins").addEventListener("pointerdown",()=>{ptrDown=true},true);
+addEventListener("pointerup",()=>{ptrDown=false},true);addEventListener("pointercancel",()=>{ptrDown=false},true);
+for(const sl of WSLOT)$("#"+sl.x).addEventListener("click",()=>closeSlot(sl.k));
+
+/* ================= World Map: connected maps, teleport with Scandium, and per-map info ================= */
+const WM={town:{lx:12,ly:70,px:24,py:84},field1:{lx:36,ly:30,px:72,py:64},field2:{lx:62,ly:72,px:26,py:40},field3:{lx:86,ly:28,px:72,py:14}};
+const WM_LINKS=[["town","field1"],["field1","field2"],["field2","field3"]];
+const TP_COST=150;   // Scandium per map you pass
+function mapDist(a,b){if(a===b)return 0;const q=[[a,0]],seen=new Set([a]);while(q.length){const [m,d]=q.shift();for(const n of NEIGH[m]||[]){if(n===b)return d+1;if(!seen.has(n)){seen.add(n);q.push([n,d+1])}}}return 99}
+const tpCost=id=>TP_COST*mapDist(cur.id,id);
+const mapCols=id=>FPAL[id]?FPAL[id].mini:["#3c8a4a","#6ab56a","#c8e0a0"];
+const mapMons=id=>Object.keys(MON).filter(k=>MON[k].map===id&&!MON[k].boss);
+const mapBoss=id=>Object.keys(MON).filter(k=>MON[k].map===id&&MON[k].boss);
+const elChip=e=>e?`<span class="el" style="--ec:${ELC[e]||"#ccc"}">● ${t("el_"+e)}</span>`:"";
+function monCol(k){const d=MON[k],P0=MPAL[k];return d.sprite==="lumite"?P0.mid:d.sprite==="crawlix"?P0.c[0]:d.sprite==="gadolith"?P0.f2:P0.i1}
+function tpArrive(id){   // arrive at the entrance that leads back toward town
+  if(id==="town")return [24.5,24.5];
+  let first=null;const q=[[id]],seen=new Set([id]);
+  while(q.length&&!first){const p=q.shift(),m=p[p.length-1];for(const n of NEIGH[m]||[]){if(seen.has(n))continue;seen.add(n);const np=[...p,n];if(n==="town"){first=np[1];break}q.push(np)}}
+  return first?arriveAt(id,first):[24.5,24.5];
+}
+function doTeleport(id){
+  if(player.dead||warping){toast(t("tp_busy"));return}
+  if(!S.visited[id]){toast(t("wm_locked"));return}   // only maps the character has been to
+  if(id===cur.id){toast(t("tp_here"));return}
+  const c=tpCost(id);if(S.sc<c){toast(fmt("tp_need",{c:num(c)}));return}
+  S.sc-=c;player.nav=null;wantIdle=false;fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:.5,c:"#cfc4ff"});
+  const [ax,ay]=tpArrive(id);closeWin();
+  setTimeout(()=>{goMap(id,ax,ay);setTimeout(()=>toast(fmt("tp_done",{c:num(c)}),true),420)},250);save();
+}
+WIN.worldmap=()=>{
+  const nodes=Object.keys(WM).map(id=>{
+    const m=MAPS[id],vis=!!S.visited[id],here=cur.id===id,sel=mapSel===id,[c0,c1,c2]=mapCols(id),w=WM[id];
+    const tag=here?`<em class="wm-here">${t("wm_here")}</em>`:vis?`<em class="wm-cost">${num(tpCost(id))} Sc</em>`:`<em class="wm-lock">${svg("lock")}</em>`;
+    return `<button class="wm-node ${vis?"vis":"lock"}${here?" here":""}${sel?" sel":""}" style="--lx:${w.lx}%;--ly:${w.ly}%;--px:${w.px}%;--py:${w.py}%;--c0:${c0};--c1:${c1};--c2:${c2}" data-act="wmsel" data-m="${id}">
+      <span class="wm-th"></span><b>${vis?t(m.nameK):"???"}</b><small>${vis?(m.rec?fmt("rec",{n:num(m.rec)}):t("wm_safe")):t("wm_locked")}</small>${tag}</button>`;
+  }).join("");
+  const line=(a,b,p)=>`<line x1="${WM[a][p+"x"]}" y1="${WM[a][p+"y"]}" x2="${WM[b][p+"x"]}" y2="${WM[b][p+"y"]}" class="${S.visited[a]&&S.visited[b]?"on":""}"/>`;
+  return `<div class="wm-chart"><svg class="wm-lines wl" viewBox="0 0 100 100" preserveAspectRatio="none">${WM_LINKS.map(([a,b])=>line(a,b,"l")).join("")}</svg><svg class="wm-lines wp" viewBox="0 0 100 100" preserveAspectRatio="none">${WM_LINKS.map(([a,b])=>line(a,b,"p")).join("")}</svg>${nodes}</div>
+   <p class="muted wm-note">${fmt("wm_cost_note",{n:TP_COST})}</p>`;
+};
+WIN.mapinfo=()=>{
+  const id=mapSel;if(!id||!MAPS[id])return "";
+  const vis=!!S.visited[id],m=MAPS[id],[c0,c1,c2]=mapCols(id),here=cur.id===id,cost=tpCost(id);
+  const head=`<div class="mi-head"><span class="mi-th${vis?"":" lock"}" style="--c0:${c0};--c1:${c1};--c2:${c2}"></span><div><b>${vis?t(m.nameK):"???"}</b><small>${vis?t(m.subK):t("wm_locked")}</small></div></div>`;
+  let can=vis&&!here&&S.sc>=cost&&!player.dead,why=!vis?t("wm_locked"):here?t("tp_here"):S.sc<cost?fmt("tp_need",{c:num(cost)}):"";
+  const foot=`<div class="mi-foot"><button class="btn pri mi-tp" data-act="tp" data-m="${id}" ${can?"":"disabled"}>${here?t("wm_here"):fmt("tp_btn",{c:num(cost)})}</button>${why&&!here?`<small>${why}</small>`:""}</div>`;
+  if(!vis)return head+`<div class="mi-lock">${svg("lock")}<b>${t("wm_unknown")}</b><span>${t("wm_unknown_d")}</span></div>`+foot;
+  const tabs=`<div class="seg mi-tabs">${[["info","mt_info"],["mon","mt_mon"],["boss","mt_boss"],["drop","mt_drop"],["quest","mt_quest"]].map(([k,n])=>`<button class="${mapTab===k?"on":""}" data-act="maptab" data-v="${k}">${t(n)}</button>`).join("")}</div>`;
+  const mons=mapMons(id),bs=mapBoss(id);let body="";
+  if(mapTab==="info"){
+    const lvs=mons.map(k=>MON[k].lv),links=(NEIGH[id]||[]).map(n=>S.visited[n]?t(MAPS[n].nameK):"???").join(" · ");
+    body=`<p class="mi-desc">${t("mapd_"+id)}</p><div class="kvs">
+      <div class="kv"><span>${t("mi_rec")}</span><b>${m.rec?num(m.rec):t("wm_safe")}</b></div>
+      <div class="kv"><span>${t("mi_lv")}</span><b>${lvs.length?`Lv ${Math.min(...lvs)}–${Math.max(...lvs)}`:"—"}</b></div>
+      <div class="kv"><span>${t("mt_mon")}</span><b>${mons.length}${mons.length?` (+${mons.length} ★ ${t("elite")})`:""}</b></div>
+      <div class="kv"><span>${t("mt_boss")}</span><b>${bs.length?bs.map(k=>t(MON[k].nameK)).join(", "):"—"}</b></div>
+      <div class="kv"><span>${t("mi_links")}</span><b>${links||"—"}</b></div></div>`;
+  }else if(mapTab==="mon"){
+    body=mons.length?`<div class="rows">${mons.map(k=>{const d=MON[k],pr=REOC.MONC[k];return `<div class="row mrow"><span class="m-dot" style="--c:${monCol(k)}"></span><div class="grow"><b>${t(d.nameK)}</b> <small style="display:inline">Lv ${d.lv} ${elChip(pr.elem)}</small><small>HP ${num(d.hp)} · EXP ${num(d.exp[0])} / ${num(d.exp[1])} · ${d.sc[0]}–${d.sc[1]} Sc</small></div></div>`}).join("")}</div><p class="muted">${t("mi_elite_note")}</p>`:`<p class="muted">${t("mi_none_mon")}</p>`;
+  }else if(mapTab==="boss"){
+    body=bs.length?bs.map(k=>{const d=MON[k],pr=REOC.MONC[k];return `<div class="boss-card"><div class="bc-h"><span class="m-dot" style="--c:${monCol(k)}"></span><div><b>${t(d.nameK)}</b><small>${t("bt_"+k)}</small></div><span class="bc-lv">Lv ${d.lv}</span></div>
+      <div class="kvs"><div class="kv"><span>HP</span><b>${num(d.hp)}</b></div><div class="kv"><span>${t("mi_el")}</span><b>${elChip(pr.elem)}</b></div><div class="kv"><span>EXP</span><b>${num(d.exp[0])} / ${num(d.exp[1])}</b></div><div class="kv"><span>Scandium</span><b>${num(d.sc[0])}–${num(d.sc[1])}</b></div><div class="kv"><span>${t("mi_respawn")}</span><b>120 s</b></div></div>
+      <p class="mi-desc">${t("mi_mech_"+k)}</p>
+      <div class="w-sec">${t("mi_boss_rew")}</div><div class="dropl">${[["mat_gheart","1"],["mat_core","×3"],["mat_ore","×5"],["refine_ore","×2–4"]].map(([id,q])=>`<div class="drop"><span class="ii-ic">${itemArt(id)}</span><b>${itemName(id)}</b><em>${q}</em></div>`).join("")}<div class="drop"><span class="ii-ic">${itemArt(gearId("fighter","weapon",20,5,0))}</span><b>${t("mi_gear2")}</b><em>×2</em></div></div></div>`}).join(""):`<p class="muted">${t("mi_none_boss")}</p>`;
+  }else if(mapTab==="drop"){
+    const maxLv=mons.length?Math.max(...mons.map(k=>MON[k].lv)):0;
+    body=mons.length?mons.map(k=>`<div class="w-sec sub2">${t(MON[k].nameK)} <span class="muted">Lv ${MON[k].lv}</span></div><div class="dropl">${(LOOT[k]||[]).map(([id,ch,mn,mx])=>`<div class="drop"><span class="ii-ic">${itemArt(id)}</span><b>${itemName(id)}</b><em>${Math.round(ch*100)}%${mx>1?` · ×${mn}–${mx}`:""}</em></div>`).join("")}<div class="drop"><span class="ii-ic">${itemArt("refine_ore")}</span><b>${itemName("refine_ore")}</b><em>${Math.round((REFINE_CH[k]||.02)*100)}%</em></div></div>`).join("")
+      +`<div class="w-sec sub2">${t("mi_gear_h")}</div><p class="muted">${fmt("mi_gear",{l:tierOf(maxLv),a:3,b:12})}</p>`:`<p class="muted">${t("mi_none_mon")}</p>`;
+  }else{
+    const ids=Object.keys(QD).filter(q=>QD[q].qmap===id||(id==="town"&&QD[q].type==="main"));
+    body=ids.length?`<div class="rows">${ids.map(q=>{const d=QD[q],st=S.q[q];
+      const act=st&&st.s==="active",done=st&&st.s==="done";
+      return `<div class="row qrow" style="--qc:${QCOL[d.type]}"><span class="qbar"></span><div class="grow"><b>${t(d.titleK)}</b> <small style="display:inline;color:${QCOL[d.type]}">${t("qt_"+d.type)}${d.rep?" · "+t("q_repeat"):""}</small><small>${act?objText(q):done?t("mi_q_done"):fmtObjPreview(q)}</small></div>${act||done?`<span class="qs ${done?"done":"act"}">${t(done?"mi_q_done":"mi_q_act")}</span>`:`<button class="btn sm pri" data-act="accept" data-q="${q}">${t("q_accept")}</button>`}</div>`}).join("")}</div>`:`<p class="muted">${t("mi_none_q")}</p>`;
+  }
+  return head+tabs+`<div class="mi-body">${body}</div>`+foot;
+};
+
+/* ---------- Character (equipment) ---------- */
+function equipView(){
+  const L=SLOT_LAYOUT.left.map((x,i)=>eqSlot(x,1,i+1)).join(""),R=SLOT_LAYOUT.right.map((x,i)=>eqSlot(x,3,i+1)).join("");
+  return `<div class="eq-board">${L}
+   <div class="eq-doll" style="grid-column:2;grid-row:1/5"><canvas id="dollCv" width="260" height="340"></canvas><button class="style-btn" data-act="cview" data-v="costume" title="${t("style_btn")}">${svg("armor")}</button></div>
+   <div class="eq-cpbox" style="grid-column:2;grid-row:5"><div class="cp-l">${t("cp_label")}</div><div class="cp-v">${num(cpV())}</div></div>${R}</div>
+   <button class="eq-title" data-act="title"><span class="et-l">${svg("star")}${t("title_l")}</span><b>${t("title_none")}</b><span class="et-soon">${t("soon")}</span></button>`;
+}
+WIN.char=()=>{
+  const c1=S.arch!=="beginner";
+  const bar=`<div class="chr-name"><span class="ptr sel"><img alt="" src="${$("#av").toDataURL()}"></span><b>${esc(player.name)} [${c1?"C1":"C0"}] [${t("ar_"+S.arch)}] Lv ${S.lv}</b></div>`;
+  const tabs=`<div class="chr-tabs"><button class="${charView==="equip"?"on":""}" data-act="cview" data-v="equip">${t("tab_equip")}</button><button class="${charView==="costume"?"on":""}" data-act="cview" data-v="costume">${t("tab_costume")}</button></div>`;
+  return bar+tabs+`<div class="chr-panel">${charView==="costume"?costumeView():equipView()}</div>`;
+};
+/* ---------- Status ---------- */
+function statusBody(){
+  const d=pd(),A=REOC.ARCH[S.arch],free=statFree(),c1=S.arch!=="beginner";
+  const bonus=k=>(BF.blessing>0&&["str","int","dex"].includes(k))?8:0;
+  const stile=k=>{const v=S.stats[k],c=REOC.raiseCost(v),can=v<99&&free>=c,b=bonus(k);
+    return `<div class="stile"><span class="sn">${k.toUpperCase()}</span><b>${v}${b?`<em>+${b}</em>`:""}</b><button class="st-plus" data-act="st" data-k="${k}" ${can?"":"disabled"} title="${fmt("stCost",{c})}">+</button></div>`};
+  const total=REOC.STATS.reduce((a,k)=>a+S.stats[k],0)+(BF.blessing>0?24:0);
+  const row=(k,v,tip)=>`<div class="dr"${tip?` title="${tip}"`:""}><span>${k}</span><b>${v}</b></div>`;
+  const need0=need(S.lv),jn=jneed(S.jlv),capJ=jcap();
+  const trialBtn=!c1?`<button class="btn gold sm" data-act="trial" ${S.jlv>=10?"":"disabled"} title="${S.jlv>=10?"":t("trial_need")}">${t("btn_trial")}</button>`:`<button class="btn gold sm" disabled title="${t("trial_soon")}">${t("btn_jobchg")}</button>`;
+  return `<div class="chr-panel st-panel">
+    <div class="rec-row"><span>${t("rec_kills")}</span><b>${num(S.kills)}</b><span class="sp"></span><span>${t("deaths")}</span><b>${num(S.deaths)}</b></div>
+    <div class="cls-head">${svg(ROLE_IC[A.type]||"sword")}<span>${t("role_"+A.type)}</span></div>
+    <div class="cls-line"><span class="cls-name">${esc(player.name)} [${c1?"C1":"C0"}] [<em>Lv ${S.lv}</em>] ${t("ar_"+S.arch)}</span><span class="cls-job">Job Lv ${S.jlv}/${capJ}</span>${trialBtn}</div>
+    <div class="xp"><i style="width:${Math.min(100,S.exp/need0*100)}%"></i><span>${(S.exp/need0*100).toFixed(2)}% (${num(S.exp)}/${num(need0)})</span></div>
+    <div class="xp job"><i style="width:${S.jlv>=capJ?100:Math.min(100,S.jexp/jn*100)}%"></i><span>Job ${S.jlv>=capJ?"MAX":(S.jexp/jn*100).toFixed(2)+"% ("+num(S.jexp)+"/"+num(jn)+")"}</span></div>
+    <div class="st-grid">${REOC.STATS.map(stile).join("")}<div class="stile tot"><span class="sn">${t("stTotal")}</span><b>${total}</b></div></div>
+    <div class="kv"><span>${t("wtype")}</span><b>${t("wt_"+S.arch)}</b></div>
+    <div class="kv"><span>${t("atype")}</span><b>${t("at_"+S.arch)}</b></div>
+    <div class="dh">${t("details")} <span class="muted">· ${fmt("stFree",{n:free})}</span></div>
+    <div class="dl">
+     ${row("ATK",Math.round(d.statusAtk+d.watk+d.mastery),`${Math.round(d.statusAtk)} + ${Math.round(d.watk+d.mastery)}`)}${row("MATK",`${Math.round(d.matkMin)} ~ ${Math.round(d.matkMax)}`)}
+     ${row("DEF",`${Math.round(d.hardDef*100)}% + ${Math.round(d.softDef)}`)}${row("MDEF",`${Math.round(d.mdef*100)}% + ${Math.round(d.softMdef)}`)}
+     ${row("HP",num(d.maxHP))}${row("SP",num(d.maxSP))}
+     ${row("ASPD",`${d.aspd} (${d.interval.toFixed(2)}s)`)}${row("HIT",d.hit)}${row("FLEE",d.flee)}
+     ${row("CRIT",d.crit.toFixed(1)+"%")}${row(t("pdodge"),d.pdodge.toFixed(1)+"%")}${row(t("castLbl"),Math.round(d.castMul*100)+"%")}
+    </div>
+    ${S.autoStat&&statFree()>0?`<div class="muted auto-left">${fmt("auto_left",{n:statFree()})}</div>`:""}
+    <div class="w-dev" style="margin-top:8px"><button class="btn sm ${S.autoStat?"pri":""}" data-act="stAuto">${t(S.autoStat?"stAutoOn":"stAutoOff")}</button><button class="btn sm" data-act="stReset">${t("stReset")}</button></div>
+   </div>`;
+}
+WIN.status=statusBody;
+WIN.inv=invWin;
+WIN.itemdet=()=>{const e=detEntry();return e?`<div class="det">${invDetail(e)}</div>`:`<p class="muted">${t("inv_pick")}</p>`};
+
+/* ---------- Idle: summary (when stopped) and settings (mock-up) ---------- */
+WIN.idlesum=()=>{
+  const L=lastSess;if(!L)return `<p class="muted">—</p>`;
+  const row=(k,v)=>`<div class="stat"><span>${k}</span><b>${v}</b></div>`,hr=L.t>20?3600/L.t:0;
+  const items=Object.entries(L.items||{}).filter(([k,q])=>q>0).sort((a,b)=>b[1]-a[1]);
+  return `<div class="isum-head"><span class="isum-ic">${svg("flame")}</span><div><b>${t("isum_title")}</b><small>${t(S.vip?"vipOn":"vipOff")}</small></div></div>
+   <div class="stats isum-stats">${row(t("isum_time"),fmtClock(L.t))}${row(t("isum_kills"),num(L.kills))}${row("Base EXP","+"+num(L.base))}${row("Job EXP","+"+num(L.job))}${row("Scandium","+"+num(L.sc))}${row(t("isum_gear"),num(L.gear||0))}</div>
+   ${hr?`<p class="muted">${fmt("rate",{e:num(L.base*hr),s:num(L.sc*hr)})}</p>`:""}
+   <div class="w-sec">${t("isum_items")}</div>
+   ${items.length?`<div class="isum-items">${items.map(([id,q])=>`<div class="isum-it" title="${itemName(id)}"><span class="ii-ic">${itemArt(id)}</span><b>${num(q)}</b><small>${itemName(id)}</small></div>`).join("")}</div>`:`<p class="muted">${t("isum_none")}</p>`}
+   <div class="w-dev" style="margin-top:12px"><button class="btn pri" data-act="idleAgain">${t("isum_again")}</button><button class="btn" data-act="idleClose">${t("close")}</button></div>`;
+};
+const swTog=(on,act,x)=>`<button class="tog ${on?"on":""}" data-act="${act}" ${x||""} aria-pressed="${on?"true":"false"}"><i></i></button><span class="tst ${on?"on":""}">${t(on?"st_on":"st_off")}</span>`;
+const sRow=(l,d,ctl,cls)=>`<div class="srow ${cls||""}"><div class="sl"><b>${l}</b>${d?`<small>${d}</small>`:""}</div><div class="sctl">${ctl}</div></div>`;
+const sSeg=(arr,cur,act)=>`<div class="seg">${arr.map(([v,l])=>`<button data-act="${act}" data-v="${v}" class="${String(cur)===String(v)?"on":""}">${l}</button>`).join("")}</div>`;
+WIN.idleset=()=>{
+  const fake=v=>`<span class="fake">${v}</span>`,soon=`<span class="et-soon">${t("soon")}</span>`;
+  return `<div class="soon-banner">${svg("lock")}<span>${t("iset_note")}</span></div>
+   ${sRow(t("iset_hp"),t("iset_hp_d"),fake("50%")+soon,"dim")}${sRow(t("iset_sp"),t("iset_sp_d"),fake("30%")+soon,"dim")}
+   ${sRow(t("iset_skill"),t("iset_skill_d"),fake(t("iset_skill_v"))+soon,"dim")}${sRow(t("iset_loot"),t("iset_loot_d"),fake("★ 2+")+soon,"dim")}
+   ${sRow(t("iset_town"),t("iset_town_d"),`<button class="tog" disabled><i></i></button>`+soon,"dim")}${sRow(t("iset_stop"),t("iset_stop_d"),fake("60 "+t("min"))+soon,"dim")}
+   <div class="w-sec">${t("iset_now")}</div>
+   ${sRow(t("set_autoIdle"),t("iset_auto_d"),swTog(S.autoIdle,"autoIdle"))}`;
+};
+
+/* ---------- Shop: Scandium shop + Cash Shop (inventory expansion) ---------- */
+const PACK={slots:20,y:40,la:8};   // placeholder prices: to be reviewed
+const PACK_ART='<svg viewBox="0 0 48 48"><path d="M10 18h28l3 25H7z" fill="#9a7ad8" stroke="#241a2e" stroke-width="1.6" stroke-linejoin="round"/><path d="M16 18c0-7 3-11 8-11s8 4 8 11" fill="none" stroke="#241a2e" stroke-width="2.2" stroke-linecap="round"/><path d="M24 25v13M17.500 31.500h13" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>';
+function buyPack(c){
+  if((S.invPacks|0)>=20){toast(t("pack_max"));return}
+  const p=c==="y"?PACK.y:PACK.la,have=c==="y"?S.y:S.la;
+  if(have<p){toast(t(c==="y"?"noY":"noLa"));return}
+  if(c==="y")S.y-=p;else S.la-=p;S.invPacks=(S.invPacks|0)+1;
+  toast(fmt("pack_bought",{n:PACK.slots,c:invMax()}),true);renderWin();save();
+}
+WIN.shop=()=>{
+  const tabs=`<div class="seg shop-tabs">${[["sc","shop_sc"],["cash","shop_cash"]].map(([k,n])=>`<button class="${shopTab===k?"on":""}" data-act="shoptab" data-v="${k}">${t(n)}</button>`).join("")}</div>`;
+  if(shopTab==="cash"){
+    const maxed=(S.invPacks|0)>=20,mx=invMax();
+    return tabs+`<div class="cash-wal"><span class="cur y"><i></i><b>${num(S.y)}</b></span><span class="cur la"><i></i><b>${num(S.la)}</b></span></div>
+     <div class="cash-card"><span class="cash-ic">${PACK_ART}</span><div class="grow"><b>${t("pack_name")}</b><small>${fmt("pack_desc",{n:PACK.slots,m:INV_CAP})}</small></div></div>
+     <div class="cap-bar"><i style="width:${mx/INV_CAP*100}%"></i><span>${fmt("cap_now",{c:mx,m:INV_CAP})}</span></div>
+     <div class="w-dev"><button class="btn pri" data-act="buyPack" data-c="y" ${maxed||S.y<PACK.y?"disabled":""}>${fmt("pack_buy_y",{n:PACK.y})}</button><button class="btn pri" data-act="buyPack" data-c="la" ${maxed||S.la<PACK.la?"disabled":""}>${fmt("pack_buy_la",{n:PACK.la})}</button></div>
+     <p class="muted" style="margin-top:8px">${maxed?t("pack_max"):t("pack_mock")}</p>`;
+  }
+  return tabs+`<div class="rows">${SHOP.map(([k,p],i)=>`<div class="row"><span class="dot art">${itemArt(k)}</span><div class="grow">${t(k)}<small>${num(p)} Scandium · x${num(S.inv[k])}</small></div><button class="btn" data-act="buy" data-i="${i}">${t("shopBuy")}</button></div>`).join("")}</div>`;
+};
+
+/* ---------- Settings: Graphic | Sound | Other | Account ---------- */
+WIN.set=()=>{
+  const tabs=`<div class="seg set-tabs">${[["gfx","set_t_gfx"],["snd","set_t_snd"],["oth","set_t_oth"],["acc","set_t_acc"]].map(([k,n])=>`<button class="${setTab===k?"on":""}" data-act="settab" data-v="${k}">${t(n)}</button>`).join("")}</div>`;
+  let body="";
+  if(setTab==="gfx")body=sRow(t("set_gfx"),t("set_gfx_d"),sSeg([["hi",t("gfx_hi")],["lo",t("gfx_lo")]],S.gfx,"gfx"))
+    +sRow(t("layout"),t("set_lay_d"),sSeg([["auto",t("lay_auto")],["h",t("lay_h")],["v",t("lay_v")]],layoutMode,"lay"))
+    +sRow(t("set_zoom"),t("set_zoom_d"),sSeg(ZL.map((z,i)=>[i,z+"×"]),zIdx,"zoomL"));
+  else if(setTab==="snd")body=sRow(t("set_sound"),t("set_sound_d"),swTog(S.sound,"snd"))+sRow(t("set_music"),t("set_music_d"),swTog(S.music,"mus"));
+  else if(setTab==="oth"){
+    body=sRow(t("language"),"",sSeg([["th","ไทย"],["en","EN"]],lang,"lang"))
+      +sRow(t("set_autoIdle"),t("set_autoIdle_d"),swTog(S.autoIdle,"autoIdle"))
+      +sRow(t("set_vip"),t("set_vip_d"),swTog(S.vip,"vip"))
+      +sRow(t("set_gm"),t("set_gm_d"),swTog(S.gm,"gm"));
+    if(S.gm)body+=`<div class="gm-box"><input id="annIn" maxlength="90" placeholder="${t("ann_ph")}" autocomplete="off"><div class="w-dev"><button class="btn pri sm" data-act="annSend">${t("ann_send")}</button><button class="btn sm" data-act="annPrev">${t("ann_prev")}</button></div></div>`;
+    body+=`<div class="w-sec">${t("save_sec")}</div><p class="muted" style="margin:0 0 8px">${lastSave?fmt("save_last",{t:new Date(lastSave).toLocaleTimeString(lang==="th"?"th-TH":"en-US")}):t("save_never")}</p>
+      <div class="w-dev"><button class="btn sm" data-act="save">${t("save_now")}</button><button class="btn sm danger" data-act="reset">${t(resetArm?"reset_confirm":"reset")}</button></div>
+      <div class="w-sec">${t("set_test")}</div><div class="w-dev"><button class="btn sm" data-act="tJob">${t("tJob")}</button><button class="btn sm" data-act="tElite">${t("tElite")}</button><button class="btn sm" data-act="sim">${t("sim_off")}</button></div>`;
+  }else body=`<p class="muted" style="margin:0 0 8px">${AUTH.isGuest?fmt("acc_guest",{n:esc(AUTH.session.name)}):fmt("acc_user",{u:esc(AUTH.session.name),n:esc(AUTH.session.charName)})}</p>
+      <div class="w-dev"><button class="btn" data-act="logout">${t("acc_logout")}</button>${AUTH.isGuest?`<button class="btn pri" data-act="accUpgrade">${t("acc_create")}</button>`:`<button class="btn danger" data-act="accDelete">${t(accArm?"acc_del_confirm":"acc_delete")}</button>`}</div>`;
+  return tabs+`<div class="set-body">${body}</div>`;
+};
+
+function winClick(e){const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;
+  if(a==="nav")navTo(b.dataset.w);
+  else if(a==="invpage"){invPage[invTab]=Math.max(0,(invPage[invTab]|0)+ +b.dataset.d);renderWin()}
+  else if(a==="invsort"){sortInventory();renderWin();save();toast(t("inv_sorted"))}
+  else if(a==="invexp"){shopTab="cash";openWin("shop")}
+  else if(a==="shoptab"){shopTab=b.dataset.v;renderWin()}
+  else if(a==="buyPack")buyPack(b.dataset.c)
+  else if(a==="settab"){setTab=b.dataset.v;renderWin()}
+  else if(a==="idleAgain"){closeWin();$("#idleBtn").click()}
+  else if(a==="idleClose")closeWin()
+  else if(a==="wmsel"){mapSel=b.dataset.m;mapTab="info";winSide="mapinfo";renderWin()}
+  else if(a==="maptab"){mapTab=b.dataset.v;renderWin()}
+  else if(a==="tp")doTeleport(b.dataset.m)
+  else if(a==="title")toast(t("title_soon_t"))
+  else if(a==="gm"){S.gm=!S.gm;renderWin()}
+  else if(a==="annSend"){const v=($("#annIn")||{}).value;if(v&&v.trim()){announce({from:"gm",name:AUTH.session?AUTH.session.name:"",raw:v.trim()});toast(t("ann_sent"),true);$("#annIn").value=""}}
+  else if(a==="annPrev")announce({from:"sys",k:ANN_AUTO[annIdx++%ANN_AUTO.length]})
+  else if(a==="lang")setLang(b.dataset.v);
   else if(a==="lay")setLayout(b.dataset.v);
   else if(a==="gfx"){S.gfx=b.dataset.v;layout();renderWin()}
   else if(a==="snd"){S.sound=!S.sound;renderWin()}else if(a==="mus"){S.music=!S.music;renderWin()}
@@ -4206,8 +4797,8 @@ $("#winB").addEventListener("click",e=>{const b=e.target.closest("[data-act]");i
   else if(a==="logout"){onLeave();AUTH.logout()}
   else if(a==="accUpgrade"){onLeave();AUTH.goRegister()}
   else if(a==="accDelete"){if(!accArm){accArm=true;renderWin();return}resetDone=true;AUTH.deleteAccount()}
-  else if(a==="invtab"){invTab=b.dataset.v;invSel=null;invArm=null;renderWin()}
-  else if(a==="invsel"){if(invMulti){invPick.has(b.dataset.k)?invPick.delete(b.dataset.k):invPick.add(b.dataset.k);renderWin()}else{invSel=b.dataset.k;invQ=1;invArm=null;renderWin()}}
+  else if(a==="invtab"){invTab=b.dataset.v;invSel=null;invArm=null;winDet=null;renderWin()}
+  else if(a==="invsel"){if(invMulti){invPick.has(b.dataset.k)?invPick.delete(b.dataset.k):invPick.add(b.dataset.k);renderWin()}else if(invSel===b.dataset.k&&winDet){invSel=null;winDet=null;renderWin()}else{invSel=b.dataset.k;eqSel=null;invQ=1;invArm=null;winDet="itemdet";renderWin()}}
   else if(a==="invmulti"){invMulti=!invMulti;invPick.clear();invSel=null;renderWin()}
   else if(a==="invsellmulti")invSellMulti()
   else if(a==="invq")invStep(b.dataset.d)
@@ -4218,7 +4809,7 @@ $("#winB").addEventListener("click",e=>{const b=e.target.closest("[data-act]");i
   else if(a==="invrefine")refineUid(invSel.slice(2))
   else if(a==="unequip")unequipSlot(b.dataset.s)
   else if(a==="eqrefine"){if(S.equip[b.dataset.s])refineUid(S.equip[b.dataset.s].uid)}
-  else if(a==="eqsel"){eqSel=eqSel===b.dataset.s?null:b.dataset.s;renderWin();const dd=document.querySelector(".eq-detail");if(dd)dd.scrollIntoView({block:"nearest"})}
+  else if(a==="eqsel"){const sl=b.dataset.s;if(eqSel===sl){eqSel=null;winDet=null}else if(S.equip[sl]){eqSel=sl;invSel=null;winDet="itemdet"}else{eqSel=null;winDet=null;toast(`${t("sl_"+sl)} · ${t(HAS_ITEMS.has(sl)?"eq_empty":"eq_soon")}`)}renderWin()}
   else if(a==="style")toast(t("style_soon"))
   else if(a==="trial")trialGo()
   else if(a==="pick"){const v=b.dataset.v;if(pickArm!==v){pickArm=v;renderWin();return}pickArm=null;chooseArchetype(v)}
@@ -4239,13 +4830,16 @@ $("#winB").addEventListener("click",e=>{const b=e.target.closest("[data-act]");i
   else if(a==="buy"){const [k,p]=SHOP[+b.dataset.i];if(S.sc<p){toast(t("noGold"));return}S.sc-=p;S.inv[k]++;renderHotbar();renderWin();toast(fmt("shopBought",{i:t(k)}))}
   else if(a==="save"){save();toast(t("saved"));renderWin()}
   else if(a==="sim"){simClose()}
-  else if(a==="reset"){if(!resetArm){resetArm=true;renderWin();return}try{localStorage.removeItem(SAVE_KEY)}catch(_){}resetDone=true;location.reload()}
-});
+  else if(a==="reset"){if(!resetArm){resetArm=true;renderWin();return}try{localStorage.removeItem(SAVE_KEY);if(AUTH.isGuest)localStorage.removeItem(OLD_KEY)}catch(_){}resetDone=true;location.reload()}
+}
+for(const sl of WSLOT){$("#"+sl.b).addEventListener("click",winClick);$("#"+sl.n).addEventListener("click",winClick)}
 let resetDone=false;
-(()=>{let d=null;const h=$("#winH");
-  h.addEventListener("pointerdown",e=>{if(e.target.id==="winX"||rotated||!stage.classList.contains("L"))return;const w=$("#win"),r=w.getBoundingClientRect(),sr=stage.getBoundingClientRect();d={dx:e.clientX-r.left,dy:e.clientY-r.top,sr};w.style.transform="none";w.style.left=(r.left-sr.left)+"px";w.style.top=(r.top-sr.top)+"px";h.setPointerCapture(e.pointerId)});
-  h.addEventListener("pointermove",e=>{if(!d)return;const w=$("#win");w.style.left=Math.max(0,Math.min(W-80,e.clientX-d.sr.left-d.dx))+"px";w.style.top=Math.max(0,Math.min(H-40,e.clientY-d.sr.top-d.dy))+"px"});
-  h.addEventListener("pointerup",()=>d=null)})();
+(()=>{let d=null;
+  for(const sl of WSLOT){const h=$("#"+sl.h),el=$("#"+sl.el);
+    h.addEventListener("pointerdown",e=>{if(e.target.closest("button")||rotated||!stage.classList.contains("L"))return;d={sl,sx:e.clientX,sy:e.clientY,ox:+el.dataset.dx||0,oy:+el.dataset.dy||0};try{h.setPointerCapture(e.pointerId)}catch(_){}});
+    h.addEventListener("pointermove",e=>{if(!d||d.sl!==sl)return;const dx=d.ox+e.clientX-d.sx,dy=d.oy+e.clientY-d.sy;el.dataset.dx=dx;el.dataset.dy=dy;el.style.transform=`translate(${dx}px,${dy}px)`});
+    h.addEventListener("pointerup",()=>{d=null})}
+})();
 
 /* ================= toasts ================= */
 function toast(msg,gold){const el=document.createElement("div");el.className="toast"+(gold?" gold":"");el.textContent=msg;$("#toasts").appendChild(el);setTimeout(()=>el.remove(),3000);while($("#toasts").children.length>3)$("#toasts").firstChild.remove()}
@@ -4254,28 +4848,108 @@ function toast(msg,gold){const el=document.createElement("div");el.className="to
 let wantIdle=false;
 function setIdle(on,silent){
   S.idle=on;
-  if(on){S.sess={t:0,kills:0,base:0,job:0,sc:0,mats:0};player.manualT=0;player.nav=null;renderQuest()}
+  if(on){S.sess={t:0,kills:0,base:0,job:0,sc:0,mats:0,items:{},gear:0};player.manualT=0;player.nav=null;renderQuest()}
   else{player.target=null;wantIdle=false}
   if(!silent){toast(t(on?"idleOn":"idleOff"));pushChat({ch:"sys",k:on?"idleOn":"idleOff"})}
   renderIdle();save();
 }
+/* ================= HUD v17: idle toggle, monster panel, status islands, announcements ================= */
+const fmtClock=sec=>{sec=Math.max(0,Math.floor(sec));const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return (h?h+":":"")+String(m).padStart(h?2:1,"0")+":"+String(s).padStart(2,"0")};
+let lastSess=null;
 function renderIdle(){
-  const el=$("#idle"),b=$("#idleBtn");el.classList.toggle("on",S.idle);el.classList.toggle("town",!isField());
-  b.innerHTML=S.idle?`<span class="ib-dot"></span><span>${t("idleRunning")}</span>`:wantIdle?`<span class="ib-play">…</span><span>${t("idleWalking")}</span>`:`<span class="ib-play">▶</span><span>${t(isField()?"idleStart":"idleGoField")}</span>`;
-  const sb=$("#idleStop");sb.textContent=t("idleStop");sb.classList.toggle("hidden",!(S.idle||wantIdle));
-  $("#iVip").textContent=t(S.vip?"vipOn":"vipOff");$("#iVip").classList.toggle("vip",S.vip);$("#iRule").textContent=t("idleRule");
+  const dock=$("#idleDock"),b=$("#idleBtn");
+  dock.classList.toggle("on",!!S.idle);dock.classList.toggle("wait",!S.idle&&wantIdle);dock.classList.toggle("town",!isField()&&!S.idle&&!wantIdle);
+  b.innerHTML=S.idle?`<span class="ib-ring"></span><span class="ib-txt"><b>${t("idle_on")}</b><em id="ibTime">${fmtClock(S.sess.t)}</em></span>`
+    :wantIdle?`<span class="ib-play">…</span><span class="ib-txt"><b>${t("idle_walk")}</b></span>`
+    :`<span class="ib-play">▶</span><span class="ib-txt"><b>Idle</b><em>${t(isField()?"idle_start_s":"idle_go_s")}</em></span>`;
+  b.setAttribute("aria-pressed",S.idle?"true":"false");b.title=t(S.idle?"idle_tip_stop":"idle_tip_start");$("#idleCfg").title=t("idle_cfg");
+}
+function stopIdle(){
+  autoIdleBlock=true;lastSess=Object.assign({},S.sess,{items:Object.assign({},S.sess.items||{})});
+  setIdle(false,true);toast(t("idleStopped"));openWin("idlesum");   // the summary only appears when the player stops it
 }
 $("#idleBtn").addEventListener("click",()=>{
-  if(player.dead||S.idle||wantIdle)return;
+  if(player.dead)return;
+  if(S.idle){stopIdle();return}
+  if(wantIdle){wantIdle=false;renderIdle();return}
   if(!isField()){player.nav=null;wantIdle=true;routeTo("field1");setMarker(46.5,24.5);toast(t("idleWalk"));renderIdle();return}
   setIdle(true);
 });
-$("#idleStop").addEventListener("click",()=>{
-  if(S.idle){autoIdleBlock=true;setIdle(false);toast(t("idleStopped"))}
-  else if(wantIdle){wantIdle=false;renderIdle()}
-});
+$("#idleCfg").addEventListener("click",()=>{if(winId==="idleset")closeWin();else openWin("idleset")});
 $("#claimBtn").addEventListener("click",()=>{if(S.pending)openWin("idlerew")});
 function renderClaim(){const b=$("#claimBtn"),p=S.pending;b.classList.toggle("has",!!p);if(p)b.textContent=fmt("rw_btn",{t:dur(p.secs)})}
+
+/* ---- monster panel (top centre): name, level, element, live HP, and how much each hit took ---- */
+let mobCur=null,mobPrev=0,mobTrail=1,mobHold=0,lastMob=null,lastMobT=-99,mobDmgN=0;
+const nowS=()=>performance.now()/1000;
+function pickMob(){
+  const a=player.target&&player.target.mon&&!player.target.dead&&player.target.dieT<=0&&cur.monsters.includes(player.target)?player.target:null;
+  if(a){lastMob=a;lastMobT=nowS();return a}
+  if(lastMob&&!lastMob.dead&&lastMob.dieT<=0&&nowS()-lastMobT<5&&cur.monsters.includes(lastMob))return lastMob;
+  let best=null,bd=14;for(const m of cur.monsters){if(m.dead||m.dieT>0||!m.aggro)continue;const d=dist(m,player);if(d<bd){bd=d;best=m}}
+  if(best)return best;
+  return cur.monsters.find(m=>m.boss&&!m.dead&&m.dieT<=0&&dist(m,player)<12)||null;
+}
+function mobHead(m){
+  const d=MON[m.type],pr=mprof(m),el=pr&&pr.elem;
+  $("#moName").textContent=t(d.nameK);$("#moLv").textContent="Lv "+mLv(m);
+  $("#moTag").textContent=m.boss?"◆ "+t("boss"):m.elite?"★ "+t("elite"):"";$("#moTag").style.display=(m.boss||m.elite)?"":"none";
+  const e=$("#moEl");e.style.display=el?"":"none";if(el){e.textContent="● "+t("el_"+el);e.style.setProperty("--ec",ELC[el]||"#ccc")}
+  const bar=$("#mobBar");bar.classList.toggle("boss",!!m.boss);bar.classList.toggle("elite",!!m.elite&&!m.boss);
+}
+function addMobDmg(d,pct){
+  const box=$("#moDmg");const s=document.createElement("span");s.className="mo-d";s.textContent="-"+num(d);s.style.left=Math.max(6,Math.min(94,pct*100))+"%";s.style.setProperty("--dx",((mobDmgN++%3)-1)*14+"px");
+  box.appendChild(s);setTimeout(()=>s.remove(),950);while(box.children.length>5)box.firstChild.remove();
+}
+function updateMobBar(dt){
+  const el=$("#mobBar"),m=pickMob();
+  if(!m){if(mobCur){mobCur=null;el.classList.add("hidden")}return}
+  if(m!==mobCur){mobCur=m;mobPrev=m.hp;mobTrail=Math.max(0,m.hp/m.maxHp);mobHold=0;$("#moDmg").innerHTML="";mobHead(m);el.classList.remove("hidden")}
+  const pct=Math.max(0,Math.min(1,m.hp/m.maxHp));
+  if(m.hp<mobPrev-.4){addMobDmg(Math.round(mobPrev-m.hp),pct);mobHold=.4;el.classList.remove("hit");void el.offsetWidth;el.classList.add("hit")}
+  if(m.hp>mobPrev)mobTrail=pct;
+  mobPrev=m.hp;
+  if(mobHold>0)mobHold-=dt;else mobTrail=Math.max(pct,mobTrail-dt*.7);
+  $("#moFill").style.width=(pct*100).toFixed(1)+"%";$("#moTrail").style.width=(mobTrail*100).toFixed(1)+"%";
+  const tx=`${num(Math.ceil(Math.max(0,m.hp)))} / ${num(m.maxHp)}`;if($("#moT").textContent!==tx)$("#moT").textContent=tx;
+  const w=$("#moWarn"),wt=m.boss&&m.tele?t("slam_warn"):"";if(w.textContent!==wt){w.textContent=wt;w.classList.toggle("on",!!wt)}
+}
+
+/* ---- status islands (top right): each reading has its own colour ---- */
+function renderNet(){
+  const tm=new Date().toLocaleTimeString(lang==="th"?"th-TH":"en-US",{hour:"numeric",minute:"2-digit"});
+  const fc=NET.fps>=50?"g":NET.fps>=30?"y":"r",pc=NET.ping==null?"n":NET.ping<40?"g":NET.ping<120?"y":"r";
+  const key=[NET.fps,NET.ping,tm,online,mapPlayers(),lang].join("|");if(key===renderNet.key)return;renderNet.key=key;
+  const ic=p=>`<svg viewBox="0 0 24 24">${p}</svg>`;
+  $("#netBar").innerHTML=`<span class="isl ${fc}" title="${t("net_fps")}">${ic('<path d="M3 17l5-6 4 3 5-8 4 5"/>')}<b>${NET.fps}</b><em>FPS</em></span>`
+   +`<span class="isl ${pc}" title="${NET.pingSim?t("st_sim"):t("net_ping")}">${ic('<path d="M5 13a10 10 0 0 1 14 0M8 16a6 6 0 0 1 8 0"/><circle cx="12" cy="19" r="1"/>')}<b>${NET.ping==null?"—":NET.ping}</b><em>ms</em></span>`
+   +`<span class="isl clk" title="${t("net_clock")}">${ic('<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>')}<b>${tm}</b></span>`
+   +`<span class="isl onl" title="${t("net_on")}">${ic('<circle cx="9" cy="9" r="3"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5M16 7a3 3 0 0 1 0 6M18 14c2 1 3 3 3 5"/>')}<b>${num(online)}</b></span>`
+   +`<span class="isl mp" title="${t("net_map")}">${ic('<path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.500-6 11-6 11z"/><circle cx="12" cy="10" r="2"/>')}<b>${num(mapPlayers())}</b></span>`;
+}
+renderNet.key="";
+
+/* ---- announcements: only the system or a GM can post. Auto announcements every 5 minutes (mock-up) ---- */
+const ANN_EVERY=300,ANN_SHOW=9;
+const ANN_AUTO=["ann_1","ann_2","ann_3","ann_4"];
+let annQ=[],annCur=null,annT=0,annNext=ANN_EVERY,annIdx=0;
+function announce(m){annQ.push(m);pushChat({ch:"sys",raw:`[${t(m.from==="gm"?"ann_gm":"ann_sys")}] ${m.k?t(m.k):m.raw}`})}
+function showAnn(m){
+  const el=$("#announce");el.classList.remove("hidden");el.classList.toggle("gm",m.from==="gm");
+  $("#anTag").textContent=m.from==="gm"?`${t("ann_gm")} ${m.name||""}`.trim():t("ann_sys");$("#anTxt").textContent=m.k?t(m.k):m.raw;
+  void el.offsetWidth;el.classList.add("on");$("#topC").classList.add("down");
+}
+function hideAnn(){const el=$("#announce");el.classList.remove("on");$("#topC").classList.remove("down");setTimeout(()=>{if(!annCur)el.classList.add("hidden")},400)}
+function updateAnn(dt){
+  annNext-=dt;if(annNext<=0){annNext=ANN_EVERY;announce({from:"sys",k:ANN_AUTO[annIdx++%ANN_AUTO.length]})}
+  if(!annCur&&annQ.length){annCur=annQ.shift();annT=ANN_SHOW;showAnn(annCur)}
+  else if(annCur){annT-=dt;if(annT<=0){annCur=null;hideAnn()}}
+}
+
+/* ---- menu: collapsible in landscape ---- */
+function applyMenuState(){const r=$("#botR");r.classList.toggle("menu-off",!!S.menuHide);const b=$("#menuTog");b.innerHTML=S.menuHide?`${svg("menu")}<span>${t("menu_open")}</span>`:svg("chevD");b.title=t(S.menuHide?"menu_open":"menu_hide")}
+$("#mmWorld").addEventListener("click",()=>{if(winId==="worldmap")closeWin();else openWin("worldmap")});
+$("#menuTog").addEventListener("click",()=>{S.menuHide=!S.menuHide;applyMenuState();save()});
 
 /* ---- closing the game: save state, and remember when idle was left running ---- */
 function onLeave(){
@@ -4324,7 +4998,7 @@ WIN.idlerew=()=>{const p=S.pending;if(!p)return `<p class="muted">—</p>`;
    <div class="w-dev"><button class="btn pri" data-act="rwYes">${fmt("rw_yes",{c:cost})}</button><button class="btn" data-act="rwNo">${t("rw_no")}</button></div>`};
 
 /* ================= language + layout ================= */
-function setLang(l){lang=l;document.documentElement.lang=l;applyI18n();toast(t("langSet"));save()}
+function setLang(l){lang=l;document.documentElement.lang=l;mobCur=null;applyI18n();applyMenuState();renderNet.key="";toast(t("langSet"));save()}
 function applyI18n(){
   document.querySelectorAll("[data-i18n]").forEach(e=>e.textContent=t(e.dataset.i18n));
   const coarse=matchMedia("(pointer:coarse)").matches;const h=$("#hint");if(h.dataset.k)h.textContent=t(h.dataset.k+(coarse?"Tap":""));
@@ -4345,7 +5019,8 @@ $("#mmTog").addEventListener("click",()=>{mmOpen=!mmOpen;renderMM();save();if(mm
 document.addEventListener("keydown",e=>{
   if(e.target.tagName==="INPUT")return;
   if(e.key==="Enter"){if(dlg){$("#dNext").click();return}if(chatMode==="min")setChat("norm");$("#cin").focus();e.preventDefault();return}
-  if(e.key==="Escape"){if(dlg)closeDlg();else if(chatMode==="full")setChat("norm");else closeWin();return}
+  if(e.key==="Escape"){if(dlg)closeDlg();else if(chatMode==="full")setChat("norm");else if(winDet)closeSlot("C");else closeWin();return}
+  if(e.key==="m"||e.key==="M"){if(winId==="worldmap")closeWin();else openWin("worldmap");return}
   if(/^[0-9]$/.test(e.key))useSlot((+e.key+9)%10);
 });
 
@@ -4372,7 +5047,16 @@ try{if(saved){
   for(const k of ["lv","jlv"])S[k]=Math.max(1,Math.floor(+S[k]||1));S.jlv=Math.min(jcap(),S.jlv);
   for(const k of ["exp","jexp","sc","y","la","kills","deaths","hp","sp"])S[k]=Math.max(0,+S[k]||0);
   for(const k in S.inv)S.inv[k]=Math.max(0,Math.floor(+S.inv[k]||0));
-  if(!S.sess||typeof S.sess!=="object")S.sess={t:0,kills:0,base:0,job:0,sc:0,mats:0};
+  if(!S.sess||typeof S.sess!=="object")S.sess={t:0,kills:0,base:0,job:0,sc:0,mats:0,items:{},gear:0};
+  if(!S.sess.items||typeof S.sess.items!=="object")S.sess.items={};if(!S.sess.gear)S.sess.gear=0;
+  S.invPacks=Math.max(0,Math.min(20,S.invPacks|0));if(typeof S.menuHide!=="boolean")S.menuHide=false;S.gm=false;   // GM test mode never survives a reload
+  if(!S.visited||typeof S.visited!=="object"){   // older saves: work out which maps the character has already been to
+    const v={town:1},mq=S.q&&S.q.main;
+    if(S.kills>0||S.lv>1||S.exp>0)v.field1=1;
+    if(mq&&(mq.s==="done"||mq.st>=5))v.field2=1;
+    if(mq&&(mq.s==="done"||mq.st>=7))v.field3=1;
+    S.visited=v;
+  }
   if(!(saved.x>0&&saved.y>0)){saved.x=24.5;saved.y=24.5;saved.map="town"}
   lang=saved.lang||lang;layoutMode=saved.layoutMode||"auto";zIdx=Math.max(0,Math.min(4,(saved.zIdx??2)|0));chatMode=saved.chatMode||"min";mmOpen=saved.mmOpen!==false;qOpen=saved.qOpen!==false;
   cur=MAPS[saved.map]||town;player.x=saved.x;player.y=saved.y;if(!walk(Math.floor(player.x),Math.floor(player.y))){player.x=24.5;player.y=24.5;cur=town}
@@ -4386,11 +5070,13 @@ try{if(saved){
 }}catch(e){saved=null;cur=town;player.x=24.5;player.y=24.5;S.idle=false;S.pending=null;S.away=null;S.q={main:{s:"active",st:0,p:0,n:0}};S.pins=["main"]}
 if(!S.equip)S.equip=starterEquip();
 sanitizeGear();
+S.visited[cur.id]=1;
 document.documentElement.lang=lang;
 buildMini(cur);
 pushChat({ch:"sys",k:"sys_welcome"});pushChat({ch:"sys",k:"sys_server"});pushChat({ch:"sys",k:saved?"sys_back":"sys_tip"});
 buildSlots();setChat(chatMode);layout();applyI18n();drawAvatar();setBanner();
 {const pn=document.getElementById("pname");if(pn)pn.textContent=player.name}
+applyMenuState();renderIdle();
 showHint(isField()?"hintField":"hint");
 whenReady([cur],()=>{},"ld_boot");
 for(const n of (LITE?[AHEAD[cur.id]]:NEIGH[cur.id]||[]))queueBuild(MAPS[n],false);
@@ -4416,7 +5102,7 @@ function frame(now){
 $("#errReset").addEventListener("click",()=>{try{localStorage.removeItem(SAVE_KEY);if(AUTH.isGuest)localStorage.removeItem(OLD_KEY)}catch(_){}resetDone=true;location.reload()});
 $("#errHide").addEventListener("click",()=>$("#errBox").classList.add("hidden"));
 window.addEventListener("error",e=>showErr(e.error||e.message));
-window.__reo={gFull,GBASE,itemArt,GEAR_TINT,RARN,ITEMDB,equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
+window.__reo={t,tpCost,doTeleport,announce,sortInventory,invMax,stopIdle,mapDist,gFull,GBASE,itemArt,GEAR_TINT,RARN,ITEMDB,equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
 requestAnimationFrame(frame);
 };
 
