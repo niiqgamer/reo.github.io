@@ -447,15 +447,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .P .bb-h{font-size:11.5px}
 .w-sec.sub{margin-top:12px;padding-top:8px;border-top:1px solid var(--line);color:var(--ink)}
 /* ---- v6 character info page (after the reference layout) ---- */
-#win.charwin{width:min(960px,calc(100% - 16px));max-height:min(94%,680px);--panel:rgba(14,20,44,.97);--panel2:rgba(34,46,92,.85);--ink:#eaf0ff;--ink2:#9fadd6;--line:rgba(140,165,235,.28);--slot:#18214a;--slotb:rgba(140,165,235,.3);--gold:#f2cf6a;--gold2:#ffe39a;--accent:#5a7cff;
   background:radial-gradient(120% 90% at 18% 0%,#27346e 0%,#141c40 55%,#0d1230 100%);color:var(--ink);border-color:rgba(150,175,240,.38)}
-#win.charwin .win-h{background:linear-gradient(90deg,rgba(70,95,170,.55),transparent);border-bottom-color:var(--line)}
-#win.charwin #winB{padding:12px 14px 14px}
-#win.charwin .muted{color:var(--ink2)}
-#win.charwin .btn{background:var(--panel2);color:var(--ink);border-color:var(--line)}
-#win.charwin .btn.pri{background:var(--accent);color:#fff;border-color:transparent}
-#win.charwin #winX{color:var(--ink2)}
-#win.charwin #winX:hover{background:rgba(255,255,255,.1)}
 .chr{display:grid;grid-template-columns:minmax(320px,1.08fr) minmax(300px,1fr);gap:16px;align-items:start}
 .chr-left{display:grid;grid-template-columns:60px 1fr;gap:10px;min-width:0}
 .chr-portraits{display:flex;flex-direction:column;gap:8px}
@@ -502,7 +494,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .cls-name em{font-style:normal;color:var(--gold2)}
 .cls-job{margin-left:auto;font-size:12.5px;color:var(--ink2)}
 .btn.gold.sm{width:auto;padding:4px 12px;font-size:12.5px;color:#3a2508;background:linear-gradient(#f6dc8c,#d1a03e);border-color:rgba(90,60,10,.35)}
-#win.charwin .btn.gold.sm{background:linear-gradient(#f6dc8c,#d1a03e);color:#3a2508}
 .btn.gold.sm:disabled{opacity:.45}
 .xp{position:relative;height:17px;border-radius:5px;background:#05081a;border:1px solid var(--line);overflow:hidden}
 .xp i{position:absolute;inset:0 auto 0 0;background:linear-gradient(#ffe08a,#d9a02a)}
@@ -525,7 +516,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .dr{display:flex;justify-content:space-between;gap:8px;padding:3px 8px;border-radius:3px;font-size:12.5px;background:rgba(60,75,130,.35)}
 .dr:nth-child(odd){background:rgba(40,52,100,.55)}
 .dr b{font-weight:500;font-variant-numeric:tabular-nums}
-.P #win.charwin{width:calc(100% - 12px);max-height:94%}
 .P .chr{grid-template-columns:1fr;gap:12px}
 .P .chr-left{grid-template-columns:1fr;gap:8px}
 .P .chr-portraits{flex-direction:row}
@@ -618,6 +608,198 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .ii-rf{left:auto;right:3px;top:2px;bottom:auto;text-align:right}
 .eqs .rf{left:auto;right:3px;top:2px;bottom:auto}
 .auto-left{margin:4px 0 2px;font-size:11.5px}
+/* ---- v14 login / register / guest ---- */
+#auth{position:fixed;inset:0;z-index:300;overflow:auto;display:flex;
+ padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));
+ background:radial-gradient(120% 90% at 50% -10%,#2f2480 0%,#171c4a 42%,#070a1c 100%);color:#eef0fb;
+ font-family:Kanit,"Noto Sans Thai",Tahoma,system-ui,sans-serif;-webkit-user-select:text;user-select:text}
+#auth.hidden{display:none !important}
+.au-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none}
+.au-bg i{position:absolute;width:var(--s,60px);height:calc(var(--s,60px)*1.5);left:var(--x);top:var(--y);opacity:.5;
+ background:linear-gradient(150deg,rgba(255,255,255,.75),rgba(150,130,255,.35) 45%,rgba(70,50,170,.5));
+ clip-path:polygon(50% 0,100% 30%,50% 100%,0 30%);animation:auFloat var(--d,9s) ease-in-out infinite;animation-delay:var(--t,0s)}
+.au-bg i:nth-child(1){--x:6%;--y:12%;--s:46px;--d:8s}
+.au-bg i:nth-child(2){--x:88%;--y:18%;--s:70px;--d:11s;--t:-3s}
+.au-bg i:nth-child(3){--x:14%;--y:70%;--s:84px;--d:12s;--t:-5s;opacity:.32}
+.au-bg i:nth-child(4){--x:80%;--y:74%;--s:52px;--d:9s;--t:-2s}
+.au-bg i:nth-child(5){--x:46%;--y:4%;--s:30px;--d:7s;--t:-4s;opacity:.35}
+.au-bg i:nth-child(6){--x:74%;--y:82%;--s:38px;--d:10s;--t:-6s;opacity:.4}
+@keyframes auFloat{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-22px) rotate(7deg)}}
+.au-wrap{position:relative;width:min(440px,100%);display:flex;flex-direction:column;gap:12px;margin:auto}
+.au-top{display:flex;justify-content:flex-end}
+.au-lang{display:flex;background:rgba(0,0,0,.35);border:1px solid rgba(170,160,255,.25);border-radius:10px;padding:2px}
+.au-lang button{border:0;background:none;color:#b8bde0;font:inherit;font-size:13px;font-weight:500;padding:4px 12px;border-radius:8px;cursor:pointer;min-height:30px}
+.au-lang button.on{background:#6e58e8;color:#fff}
+.au-brand{text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px}
+.au-gem{width:52px;height:66px;filter:drop-shadow(0 0 14px rgba(160,140,255,.8));animation:auPulse 3.2s ease-in-out infinite}
+@keyframes auPulse{50%{filter:drop-shadow(0 0 26px rgba(190,170,255,1));transform:translateY(-3px)}}
+.au-brand h1{margin:4px 0 0;font-size:28px;font-weight:600;letter-spacing:.02em;color:#f3f0ff;text-shadow:0 0 18px rgba(170,150,255,.65)}
+.au-brand p{margin:0;font-size:14px;color:#cfd3f4}
+.au-brand small{font-size:12px;color:#e9c46a;letter-spacing:.03em}
+.au-card{background:rgba(18,22,56,.94);border:1px solid rgba(170,160,255,.3);border-radius:20px;padding:16px 16px 18px;box-shadow:0 18px 50px rgba(0,0,10,.55)}
+.au-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:rgba(0,0,0,.32);padding:4px;border-radius:13px;margin-bottom:4px}
+.au-tabs button{border:0;background:none;color:#b8bde0;font:inherit;font-size:14px;font-weight:500;min-height:42px;border-radius:10px;cursor:pointer}
+.au-tabs button.on{background:linear-gradient(120deg,#6e58e8,#4a7ae0);color:#fff;box-shadow:0 4px 14px rgba(90,80,230,.45)}
+.au-f{display:flex;flex-direction:column;gap:5px;margin-top:12px}
+.au-f label{font-size:13px;color:#cfd3f4;font-weight:500}
+.au-f small{font-size:11.5px;color:#9aa0cc}
+#auth input[type=text],#auth input[type=password]{width:100%;box-sizing:border-box;height:46px;border-radius:11px;border:1px solid rgba(170,160,255,.35);background:#0d1130;color:#fff;font:inherit;font-size:16px;padding:0 13px;outline:none}
+#auth input:focus{border-color:#8f7ef0;box-shadow:0 0 0 3px rgba(143,126,240,.28)}
+.au-pw{position:relative}
+.au-pw input{padding-right:70px !important}
+.au-eye{position:absolute;right:5px;top:5px;height:36px;min-width:58px;border:0;border-radius:8px;background:rgba(255,255,255,.08);color:#cfd3f4;font:inherit;font-size:12.5px;cursor:pointer}
+.au-str{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:4px;align-items:center;margin-top:2px}
+.au-str i{height:5px;border-radius:3px;background:rgba(255,255,255,.14)}
+.au-str span{font-size:11.5px;color:#9aa0cc;margin-left:6px;min-width:60px}
+.au-str.s1 i:nth-child(-n+1){background:#e8475f}.au-str.s2 i:nth-child(-n+2){background:#f0a030}
+.au-str.s3 i:nth-child(-n+3){background:#6fd37a}.au-str.s4 i:nth-child(-n+4){background:#3fc6a8}
+.au-chk{display:flex;gap:10px;align-items:flex-start;margin-top:13px;font-size:13.5px;color:#dfe2fa;cursor:pointer}
+.au-chk input{width:20px;height:20px;margin:1px 0 0;accent-color:#6e58e8;flex:none}
+.au-chk small{color:#e9c46a;font-size:11.5px}
+.au-go{width:100%;height:50px;margin-top:16px;border:0;border-radius:13px;cursor:pointer;color:#fff;font:inherit;font-size:16px;font-weight:600;
+ background:linear-gradient(110deg,#6e58e8,#3fc6a8);box-shadow:0 8px 22px rgba(80,70,230,.4),inset 0 1px 0 rgba(255,255,255,.3)}
+.au-go.alt{background:linear-gradient(110deg,#c98a2a,#e9c46a);color:#2f1d02;box-shadow:0 8px 22px rgba(200,150,40,.35),inset 0 1px 0 rgba(255,255,255,.4)}
+.au-go:hover{filter:brightness(1.08)}.au-go:disabled{opacity:.6;cursor:wait}
+.au-links{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;margin-top:12px}
+.au-link{border:0;background:none;color:#b7a9ff;font:inherit;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:6px 4px;min-height:32px}
+.au-text{margin:12px 0 0;font-size:13.5px;line-height:1.55;color:#dfe2fa}
+.au-found{margin:10px 0 0;padding:8px 10px;border-radius:9px;background:rgba(233,196,106,.12);border:1px dashed rgba(233,196,106,.55);font-size:12.5px;color:#f3dca0}
+.au-err{margin-top:12px;padding:9px 11px;border-radius:10px;background:rgba(232,71,95,.16);border:1px solid rgba(232,71,95,.5);color:#ffc2cb;font-size:13px;line-height:1.45}
+.au-err:empty{display:none}
+.au-note{margin:0;text-align:center;font-size:11.5px;line-height:1.5;color:#8f95c4;padding:0 10px}
+#auth button:focus-visible,#auth input:focus-visible{outline:2px solid #bfb2ff;outline-offset:2px}
+@media (max-width:420px){.au-brand h1{font-size:24px}.au-card{padding:14px 13px 16px}}
+@media (max-height:640px){.au-gem{display:none}.au-brand h1{margin-top:0}}
+@media (prefers-reduced-motion:reduce){.au-bg i,.au-gem{animation:none}}
+
+/* ================= v15 window system: navy frame + periwinkle (after the character-info reference) =================
+   Surfaces:  --nv1 frame/body  --nv2 raised  --nv3 buttons-dark   Accent: --pv periwinkle (active)   Neutral: --wh off-white (idle)
+   Muted accents by job: gold = level/reward, mint = gain, rose = loss. Always dark, whatever the page theme. */
+#win,#dlg{--nv0:#0a0f3a;--nv1:#101a5c;--nv2:#1a2780;--nv3:#2b3a9a;--pv:#7c88d8;--pv2:#aab4f0;--wh:#f2f4ff;--navy-ink:#13206f;
+ --panel:#111a5e;--panel2:rgba(96,112,214,.24);--ink:#eef0ff;--ink2:#aab4ea;--line:rgba(150,165,240,.3);--slot:#16217a;--slotb:rgba(150,165,240,.4);
+ --accent:#7c88d8;--gold:#e8cb78;--gold2:#f6e1a0;--sys:#7ae6ac;--good:#7ae6ac;--bad:#f2909c;color:var(--ink)}
+#win{width:min(480px,calc(100% - 20px));max-height:min(94%,760px);padding:10px;border-radius:20px;border:2px solid rgba(124,136,216,.6);
+ background:linear-gradient(180deg,#16227a 0%,#0f1860 55%,#0a1042 100%);box-shadow:0 18px 50px rgba(0,0,22,.62),inset 0 0 0 1px rgba(255,255,255,.07);
+ -webkit-backdrop-filter:none;backdrop-filter:none}
+#win.invwin{width:min(780px,calc(100% - 20px))}
+.win-h{margin:0 0 10px;padding:6px 8px 6px 16px;border:0;border-radius:14px;background:linear-gradient(180deg,#8a95e2,#7480d0);color:#fff;font-size:21px;font-weight:700;letter-spacing:.01em;
+ text-shadow:0 1px 0 rgba(20,30,120,.4);box-shadow:0 2px 0 rgba(8,12,64,.5),inset 0 1px 0 rgba(255,255,255,.35)}
+#winX{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.24);color:#fff;font-size:22px;display:grid;place-items:center;padding:0}
+#winX:hover{background:rgba(255,255,255,.38)}
+#winB{padding:12px;border-radius:16px;background:rgba(6,10,52,.55);border:1px solid rgba(124,136,216,.32);flex:1 1 auto;min-height:0}
+#winNav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;flex:none}
+#winNav.hidden{display:none !important}
+.wn{display:flex;align-items:center;justify-content:center;gap:7px;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#34449f,#26358f);color:#fff;font:inherit;font-size:16px;font-weight:700;
+ letter-spacing:.03em;text-transform:uppercase;cursor:pointer;box-shadow:0 2px 0 rgba(8,12,64,.55),inset 0 1px 0 rgba(255,255,255,.16)}
+.wn:hover{filter:brightness(1.1)}
+.wn.on{background:linear-gradient(180deg,#8a95e2,#6f7bd0)}
+.wni svg{width:24px;height:24px;display:block;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.wn-status .wni{color:#7ee0a8}.wn-skill .wni{color:#f09ac0}.wn-inv .wni{color:#b9c1ff}.wn.on .wni{color:#fff}
+/* buttons: periwinkle = main, off-white = neutral */
+#win .btn{border:0;border-radius:12px;background:var(--wh);color:var(--navy-ink);font-weight:600;padding:7px 14px;box-shadow:0 2px 0 rgba(8,12,64,.5)}
+#win .btn:hover{filter:brightness(1.06)}
+#win .btn.pri{background:var(--pv);color:#fff;text-shadow:0 1px 0 rgba(20,30,120,.3)}
+#win .btn.gold,#win .btn.gold.sm{background:linear-gradient(#f3dd98,#d9b04a);color:#3a2a06}
+#win .btn.danger{background:#f7d9de;color:#8a1d2e}
+#win .btn:disabled{opacity:.45;box-shadow:none}
+#win .btn.sm{padding:5px 11px;font-size:12px}
+#win .seg{background:none;border:0;box-shadow:none;padding:0;gap:6px;flex-wrap:wrap}
+#win .seg button{border-radius:12px;background:var(--wh);color:var(--navy-ink);padding:6px 14px;font-weight:600;font-size:13px;box-shadow:0 2px 0 rgba(8,12,64,.5)}
+#win .seg button.on{background:var(--pv);color:#fff}
+#win .tog{background:rgba(255,255,255,.22)}
+#win .tog.on{background:linear-gradient(90deg,#7c88d8,#5fcfae)}
+/* section bars, rows, tiles */
+#win .w-sec{display:block;margin:14px 0 8px;padding:5px 12px;border-radius:11px;background:linear-gradient(90deg,#7c88d8,rgba(124,136,216,.22));color:#fff;font-size:13.5px;font-weight:600;border-top:0}
+#win .w-sec:first-child{margin-top:0}
+#win .w-sec .muted{color:rgba(255,255,255,.82)}
+#win .w-sec.sub{padding-top:5px;background:linear-gradient(90deg,#3a4cb0,rgba(58,76,176,.2));color:#fff}
+#win .row{background:rgba(96,112,214,.2);border:1px solid rgba(150,165,240,.3);border-radius:12px}
+#win .stat{background:rgba(96,112,214,.22);border-color:rgba(150,165,240,.3)}
+#win .muted{color:var(--ink2)}
+#win .det-stats div,#win .det-req .ok,#win .eq-good,#win .cmp-row.up b{color:var(--good) !important}
+#win .det-req .no,#win .cmp-row.down b{color:var(--bad) !important}
+#win .det-stats div.ab{color:#c9b6ff !important}
+#win .det-stats{background:rgba(255,255,255,.06)}
+#win .cmp{background:rgba(255,255,255,.05)}
+#win .inv-multi{background:rgba(95,207,174,.14);border-color:rgba(95,207,174,.45)}
+/* ---- character info ---- */
+.chr-name{display:flex;align-items:center;gap:10px;padding:6px 10px;margin-bottom:10px;border-radius:14px;background:linear-gradient(180deg,#3d4fb2,#2c3b9c);box-shadow:0 2px 0 rgba(8,12,64,.5),inset 0 1px 0 rgba(255,255,255,.18)}
+.chr-name>b{flex:1;min-width:0;text-align:center;font-size:19px;font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ptrs{display:flex;gap:5px;flex:none}
+.ptrs .ptr{width:34px;height:34px;border-radius:50%;border-width:2px}
+.ptrs .ptr.lock svg{width:15px;height:15px}
+.ptrs .ptr .phb{display:none}
+.chr-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.chr-tabs button{height:44px;border:0;border-radius:14px;font:inherit;font-size:20px;font-weight:700;cursor:pointer;background:var(--wh);color:var(--navy-ink);box-shadow:0 2px 0 rgba(8,12,64,.5)}
+.chr-tabs button.on{background:var(--pv);color:#fff;text-shadow:0 1px 0 rgba(20,30,120,.3)}
+.chr-panel{padding:10px;border-radius:16px;background:rgba(5,9,48,.55);border:1px solid rgba(124,136,216,.3)}
+.eq-board{display:grid;grid-template-columns:72px minmax(0,1fr) 72px;grid-template-rows:repeat(5,72px);gap:8px}
+.eq-board .eqs{width:auto;height:auto;border-radius:12px;box-shadow:0 2px 0 rgba(8,12,64,.5)}
+.eqs.empty{background:linear-gradient(180deg,#8b96e3,#7480d0);border:0;color:var(--navy-ink)}
+.eqs.empty .eql{font-size:12.5px;font-weight:600;line-height:1.2;text-align:center;padding:0 4px}
+.eqs.empty:hover{filter:brightness(1.07)}
+.eqs.sel{box-shadow:0 0 0 3px #fff,0 0 14px rgba(190,200,255,.7)}
+.eqs .rf{left:auto;right:4px;top:2px;bottom:auto;color:#ffe9a0}
+.eqs .cs{position:absolute;left:0;right:0;bottom:1px;top:auto;transform:none;text-align:center;font-size:12px;line-height:1;color:var(--sc,#fff);text-shadow:0 0 2px #000,0 1px 0 #000;background:none;border:0;width:auto;height:auto;letter-spacing:0;font-weight:700}
+.eq-doll{position:relative;display:grid;place-items:center;min-width:0}
+.eq-doll canvas{width:100%;max-width:240px;max-height:100%;aspect-ratio:260/340;display:block}
+.style-btn{left:auto;right:2px;bottom:4px;transform:none;width:38px;height:38px;border:0;background:var(--wh);color:var(--navy-ink);box-shadow:0 2px 0 rgba(8,12,64,.5)}
+.eq-cpbox{display:flex;flex-direction:column;min-width:0;border-radius:10px;overflow:hidden;box-shadow:0 2px 0 rgba(8,12,64,.5)}
+.cp-l{background:var(--nv3);color:#fff;font-size:12px;font-weight:600;text-align:center;padding:3px 4px;white-space:nowrap}
+.cp-v{flex:1;display:grid;place-items:center;background:#fff;color:#a8161f;font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.eq-row.quick{display:flex;justify-content:flex-start;gap:8px;margin-top:10px}
+.qk{width:46px;height:46px;border-radius:11px;background:rgba(120,134,222,.26);border:1px solid rgba(150,165,240,.35)}
+.eq-detail{margin-top:8px;padding:8px 10px;min-height:56px;border-radius:11px;background:rgba(255,255,255,.06);border:1px solid rgba(150,165,240,.28);font-size:12.5px;line-height:1.5}
+.cos{display:flex;flex-direction:column;align-items:center;gap:10px}
+.cos .eq-doll{width:100%;height:330px}
+.cos-soon{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.07);text-align:center}
+.cos-soon svg{width:22px;height:22px;stroke:var(--pv2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cos-soon span{color:var(--ink2);font-size:12.5px}
+.st-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.st-top>b{flex:1;text-align:center;font-size:18px;letter-spacing:.03em;text-transform:uppercase;color:#fff}
+.st-panel .rec-row{border-bottom-color:rgba(150,165,240,.3)}
+.st-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 8px}
+.st-grid .stile{background:linear-gradient(#4b5cc0,#3646a8);border:0;box-shadow:0 2px 0 rgba(8,12,64,.5)}
+.st-grid .stile.tot{grid-column:1/-1;background:linear-gradient(#4a4f86,#363a70);display:flex;justify-content:space-between;align-items:center;text-align:left;padding:6px 12px}
+.st-grid .stile.tot .sn{display:inline}
+.xp{background:#050830;border-color:rgba(150,165,240,.3)}
+.xp i{background:linear-gradient(#f0d98e,#cfa64a)}
+.xp.job i{background:linear-gradient(#9fe3c0,#3fa57c)}
+.cls-name em,.cls-head svg{color:var(--gold2)}
+.cls-head svg{color:#b9c1ff}
+/* NPC dialog follows the same frame */
+#dlg.panel{background:linear-gradient(180deg,#16227a,#0e1658);border:2px solid rgba(124,136,216,.6);border-radius:18px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 14px 40px rgba(0,0,22,.55)}
+#dlg .d-name{display:inline-block;margin-bottom:5px;padding:2px 14px;border-radius:10px;background:var(--pv);color:#fff;font-weight:700}
+#dlg .d-text{color:var(--ink)}
+#dlg .btn{border:0;border-radius:12px;background:var(--pv);color:#fff;box-shadow:0 2px 0 rgba(8,12,64,.5)}
+.d-por{border-color:var(--pv2)}
+/* phones */
+.P #win{width:calc(100% - 12px);max-height:94%;padding:8px}
+.P .win-h{font-size:19px;margin-bottom:8px}
+.P #winB{padding:9px}
+.P .chr-name>b{font-size:16px}
+.P .chr-tabs button{height:40px;font-size:17px}
+.P .eq-board{grid-template-columns:62px minmax(0,1fr) 62px;grid-template-rows:repeat(5,62px);gap:6px}
+.P .eqs.empty .eql{font-size:11px}
+.P .cp-v{font-size:24px}
+.P .wn{height:46px;font-size:14px}
+.P .wni svg{width:21px;height:21px}
+.P .eq-doll canvas{max-width:190px}
+/* v15 spacing pass */
+#win{max-height:min(96%,800px)}
+.eq-board{grid-template-rows:repeat(5,66px);grid-template-columns:68px minmax(0,1fr) 68px}
+.eq-row.quick{margin-top:8px}
+.qk{width:40px;height:40px}
+.qk .eqi.art svg{width:30px;height:30px}
+.eq-detail{min-height:48px;margin-top:6px;padding:7px 10px}
+.P .eq-board{grid-template-rows:repeat(5,58px);grid-template-columns:58px minmax(0,1fr) 58px;gap:5px}
+/* v15 tighter vertical rhythm */
+.win-h{margin-bottom:8px}
+.chr-name{margin-bottom:8px;padding:5px 10px}
+.chr-tabs{margin-bottom:8px}
+.chr-tabs button{height:40px;font-size:19px}
+.chr-panel{padding:8px}
+.eq-board{grid-template-rows:repeat(5,64px)}
 </style>
 </head>
 <body>
@@ -710,6 +892,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
       <div id="win" class="panel hidden">
         <div class="win-h" id="winH"><span id="winT"></span><button id="winX" aria-label="Close">×</button></div>
         <div id="winB"></div>
+        <div id="winNav" class="hidden"></div>
       </div>
 
       <div id="toasts"></div>
@@ -720,10 +903,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
     </div>
   </div>
 </div>
-
+<div id="auth" class="hidden" role="dialog" aria-modal="true" aria-label="Rare Earth Online"></div>
 <script>
-(()=>{
+window.REO_START=()=>{
 "use strict";
+const AUTH=window.REO_AUTH||{saveKey:"reo.gameState.v2",oldKey:"reo.gameState.v1",isGuest:true,session:{type:"guest",name:"Guest",charName:"Arin"}};
 /* REO combat core — pure functions, no DOM. Shared by the game and the test suite.
    Stat conventions follow iRO Classic (irowiki.org/classic/Stats); REO deviations are marked "REO:". */
 /* REO combat core — pure functions, no DOM. Shared by the game and the test suite.
@@ -853,8 +1037,7 @@ function derive(p){
   d.watk+=G.atk||0;d.softDef+=G.def||0;d.hardDef=Math.min(.7,d.hardDef+(G.hardDef||0));d.maxHP+=G.hp||0;d.maxSP+=G.sp||0;d.hit+=G.hit||0;d.crit+=G.crit||0;d.flee+=G.flee||0;
   // percentage bonuses (set bonuses and affixes)
   d.statusAtk*=(1+(G.atkPct||0));d.watk*=(1+(G.atkPct||0));d.softDef*=(1+(G.defPct||0));d.maxHP=Math.floor(d.maxHP*(1+(G.hpPct||0)));d.matkMin*=(1+(G.matkPct||0));d.matkMax*=(1+(G.matkPct||0));d.healMul+=(G.healPct||0);
-  // percentage bonuses (set bonuses and affixes)
-  d.statusAtk*=(1+(G.atkPct||0));d.watk*=(1+(G.atkPct||0));d.softDef*=(1+(G.defPct||0));d.maxHP=Math.floor(d.maxHP*(1+(G.hpPct||0)));d.matkMin*=(1+(G.matkPct||0));d.matkMax*=(1+(G.matkPct||0));d.healMul+=(G.healPct||0);
+  if(G.atkPct||G.defPct||G.matkPct){d.statusAtk=Math.round(d.statusAtk);d.watk=Math.round(d.watk);d.softDef=Math.round(d.softDef);d.matkMin=Math.round(d.matkMin);d.matkMax=Math.round(d.matkMax)}
   return d;
 }
 
@@ -1500,9 +1683,31 @@ D2.en.cmp_count="{n} selected · {t} Sc";D2.th.cmp_count="เลือก {n} �
 D2.en.cmp_sell_sel="Sell selected";D2.th.cmp_sell_sel="ขายที่เลือก";
 D2.en.sold_multi="Sold {n} items for {t} Sc";D2.th.sold_multi="ขาย {n} ชิ้น ได้ {t} Sc";
 D2.en.auto_left="Auto-assign is on: {n} point(s) left. They are spent at the next level-up (a stat costs at least 2).";D2.th.auto_left="แจกอัตโนมัติอยู่: เหลือ {n} แต้ม จะใช้ตอนเลเวลถัดไป (แต่ละค่าใช้อย่างน้อย 2 แต้ม)";
+D2.en.acc_title="Account";D2.th.acc_title="บัญชี";
+D2.en.acc_guest="Playing as guest ({n}). Progress stays in this browser only.";D2.th.acc_guest="กำลังเล่นแบบ Guest ({n}) ความคืบหน้าอยู่ในเบราว์เซอร์นี้เท่านั้น";
+D2.en.acc_user="Signed in as {u} · character {n}";D2.th.acc_user="เข้าสู่ระบบเป็น {u} · ตัวละคร {n}";
+D2.en.acc_logout="Log out";D2.th.acc_logout="ออกจากระบบ";
+D2.en.acc_create="Create an account (keep my progress)";D2.th.acc_create="สร้างบัญชี (เก็บความคืบหน้าไว้)";
+D2.en.acc_delete="Delete account";D2.th.acc_delete="ลบบัญชี";
+D2.en.acc_del_confirm="Tap again to delete the account and its save";D2.th.acc_del_confirm="แตะอีกครั้งเพื่อลบบัญชีและเซฟทั้งหมด";
+D2.en.tab_equip="Equipment";D2.th.tab_equip="อุปกรณ์";
+D2.en.tab_costume="Costume";D2.th.tab_costume="ชุดแฟชั่น";
+D2.en.nav_status="Status";D2.th.nav_status="สถานะ";
+D2.en.nav_skill="Skill";D2.th.nav_skill="สกิล";
+D2.en.nav_inv="Items";D2.th.nav_inv="ไอเท็ม";
+D2.en.cp_label="Combat Point (CP)";D2.th.cp_label="พลังต่อสู้ (CP)";
+D2.en.cos_soon_t="Costumes are coming soon";D2.th.cos_soon_t="ชุดแฟชั่นจะมาเร็ว ๆ นี้";
+D2.en.cos_soon_d="Your character will be able to wear costumes here.";D2.th.cos_soon_d="ตัวละครจะสวมชุดแฟชั่นได้ที่นี่";
+D2.en.eq_soon="Items for this slot are coming soon.";D2.th.eq_soon="ไอเท็มของช่องนี้จะมาเร็ว ๆ นี้";
+D2.en.sl_headTop="Top Headgear";D2.th.sl_headTop="หมวกบน";
+D2.en.sl_headMid="Mid Headgear";D2.th.sl_headMid="หมวกกลาง";
+D2.en.sl_headLow="Lower Headgear";D2.th.sl_headLow="หมวกล่าง";
+D2.en.sl_shield="Shield";D2.th.sl_shield="โล่";
+D2.en.sl_garment="Garment";D2.th.sl_garment="ผ้าคลุม";
+D2.en.sl_shoes="Shoes";D2.th.sl_shoes="รองเท้า";
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
-let lang="th";
+let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
 const t=k=>(D[lang][k]??D.en[k]??k);
 const fmt=(k,o)=>t(k).replace(/\{(\w)\}/g,(_,c)=>o[c]);
 const num=n=>Math.floor(n).toLocaleString(lang==="th"?"th-TH":"en-US");
@@ -1558,6 +1763,7 @@ const IC={
  leaf:'<path d="M5 19c0-8 5-13 14-14 0 9-5 14-14 14z"/><path d="M5 19l8-8"/>',
  coil:'<path d="M8 4c-3 0-3 4 0 4s3 4 0 4-3 4 0 4"/><path d="M16 4c3 0 3 4 0 4s-3 4 0 4 3 4 0 4"/>',
  rock:'<path d="M4 17l4-9 5 3 3-6 4 12z"/>',
+ bars:'<path d="M5 20v-8M10 20V5M15 20v-10M20 20V8"/>',
  signal:'<path d="M4 20v-3M9 20v-6M14 20v-9M19 20v-12"/>',
  wifi:'<path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/>',
  data:'<path d="M7 7h11l-3-3M17 17H6l3 3"/>',
@@ -1732,7 +1938,7 @@ const PAL={
  veyra:{hair:"#2d3150",hairD:"#12152a",eye:"#e05a5a",skin:"#fbdcc8",skinL:"#fff0e6",outfit:"#a8b3c4",outfitD:"#5f6b80",pants:"#2a3042",boots:"#2a2a34",accent:"#e6c06a",cape:"#2f5fa8",capeD:"#173a72",tail:true}
 };
 function mk(o){return Object.assign({x:0,y:0,path:[],speed:3,moving:false,phase:0,dir:1,back:false,seed:Math.random()*9,bubble:null,onArrive:null,wait:0},o)}
-const player=mk({x:24.5,y:24.5,name:"Arin",pal:PAL.player,speed:3.6,me:true,target:null,atkCd:0,chaseT:0,lunge:0,combatT:99,manualT:0,dead:false,guardT:0});
+const player=mk({x:24.5,y:24.5,name:(AUTH.session&&AUTH.session.charName)||"Arin",pal:PAL.player,speed:3.6,me:true,target:null,atkCd:0,chaseT:0,lunge:0,combatT:99,manualT:0,dead:false,guardT:0});
 town.npcs=[
  mk({id:"lumi",x:26.5,y:21.5,nameK:"n_lumi",pal:PAL.lumi,dir:-1,npc:true}),
  mk({id:"bors",x:31.5,y:18.5,nameK:"n_bors",pal:PAL.bors,dir:-1,npc:true}),
@@ -2029,7 +2235,11 @@ const ITEMDB={
  mat_gheart:{t:"mat",q:1,p:300,c:"#bff4ff",ic:"gem",n:["Crystal Heart","หัวใจคริสตัล"],d:["Heart of Gadolith. Keep it for quests.","หัวใจของกาโดลิธ เก็บไว้ทำเควสต์"]}
 };
 /* equipment */
-const SLOTS_G=["weapon","armor","legs","offhand","necklace","ring"];
+/* 10 equipment slots (v15). Item families made before this layout still work: they equip into the slot they map to. */
+const EQ_SLOTS=["headTop","headMid","headLow","armor","weapon","shield","garment","shoes","ring","bracelet"];
+const SLOT_ALIAS={legs:"shoes",offhand:"shield",necklace:"bracelet"};
+const ITEM_SLOTS=["weapon","armor","legs","offhand","necklace","ring"];   // item families that exist so far (drops use only these)
+const SLOTS_G=EQ_SLOTS;
 const GBASE={
  beginner:{weapon:["Silver Knife","มีดเงิน"],armor:["Beginner Tunic","เสื้อ Beginner"],legs:["Traveler's Boots","รองเท้านักเดินทาง"],offhand:["Wooden Buckler","โล่ไม้"],necklace:["Crimson Scarf","ผ้าพันคอแดง"],ring:["Copper Ring","แหวนทองแดง"]},
  fighter:{weapon:["Greatsword","ดาบใหญ่"],armor:["Plate Armor","เกราะแผ่น"],legs:["Plate Greaves","เกราะขา"],offhand:["Tower Shield","โล่หอคอย"],necklace:["War Pendant","จี้นักรบ"],ring:["Iron Ring","แหวนเหล็ก"]},
@@ -2043,6 +2253,7 @@ const RARN=[["Common","ธรรมดา","#f2f4fa"],["Uncommon","ดี","#55d
 const REFINE_CH_BY_TIER=ref=>ref<3?1:ref<6?.7:ref<9?.4:.2;
 const gearId=(arch,slot,L,r,k)=>`gear|${arch}|${slot}|${L}|${r}|${k||0}`;
 const gParse=id=>{const p=id.split("|");return {arch:p[1],slot:p[2],L:+p[3],r:+p[4],k:+(p[5]||0)}};
+const equipSlotOf=id=>{const s=gParse(id).slot;return SLOT_ALIAS[s]||s};
 const tierOf=lv=>Math.max(1,Math.floor(lv/10)*10);
 /* base stats of a piece (before its random roll) */
 function gStats(arch,slot,L,r,ref){
@@ -2176,7 +2387,7 @@ const REFINE_CH={lumite:.02,crawlix:.03,oculoth:.04,nebulite:.03,shardback:.04,c
 function rollRarity(kind){const w=kind==="boss"?[10,30,35,20,5]:kind==="elite"?[45,30,15,8,2]:[70,22,6,1.8,.2];let x=Math.random()*100;for(let i=0;i<5;i++){x-=w[i];if(x<0)return i+1}return 1}
 /* a random piece of gear for a tier: random class, slot, rarity and one of its 3 sets */
 function rollDropGear(L,kind){
-  const arch=GEAR_ARCH[(Math.random()*4)|0],slot=SLOTS_G[(Math.random()*6)|0],r=rollRarity(kind),k=(Math.random()*3)|0;
+  const arch=GEAR_ARCH[(Math.random()*4)|0],slot=ITEM_SLOTS[(Math.random()*ITEM_SLOTS.length)|0],r=rollRarity(kind),k=(Math.random()*3)|0;
   return newGearItem(arch,slot,L,r,k);
 }
 function rollDrops(mk,kind,lv){
@@ -2201,13 +2412,23 @@ function gainGear(obj){
   if(invSlots()>=INV_MAX){toast(t("inv_full"));return false}
   S.bag.push({uid:"u"+(S.uidN++),id:obj.id,ref:obj.ref||0,roll:obj.roll||null});return true;
 }
-function starterEquip(){const e={};for(const sl of SLOTS_G)e[sl]={uid:"s"+sl,id:gearId("beginner",sl,1,1,0),ref:0,roll:null};return e}
+function starterEquip(){const e={};for(const sl of EQ_SLOTS)e[sl]=null;for(const s0 of ITEM_SLOTS){const id=gearId("beginner",s0,1,1,0);e[equipSlotOf(id)]={uid:"s"+s0,id,ref:0,roll:null}}return e}
 /* class change: pieces of another class move to the bag */
 function reconcileGear(){for(const sl of SLOTS_G){const it=S.equip&&S.equip[sl];if(!it)continue;if(gParse(it.id).arch!==S.arch){S.bag.push(it);S.equip[sl]=null}}}
 function sanitizeGear(){
-  if(!S.equip||typeof S.equip!=="object")S.equip=starterEquip();
-  for(const sl of SLOTS_G){const it=S.equip[sl];if(it&&(!it.id||!isGear(it.id)))S.equip[sl]=null}
   S.bag=(Array.isArray(S.bag)?S.bag:[]).filter(g=>g&&g.id&&isGear(g.id));
+  if(!S.equip||typeof S.equip!=="object")S.equip=starterEquip();
+  for(const old in SLOT_ALIAS){   // saves from before the 10-slot layout
+    if(!(old in S.equip))continue;const it=S.equip[old],nw=SLOT_ALIAS[old];delete S.equip[old];
+    if(it&&it.id&&isGear(it.id)){if(!S.equip[nw])S.equip[nw]=it;else S.bag.push(it)}
+  }
+  for(const sl of EQ_SLOTS){
+    let it=S.equip[sl];if(it===undefined)it=null;
+    if(it&&(!it.id||!isGear(it.id)))it=null;
+    if(it&&equipSlotOf(it.id)!==sl){S.bag.push(it);it=null}   // a piece that does not fit this slot goes back to the bag
+    S.equip[sl]=it;
+  }
+  for(const k of Object.keys(S.equip))if(!EQ_SLOTS.includes(k))delete S.equip[k];
   if(!S.uidN)S.uidN=1;
   for(const k of Object.keys(ITEMDB))if(!(k in S.inv))S.inv[k]=0;
   reconcileGear();
@@ -2230,7 +2451,7 @@ function findGear(uid){
 function equipUid(uid){
   const i=S.bag.findIndex(g=>g.uid===uid);if(i<0)return;
   const g=S.bag[i];if(!gReqs(g.id).every(x=>x.ok)){toast(t("eq_cannot"));return}
-  const sl=gParse(g.id).slot,old=S.equip[sl];
+  const sl=equipSlotOf(g.id),old=S.equip[sl];
   S.bag.splice(i,1);if(old)S.bag.push(old);
   S.equip[sl]={uid:g.uid,id:g.id,ref:g.ref||0,roll:g.roll||null};
   toast(fmt("eq_done",{n:gName(g.id)}));
@@ -2269,7 +2490,7 @@ function gCompareRows(newIt,oldIt){
   return rows;
 }
 function gCompareHtml(e){
-  const p=gParse(e.id),old=S.equip[p.slot];
+  const p=gParse(e.id),old=S.equip[equipSlotOf(e.id)];
   const head=old?`${t("cmp_with")}: <b>${itemName(old.id)}</b>`:t("cmp_none");
   const rows=gCompareRows({id:e.id,ref:e.ref||0,roll:e.roll},old);
   const body=rows.length?rows.map(r=>`<div class="cmp-row ${r.cls}"><span class="cl">${r.label}</span><span class="cv">${r.old} → ${r.nw}</span><b>${r.diff}</b></div>`).join(""):`<div class="muted">${t("cmp_same")}</div>`;
@@ -2318,7 +2539,7 @@ function invDetail(e){
   let h=`<div class="det-top"><span class="det-art">${itemArt(e.id)}</span><div class="det-h" style="color:${col}">${itemName(e.id)}</div></div>`;
   if(isG){
     const p=gParse(e.id),rar=RARN[p.r-1];
-    h+=`<div class="det-meta"><span class="stars" style="color:${col}">${"★".repeat(p.r)}</span> ${lang==="th"?rar[1]:rar[0]} · ${t("sl_"+p.slot)} · ${t("ar_"+p.arch)}${e.ref?` · +${e.ref}`:""}</div>`;
+    h+=`<div class="det-meta"><span class="stars" style="color:${col}">${"★".repeat(p.r)}</span> ${lang==="th"?rar[1]:rar[0]} · ${t("sl_"+equipSlotOf(e.id))} · ${t("ar_"+p.arch)}${e.ref?` · +${e.ref}`:""}</div>`;
     h+=`<div class="det-stats">${gDescLines(e).map(x=>`<div class="${x.t==="ab"?"ab":""}">${x.s}</div>`).join("")}</div><div class="det-set"><b>${setName(e.id)}</b> · ${setDescLines(p).join(" · ")}</div>`;
     h+=`<div class="det-req">${gReqs(e.id).map(r=>`<div class="${r.ok?"ok":"no"}">${r.ok?"✓":"✗"} ${r.txt}</div>`).join("")}</div>`;
   }else h+=`<div class="det-meta">${t("cat_"+e.cat)}</div><p class="det-desc">${itemDesc(e.id)}</p>`;
@@ -2356,7 +2577,7 @@ function invDiscard(){
 function invStep(d){const e=invFind(invSel);const mx=!e||e.cat==="gear"?1:e.qty;invQ=d==="max"?mx:Math.max(1,Math.min(mx,invQ+ +d));renderWin()}
 
 /* ================= state + save ================= */
-const SAVE_KEY="reo.gameState.v2",OLD_KEY="reo.gameState.v1";
+const SAVE_KEY=AUTH.saveKey,OLD_KEY=AUTH.oldKey;
 const gameState={lv:1,exp:0,jlv:1,jexp:0,hp:420,sp:120,sc:1250,y:0,la:0,arch:"beginner",stats:REOC.autoStats("beginner",1),autoStat:true,
   inv:{red:3,blue:2,wing:2,apple:8,mat_gel:0,mat_shell:0,mat_lens:0,mat_ore:0,mat_gel2:0,mat_amber:0,mat_frost:0,mat_core:0,mat_gel3:0,mat_rime:0,mat_mag:0,mat_gheart:0},
   q:{main:{s:"active",st:0,p:0,n:0}},pins:["main"],kills:0,deaths:0,idle:false,vip:false,sess:{t:0,kills:0,base:0,job:0,sc:0,mats:0},offline:null,
@@ -3755,7 +3976,7 @@ function renderMenu(){$("#menu").innerHTML=MENU.map(([k,ic])=>`<button class="mb
 $("#menu").addEventListener("click",e=>{const b=e.target.closest(".mb");if(!b)return;const k=b.dataset.w;if(winId===k)closeWin();else openWin(k)});
 const ITEMC={red:"#e8475f",blue:"#3d7fe0",wing:"#e8f2ff",apple:"#e63b3b",mat_gel:"#b98cff",mat_shell:"#5fd8e8",mat_lens:"#ff8a3a",mat_ore:"#d8d2ff",mat_gel2:"#6cc8ff",mat_amber:"#ffb84a",mat_frost:"#bff0ff",mat_core:"#ffd76a",mat_gel3:"#9fe0ff",mat_rime:"#c8dcf0",mat_mag:"#9aa8ff",mat_gheart:"#bff4ff"};
 const SHOP=[["red",50],["blue",120],["wing",60],["apple",15]];
-let resetArm=false,pickArm=null;
+let resetArm=false,pickArm=null,accArm=false;
 /* ---- mock equipment: display only, it does not change stats yet ---- */
 const RAR={common:"#8b93a8",uncommon:"#4a8af0",rare:"#e8505f",epic:"#a874f4"};
 const RARBG={common:"#2a3042",uncommon:"#1c3a78",rare:"#6a1f2e",epic:"#47287a"};
@@ -3771,20 +3992,65 @@ const SLOT_IC={belt:"belt",bracelet:"bracelet",weapon:"sword",armor:"armor",legs
 const ROLE_IC={MELEE:"sword",RANGED:"bow",MAGIC:"flame",SUPPORT:"plus"};
 let eqSel=null;
 const eqStat=(sl,it)=>sl==="weapon"?`ATK +${it.lv*8+it.ref*4}`:sl==="offhand"?`DEF +${it.lv*2+it.ref*2}`:sl==="armor"?`DEF +${it.lv*3+it.ref*2}`:sl==="legs"?`DEF +${it.lv*2}`:sl==="necklace"?`HP +${it.lv*20}`:`CRIT +${(it.lv*.2).toFixed(1)}`;
-function eqSlot(sl){
-  const it=S.equip&&S.equip[sl],sel=eqSel===sl?" sel":"";
-  if(!it)return `<button class="eqs empty${sel}" data-act="eqsel" data-s="${sl}" title="${t("sl_"+sl)}"><span class="eqi">${svg(SLOT_IC[sl])}</span></button>`;
-  const p=gParse(it.id),col=RARN[p.r-1][2];
-  return `<button class="eqs${sel}" data-act="eqsel" data-s="${sl}" style="--rc:${col};--rb:${RARBG[RARN[p.r-1][0].toLowerCase()==="common"?"common":p.r>=4?"epic":p.r>=3?"rare":"uncommon"]}" title="${itemName(it.id)}"><span class="eqi art">${itemArt(it.id)}</span><span class="lvt">Lv ${p.L}</span>${it.ref?`<span class="rf">+${it.ref}</span>`:""}<span class="cs" style="--sc:${RARN[p.r-1][2]}">${"★".repeat(p.r)}</span></button>`;
+const SLOT_LAYOUT={left:["headTop","headLow","weapon","garment","ring"],right:["headMid","armor","shield","shoes","bracelet"]};   // as in the reference screen
+const HAS_ITEMS=new Set(ITEM_SLOTS.map(x=>SLOT_ALIAS[x]||x));
+const RARBG_N=["#2c3566","#1f4f56","#1f3d7a","#3f2c7a","#6a2733"];
+let charView="equip";   // equip | costume | status
+function eqSlot(sl,col,row){
+  const it=S.equip&&S.equip[sl],sel=eqSel===sl?" sel":"",pos=`grid-column:${col};grid-row:${row}`;
+  if(!it)return `<button class="eqs empty${sel}" style="${pos}" data-act="eqsel" data-s="${sl}" title="${t("sl_"+sl)}"><span class="eql">${t("sl_"+sl)}</span></button>`;
+  const p=gParse(it.id),c=RARN[p.r-1][2];
+  return `<button class="eqs${sel}" style="${pos};--rc:${c};--rb:${RARBG_N[p.r-1]}" data-act="eqsel" data-s="${sl}" title="${itemName(it.id)}"><span class="eqi art">${itemArt(it.id)}</span><span class="lvt">Lv ${p.L}</span>${it.ref?`<span class="rf">+${it.ref}</span>`:""}<span class="cs" style="--sc:${c}">${"★".repeat(p.r)}</span></button>`;
 }
 function eqDetail(){
   if(!eqSel)return `<span class="muted">${t("eq_hint")}</span>`;
-  if(eqSel==="belt"||eqSel==="bracelet")return `<b>${t("sl_"+eqSel)}</b> · <span class="muted">${t("eq_locked")}</span>`;
   const it=S.equip[eqSel];
-  if(!it)return `<b>${t("sl_"+eqSel)}</b> · <span class="muted">${t("eq_empty")}</span>`;
+  if(!it)return `<b>${t("sl_"+eqSel)}</b> · <span class="muted">${t(HAS_ITEMS.has(eqSel)?"eq_empty":"eq_soon")}</span>`;
   const p=gParse(it.id),col=RARN[p.r-1][2];
-  return `<b style="color:${col}">${itemName(it.id)}</b> <span class="muted">· ${lang==="th"?RARN[p.r-1][1]:RARN[p.r-1][0]} · ${t("sl_"+eqSel)}</span><br>${fmt("eq_ref",{n:it.ref||0})} · <span style="color:#7af0a0">${gDescLines(it).map(x=>x.s).join(" · ")}</span><br><span class="muted">${setName(it.id)} · ${setDescLines(p).join(" · ")}</span>
+  return `<b style="color:${col}">${itemName(it.id)}</b> <span class="muted">· ${lang==="th"?RARN[p.r-1][1]:RARN[p.r-1][0]} · ${t("sl_"+eqSel)}</span><br>${fmt("eq_ref",{n:it.ref||0})} · <span class="eq-good">${gDescLines(it).map(x=>x.s).join(" · ")}</span><br><span class="muted">${setName(it.id)} · ${setDescLines(p).join(" · ")}</span>
    <div class="eq-btns"><button class="btn sm" data-act="unequip" data-s="${eqSel}">${t("btn_unequip")}</button><button class="btn sm" data-act="eqrefine" data-s="${eqSel}">${t("btn_refine")} (${num(S.inv.refine_ore||0)})</button></div>`;
+}
+function equipView(){
+  const quick=[["red"],["blue"],["wing"],["apple"]].map(([k])=>`<div class="qk ${S.inv[k]>0?"":"zero"}" title="${t(k)}"><span class="eqi art">${itemArt(k)}</span><b>${num(S.inv[k])}</b></div>`).join("");
+  const L=SLOT_LAYOUT.left.map((x,i)=>eqSlot(x,1,i+1)).join(""),R=SLOT_LAYOUT.right.map((x,i)=>eqSlot(x,3,i+1)).join("");
+  return `<div class="eq-board">${L}
+   <div class="eq-doll" style="grid-column:2;grid-row:1/5"><canvas id="dollCv" width="260" height="340"></canvas><button class="style-btn" data-act="cview" data-v="costume" title="${t("style_btn")}">${svg("armor")}</button></div>
+   <div class="eq-cpbox" style="grid-column:2;grid-row:5"><div class="cp-l">${t("cp_label")}</div><div class="cp-v">${num(cpV())}</div></div>${R}</div>
+   <div class="eq-row quick">${quick}</div><div class="eq-detail">${eqDetail()}</div>`;
+}
+function costumeView(){
+  return `<div class="cos"><div class="eq-doll"><canvas id="dollCv" width="260" height="340"></canvas></div><div class="cos-soon">${svg("lock")}<b>${t("cos_soon_t")}</b><span>${t("cos_soon_d")}</span></div></div>`;
+}
+function statusView(){
+  const d=pd(),A=REOC.ARCH[S.arch],free=statFree(),c1=S.arch!=="beginner";
+  const bonus=k=>(BF.blessing>0&&["str","int","dex"].includes(k))?8:0;
+  const stile=k=>{const v=S.stats[k],c=REOC.raiseCost(v),can=v<99&&free>=c,b=bonus(k);
+    return `<div class="stile"><span class="sn">${k.toUpperCase()}</span><b>${v}${b?`<em>+${b}</em>`:""}</b><button class="st-plus" data-act="st" data-k="${k}" ${can?"":"disabled"} title="${fmt("stCost",{c})}">+</button></div>`};
+  const total=REOC.STATS.reduce((a,k)=>a+S.stats[k],0)+(BF.blessing>0?24:0);
+  const row=(k,v,tip)=>`<div class="dr"${tip?` title="${tip}"`:""}><span>${k}</span><b>${v}</b></div>`;
+  const need0=need(S.lv),jn=jneed(S.jlv),capJ=jcap();
+  const trialBtn=!c1?`<button class="btn gold sm" data-act="trial" ${S.jlv>=10?"":"disabled"} title="${S.jlv>=10?"":t("trial_need")}">${t("btn_trial")}</button>`:`<button class="btn gold sm" disabled title="${t("trial_soon")}">${t("btn_jobchg")}</button>`;
+  return `<div class="st-top"><button class="btn sm" data-act="cview" data-v="equip">◀ ${t("tab_equip")}</button><b>${t("nav_status")}</b></div>
+   <div class="chr-panel st-panel">
+    <div class="rec-row"><span>${t("rec_kills")}</span><b>${num(S.kills)}</b><span class="sp"></span><span>${t("deaths")}</span><b>${num(S.deaths)}</b></div>
+    <div class="cls-head">${svg(ROLE_IC[A.type]||"sword")}<span>${t("role_"+A.type)}</span></div>
+    <div class="cls-line"><span class="cls-name">[${c1?"C1":"C0"}] [<em>Lv ${S.lv}</em>] ${t("ar_"+S.arch)}</span><span class="cls-job">Job Lv ${S.jlv}/${capJ}</span>${trialBtn}</div>
+    <div class="xp"><i style="width:${Math.min(100,S.exp/need0*100)}%"></i><span>${(S.exp/need0*100).toFixed(2)}% (${num(S.exp)}/${num(need0)})</span></div>
+    <div class="xp job"><i style="width:${S.jlv>=capJ?100:Math.min(100,S.jexp/jn*100)}%"></i><span>Job ${S.jlv>=capJ?"MAX":(S.jexp/jn*100).toFixed(2)+"% ("+num(S.jexp)+"/"+num(jn)+")"}</span></div>
+    <div class="st-grid">${REOC.STATS.map(stile).join("")}<div class="stile tot"><span class="sn">${t("stTotal")}</span><b>${total}</b></div></div>
+    <div class="kv"><span>${t("wtype")}</span><b>${t("wt_"+S.arch)}</b></div>
+    <div class="kv"><span>${t("atype")}</span><b>${t("at_"+S.arch)}</b></div>
+    <div class="dh">${t("details")} <span class="muted">· ${fmt("stFree",{n:free})}</span></div>
+    <div class="dl">
+     ${row("ATK",d.statusAtk+d.watk+d.mastery,`${d.statusAtk} + ${d.watk+d.mastery}`)}${row("MATK",`${d.matkMin} ~ ${d.matkMax}`)}
+     ${row("DEF",`${Math.round(d.hardDef*100)}% + ${d.softDef}`)}${row("MDEF",`${Math.round(d.mdef*100)}% + ${d.softMdef}`)}
+     ${row("HP",num(d.maxHP))}${row("SP",num(d.maxSP))}
+     ${row("ASPD",`${d.aspd} (${d.interval.toFixed(2)}s)`)}${row("HIT",d.hit)}${row("FLEE",d.flee)}
+     ${row("CRIT",d.crit.toFixed(1)+"%")}${row(t("pdodge"),d.pdodge.toFixed(1)+"%")}${row(t("castLbl"),Math.round(d.castMul*100)+"%")}
+    </div>
+    ${S.autoStat&&statFree()>0?`<div class="muted auto-left">${fmt("auto_left",{n:statFree()})}</div>`:""}
+    <div class="w-dev" style="margin-top:8px"><button class="btn sm ${S.autoStat?"pri":""}" data-act="stAuto">${t(S.autoStat?"stAutoOn":"stAutoOff")}</button><button class="btn sm" data-act="stReset">${t("stReset")}</button></div>
+   </div>`;
 }
 function trialGo(){
   const h=town.npcs.find(n=>n.id==="helper");closeWin();
@@ -3795,65 +4061,20 @@ function drawDoll(){
   const cvs=document.getElementById("dollCv");if(!cvs||winId!=="char")return;
   const dg=cvs.getContext("2d"),old=g;g=dg;
   dg.setTransform(1,0,0,1,0,0);dg.clearRect(0,0,cvs.width,cvs.height);
-  const gr=dg.createRadialGradient(130,292,4,130,292,112);gr.addColorStop(0,"rgba(120,175,255,.5)");gr.addColorStop(1,"rgba(120,175,255,0)");
-  dg.fillStyle=gr;dg.beginPath();dg.ellipse(130,292,112,34,0,0,TAU);dg.fill();
-  dg.strokeStyle="rgba(160,205,255,.65)";dg.lineWidth=2;dg.beginPath();dg.ellipse(130,292,80,22,0,0,TAU);dg.stroke();
-  dg.strokeStyle="rgba(160,205,255,.3)";dg.lineWidth=1;dg.beginPath();dg.ellipse(130,292,98,28,0,0,TAU);dg.stroke();
+  dg.fillStyle="rgba(86,104,214,.35)";dg.beginPath();dg.ellipse(130,296,104,32,0,0,TAU);dg.fill();
+  dg.fillStyle="#2b3a9a";dg.beginPath();dg.ellipse(130,294,86,24,0,0,TAU);dg.fill();
+  dg.strokeStyle="rgba(170,180,240,.55)";dg.lineWidth=2;dg.beginPath();dg.ellipse(130,294,86,24,0,0,TAU);dg.stroke();
   drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},130,290,4.4);
   g=old;
 }
 const WIN={
  char:()=>{
-  const d=pd(),A=REOC.ARCH[S.arch],free=statFree(),c1=S.arch!=="beginner";
-  const bonus=k=>(BF.blessing>0&&["str","int","dex"].includes(k))?8:0;
-  const stile=k=>{const v=S.stats[k],c=REOC.raiseCost(v),can=v<99&&free>=c,b=bonus(k);
-    return `<div class="stile"><span class="sn">${k.toUpperCase()}</span><b>${v}${b?`<em>+${b}</em>`:""}</b><button class="st-plus" data-act="st" data-k="${k}" ${can?"":"disabled"} title="${fmt("stCost",{c})}">+</button></div>`};
-  const total=REOC.STATS.reduce((a,k)=>a+S.stats[k],0)+(BF.blessing>0?24:0);
-  const row=(k,v,tip)=>`<div class="dr"${tip?` title="${tip}"`:""}><span>${k}</span><b>${v}</b></div>`;
-  const need0=need(S.lv),jn=jneed(S.jlv),capJ=jcap();
-  const trialBtn=!c1?`<button class="btn gold sm" data-act="trial" ${S.jlv>=10?"":"disabled"} title="${S.jlv>=10?"":t("trial_need")}">${t("btn_trial")}</button>`:`<button class="btn gold sm" disabled title="${t("trial_soon")}">${t("btn_jobchg")}</button>`;
-  const hpPct=Math.max(0,Math.min(100,S.hp/hpMax()*100));
-  const quick=[["red","potion","#e8475f"],["blue","potion","#3d7fe0"],["wing","wing","#cfe6ff"],["apple","apple","#e63b3b"]].map(([k,ic,c])=>`<div class="qk ${S.inv[k]>0?"":"zero"}" title="${t(k)}"><span class="eqi art">${itemArt(k)}</span><b>${num(S.inv[k])}</b></div>`).join("");
-  return `<div class="chr">
-   <div class="chr-left">
-    <div class="chr-portraits"><div class="ptr sel"><img alt="" src="${$("#av").toDataURL()}"><span class="phb"><b style="width:${hpPct}%"></b></span></div><div class="ptr lock">${svg("lock")}</div><div class="ptr lock">${svg("lock")}</div></div>
-    <div class="chr-eq">
-     <div class="eq-row">${eqSlot("belt")}${eqSlot("bracelet")}</div>
-     <div class="eq-mid">
-      <div class="eq-col">${eqSlot("weapon")}${eqSlot("armor")}${eqSlot("legs")}</div>
-      <div class="eq-doll"><canvas id="dollCv" width="260" height="340"></canvas><button class="style-btn" data-act="style" title="${t("style_btn")}">${svg("armor")}</button></div>
-      <div class="eq-col">${eqSlot("offhand")}${eqSlot("necklace")}${eqSlot("ring")}</div>
-     </div>
-     <div class="eq-row quick">${quick}</div>
-     <div class="eq-cp"><span>⚔ CP</span><b>${num(cpV())}</b></div>
-     <div class="eq-detail">${eqDetail()}</div>
-    </div>
-   </div>
-   <div class="chr-right">
-    <div class="rec-row"><span>${t("rec_kills")}</span><b>${num(S.kills)}</b><span class="sp"></span><span>${t("deaths")}</span><b>${num(S.deaths)}</b></div>
-    <div class="cls-head">${svg(ROLE_IC[A.type]||"sword")}<span>${t("role_"+A.type)}</span></div>
-    <div class="cls-line"><span class="cls-name">[${c1?"C1":"C0"}] [<em>Lv ${S.lv}</em>] ${t("ar_"+S.arch)}</span><span class="cls-job">Job Lv ${S.jlv}/${capJ}</span>${trialBtn}</div>
-    <div class="xp"><i style="width:${Math.min(100,S.exp/need0*100)}%"></i><span>${(S.exp/need0*100).toFixed(2)}% (${num(S.exp)}/${num(need0)})</span></div>
-    <div class="xp job"><i style="width:${S.jlv>=capJ?100:Math.min(100,S.jexp/jn*100)}%"></i><span>Job ${S.jlv>=capJ?"MAX":(S.jexp/jn*100).toFixed(2)+"% ("+num(S.jexp)+"/"+num(jn)+")"}</span></div>
-    <div class="stat-wrap">
-     <div class="stile-col">${REOC.STATS.map(stile).join("")}<div class="stile tot"><span class="sn">${t("stTotal")}</span><b>${total}</b></div></div>
-     <div class="detail-col">
-      <div class="kv"><span>${t("wtype")}</span><b>${t("wt_"+S.arch)}</b></div>
-      <div class="kv"><span>${t("atype")}</span><b>${t("at_"+S.arch)}</b></div>
-      <div class="dh">${t("details")} <span class="muted">· ${fmt("stFree",{n:free})}</span></div>
-      <div class="dl">
-       ${row("ATK",d.statusAtk+d.watk+d.mastery,`${d.statusAtk} + ${d.watk+d.mastery}`)}${row("MATK",`${d.matkMin} ~ ${d.matkMax}`)}
-       ${row("DEF",`${Math.round(d.hardDef*100)}% + ${d.softDef}`)}${row("MDEF",`${Math.round(d.mdef*100)}% + ${d.softMdef}`)}
-       ${row("HP",num(d.maxHP))}${row("SP",num(d.maxSP))}
-       ${row("ASPD",`${d.aspd} (${d.interval.toFixed(2)}s)`)}${row("HIT",d.hit)}${row("FLEE",d.flee)}
-       ${row("CRIT",d.crit.toFixed(1)+"%")}${row(t("pdodge"),d.pdodge.toFixed(1)+"%")}${row(t("castLbl"),Math.round(d.castMul*100)+"%")}
-      </div>
-     </div>
-    </div>
-    ${S.autoStat&&statFree()>0?`<div class="muted auto-left">${fmt("auto_left",{n:statFree()})}</div>`:""}
-    <div class="w-dev"><button class="btn sm ${S.autoStat?"pri":""}" data-act="stAuto">${t(S.autoStat?"stAutoOn":"stAutoOff")}</button><button class="btn sm" data-act="stReset">${t("stReset")}</button></div>
-   </div>
-  </div>`},
+  const c1=S.arch!=="beginner",hpPct=Math.max(0,Math.min(100,S.hp/hpMax()*100));
+  const bar=`<div class="chr-name"><span class="ptrs"><span class="ptr sel"><img alt="" src="${$("#av").toDataURL()}"><span class="phb"><b style="width:${hpPct}%"></b></span></span><span class="ptr lock">${svg("lock")}</span><span class="ptr lock">${svg("lock")}</span></span><b>${esc(player.name)} [${c1?"C1":"C0"}] [${t("ar_"+S.arch)}] Lv ${S.lv}</b></div>`;
+  if(charView==="status")return bar+statusView();
+  const tabs=`<div class="chr-tabs"><button class="${charView==="equip"?"on":""}" data-act="cview" data-v="equip">${t("tab_equip")}</button><button class="${charView==="costume"?"on":""}" data-act="cview" data-v="costume">${t("tab_costume")}</button></div>`;
+  return bar+tabs+`<div class="chr-panel">${charView==="costume"?costumeView():equipView()}</div>`;
+},
  inv:()=>invWin(),
  archpick:()=>{
   const list=["fighter","ranger","spellcaster","supporter"];
@@ -3886,19 +4107,38 @@ const WIN={
   <div class="w-sec">${t("set_gfx")}</div><div class="seg" style="display:inline-flex">${["hi","lo"].map(m=>`<button data-act="gfx" data-v="${m}" class="${S.gfx===m?"on":""}">${t("gfx_"+m)}</button>`).join("")}</div>
   <div class="w-sec">${t("set_zoom")}</div><div class="seg" style="display:inline-flex;flex-wrap:wrap">${ZL.map((_,i)=>`<button data-act="zoomL" data-v="${i}" class="${zIdx===i?"on":""}">${t("z"+i)}</button>`).join("")}</div>
   <div class="rows" style="margin-top:10px"><div class="row"><div class="grow">${t("set_sound")}</div><button class="tog ${S.sound?"on":""}" data-act="snd"><i></i></button></div><div class="row"><div class="grow">${t("set_music")}</div><button class="tog ${S.music?"on":""}" data-act="mus"><i></i></button></div><div class="row"><div class="grow">${t("set_vip")}</div><button class="tog ${S.vip?"on":""}" data-act="vip"><i></i></button></div><div class="row"><div class="grow">${t("set_autoIdle")}</div><button class="tog ${S.autoIdle?"on":""}" data-act="autoIdle"><i></i></button></div></div>
+  <div class="w-sec">${t("acc_title")}</div>
+  <p class="muted" style="margin:0 0 8px">${AUTH.isGuest?fmt("acc_guest",{n:esc(AUTH.session.name)}):fmt("acc_user",{u:esc(AUTH.session.name),n:esc(AUTH.session.charName)})}</p>
+  <div class="w-dev"><button class="btn" data-act="logout">${t("acc_logout")}</button>${AUTH.isGuest?`<button class="btn pri" data-act="accUpgrade">${t("acc_create")}</button>`:`<button class="btn danger" data-act="accDelete">${t(accArm?"acc_del_confirm":"acc_delete")}</button>`}</div>
   <div class="w-sec">${t("save_sec")}</div><p class="muted" style="margin:0 0 8px">${lastSave?fmt("save_last",{t:new Date(lastSave).toLocaleTimeString(lang==="th"?"th-TH":"en-US")}):t("save_never")}</p>
   <div class="w-dev"><button class="btn" data-act="tJob">${t("tJob")}</button><button class="btn" data-act="tElite">${t("tElite")}</button><button class="btn" data-act="save">${t("save_now")}</button><button class="btn" data-act="sim">${t("sim_off")}</button><button class="btn danger" data-act="reset">${t(resetArm?"reset_confirm":"reset")}</button></div>`
 };
-function openWin(k){winId=k;resetArm=false;pickArm=null;eqSel=null;renderWin();const w=$("#win");w.classList.remove("hidden");w.style.left="";w.style.top="";w.style.transform=""}
-function renderWin(){if(!winId)return;$("#win").classList.toggle("charwin",winId==="char");$("#win").classList.toggle("invwin",winId==="inv");$("#winT").textContent=t(winId==="char"?"w_char":"m_"+winId);$("#winB").innerHTML=WIN[winId]()}
+function openWin(k,o){winId=k;accArm=false;resetArm=false;pickArm=null;eqSel=null;if(k==="char")charView=(o&&o.view)||"equip";renderWin();const w=$("#win");w.classList.remove("hidden");w.style.left="";w.style.top="";w.style.transform=""}
+function navHtml(act){return [["status","bars"],["skill","flame"],["inv","bag"]].map(([k,ic])=>`<button class="wn wn-${k}${act===k?" on":""}" data-act="nav" data-w="${k}"><span class="wni">${svg(ic)}</span><b>${t("nav_"+k)}</b></button>`).join("")}
+let _winKey="";
+function renderWin(){
+  if(!winId)return;const w=$("#win");const key=winId+"|"+(winId==="char"?charView:""),B0=$("#winB"),top0=B0.scrollTop;
+  w.classList.toggle("charwin",winId==="char");w.classList.toggle("invwin",winId==="inv");
+  $("#winT").textContent=t(winId==="char"?"w_char":"m_"+winId);$("#winB").innerHTML=WIN[winId]();
+  B0.scrollTop=key===_winKey?top0:0;_winKey=key;   // a new page starts at the top; the same page keeps its place
+  const grp=winId==="char"||winId==="skill"||winId==="inv",nav=$("#winNav");   // the character group shares one bottom bar
+  nav.classList.toggle("hidden",!grp);if(grp)nav.innerHTML=navHtml(winId==="skill"?"skill":winId==="inv"?"inv":(charView==="status"?"status":""));
+}
 function closeWin(){if(winId==="idlerew"&&S.pending){settleIdle(false);return}winId=null;$("#win").classList.add("hidden")}
 $("#winX").addEventListener("click",closeWin);
+$("#winNav").addEventListener("click",e=>{const b=e.target.closest("[data-act=nav]");if(!b)return;const k=b.dataset.w;
+  if(k==="status"){if(winId==="char"){charView=charView==="status"?"equip":"status";renderWin()}else openWin("char",{view:"status"})}
+  else openWin(k)});
 $("#winB").addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;
   if(a==="lang")setLang(b.dataset.v);
   else if(a==="lay")setLayout(b.dataset.v);
   else if(a==="gfx"){S.gfx=b.dataset.v;layout();renderWin()}
   else if(a==="snd"){S.sound=!S.sound;renderWin()}else if(a==="mus"){S.music=!S.music;renderWin()}
   else if(a==="mock")toast(t("mock"));
+  else if(a==="cview"){charView=b.dataset.v;eqSel=null;renderWin()}
+  else if(a==="logout"){onLeave();AUTH.logout()}
+  else if(a==="accUpgrade"){onLeave();AUTH.goRegister()}
+  else if(a==="accDelete"){if(!accArm){accArm=true;renderWin();return}resetDone=true;AUTH.deleteAccount()}
   else if(a==="invtab"){invTab=b.dataset.v;invSel=null;invArm=null;renderWin()}
   else if(a==="invsel"){if(invMulti){invPick.has(b.dataset.k)?invPick.delete(b.dataset.k):invPick.add(b.dataset.k);renderWin()}else{invSel=b.dataset.k;invQ=1;invArm=null;renderWin()}}
   else if(a==="invmulti"){invMulti=!invMulti;invPick.clear();invSel=null;renderWin()}
@@ -3911,7 +4151,7 @@ $("#winB").addEventListener("click",e=>{const b=e.target.closest("[data-act]");i
   else if(a==="invrefine")refineUid(invSel.slice(2))
   else if(a==="unequip")unequipSlot(b.dataset.s)
   else if(a==="eqrefine"){if(S.equip[b.dataset.s])refineUid(S.equip[b.dataset.s].uid)}
-  else if(a==="eqsel"){eqSel=eqSel===b.dataset.s?null:b.dataset.s;renderWin()}
+  else if(a==="eqsel"){eqSel=eqSel===b.dataset.s?null:b.dataset.s;renderWin();const dd=document.querySelector(".eq-detail");if(dd)dd.scrollIntoView({block:"nearest"})}
   else if(a==="style")toast(t("style_soon"))
   else if(a==="trial")trialGo()
   else if(a==="pick"){const v=b.dataset.v;if(pickArm!==v){pickArm=v;renderWin();return}pickArm=null;chooseArchetype(v)}
@@ -4083,6 +4323,7 @@ document.documentElement.lang=lang;
 buildMini(cur);
 pushChat({ch:"sys",k:"sys_welcome"});pushChat({ch:"sys",k:"sys_server"});pushChat({ch:"sys",k:saved?"sys_back":"sys_tip"});
 buildSlots();setChat(chatMode);layout();applyI18n();drawAvatar();setBanner();
+{const pn=document.getElementById("pname");if(pn)pn.textContent=player.name}
 showHint(isField()?"hintField":"hint");
 whenReady([cur],()=>{},"ld_boot");
 for(const n of (LITE?[AHEAD[cur.id]]:NEIGH[cur.id]||[]))queueBuild(MAPS[n],false);
@@ -4105,11 +4346,287 @@ function frame(now){
   ldT-=dt;if(ldT<=0){ldT=.1;try{updateLoader(.1)}catch(_){}}
   requestAnimationFrame(frame);
 }
-$("#errReset").addEventListener("click",()=>{try{localStorage.removeItem(SAVE_KEY);localStorage.removeItem(OLD_KEY)}catch(_){}resetDone=true;location.reload()});
+$("#errReset").addEventListener("click",()=>{try{localStorage.removeItem(SAVE_KEY);if(AUTH.isGuest)localStorage.removeItem(OLD_KEY)}catch(_){}resetDone=true;location.reload()});
 $("#errHide").addEventListener("click",()=>$("#errBox").classList.add("hidden"));
 window.addEventListener("error",e=>showErr(e.error||e.message));
-window.__reo={gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
+window.__reo={equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
 requestAnimationFrame(frame);
+};
+
+</script>
+<script>
+/* ===== REO accounts: login / register / guest. Everything is stored in this browser (no server yet). ===== */
+(()=>{
+"use strict";
+const K={acc:"reo.accounts.v1",ses:"reo.session.v1",fail:"reo.auth.fails.v1",lang:"reo.authLang",last:"reo.lastUser",guest:"reo.guestName",legacy:"reo.gameState.v2",intent:"reo.auth.intent"};
+const probe=st=>{try{const k="__reo_t";st.setItem(k,"1");st.removeItem(k);return st}catch(e){return null}};
+const ls=probe(window.localStorage||{setItem(){throw 0}}),ss=probe(window.sessionStorage||{setItem(){throw 0}});
+const get=(st,k)=>{try{return st?st.getItem(k):null}catch(e){return null}};
+const set=(st,k,v)=>{try{if(!st)return false;st.setItem(k,v);return true}catch(e){return false}};
+const del=(st,k)=>{try{if(st)st.removeItem(k)}catch(e){}};
+const jget=(st,k,d)=>{try{const v=get(st,k);return v?JSON.parse(v):d}catch(e){return d}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/*SHA256-START*/
+const SH_K=[],SH_H=[];
+{let n=2,c=0;while(c<64){let p=true;for(let i=2;i*i<=n;i++)if(n%i===0){p=false;break}if(p){SH_K.push((Math.cbrt(n)%1*4294967296)|0);if(c<8)SH_H.push((Math.sqrt(n)%1*4294967296)|0);c++}n++}}
+function sha256(m){
+  const l=m.length,w=new Int32Array(64),pad=new Uint8Array(((l+9+63)>>6)<<6);pad.set(m);pad[l]=0x80;
+  const dv=new DataView(pad.buffer);dv.setUint32(pad.length-4,(l*8)>>>0);dv.setUint32(pad.length-8,Math.floor(l*8/4294967296));
+  let h=SH_H.slice();
+  for(let o=0;o<pad.length;o+=64){
+    for(let i=0;i<16;i++)w[i]=dv.getInt32(o+i*4);
+    for(let i=16;i<64;i++){const a=w[i-15],b=w[i-2];
+      const s0=((a>>>7)|(a<<25))^((a>>>18)|(a<<14))^(a>>>3),s1=((b>>>17)|(b<<15))^((b>>>19)|(b<<13))^(b>>>10);
+      w[i]=(w[i-16]+s0+w[i-7]+s1)|0}
+    let [a,b,c,d,e,f,g,hh]=h;
+    for(let i=0;i<64;i++){
+      const S1=((e>>>6)|(e<<26))^((e>>>11)|(e<<21))^((e>>>25)|(e<<7)),ch=(e&f)^(~e&g),t1=(hh+S1+ch+SH_K[i]+w[i])|0;
+      const S0=((a>>>2)|(a<<30))^((a>>>13)|(a<<19))^((a>>>22)|(a<<10)),mj=(a&b)^(a&c)^(b&c),t2=(S0+mj)|0;
+      hh=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0}
+    h=[(h[0]+a)|0,(h[1]+b)|0,(h[2]+c)|0,(h[3]+d)|0,(h[4]+e)|0,(h[5]+f)|0,(h[6]+g)|0,(h[7]+hh)|0];
+  }
+  const out=new Uint8Array(32),ov=new DataView(out.buffer);h.forEach((x,i)=>ov.setInt32(i*4,x));return out;
+}
+/*SHA256-END*/
+const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+const unhex=h=>new Uint8Array((h.match(/../g)||[]).map(x=>parseInt(x,16)));
+const rnd=n=>{const a=new Uint8Array(n);if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(a);else for(let i=0;i<n;i++)a[i]=Math.random()*256|0;return a};
+const utf8=s=>new TextEncoder().encode(s);
+const HAS_SUBTLE=!!(window.crypto&&crypto.subtle&&crypto.subtle.importKey&&window.isSecureContext!==false);
+const ALGO=HAS_SUBTLE?"pbkdf2-100000":"sha256x-3000";
+async function hashPw(pw,saltHex,algo){
+  const [kind,n]=algo.split("-"),salt=unhex(saltHex);
+  if(kind==="pbkdf2"){
+    if(!HAS_SUBTLE)throw new Error("nosubtle");
+    const key=await crypto.subtle.importKey("raw",utf8(pw),"PBKDF2",false,["deriveBits"]);
+    return hex(await crypto.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt,iterations:+n},key,256));
+  }
+  const pb=utf8(pw);let cur=sha256(Uint8Array.from([...salt,...pb]));
+  for(let i=0;i<+n;i++)cur=sha256(Uint8Array.from([...cur,...salt]));
+  return hex(cur);
+}
+const same=(a,b)=>{if(a.length!==b.length)return false;let r=0;for(let i=0;i<a.length;i++)r|=a.charCodeAt(i)^b.charCodeAt(i);return r===0};
+
+/* ---------- text ---------- */
+const I={
+ th:{sub:"ผจญภัยในโลกแร่หายากต่างดาว",town:"เริ่มต้นที่ แกโดลิเนียม — เมืองแห่งการเริ่มต้น",
+  tab_login:"เข้าสู่ระบบ",tab_register:"สมัครสมาชิก",tab_guest:"Guest",
+  user:"ชื่อผู้ใช้",pass:"รหัสผ่าน",pass2:"ยืนยันรหัสผ่าน",cname:"ชื่อตัวละคร",keep:"จดจำการเข้าสู่ระบบ",show:"แสดง",hide:"ซ่อน",
+  h_user:"3–16 ตัว ใช้ a-z, 0-9 และ _",h_pass:"อย่างน้อย 6 ตัวอักษร",h_cname:"2–12 ตัว ใช้ภาษาไทย อังกฤษ ตัวเลข",
+  b_login:"เข้าสู่ระบบ",b_register:"สร้างบัญชี",b_guest:"เริ่มเล่นเลย",busy:"กำลังดำเนินการ…",
+  to_reg:"ยังไม่มีบัญชี? สมัครสมาชิก",to_login:"มีบัญชีแล้ว? เข้าสู่ระบบ",to_guest:"หรือเล่นแบบ Guest",
+  nick:"ชื่อเล่น (ไม่บังคับ)",g_text:"เล่นได้ทันทีโดยไม่ต้องสมัคร ความคืบหน้าจะเก็บในเบราว์เซอร์นี้เท่านั้น และย้ายเข้าบัญชีทีหลังได้",
+  found:"พบข้อมูลเดิมในเบราว์เซอร์นี้: Lv {l}",move:"ย้ายความคืบหน้าของ Guest มาไว้ในบัญชีนี้",
+  s_weak:"อ่อน",s_ok:"พอใช้",s_good:"ดี",s_strong:"แข็งแรง",
+  note:"บัญชีเก็บไว้ในเบราว์เซอร์นี้เท่านั้น (ยังไม่มีเซิร์ฟเวอร์) ถ้าล้างข้อมูลเบราว์เซอร์ บัญชีและเซฟจะหาย",
+  e_user:"ชื่อผู้ใช้ต้องมี 3–16 ตัว ใช้ได้เฉพาะ a-z, 0-9 และ _",e_reserved:"ชื่อนี้ถูกสงวนไว้",e_pass:"รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร",
+  e_match:"รหัสผ่านไม่ตรงกัน",e_cname:"ชื่อตัวละครต้องมี 2–12 ตัว ใช้ได้ภาษาไทย อังกฤษ ตัวเลข _ - และเว้นวรรค",
+  e_taken:"ชื่อผู้ใช้นี้ถูกใช้แล้ว",e_bad:"ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",e_lock:"ลองผิดหลายครั้ง รออีก {s} วินาที",
+  e_storage:"เบราว์เซอร์นี้ไม่อนุญาตให้เก็บข้อมูล จึงสมัครหรือเข้าสู่ระบบไม่ได้ เล่นแบบ Guest ได้ แต่ความคืบหน้าจะไม่ถูกบันทึก",
+  e_crypto:"เบราว์เซอร์นี้เข้ารหัสรหัสผ่านแบบนี้ไม่ได้ ลองเล่นแบบ Guest หรือใช้เบราว์เซอร์อื่น",e_empty:"กรอกข้อมูลให้ครบ",e_start:"เริ่มเกมไม่สำเร็จ ลองรีเฟรชหน้านี้"},
+ en:{sub:"An alien rare-earth adventure",town:"Start in Gadolinium, the Town of Beginnings",
+  tab_login:"Login",tab_register:"Register",tab_guest:"Guest",
+  user:"Username",pass:"Password",pass2:"Confirm password",cname:"Character name",keep:"Keep me signed in",show:"Show",hide:"Hide",
+  h_user:"3–16 characters: a-z, 0-9 and _",h_pass:"At least 6 characters",h_cname:"2–12 characters: letters, numbers",
+  b_login:"Login",b_register:"Create account",b_guest:"Play now",busy:"Working…",
+  to_reg:"No account yet? Register",to_login:"Already have an account? Login",to_guest:"or play as a guest",
+  nick:"Nickname (optional)",g_text:"Play right away without signing up. Progress is kept in this browser only, and you can move it into an account later.",
+  found:"Found existing progress in this browser: Lv {l}",move:"Move my guest progress into this account",
+  s_weak:"Weak",s_ok:"Fair",s_good:"Good",s_strong:"Strong",
+  note:"Accounts are stored in this browser only (there is no server yet). Clearing browser data removes the account and the save.",
+  e_user:"Username must be 3–16 characters: a-z, 0-9 and _ only",e_reserved:"That name is reserved",e_pass:"Password must be at least 6 characters",
+  e_match:"Passwords do not match",e_cname:"Character name must be 2–12 characters: letters, numbers, _ - and spaces",
+  e_taken:"That username is already taken",e_bad:"Wrong username or password",e_lock:"Too many attempts. Try again in {s} s",
+  e_storage:"This browser blocks storage, so you can’t register or log in. You can play as a guest, but progress won’t be saved.",
+  e_crypto:"This browser can’t protect passwords this way. Try Guest or another browser.",e_empty:"Please fill in every field",e_start:"Couldn’t start the game. Try reloading the page."}
+};
+const RESERVED=["admin","gm","system","moderator","root","guest","mod","staff","support"];
+const userOK=u=>/^[A-Za-z0-9_]{3,16}$/.test(u);
+const nameOK=n=>/^[\p{L}\p{M}\p{N}_\- ]{2,12}$/u.test(n)&&n.replace(/[\s_-]/g,"").length>=1;
+const cleanName=n=>n.replace(/\s+/g," ").trim();
+
+let lang=get(ls,K.lang)||((navigator.language||"").toLowerCase().startsWith("en")?"en":"th");
+const T=(k,o)=>{let s=(I[lang]&&I[lang][k])||I.en[k]||k;if(o)for(const q in o)s=s.replace("{"+q+"}",o[q]);return s};
+
+/* ---------- accounts and sessions ---------- */
+const accLoad=()=>{const a=jget(ls,K.acc,null);return a&&a.users?a:{users:{}}};
+const accSave=a=>set(ls,K.acc,JSON.stringify(a));
+const saveKeyFor=s=>s.type==="guest"?K.legacy:`reo.save.${s.uid}.v2`;
+function readSession(){const s=jget(ss,K.ses,null)||jget(ls,K.ses,null);return s&&s.v===1&&(s.type==="guest"||s.type==="user")&&s.uid?s:null}
+function guestName(){let n=get(ls,K.guest);if(!n){n="Guest"+(1000+Math.floor(Math.random()*9000));set(ls,K.guest,n)}return n}
+const guestSave=()=>{const s=jget(ls,K.legacy,null);return s&&s.gameState?s:null};
+const fails=()=>jget(ls,K.fail,{});
+function lockLeft(u){const f=fails()[u];return f&&f.until>Date.now()?Math.ceil((f.until-Date.now())/1000):0}
+function failed(u){const a=fails(),f=a[u]||{n:0,until:0};f.n++;if(f.n>=5){f.until=Date.now()+30000*Math.min(8,Math.pow(2,Math.floor(f.n/5)-1));}a[u]=f;set(ls,K.fail,JSON.stringify(a))}
+function cleared(u){const a=fails();delete a[u];set(ls,K.fail,JSON.stringify(a))}
+
+const API={session:null,saveKey:K.legacy,oldKey:"reo.gameState.v1",isGuest:true,lang,ready:false};
+window.REO_AUTH=API;
+function apply(s){API.session=s;API.isGuest=s.type==="guest";API.saveKey=saveKeyFor(s);API.oldKey=s.type==="guest"?"reo.gameState.v1":"reo.none.v1";API.lang=lang}
+function begin(s,keep){
+  const v=JSON.stringify(Object.assign({v:1,t:Date.now()},s));
+  del(ss,K.ses);del(ls,K.ses);
+  if(!(keep?set(ls,K.ses,v):set(ss,K.ses,v)))set(ss,K.ses,v);
+  apply(s);hide();startGame();
+}
+/* the game starts outside the login code's try/catch, so a game error is never shown as "wrong password" */
+function startGame(){
+  if(API.ready||typeof window.REO_START!=="function")return;
+  API.ready=true;
+  try{window.REO_START()}catch(e){
+    API.ready=false;try{console.error(e)}catch(_){}
+    st.err=T("e_start")+" ("+String(e&&e.message||e).slice(0,80)+")";st.busy=false;render();
+  }
+}
+API.logout=()=>{del(ss,K.ses);del(ls,K.ses);try{location.reload()}catch(e){}};
+API.goRegister=()=>{set(ss,K.intent,"register");del(ss,K.ses);del(ls,K.ses);try{location.reload()}catch(e){}};
+API.deleteAccount=()=>{
+  const s=API.session;if(!s||s.type!=="user")return;
+  const a=accLoad();for(const k in a.users)if(a.users[k].id===s.uid)delete a.users[k];accSave(a);
+  del(ls,saveKeyFor(s));del(ss,K.ses);del(ls,K.ses);try{location.reload()}catch(e){}
+};
+
+/* ---------- screen ---------- */
+const st={tab:"login",busy:false,err:"",showPw:false,v:{lu:get(ls,K.last)||"",lp:"",keep:true,ru:"",rn:"",rp:"",rc:"",rmove:false,gn:""}};
+const root=()=>document.getElementById("auth");
+function hide(){const r=root();if(r){r.classList.add("hidden");r.innerHTML=""}}
+function strength(p){let n=0;if(p.length>=6)n++;if(p.length>=10)n++;if(/[a-z]/.test(p)&&/[A-Z]/.test(p))n++;if(/\d/.test(p)&&/[^A-Za-z0-9]/.test(p))n++;if(/\d/.test(p)||/[^A-Za-z0-9]/.test(p))n=Math.max(n,1);return p.length<6?0:Math.min(4,Math.max(1,n))}
+const pw=(id,key,auto,ph)=>`<div class="au-pw"><input id="${id}" type="${st.showPw?"text":"password"}" autocomplete="${auto}" value="${esc(st.v[key])}" placeholder="${esc(ph||"")}" maxlength="64"><button type="button" class="au-eye" data-a="eye" aria-label="${st.showPw?T("hide"):T("show")}">${st.showPw?T("hide"):T("show")}</button></div>`;
+function panel(){
+  if(st.tab==="login")return `
+   <div class="au-f"><label for="lu">${T("user")}</label><input id="lu" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" value="${esc(st.v.lu)}" maxlength="16"></div>
+   <div class="au-f"><label for="lp">${T("pass")}</label>${pw("lp","lp","current-password")}</div>
+   <label class="au-chk"><input id="keep" type="checkbox" ${st.v.keep?"checked":""}><span>${T("keep")}</span></label>
+   <button class="au-go" data-a="login" ${st.busy?"disabled":""}>${st.busy?T("busy"):T("b_login")}</button>
+   <div class="au-links"><button class="au-link" data-a="tab" data-t="register">${T("to_reg")}</button><button class="au-link" data-a="tab" data-t="guest">${T("to_guest")}</button></div>`;
+  if(st.tab==="register"){const gs=guestSave(),sc=strength(st.v.rp),lab=["","s_weak","s_ok","s_good","s_strong"][sc];
+    return `
+   <div class="au-f"><label for="ru">${T("user")}</label><input id="ru" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" value="${esc(st.v.ru)}" maxlength="16"><small>${T("h_user")}</small></div>
+   <div class="au-f"><label for="rn">${T("cname")}</label><input id="rn" type="text" autocomplete="nickname" value="${esc(st.v.rn)}" maxlength="12"><small>${T("h_cname")}</small></div>
+   <div class="au-f"><label for="rp">${T("pass")}</label>${pw("rp","rp","new-password")}<div class="au-str s${sc}"><i></i><i></i><i></i><i></i><span>${sc?T(lab):T("h_pass")}</span></div></div>
+   <div class="au-f"><label for="rc">${T("pass2")}</label>${pw("rc","rc","new-password")}</div>
+   ${gs?`<label class="au-chk"><input id="rmove" type="checkbox" ${st.v.rmove?"checked":""}><span>${T("move")}<br><small>${T("found",{l:gs.gameState.lv||1})}</small></span></label>`:""}
+   <button class="au-go" data-a="register" ${st.busy?"disabled":""}>${st.busy?T("busy"):T("b_register")}</button>
+   <div class="au-links"><button class="au-link" data-a="tab" data-t="login">${T("to_login")}</button></div>`}
+  const gs=guestSave();
+  return `
+   <p class="au-text">${T("g_text")}</p>
+   ${gs?`<p class="au-found">${T("found",{l:gs.gameState.lv||1})}</p>`:""}
+   <div class="au-f"><label for="gn">${T("nick")}</label><input id="gn" type="text" value="${esc(st.v.gn)}" placeholder="${esc(get(ls,K.guest)||"Guest1234")}" maxlength="12" autocomplete="off"></div>
+   <button class="au-go alt" data-a="guest">${T("b_guest")}</button>
+   <div class="au-links"><button class="au-link" data-a="tab" data-t="login">${T("to_login")}</button></div>`;
+}
+function render(focus){
+  const r=root();if(!r)return;r.classList.remove("hidden");r.lang=lang;
+  const storageBad=!ls;
+  r.innerHTML=`<div class="au-bg" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="au-wrap">
+   <div class="au-top"><div class="au-lang" role="group" aria-label="Language"><button data-a="lang" data-l="th" class="${lang==="th"?"on":""}">ไทย</button><button data-a="lang" data-l="en" class="${lang==="en"?"on":""}">EN</button></div></div>
+   <div class="au-brand"><svg viewBox="0 0 64 80" class="au-gem" aria-hidden="true"><defs><linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#b6a8ff"/></linearGradient></defs><polygon points="32,2 54,28 32,78 10,28" fill="url(#gA)" stroke="#fff" stroke-opacity=".7"/><polygon points="32,2 54,28 32,34" fill="#8f7ef0"/><polygon points="32,34 54,28 32,78" fill="#5a46c0"/><polygon points="32,34 10,28 32,78" fill="#7d68e0"/></svg>
+    <h1>Rare Earth Online</h1><p>${T("sub")}</p><small>${T("town")}</small></div>
+   <div class="au-card">
+    <div class="au-tabs" role="tablist">${["login","register","guest"].map(t=>`<button role="tab" aria-selected="${st.tab===t}" class="${st.tab===t?"on":""}" data-a="tab" data-t="${t}">${T("tab_"+t)}</button>`).join("")}</div>
+    ${storageBad?`<div class="au-err" role="alert">${T("e_storage")}</div>`:""}
+    <div class="au-panel" id="auPanel">${panel()}</div>
+    <div class="au-err" id="auErr" role="alert" aria-live="assertive">${st.err?esc(st.err):""}</div>
+   </div>
+   <p class="au-note">${T("note")}</p>
+  </div>`;
+  const f=focus||(st.tab==="login"?(st.v.lu?"lp":"lu"):st.tab==="register"?"ru":"gn");
+  const el=document.getElementById(f);if(el&&!("ontouchstart" in window))el.focus();
+}
+function setErr(m){st.err=m||"";const e=document.getElementById("auErr");if(e)e.textContent=st.err}
+function readInputs(){
+  const g=id=>{const e=document.getElementById(id);return e?e.value:null};
+  const m={lu:"lu",lp:"lp",ru:"ru",rn:"rn",rp:"rp",rc:"rc",gn:"gn"};
+  for(const k in m){const v=g(m[k]);if(v!==null)st.v[k]=v}
+  const kp=document.getElementById("keep");if(kp)st.v.keep=kp.checked;
+  const mv=document.getElementById("rmove");if(mv)st.v.rmove=mv.checked;
+}
+async function doLogin(){
+  readInputs();const u=st.v.lu.trim(),p=st.v.lp;
+  if(!u||!p){setErr(T("e_empty"));return}
+  if(!ls){setErr(T("e_storage"));return}
+  const key=u.toLowerCase(),lk=lockLeft(key);if(lk){setErr(T("e_lock",{s:lk}));return}
+  st.busy=true;render("lp");
+  try{
+    const acc=accLoad(),rec=acc.users[key];
+    // unknown users still pay the hashing cost, so timing does not reveal whether a name exists
+    const h=await hashPw(p,rec?rec.salt:"00112233445566778899aabbccddeeff",rec?rec.algo:ALGO);
+    if(rec&&same(h,rec.hash)){
+      cleared(key);set(ls,K.last,rec.name);
+      begin({type:"user",uid:rec.id,name:rec.name,charName:rec.charName},st.v.keep);return;
+    }
+    failed(key);st.busy=false;st.v.lp="";render("lp");const l2=lockLeft(key);setErr(l2?T("e_lock",{s:l2}):T("e_bad"));
+  }catch(e){st.busy=false;render("lp");setErr(String(e&&e.message)==="nosubtle"?T("e_crypto"):T("e_bad"))}
+}
+async function doRegister(){
+  readInputs();const u=st.v.ru.trim(),cn=cleanName(st.v.rn),p=st.v.rp,c=st.v.rc;
+  if(!u||!cn||!p||!c){setErr(T("e_empty"));return}
+  if(!ls){setErr(T("e_storage"));return}
+  if(!userOK(u)){setErr(T("e_user"));return}
+  if(RESERVED.includes(u.toLowerCase())||RESERVED.includes(cn.toLowerCase())){setErr(T("e_reserved"));return}
+  if(!nameOK(cn)){setErr(T("e_cname"));return}
+  if(p.length<6){setErr(T("e_pass"));return}
+  if(p!==c){setErr(T("e_match"));return}
+  const acc=accLoad(),key=u.toLowerCase();
+  if(acc.users[key]){setErr(T("e_taken"));return}
+  st.busy=true;render("ru");
+  try{
+    const salt=hex(rnd(16)),hash=await hashPw(p,salt,ALGO),id="u_"+hex(rnd(8));
+    const acc2=accLoad();if(acc2.users[key]){st.busy=false;render("ru");setErr(T("e_taken"));return}
+    acc2.users[key]={id,name:u,charName:cn,salt,hash,algo:ALGO,created:Date.now()};
+    if(!accSave(acc2)){st.busy=false;render("ru");setErr(T("e_storage"));return}
+    if(st.v.rmove&&guestSave()){   // move: copy first, delete the guest copy only after the copy is verified
+      const raw=get(ls,K.legacy);set(ls,saveKeyFor({type:"user",uid:id}),raw);
+      if(get(ls,saveKeyFor({type:"user",uid:id}))===raw)del(ls,K.legacy);
+    }
+    set(ls,K.last,u);
+    begin({type:"user",uid:id,name:u,charName:cn},true);
+  }catch(e){st.busy=false;render("ru");setErr(String(e&&e.message)==="nosubtle"?T("e_crypto"):T("e_bad"))}
+}
+function doGuest(){
+  readInputs();let n=cleanName(st.v.gn||"");
+  if(n&&!nameOK(n)){setErr(T("e_cname"));return}
+  if(n&&RESERVED.includes(n.toLowerCase())){setErr(T("e_reserved"));return}
+  if(n)set(ls,K.guest,n);else n=guestName();
+  begin({type:"guest",uid:"guest",name:n,charName:n},true);
+}
+function onClick(e){
+  const b=e.target.closest("[data-a]");if(!b||st.busy)return;
+  const a=b.dataset.a;
+  if(a==="tab"){readInputs();st.tab=b.dataset.t;st.err="";render()}
+  else if(a==="lang"){readInputs();lang=b.dataset.l;API.lang=lang;set(ls,K.lang,lang);render()}
+  else if(a==="eye"){readInputs();st.showPw=!st.showPw;render(document.activeElement&&document.activeElement.id)}
+  else if(a==="login")doLogin();
+  else if(a==="register")doRegister();
+  else if(a==="guest")doGuest();
+}
+function onKey(e){
+  if(e.key!=="Enter"||st.busy)return;const t=e.target;if(!t||t.tagName!=="INPUT"||t.type==="checkbox")return;
+  e.preventDefault();if(st.tab==="login")doLogin();else if(st.tab==="register")doRegister();else doGuest();
+}
+function onInput(e){
+  if(e.target.id==="rp"){readInputs();const sc=strength(st.v.rp),box=document.querySelector(".au-str");
+    if(box){box.className="au-str s"+sc;box.querySelector("span").textContent=sc?T(["","s_weak","s_ok","s_good","s_strong"][sc]):T("h_pass")}}
+  if(st.err)setErr("");
+}
+function boot(){
+  const r=root();if(!r)return;
+  r.addEventListener("click",onClick);r.addEventListener("keydown",onKey);r.addEventListener("input",onInput);
+  let s=readSession();
+  if(s){
+    if(s.type==="user"){const a=accLoad();const ok=Object.values(a.users).some(u=>u.id===s.uid);if(!ok)s=null}
+  }
+  if(s){apply(s);startGame();return}
+  const intent=get(ss,K.intent);del(ss,K.intent);
+  if(intent==="register"){st.tab="register";st.v.rmove=!!guestSave()}
+  else if(!ls||Object.keys(accLoad().users).length===0)st.tab=guestSave()?"guest":"register";
+  render();
+}
+API._sha256=sha256;API._hash=hashPw;API.algo=ALGO;
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
 })();
 
 </script>
