@@ -106,7 +106,7 @@ Calibrated with the simulator before wiring into the game.
 - **Windows:** Character and Status open alone; no navigation bar is shown; the wallet is in the Equipment window and follows the currencies live.
 - **Inventory:** tab order Consumable > Equipment > Material > Quest; the layout rows are as specified; the sort toggle cycles Name > Rarity > Sell price in Equipment and Name > Sell price elsewhere; 5-star rows do not overflow the cell.
 - **UI mode:** System, Light and Dim set the theme and are kept after a reload.
-- **Status bar:** one row; expanded at start, only SERVER TIME after 30 s, expanded again after a map change; it fits the screen at 393 px and 320 px (English and Thai).
+- **Status bar (superseded by v18.3, see §13):** one row; expanded at start, only SERVER TIME after 30 s, expanded again after a map change; it fits the screen at 393 px and 320 px (English and Thai).
 - **Town:** all NPC spots are free of overlapping props; the closest a wanderer came to an NPC in 40 s was 1.96 tiles.
 - **Regression (all pass):** combat 88/88, archetype trial, auto stat, auto-idle, items, compare and multi-sell, gear rolls, abilities, boss fight, portals and quests, the 10-slot model, the three login test sets. Several older tests were updated for the new inventory tabs and the missing navigation bar.
 
@@ -115,3 +115,11 @@ Calibrated with the simulator before wiring into the game.
 - **Cause:** the page read `window.localStorage` at startup without a guard. Some hosts (including the claude.ai artifact viewer) load pages in a sandbox that throws on that read, so the script stopped and the screen stayed black.
 - **Fix:** the login code reads storage through a guarded getter. If storage is blocked, the login screen shows the existing notice and Guest play still works. The game's save code uses a wrapper that falls back to an in-page memory store (progress then lasts until the page is closed).
 - **Checks:** no script errors inside a sandboxed iframe; the login screen renders with the storage notice; a guest enters the town inside the sandbox; the normal page, login (t140), storage-blocked login (t144) and auto-idle (t60) all pass.
+
+
+## 13. v18.3: status islands
+- **Layout:** the old status bar is gone; four islands (FPS, ms, ONLINE, clock) sit left of the minimap at 1280 × 720 and 1024 × 600; USER ON MAP is not shown; the minimap column starts at 12 px; announcements show at 12 px.
+- **Portrait:** one row of four islands at the top fits at 390 px and 320 px.
+- **Themes and language:** the islands follow Light and Dim; switching to Thai gives `ออนไลน์` and a 24-hour clock, and back to English gives `ONLINE` and `AM/PM`.
+- **Sandbox:** no script errors inside a sandboxed iframe (storage blocked); a guest enters the town and the islands update.
+

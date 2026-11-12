@@ -184,7 +184,7 @@ Every earlier feature is still there; Status is where the old right-hand panel w
 
 **Idle:** one large toggle button to the right of the hotbar (not part of it). Off: "Idle". On: a spinner, "Idling…" and the running time. No panel opens. Pressing it again stops Idle and opens the **Idle Summary** (time, kills, Base/Job EXP, Scandium, equipment, every item gained). The gear button beside it opens **Idle Settings** (mock-up).
 
-**Status islands (top right):** FPS, ping, clock, players online, players on this map. Each has its own colour; FPS and ping turn amber and red when they get worse.
+**Status islands (left of the minimap, v18.3):** four separate islands in a column: FPS, ping, players online, clock. FPS and ping turn amber and red when they get worse. See §13.
 
 **Menu (bottom right):** landscape has a collapse button; phones keep the full bottom bar.
 
@@ -208,9 +208,9 @@ Every earlier feature is still there; Status is where the old right-hand panel w
 - **Character opens alone** (Equipment). **Status** has its own button in the menu, right after Character. The menu is a **3 × 3** grid on desktop; phones keep one bar with 9 buttons.
 - **Player card:** a bottom row with the **CP island on the left** and **Scandium on the right** (for example `CP 18,894` and `578,568 Scandiums`). The full wallet (Scandium, Yttrium, Lanthanum) moved to the **Equipment window, under the Title row**.
 - **Idle button:** the same size as a hotbar slot (46 px; 44 on phones), **gold** with a glint sweeping across it. It shows `IDLE` or `IDLING` and a spinning ring while on. The **settings gear is a small badge** on its top-right corner. Idle Summary and Idle Settings are unchanged.
-- **Status bar:** **one row**, top right: `FPS | PING | USER ONLINE | USER ON MAP | SERVER TIME`. It opens fully for **30 seconds** when you enter the game or change map, then shrinks to one island, **SERVER TIME**. FPS and ping are coloured. Phones use shorter labels.
+- ~~**Status bar:** one row, top right~~ **Replaced in v18.3** by four status islands beside the minimap (see §13). The 30 second expand and collapse is gone.
 - **Minimap:** zoom buttons have no text (tooltip only). The **World Map button** is in the **top-right corner** of the map frame (the Return to town button stays at the bottom left).
-- **Announcements** appear under the status row.
+- **Announcements** appear at the top centre (v18.3: there is no status row any more, so they sit at 12 px).
 - **Inventory:** tabs **Consumable > Equipment > Material > Quest** (no "All"; opens on Consumable). Bottom of the window, top to bottom: grid; one row with `Select many` and the page arrows `Page x/x`; last row with `Sort items` on the left and `Slots xx/100` plus `+ Expand slots` on the right. **Sort items** is one toggle: Name > Rarity (Equipment tab only) > Sell price, and each press sorts. Stars are the same small size as in the Character window and never overflow the cell.
 - **Settings > Graphic > UI Display Mode:** System, Light, Dim. It changes the panels on the main screen (the windows stay navy). Saved.
 
@@ -221,9 +221,28 @@ Every earlier feature is still there; Status is where the old right-hand panel w
 
 **Monster panel** (name, Lv, element, live HP; Elite and Boss colours unchanged)
 - Now has its own container (`#mobC`) instead of sitting under the map banner, so it can be placed on its own.
-- **Landscape:** compact. 300 px wide (boss 380 px), about 48 px tall, smaller text and a 16 px HP bar. Top centre at 72 px, a little below the status row, not at the very top. While a system announcement shows it shifts down 40 px to make room.
+- **Landscape:** compact. 300 px wide (boss 380 px), about 48 px tall, smaller text and a 16 px HP bar. Top centre at 72 px, a little below the top edge, not at the very top. While a system announcement shows it shifts down 40 px to make room.
 - **Portrait:** bottom centre, directly above the hotbar (about 9 px gap; `bottom: 186px`). Width follows the screen (screen width − 140 px, max 260 px) so it never covers the Chat button or the Idle button. Hidden while an NPC dialog is open, because the dialog uses the same spot.
 - Behaviour is unchanged: it shows when fighting, hides about 5 s after combat, white trail on damage, Crystal Slam warning for the boss.
 
 **Menu (landscape):** fixed **3 × 3** at every window width. Before, the compact layout (window narrower than 1120 px) switched it to 4 columns (4 × 3). Compact buttons keep their size (42 px, icons only). Portrait is unchanged: one bottom bar with 9 buttons.
 
+
+---
+
+## 13. Changes in version 18.3 (status islands)
+
+The old status bar (`FPS | PING | USER ONLINE | USER ON MAP | SERVER TIME`) is **removed**. Its readings now live in four separate **islands** beside the minimap.
+
+**Landscape**
+- A column of 4 islands, right-aligned, directly **left of the minimap**: `🎮 60 FPS`, `📡 25 ms`, `🌏 1,286 ONLINE`, `⏱ 12:25 PM` (the icons are drawn in code, not emoji). Each island is 32 px tall with a rounded 12 px corner and uses the same panel colours as the minimap, so it follows System, Light and Dim.
+- Position: top 58 px (level with the top of the map picture), 10 px from the minimap panel (`right: 272px`). Gap between islands: 8 px.
+- **USER ON MAP is removed.** There is no SERVER TIME label any more: the clock island shows only the time (device clock, locale format; Thai uses 24 hours).
+- Always visible. The 30 second expand and collapse after entering a map is gone.
+- Colours: FPS and ping numbers are green, amber or red (FPS ≥ 50 / ≥ 30 / lower; ping < 40 / < 120 ms / higher; `—` when unknown). The online number is green. Labels and the clock are plain text colour. Icons: FPS blue, ping violet, online sky blue, clock neutral.
+- The minimap column moved back up to 12 px, and system announcements now sit at 12 px (the banner shifts 60 px down while one shows).
+
+**Portrait**
+- There is no room beside the minimap (the player card fills the left), so the same four islands sit in **one row at the very top**, right-aligned (22 px tall, 9.8 px text). Below 350 px width the `ONLINE` label is hidden so the row still fits (checked at 320 px).
+
+**Data and rules (unchanged):** FPS is measured every 0.5 s; ping and online are simulated until a server exists (hover says so); the row is redrawn only when a value, the language or the minute changes. English labels: `FPS`, `ms`, `ONLINE`; Thai: `FPS`, `ms`, `ออนไลน์`. `netExpand()` still exists for old callers and does nothing.

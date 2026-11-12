@@ -1,12 +1,12 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with the uploaded `index.html` (v18 series). Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v18.3. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
 |---|---|
 | REO-INSTRUCTIONS.md | Vision, non-negotiable rules, art direction, UI spec, roadmap |
-| STATUS.md | Effect icons and the live status strip |
+| STATUS.md | Effect icons and the status islands (FPS, ping, online, clock) |
 | CORE-LOOP.md | Progression loop, level caps, equipment and CP |
 | COMBAT-FORMULAS.md | Stats, damage, elements, monster → player, CP |
 | ECONOMY.md | Scandium, Yttrium, Lanthanum |

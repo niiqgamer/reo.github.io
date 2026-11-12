@@ -143,6 +143,7 @@ The current target shows a bouncing gold **!** marker. The quest tracker’s **G
 | Idle panel | Auto-hunt switch, session time, defeated count, EXP/h, Gold/h, claim offline rewards |
 | Map banner | Subtitle, town name, coordinates, channel, online count |
 | Minimap | Whole-map iso view; dots: player (white/violet), NPC (gold), players (blue); click to walk |
+| Status islands | FPS, ping (ms), players online, clock: four islands left of the minimap (portrait: one row at the top). See `STATUS.md` |
 | Quest tracker | Title, objective, Go button |
 | Chat | Tabs All / Party / Guild / System, input (Enter to focus), speech bubbles over heads |
 | Hotbar | 8 skills + 2 potions, keys 1–0, conic cooldown overlay, SP cost |

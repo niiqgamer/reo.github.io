@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rare Earth Online — Gadolinium</title>
+<meta name="reo-version" content="18.3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -191,7 +192,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 /* compact landscape */
 .L.cmp .slot{width:42px;height:42px}
 .L.cmp .slot .ic{width:31px;height:31px}
-.L.cmp #menu{grid-template-columns:repeat(4,42px)}
+.L.cmp #menu{grid-template-columns:repeat(3,42px)}
 .L.cmp .mb{width:42px;height:42px}
 .L.cmp .mb span{display:none}
 
@@ -563,9 +564,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .P .inv-body{grid-template-columns:1fr}
 .P .inv-grid{grid-template-columns:repeat(6,1fr);max-height:240px}
 /* theme-aware "good" text colour for stat lines */
-:root{--good:#1f8f55}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--good:#7af0a0}}
-:root[data-theme="dark"]{--good:#7af0a0}
+:root{--good:#1f8f55;--ny:#b57a00;--nr:#cf3550}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--good:#7af0a0;--ny:#f2c455;--nr:#ff8a9c}}
+:root[data-theme="dark"]{--good:#7af0a0;--ny:#f2c455;--nr:#ff8a9c}
 .det-stats{background:rgba(120,120,160,.12)}
 .det-stats div,.det-req .ok,.eq-detail span[style*="7af0a0"]{color:var(--good) !important}
 .det-req .no{color:#c0364a}
@@ -1072,19 +1073,16 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .sc-isl b{font-variant-numeric:tabular-nums}.sc-isl em{font-style:normal;font-weight:500;color:var(--ink2);font-size:11px}
 .P .cp-isl{padding:1px 9px;font-size:10.5px}.P .sc-isl{font-size:11px}.P .sc-isl em{font-size:9.5px}
 
-/* status bar: one row, top right; opens for 30 s then shrinks to the server time */
-#netBar{top:12px;right:12px;z-index:8;pointer-events:none}
-#netBar .nb{display:inline-flex;align-items:center;height:26px;padding:0 4px;border-radius:13px;background:rgba(20,24,62,.88);border:1px solid rgba(150,165,240,.4);box-shadow:0 2px 10px rgba(0,0,30,.35);color:#eef0ff;font-size:11.5px;white-space:nowrap;pointer-events:auto;font-variant-numeric:tabular-nums}
-#netBar .ns{display:inline-flex;align-items:center;gap:5px;padding:0 8px;max-width:220px;overflow:hidden;transition:max-width .55s ease,opacity .4s ease,padding .55s ease}
-#netBar .ns em{font-style:normal;font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#aab4ea}
-#netBar .ns b{font-weight:700}
-#netBar .ns b.g{color:#6ee7b0}#netBar .ns b.y{color:#f2c455}#netBar .ns b.r{color:#ff7a8e}#netBar .ns b.n{color:#aab4ea}
-#netBar .nsep{width:1px;height:12px;background:rgba(170,180,240,.35);flex:none;transition:opacity .4s,width .55s}
-#netBar .nb.col .ns:not(.tm),#netBar .nb.col .nsep{max-width:0;opacity:0;padding-left:0;padding-right:0;width:0}
-#netBar .nb.col{padding:0 3px}
-#netBar .nb.col .tm em{color:#aab4ea}
-#topR{top:46px}
-.P #netBar{top:5px;right:6px}.P #netBar .nb{height:22px;font-size:9.5px}.P #netBar .ns{padding:0 5px;gap:3px}.P #netBar .ns em{font-size:8px;letter-spacing:.02em}
+/* status islands (v18.3): four separate islands to the left of the minimap; they replace the old status bar */
+#netBar{top:58px;right:272px;z-index:8;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
+#netBar .ni{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 14px 0 11px;border-radius:12px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);color:var(--ink);font-size:13px;font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums;pointer-events:auto}
+#netBar .ni svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#netBar .ni b{font-weight:700;color:var(--ink)}
+#netBar .ni b.g{color:var(--good)}#netBar .ni b.y{color:var(--ny)}#netBar .ni b.r{color:var(--nr)}#netBar .ni b.n{color:var(--ink2)}
+#netBar .ni em{font-style:normal;font-weight:500;color:var(--ink)}
+#netBar #nsx_time b{font-weight:500}
+#nsx_fps svg{color:#3f5bf0}#nsx_ping svg{color:#8a5be8}#nsx_on svg{color:#1f8fd6}#nsx_time svg{color:var(--ink2)}
+#topR{top:12px}
 .P #topL{top:32px}.P #topR{top:32px}.P #topC{top:176px}
 
 /* menu: 3 x 3 */
@@ -1171,16 +1169,39 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .P #idleDock .ib-lb{font-size:7.6px}
 
 .cmp #idleDock .idle-btn{min-width:0}
-.P #netBar{left:4px;right:4px;display:flex;justify-content:flex-end}
-.P #netBar .nb{max-width:100%;font-size:8.8px;height:21px}
-.P #netBar .ns{padding:0 4px;gap:3px}
-.P #netBar .ns em{font-size:7.4px;letter-spacing:0}
+/* portrait: no room beside the minimap, so the same four islands sit in one row at the very top */
+.P #netBar{top:5px;left:6px;right:6px;flex-direction:row;justify-content:flex-end;align-items:center;gap:4px}
+.P #netBar .ni{height:22px;padding:0 7px 0 6px;gap:4px;border-radius:9px;font-size:9.8px}
+.P #netBar .ni svg{width:12px;height:12px}
+@media (max-width:350px){.P #netBar #nsx_on em{display:none}}
 
 /* announcement sits under the status row */
-#announce{top:46px}
-#topC.down{transform:translate(-50%,104px)}
+#announce{top:12px}
+#topC.down{transform:translate(-50%,60px)}
 .P #announce{top:30px}
 .P #topC.down{transform:translateY(68px)}
+
+/* monster panel: own container, compact. Landscape = top centre, a little lower than the status row; Portrait = bottom centre, just above the hotbar */
+#mobC{top:72px;left:50%;transform:translateX(-50%);z-index:2;transition:transform .35s ease}
+#mobC.down{transform:translate(-50%,40px)}
+#mobBar{width:min(300px,44vw);padding:5px 10px 6px;border-radius:12px}
+#mobBar.boss{width:min(380px,54vw)}
+.mo-l1{gap:6px;margin-bottom:3px}
+.mo-name{font-size:13px}
+.mo-lv{font-size:10.5px;padding:0 7px}
+.mo-el{font-size:10px;padding:0 7px}
+.mo-tag{font-size:10px}
+.mo-hp,.mo-hp i{border-radius:8px}
+.mo-hp{height:16px}
+.mo-t{font-size:11px}
+.mo-d{font-size:14px}
+.mo-warn{font-size:11.5px}
+.mo-warn.on{margin-top:3px}
+.P #mobC{top:auto;bottom:186px;width:calc(100% - 140px);max-width:260px}
+.P #mobC.down{transform:translateX(-50%)}
+.P #mobBar,.P #mobBar.boss{width:100%;padding:5px 9px 6px}
+.P .mo-name{font-size:12.5px}
+.P.dlg-open #mobC{opacity:0}
 </style>
 </head>
 <body>
@@ -1214,6 +1235,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
           <div class="b-meta"><span id="coord">24, 24</span><span>Ch.1</span><span id="bRec"></span><span id="online"></span></div>
         </div>
         <div id="hint"></div>
+      </div>
+      <div id="mobC">
         <div id="mobBar" class="hidden"><div class="mo-l1"><span class="mo-tag" id="moTag"></span><b class="mo-name" id="moName"></b><span class="mo-lv" id="moLv"></span><span class="mo-el" id="moEl"></span></div><div class="mo-hp"><i class="mo-trail" id="moTrail"></i><i class="mo-fill" id="moFill"></i><span class="mo-t" id="moT"></span><div class="mo-dmg" id="moDmg"></div></div><div class="mo-warn" id="moWarn"></div></div>
       </div>
 
@@ -2215,10 +2238,8 @@ D2.en.idle_lb_on="IDLING";D2.th.idle_lb_on="กำลังรัน";
 D2.en.idle_lb_wait="GO…";D2.th.idle_lb_wait="ไป…";
 D2.en.cur_sc="Scandiums";D2.th.cur_sc="Scandium";
 D2.en.net_l_fps="FPS";D2.th.net_l_fps="FPS";
-D2.en.net_l_ping="PING";D2.th.net_l_ping="PING";
-D2.en.net_l_on="USER ONLINE";D2.th.net_l_on="ออนไลน์";
-D2.en.net_l_map="USER ON MAP";D2.th.net_l_map="ในแมพ";
-D2.en.net_l_time="SERVER TIME";D2.th.net_l_time="เวลาเซิร์ฟเวอร์";
+D2.en.net_l_ping="ms";D2.th.net_l_ping="ms";
+D2.en.net_l_on="ONLINE";D2.th.net_l_on="ออนไลน์";
 D2.en.set_ui="UI Display Mode";D2.th.set_ui="โหมดการแสดงผล UI";
 D2.en.set_ui_d="Light and Dim change the panels on the main screen.";D2.th.set_ui_d="Light และ Dim เปลี่ยนแผงบนหน้าจอหลัก";
 D2.en.ui_sys="System";D2.th.ui_sys="ตามระบบ";
@@ -2234,11 +2255,6 @@ D2.en.npcr_lumi="GUIDE";D2.th.npcr_lumi="ไกด์";
 D2.en.npcr_bors="SHOP";D2.th.npcr_bors="ร้านค้า";
 D2.en.npcr_veyra="QUESTS";D2.th.npcr_veyra="เควสต์";
 D2.en.npcr_helper="ARCHETYPE";D2.th.npcr_helper="อาร์คีไทป์";
-D2.en.net_l_on_s="ONLINE";D2.th.net_l_on_s="ออนไลน์";
-D2.en.net_l_map_s="ON MAP";D2.th.net_l_map_s="ในแมพ";
-D2.en.net_l_time_s="TIME";D2.th.net_l_time_s="เวลา";
-D2.en.net_l_fps_s="FPS";D2.th.net_l_fps_s="FPS";
-D2.en.net_l_ping_s="PING";D2.th.net_l_ping_s="PING";
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
 let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
@@ -5330,22 +5346,27 @@ function updateMobBar(dt){
   const w=$("#moWarn"),wt=m.boss&&m.tele?t("slam_warn"):"";if(w.textContent!==wt){w.textContent=wt;w.classList.toggle("on",!!wt)}
 }
 
-/* ---- status islands (top right): each reading has its own colour ---- */
-let netUntil=nowS()+30,netBuilt=false;
-function netExpand(){netUntil=nowS()+30}
+/* ---- status islands (v18.3): FPS | ping | online | time, one island each, left of the minimap ---- */
+let netBuilt=false;
+function netExpand(){}   // kept for old callers: the islands no longer expand or collapse
+const NET_ICO={
+  fps:'<svg viewBox="0 0 24 24"><rect x="2.5" y="6.5" width="19" height="11.5" rx="5.75"/><path d="M7.4 10.2v4.2M5.3 12.3h4.2"/><circle cx="15.6" cy="11.2" r=".9" fill="currentColor" stroke="none"/><circle cx="18.2" cy="13.6" r=".9" fill="currentColor" stroke="none"/></svg>',
+  ping:'<svg viewBox="0 0 24 24"><circle cx="12" cy="10.5" r="1.7" fill="currentColor" stroke="none"/><path d="M12 12.2V20M9 20h6M7.7 7.2a6 6 0 0 0 0 6.6M16.3 7.2a6 6 0 0 1 0 6.6M4.9 4.6a10 10 0 0 0 0 11.8M19.1 4.6a10 10 0 0 1 0 11.8"/></svg>',
+  on:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c3.2 3.4 3.2 13.6 0 17M12 3.5c-3.2 3.4-3.2 13.6 0 17"/></svg>',
+  time:'<svg viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7"/><path d="M12 13.5V9.6M9.6 3.5h4.8M12 3.5v3M18.3 7.1l1.5-1.5"/></svg>'
+};
 function buildNet(){
-  const sg=(k,v)=>`<span class="ns" id="nsx_${k}"><em data-l="net_l_${k}"></em><b></b></span><i class="nsep"></i>`;
-  $("#netBar").innerHTML='<div class="nb exp">'+["fps","ping","on","map"].map(k=>sg(k)).join("")+'<span class="ns tm" id="nsx_time"><em data-l="net_l_time"></em><b></b></span></div>';
+  const isl=k=>`<span class="ni" id="nsx_${k}">${NET_ICO[k]}<b></b>${k==="time"?"":`<em data-l="net_l_${k}"></em>`}</span>`;
+  $("#netBar").innerHTML=["fps","ping","on","time"].map(isl).join("");
   netBuilt=true;
 }
 function renderNet(){
   if(!netBuilt)buildNet();
   const tm=new Date().toLocaleTimeString(lang==="th"?"th-TH":"en-US",{hour:"numeric",minute:"2-digit"});
-  const exp=nowS()<netUntil,fc=NET.fps>=50?"g":NET.fps>=30?"y":"r",pc=NET.ping==null?"n":NET.ping<40?"g":NET.ping<120?"y":"r";
-  const key=[NET.fps,NET.ping,tm,online,mapPlayers(),lang,exp,stage.classList.contains("P")].join("|");if(key===renderNet.key)return;renderNet.key=key;
-  const nb=$("#netBar .nb");nb.classList.toggle("exp",exp);nb.classList.toggle("col",!exp);
-  const set=(k,v,c)=>{const e=$("#nsx_"+k);if(!e)return;e.querySelector("b").textContent=v;e.querySelector("b").className=c||"";const l=e.querySelector("em");const tt=t(l.dataset.l+(stage.classList.contains("P")?"_s":""));if(l.textContent!==tt)l.textContent=tt};
-  set("fps",NET.fps,fc);set("ping",NET.ping==null?"—":NET.ping+" ms",pc);set("on",num(online));set("map",num(mapPlayers()));set("time",tm);
+  const fc=NET.fps>=50?"g":NET.fps>=30?"y":"r",pc=NET.ping==null?"n":NET.ping<40?"g":NET.ping<120?"y":"r";
+  const key=[NET.fps,NET.ping,tm,online,lang].join("|");if(key===renderNet.key)return;renderNet.key=key;
+  const set=(k,v,c)=>{const e=$("#nsx_"+k);if(!e)return;const b=e.querySelector("b");b.textContent=v;b.className=c||"";const l=e.querySelector("em");if(l){const tt=t(l.dataset.l);if(l.textContent!==tt)l.textContent=tt}};
+  set("fps",NET.fps,fc);set("ping",NET.ping==null?"—":NET.ping,pc);set("on",num(online),"g");set("time",tm,"");
   $("#netBar").title=NET.pingSim?t("st_sim"):"";
 }
 renderNet.key="";
@@ -5358,9 +5379,9 @@ function announce(m){annQ.push(m);pushChat({ch:"sys",raw:`[${t(m.from==="gm"?"an
 function showAnn(m){
   const el=$("#announce");el.classList.remove("hidden");el.classList.toggle("gm",m.from==="gm");
   $("#anTag").textContent=m.from==="gm"?`${t("ann_gm")} ${m.name||""}`.trim():t("ann_sys");$("#anTxt").textContent=m.k?t(m.k):m.raw;
-  AUD.sfx("announce");void el.offsetWidth;el.classList.add("on");$("#topC").classList.add("down");
+  AUD.sfx("announce");void el.offsetWidth;el.classList.add("on");$("#topC").classList.add("down");$("#mobC").classList.add("down");
 }
-function hideAnn(){const el=$("#announce");el.classList.remove("on");$("#topC").classList.remove("down");setTimeout(()=>{if(!annCur)el.classList.add("hidden")},400)}
+function hideAnn(){const el=$("#announce");el.classList.remove("on");$("#topC").classList.remove("down");$("#mobC").classList.remove("down");setTimeout(()=>{if(!annCur)el.classList.add("hidden")},400)}
 function updateAnn(dt){
   annNext-=dt;if(annNext<=0){annNext=ANN_EVERY;announce({from:"sys",k:ANN_AUTO[annIdx++%ANN_AUTO.length]})}
   if(!annCur&&annQ.length){annCur=annQ.shift();annT=ANN_SHOW;showAnn(annCur)}
