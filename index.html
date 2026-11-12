@@ -1074,7 +1074,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .P .cp-isl{padding:1px 9px;font-size:10.5px}.P .sc-isl{font-size:11px}.P .sc-isl em{font-size:9.5px}
 
 /* status islands (v18.3): four separate islands to the left of the minimap; they replace the old status bar */
-#netBar{top:58px;right:272px;z-index:8;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
+#netBar{top:12px;right:272px;z-index:8;transition:transform .35s ease;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
 #netBar .ni{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 14px 0 11px;border-radius:12px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);color:var(--ink);font-size:13px;font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums;pointer-events:auto}
 #netBar .ni svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
 #netBar .ni b{font-weight:700;color:var(--ink)}
@@ -1169,6 +1169,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .P #idleDock .ib-lb{font-size:7.6px}
 
 .cmp #idleDock .idle-btn{min-width:0}
+#netBar.down{transform:translateY(46px)}
+.P #netBar.down{transform:none}
 /* portrait: no room beside the minimap, so the same four islands sit in one row at the very top */
 .P #netBar{top:5px;left:6px;right:6px;flex-direction:row;justify-content:flex-end;align-items:center;gap:4px}
 .P #netBar .ni{height:22px;padding:0 7px 0 6px;gap:4px;border-radius:9px;font-size:9.8px}
@@ -5379,9 +5381,9 @@ function announce(m){annQ.push(m);pushChat({ch:"sys",raw:`[${t(m.from==="gm"?"an
 function showAnn(m){
   const el=$("#announce");el.classList.remove("hidden");el.classList.toggle("gm",m.from==="gm");
   $("#anTag").textContent=m.from==="gm"?`${t("ann_gm")} ${m.name||""}`.trim():t("ann_sys");$("#anTxt").textContent=m.k?t(m.k):m.raw;
-  AUD.sfx("announce");void el.offsetWidth;el.classList.add("on");$("#topC").classList.add("down");$("#mobC").classList.add("down");
+  AUD.sfx("announce");void el.offsetWidth;el.classList.add("on");$("#topC").classList.add("down");$("#mobC").classList.add("down");$("#netBar").classList.add("down");
 }
-function hideAnn(){const el=$("#announce");el.classList.remove("on");$("#topC").classList.remove("down");$("#mobC").classList.remove("down");setTimeout(()=>{if(!annCur)el.classList.add("hidden")},400)}
+function hideAnn(){const el=$("#announce");el.classList.remove("on");$("#topC").classList.remove("down");$("#mobC").classList.remove("down");$("#netBar").classList.remove("down");setTimeout(()=>{if(!annCur)el.classList.add("hidden")},400)}
 function updateAnn(dt){
   annNext-=dt;if(annNext<=0){annNext=ANN_EVERY;announce({from:"sys",k:ANN_AUTO[annIdx++%ANN_AUTO.length]})}
   if(!annCur&&annQ.length){annCur=annQ.shift();annT=ANN_SHOW;showAnn(annCur)}

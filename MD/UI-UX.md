@@ -236,7 +236,7 @@ The old status bar (`FPS | PING | USER ONLINE | USER ON MAP | SERVER TIME`) is *
 
 **Landscape**
 - A column of 4 islands, right-aligned, directly **left of the minimap**: `🎮 60 FPS`, `📡 25 ms`, `🌏 1,286 ONLINE`, `⏱ 12:25 PM` (the icons are drawn in code, not emoji). Each island is 32 px tall with a rounded 12 px corner and uses the same panel colours as the minimap, so it follows System, Light and Dim.
-- Position: top 58 px (level with the top of the map picture), 10 px from the minimap panel (`right: 272px`). Gap between islands: 8 px.
+- Position: top 12 px, level with the top of the minimap panel, 10 px from it (`right: 272px`). Gap between islands: 8 px. While a system announcement shows, the column slides down 46 px so it never sits under the announcement (portrait: no shift).
 - **USER ON MAP is removed.** There is no SERVER TIME label any more: the clock island shows only the time (device clock, locale format; Thai uses 24 hours).
 - Always visible. The 30 second expand and collapse after entering a map is gone.
 - Colours: FPS and ping numbers are green, amber or red (FPS ≥ 50 / ≥ 30 / lower; ping < 40 / < 120 ms / higher; `—` when unknown). The online number is green. Labels and the clock are plain text colour. Icons: FPS blue, ping violet, online sky blue, clock neutral.
