@@ -74,6 +74,12 @@ Neutral and Holy deal 1.0 to these elements. Elemental Attunement raises 1.5 →
 | Glacilite | 13 | Water | 540 | 44 | 8% | 10 | 20% | 62 | 34 |
 | Rimeback | 15 | Earth | 760 | 54 | 28% | 13 | 8% | 68 | 30 |
 | Magnoculus | 17 | Wind | 1,000 | 66 | 12% | 15 | 32% | 74 | 28 |
+| Faultcrawler | 25 | Earth | 2,000 | 78 | 22% | 22 | 8% | 90 | 36 |
+| Tidewraith | 27 | Water | 2,300 | 84 | 8% | 16 | 25% | 96 | 44 |
+| Strata Golem | 30 | Earth | 3,200 | 100 | 26% | 26 | 12% | 104 | 24 |
+| Cinderling | 32 | Fire | 3,000 | 104 | 10% | 24 | 22% | 112 | 54 |
+| Magmaback | 35 | Fire | 4,000 | 122 | 26% | 34 | 12% | 120 | 40 |
+| Ashen Sentinel | 38 | Fire | 5,200 | 140 | 24% | 38 | 26% | 128 | 30 |
 | **Gadolith (boss)** | 20 | Earth | 8,000 | 58 (attack every 2.6 s) | 25% | 12 | 20% | 80 | 20 |
 
 Elite: Lv +2, HP ×5, ATK ×1.6, soft DEF +3. Bosses are not Elites: they have their own stats, are immune to stun and freeze, and Crystal Slam deals ATK × 1.8 in an area (see `FIELD-03.md`).
@@ -99,3 +105,10 @@ Equipped gear feeds the same derivation as the base stats: weapon ATK adds to we
 
 ## 8. Offline idle (VIP and non-VIP)
 Kills per hour now come from the same simulator, using the character's real stats, skills and map monsters (deaths included). Reward rules (80% / 100% / 120%, Yttrium upgrades) are unchanged; see `IDLE.md`.
+
+## Aggressive monsters, monster skills and debuffs (v19)
+- **Aggressive:** monsters with an aggro range (4.5–6.5 tiles, Elites +1) start chasing the player at ×1.6 speed and attack first. There is a 3 s grace after any map change. Field 01–03 monsters stay passive.
+- **Monster skill:** a red circle marks the ground (around the monster, or on the player's position at cast time). After the wind-up (0.8–1.4 s) a player still inside takes `ATK × mult × U(0.9, 1.1) × (1 − hardDEF) − softDEF`. Skill tables are in `FIELD-GEOSYNCLINE.md` and `FIELD-RUINS.md`. Skills ignore the player's element and cannot miss.
+- **Burning:** `0.10 × monster ATK` per second for 4–6 s (stacks by taking the longer time and the higher damage). **Soaked:** movement speed ×0.65 for 4 s.
+- The simulator (`simulate`) still treats monsters as plain melee, so skills and debuffs are extra danger on top of the numbers in the balance tables.
+- **Entry gates:** Path to the Geosyncline needs Base Lv 25 and CP 2,000; Road to the Ruins needs Lv 30 and CP 3,000 (`combatPower`).

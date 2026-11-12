@@ -23,7 +23,10 @@ Grid **49 × 49** tiles. Center tile **(24, 24)**; spawn at world **(24.5, 24.5)
 | Houses | (36,19) (9,19) (27,7) (37,35) (8,34) (18,40), 3 × 3 each | Varied roofs |
 | Pond | ellipse center (37, 12), radii 4.2 × 3 | Blocked |
 | Market stalls | (28,21) (21,28) | Striped awnings |
-| Forest edge | outer 4 tiles | Road gaps act as gates (east gate → first field map) |
+| Forest edge | outer 4 tiles | Road gaps act as gates |
+| East gate | (46, 24) | → Field 01 |
+| West gate | (2, 24) | → Path to the Geosyncline. Warning sign at (4, 21): "Monster Lv.25+". Needs Lv 25+ and CP 2,000+ |
+| South gate | (24, 46) | → Road to the Ruins. Warning sign at (21, 44): "Monster Lv.30+". Needs Lv 30+ and CP 3,000+ |
 
 Every building door connects to the main road with a cobblestone path.
 

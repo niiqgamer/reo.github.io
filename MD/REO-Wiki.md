@@ -1,7 +1,7 @@
 # REO Wiki — Rare Earth Online
 
 > เกม MMORPG ผสม Idle บนเบราว์เซอร์ สไตล์ 2.5D อนิเมะ · เริ่มต้นที่เมือง **Gadolinium (แกโดลิเนียม)**  
-> ข้อมูลตามเกมเวอร์ชัน v18.3 · สิ่งที่ยังไม่นิ่งแสดงเป็น *Coming Soon* · เวอร์ชัน HTML มีช่องค้นหาและหน้าต่างรายละเอียดแบบโต้ตอบ
+> ข้อมูลตามเกมเวอร์ชัน v19.0 · สิ่งที่ยังไม่นิ่งแสดงเป็น *Coming Soon* · เวอร์ชัน HTML มีช่องค้นหาและหน้าต่างรายละเอียดแบบโต้ตอบ
 
 ## สารบัญ
 1. [แนะนำเกมเบื้องต้น](#1-แนะนำเกมเบื้องต้น)
@@ -242,6 +242,36 @@ Archetype คือกลุ่มบทบาทหลักของตัว�
 - **พอร์ทัล:** พอร์ทัลล่าง (26, 46) → Field 02
 - **มอนสเตอร์:** Glacilite, Rimeback, Magnoculus, บอส Gadolith
 
+### Path to the Geosyncline — รอยเลื่อนบรรพกาล
+*Ancient Fault Line* · ประตูตะวันตกของเมือง (2, 24) มีป้ายเตือน "Monster Lv.25+"
+
+![Path to the Geosyncline](images/maps/geo.jpg)
+
+![overview](images/maps/geo_overview.png)
+
+- **เงื่อนไขเข้า:** Base Lv 25+ **และ** CP 2,000+ (ไม่ถึง = ประตูไม่เปิด และวาร์ปเข้าไม่ได้)
+- **CP แนะนำ:** 2,000
+- **ระดับมอนสเตอร์:** Lv 25–30 · ธาตุหินและน้ำ · โจมตีก่อน + สกิล · ไม่มีบอส
+- **รายละเอียด:** เส้นทางแห่งรอยเลื่อนบรรพกาล พื้นพิภพปริแตกคุกรุ่นด้วยมหาภัยธรณี ขณะที่สายน้ำลึกลับหลั่งไหลอาบซากอารยธรรมที่สูญหาย ที่นี่คือเขตแดนอันเดือดพล่าน ซึ่งแรงกดดันมหาศาลใต้เปลือกโลกพร้อมบดขยี้ทุกสรรพสิ่งให้จมดิ่งสู่ก้นเหวแห่งกาลเวลา
+- **พอร์ทัล:** พอร์ทัลตะวันออก (46, 22) → Gadolinium
+- **มอนสเตอร์:** Faultcrawler, Tidewraith, Strata Golem
+
+### Road to the Ruins — ถนนสายเพลิงผลาญ
+*Road of Cinders* · ประตูใต้ของเมือง (24, 46) มีป้ายเตือน "Monster Lv.30+"
+
+![Road to the Ruins](images/maps/ruins.jpg)
+
+![overview](images/maps/ruins_overview.png)
+
+- **เงื่อนไขเข้า:** Base Lv 30+ **และ** CP 3,000+
+- **CP แนะนำ:** 3,000
+- **ระดับมอนสเตอร์:** Lv 32–38 · ธาตุไฟ · โจมตีก่อน + สกิล · ไม่มีบอส
+- **รายละเอียด:** ถนนสายเพลิงผลาญมุ่งสู่ซากปรักหักพังอันไร้ซึ่งความปรานี ทุกย่างก้าวแผดเผาด้วยเปลวเพลิงทมิฬจากขุมนรก แผ่นดินนี้ถูกหล่อหลอมด้วยอัคคีเดือดระอุ พร้อมมอดไหม้ผู้บุกรุกให้กลายเป็นเถ้าธุลีไปตลอดกาล
+- **พอร์ทัล:** พอร์ทัลเหนือ (28, 2) → Gadolinium
+- **มอนสเตอร์:** Cinderling, Magmaback, Ashen Sentinel
+
+**สกิลมอนสเตอร์:** วงแดงบนพื้นแล้วค่อยตกกระทบ ก้าวออกจากวงเพื่อหลบ บางสกิลทำให้ติดสถานะ *ไฟลวก* (โดนไฟเผาทุกวินาที) หรือ *เปียกชุ่ม* (เดินช้าลง 35%) รายละเอียดใน `FIELD-GEOSYNCLINE.md` และ `FIELD-RUINS.md`
+
 ### NPC ในเมือง
 | NPC | หน้าที่ |
 |---|---|
@@ -254,7 +284,7 @@ NPC ตีบวก/การ์ด และผู้ดูแลดันเ�
 
 ### วาร์ป
 - เปิดแผนที่โลกด้วยปุ่ม M
-- ค่าวาร์ป **150 Scandium ต่อแมพที่ผ่าน** (Town → Field 02 = 300 Sc)
+- ค่าวาร์ป **150 Scandium ต่อแมพที่ผ่าน** (Town → Field 02 = 300 Sc) · แมพที่มีเงื่อนไข Lv/CP ต้องผ่านเงื่อนไขด้วย
 - ไปได้เฉพาะแมพที่เคยไป · วาร์ปแล้วจบ Idle · สูตรราคาสุดท้ายและแมพใหม่ *Coming Soon*
 
 ---
@@ -275,6 +305,14 @@ NPC ตีบวก/การ์ด และผู้ดูแลดันเ�
 | ![rimeback](images/monsters/rimeback.png) | **Rimeback** ไรม์แบ็ค | Field 03 | 15 | Earth | 760 | 54 | 28% | 8% | 330/215 | 52–82 | Rime Plate (35%) |
 | ![magnoculus](images/monsters/magnoculus.png) | **Magnoculus** แมกโนคูลัส | Field 03 | 17 | Wind | 1,000 | 66 | 12% | 32% | 470/300 | 80–120 | Magnet Lens (30%) |
 | ![gadolith](images/monsters/gadolith.png) | **Gadolith** กาโดลิธ ผู้พิทักษ์คริสตัล | Field 03 | 20 | Earth | 8,000 | 58 | 25% | 20% | 2,600/1,700 | 1,000–1,600 | Crystal Heart (100%) |
+| ![faultcrawler](images/monsters/faultcrawler.png) | **Faultcrawler** ฟอลต์ครอว์เลอร์ | Geosyncline | 25 | Earth | 2,000 | 78 | 22% | 8% | 750/480 | 120–180 | Fault Shard (40%) |
+| ![tidewraith](images/monsters/tidewraith.png) | **Tidewraith** ไทด์เรธ | Geosyncline | 27 | Water | 2,300 | 84 | 8% | 25% | 880/560 | 140–210 | Abyssal Tear (38%) |
+| ![stratagolem](images/monsters/stratagolem.png) | **Strata Golem** สตราตาโกเลม | Geosyncline | 30 | Earth | 3,200 | 100 | 26% | 12% | 1,060/680 | 170–260 | Strata Slab (35%) |
+| ![cinderling](images/monsters/cinderling.png) | **Cinderling** ซินเดอร์ลิง | Ruins | 32 | Fire | 3,000 | 104 | 10% | 22% | 1,250/800 | 190–290 | Cinder Ash (40%) |
+| ![magmaback](images/monsters/magmaback.png) | **Magmaback** แมกมาแบ็ค | Ruins | 35 | Fire | 4,000 | 122 | 26% | 12% | 1,480/940 | 230–350 | Magma Plate (36%) |
+| ![ashsentinel](images/monsters/ashsentinel.png) | **Ashen Sentinel** แอชเชนเซนทิเนล | Ruins | 38 | Fire | 5,200 | 140 | 24% | 26% | 1,750/1,110 | 275–415 | Scorched Relic (32%) |
+
+> มอนสเตอร์ใน Geosyncline และ Ruins เป็นแบบ **aggressive** (วิ่งเข้าใส่เมื่อเข้าใกล้ 4.5–6.5 ช่อง) และมีสกิลวงแดง
 
 - **Lumite:** เจลลี่ลอยได้สามตา เป็นมอนสเตอร์ตัวแรกที่ผู้เล่นจะได้เจอ นุ่มและอ่อนที่สุดในเกม
 - **Crawlix:** สัตว์เลื้อยคลานที่มีคริสตัลบนหลัง เคลื่อนที่ไวกว่า Lumite และมีเกราะหนากว่า
@@ -339,6 +377,18 @@ Lv 20 · Earth · HP 8,000 · ATK 58 · Hard DEF 25% · MDEF 20% · โจมต
 | ![mat_rimebone](images/items/mat_rimebone.svg) | **Rime Bone** กระดูกน้ำแข็ง | เบาแต่แข็งแรงมาก | 44 Sc | Rimeback |
 | ![mat_mag](images/items/mat_mag.svg) | **Magnet Lens** เลนส์แม่เหล็ก | เลนส์ที่ดูดโลหะได้ | 16 Sc | Magnoculus |
 | ![mat_magcoil](images/items/mat_magcoil.svg) | **Magnetic Coil** ขดลวดแม่เหล็ก | ขดลวดที่ส่งเสียงพลังงาน | 60 Sc | Magnoculus |
+| ![mat_fault](images/items/mat_fault.svg) | **Fault Shard** เศษหินรอยเลื่อน | เศษหินจากรอยเลื่อนที่ปริแตก | 20 Sc | Faultcrawler |
+| ![mat_seismic](images/items/mat_seismic.svg) | **Seismic Core** แกนแผ่นดินไหว | แกนพลังที่ยังสั่นไหวอยู่ | 70 Sc | Faultcrawler |
+| ![mat_tide](images/items/mat_tide.svg) | **Abyssal Tear** หยดน้ำเหวลึก | น้ำจากเบื้องลึก เย็นเท่าก้นเหว | 24 Sc | Tidewraith |
+| ![mat_glyph](images/items/mat_glyph.svg) | **Sunken Glyph** อักขระจมน้ำ | อักขระสลักของอารยธรรมที่สูญหาย | 85 Sc | Tidewraith |
+| ![mat_strata](images/items/mat_strata.svg) | **Strata Slab** แผ่นชั้นหิน | ชั้นหินโบราณอัดแน่นเป็นแผ่นเดียว | 28 Sc | Strata Golem |
+| ![mat_press](images/items/mat_press.svg) | **Pressure Crystal** คริสตัลแรงอัด | คริสตัลที่เกิดใต้แรงกดมหาศาล | 100 Sc | Strata Golem |
+| ![mat_cinder](images/items/mat_cinder.svg) | **Cinder Ash** ขี้เถ้าเพลิง | ขี้เถ้าที่ขอบยังเรืองแสง | 30 Sc | Cinderling |
+| ![mat_embercore](images/items/mat_embercore.svg) | **Ember Core** แกนเพลิง | หัวใจของเปลวเพลิงที่ยังมีชีวิต | 105 Sc | Cinderling |
+| ![mat_magma](images/items/mat_magma.svg) | **Magma Plate** แผ่นหินหลอม | แผ่นหินดำมีเส้นลาวาไหลผ่าน | 38 Sc | Magmaback |
+| ![mat_lavaglass](images/items/mat_lavaglass.svg) | **Lava Glass** แก้วลาวา | แก้วที่เกิดจากลาวาเย็นตัว | 125 Sc | Magmaback |
+| ![mat_relic](images/items/mat_relic.svg) | **Scorched Relic** ซากโบราณไหม้เกรียม | ชิ้นส่วนซากปรักหักพังที่ถูกไฟไหม้ | 45 Sc | Ashen Sentinel |
+| ![mat_infernoshard](images/items/mat_infernoshard.svg) | **Inferno Shard** เศษหัวใจนรก | เศษไฟนรกที่แข็งตัวเป็นผลึก | 160 Sc | Ashen Sentinel |
 | ![refine_ore](images/items/refine_ore.svg) | **Refine Ore** แร่ตีบวก | ใช้ตีบวกอุปกรณ์ สำเร็จแล้ว +1 | 120 Sc | Gadolith, มอนสเตอร์ทุกตัว (2–6%, Elite ×3) |
 | ![mat_core](images/items/mat_core.svg) | **Elite Core** แกนอีลิท | ได้จากมอนสเตอร์ Elite | 80 Sc | Gadolith, Elite 35%, Gadolith ×3 |
 
@@ -431,4 +481,4 @@ Lv 20 · Earth · HP 8,000 · ATK 58 · Hard DEF 25% · MDEF 20% · โจมต
 
 ---
 
-*REO Wiki — สร้างจากเอกสารออกแบบและโค้ดของเกม v18.3*
+*REO Wiki — สร้างจากเอกสารออกแบบและโค้ดของเกม v19.0*

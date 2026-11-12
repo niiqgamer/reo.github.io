@@ -997,7 +997,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .cap-bar span{position:relative;display:block;text-align:center;font-size:11px;line-height:20px;font-weight:700;text-shadow:0 1px 1px #000}
 
 /* ---- world map ---- */
-.wm-chart{position:relative;height:310px;border-radius:14px;background:radial-gradient(70% 90% at 30% 20%,rgba(110,125,230,.18),transparent),linear-gradient(#0e1658,#0a1042);border:1px solid rgba(124,136,216,.3);overflow:hidden}
+.wm-chart{position:relative;height:340px;border-radius:14px;background:radial-gradient(70% 90% at 30% 20%,rgba(110,125,230,.18),transparent),linear-gradient(#0e1658,#0a1042);border:1px solid rgba(124,136,216,.3);overflow:hidden}
 .wm-lines{position:absolute;inset:0;width:100%;height:100%}
 .wm-lines line{stroke:rgba(170,180,240,.3);stroke-width:1.6;stroke-dasharray:4 3;vector-effect:non-scaling-stroke}
 .wm-lines line.on{stroke:#9fb0ff;stroke-dasharray:none;stroke-width:2.6}
@@ -1014,7 +1014,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .wm-node.here{box-shadow:0 0 0 3px rgba(63,214,168,.5),0 4px 14px rgba(0,0,30,.5)}
 .wm-node.sel{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.55),0 4px 14px rgba(0,0,30,.5)}
 .wm-note{margin:10px 2px 0}
-.P .wm-chart{height:390px}
+.P .wm-chart{height:440px}
 .P .wm-node{left:var(--px);top:var(--py)}
 .mi-head{display:flex;gap:10px;align-items:center;margin-bottom:8px}
 .mi-th{width:44px;height:44px;border-radius:12px;flex:none;background:linear-gradient(135deg,var(--c0),var(--c1) 55%,var(--c2));box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
@@ -1455,6 +1455,12 @@ const MONC={
  glacilite:{lv:13,hp:540,atk:44,hardDef:.08,softDef:10,mdef:.20,softMdef:7,hit:62,flee:34,luk:6,elem:"water",aspd:1.5,speed:1.4},
  rimeback:{lv:15,hp:760,atk:54,hardDef:.28,softDef:13,mdef:.08,softMdef:8,hit:68,flee:30,luk:6,elem:"earth",aspd:1.5,speed:1.8},
  magnoculus:{lv:17,hp:1000,atk:66,hardDef:.12,softDef:15,mdef:.32,softMdef:10,hit:74,flee:28,luk:7,elem:"wind",aspd:1.7,speed:1.15},
+ faultcrawler:{lv:25,hp:2000,atk:78,hardDef:.22,softDef:22,mdef:.08,softMdef:12,hit:90,flee:36,luk:8,elem:"earth",aspd:1.5,speed:1.5},
+ tidewraith:{lv:27,hp:2300,atk:84,hardDef:.08,softDef:16,mdef:.25,softMdef:16,hit:96,flee:44,luk:9,elem:"water",aspd:1.7,speed:1.4},
+ stratagolem:{lv:30,hp:3200,atk:100,hardDef:.26,softDef:26,mdef:.12,softMdef:14,hit:104,flee:24,luk:10,elem:"earth",aspd:2.0,speed:1.0},
+ cinderling:{lv:32,hp:3000,atk:104,hardDef:.10,softDef:24,mdef:.22,softMdef:18,hit:112,flee:54,luk:11,elem:"fire",aspd:1.4,speed:1.9},
+ magmaback:{lv:35,hp:4000,atk:122,hardDef:.26,softDef:34,mdef:.12,softMdef:16,hit:120,flee:40,luk:12,elem:"fire",aspd:1.6,speed:1.6},
+ ashsentinel:{lv:38,hp:5200,atk:140,hardDef:.24,softDef:38,mdef:.26,softMdef:22,hit:128,flee:30,luk:13,elem:"fire",aspd:1.9,speed:1.1},
  gadolith:{lv:20,hp:8000,atk:58,hardDef:.25,softDef:12,mdef:.20,softMdef:8,hit:80,flee:20,luk:8,elem:"earth",aspd:2.6,speed:1.0,boss:true}
 };
 function eliteOf(m){return Object.assign({},m,{lv:m.lv+2,hp:m.hp*5,atk:m.atk*1.6,softDef:m.softDef+3,elite:true})}
@@ -1974,6 +1980,46 @@ D2.en.qe_field1="Elite Hunt: Field 01";D2.th.qe_field1="ล่า Elite: ทุ�
 D2.en.qe_field2="Elite Hunt: Field 02";D2.th.qe_field2="ล่า Elite: ทุ่ง 02";
 D2.en.qe_field3="Elite Hunt: Field 03";D2.th.qe_field3="ล่า Elite: ทุ่ง 03";
 D2.en.qb_gadolith="Boss Hunt: Gadolith";D2.th.qb_gadolith="ล่าบอส: กาโดลิธ";
+/* ---- v19: Path to the Geosyncline + Road to the Ruins ---- */
+D2.en.geo_name="Path to the Geosyncline";D2.th.geo_name="Path to the Geosyncline";
+D2.en.geo_sub="Ancient Fault Line";D2.th.geo_sub="รอยเลื่อนบรรพกาล";
+D2.en.ruins_name="Road to the Ruins";D2.th.ruins_name="Road to the Ruins";
+D2.en.ruins_sub="Road of Cinders";D2.th.ruins_sub="ถนนสายเพลิงผลาญ";
+D2.en.mapd_geo="The road of the ancient fault lines. The earth is cracked and seething with seismic calamity, while mysterious deep waters wash over the wreckage of a lost civilization. This is a boiling frontier where the immense pressure beneath the crust is ready to crush all things and sink them into the abyss of time.";
+D2.th.mapd_geo="เส้นทางแห่งรอยเลื่อนบรรพกาล พื้นพิภพปริแตกคุกรุ่นด้วยมหาภัยธรณี ขณะที่สายน้ำลึกลับหลั่งไหลอาบซากอารยธรรมที่สูญหาย ที่นี่คือเขตแดนอันเดือดพล่าน ซึ่งแรงกดดันมหาศาลใต้เปลือกโลกพร้อมบดขยี้ทุกสรรพสิ่งให้จมดิ่งสู่ก้นเหวแห่งกาลเวลา";
+D2.en.mapd_ruins="A road of devouring fire that leads to merciless ruins. Every step is scorched by black flames from the pits of hell. This land was forged in boiling fire, ready to burn every intruder to ash for all time.";
+D2.th.mapd_ruins="ถนนสายเพลิงผลาญมุ่งสู่ซากปรักหักพังอันไร้ซึ่งความปรานี ทุกย่างก้าวแผดเผาด้วยเปลวเพลิงทมิฬจากขุมนรก แผ่นดินนี้ถูกหล่อหลอมด้วยอัคคีเดือดระอุ พร้อมมอดไหม้ผู้บุกรุกให้กลายเป็นเถ้าธุลีไปตลอดกาล";
+D2.en.mon_faultcrawler="Faultcrawler";D2.th.mon_faultcrawler="ฟอลต์ครอว์เลอร์";
+D2.en.mon_tidewraith="Tidewraith";D2.th.mon_tidewraith="ไทด์เรธ";
+D2.en.mon_stratagolem="Strata Golem";D2.th.mon_stratagolem="สตราตาโกเลม";
+D2.en.mon_cinderling="Cinderling";D2.th.mon_cinderling="ซินเดอร์ลิง";
+D2.en.mon_magmaback="Magmaback";D2.th.mon_magmaback="แมกมาแบ็ค";
+D2.en.mon_ashsentinel="Ashen Sentinel";D2.th.mon_ashsentinel="แอชเชนเซนทิเนล";
+D2.en.qn_faultcrawler="Hunt: Faultcrawler";D2.th.qn_faultcrawler="ล่า: ฟอลต์ครอว์เลอร์";
+D2.en.qn_tidewraith="Hunt: Tidewraith";D2.th.qn_tidewraith="ล่า: ไทด์เรธ";
+D2.en.qn_stratagolem="Hunt: Strata Golem";D2.th.qn_stratagolem="ล่า: สตราตาโกเลม";
+D2.en.qn_cinderling="Hunt: Cinderling";D2.th.qn_cinderling="ล่า: ซินเดอร์ลิง";
+D2.en.qn_magmaback="Hunt: Magmaback";D2.th.qn_magmaback="ล่า: แมกมาแบ็ค";
+D2.en.qn_ashsentinel="Hunt: Ashen Sentinel";D2.th.qn_ashsentinel="ล่า: แอชเชนเซนทิเนล";
+D2.en.qe_geo="Elite Hunt: Geosyncline";D2.th.qe_geo="ล่า Elite: Geosyncline";
+D2.en.qe_ruins="Elite Hunt: Ruins";D2.th.qe_ruins="ล่า Elite: Ruins";
+D2.en.msk_tremor="Tremor Stomp";D2.th.msk_tremor="กระทืบสั่นสะเทือน";
+D2.en.msk_undertow="Undertow";D2.th.msk_undertow="คลื่นดูดลึก";
+D2.en.msk_crust="Crust Crush";D2.th.msk_crust="บดเปลือกโลก";
+D2.en.msk_debris="Falling Debris";D2.th.msk_debris="ก้อนหินถล่ม";
+D2.en.msk_emberburst="Ember Burst";D2.th.msk_emberburst="ระเบิดเถ้าถ่าน";
+D2.en.msk_lavaspit="Lava Spit";D2.th.msk_lavaspit="พ่นลาวา";
+D2.en.msk_inferno="Inferno Pillar";D2.th.msk_inferno="เสาเพลิงนรก";
+D2.en.msk_ashwave="Ashen Wave";D2.th.msk_ashwave="คลื่นเถ้าถ่าน";
+D2.en.fx_burn="Burning";D2.th.fx_burn="ไฟลวก";
+D2.en.fx_burn_d="Takes fire damage every second.";D2.th.fx_burn_d="โดนไฟเผาทุกวินาที";
+D2.en.fx_slow="Soaked";D2.th.fx_slow="เปียกชุ่ม";
+D2.en.fx_slow_d="Movement speed −35%.";D2.th.fx_slow_d="ความเร็วเดิน −35%";
+D2.en.gate_block="The gate is sealed! Needs Lv {l}+ and CP {c}+ (you: Lv {a}, CP {d})";D2.th.gate_block="ประตูถูกผนึก! ต้องมี Lv {l}+ และ CP {c}+ (ตอนนี้ Lv {a}, CP {d})";
+D2.en.gate_short="Needs Lv {l}+ and CP {c}+";D2.th.gate_short="ต้องมี Lv {l}+ และ CP {c}+";
+D2.en.sign_warn="WARNING";D2.th.sign_warn="คำเตือน";
+D2.en.mi_req="Entry needs";D2.th.mi_req="เงื่อนไขเข้าแมพ";
+D2.en.mi_aggr="Aggressive";D2.th.mi_aggr="โจมตีก่อน";
 D2.en.o_eliteMap="Defeat Elite monsters in {p} ({c}/{n})";D2.th.o_eliteMap="ปราบมอนสเตอร์ Elite ที่ {p} ({c}/{n})";
 D2.en.q_general="General";D2.th.q_general="ทั่วไป";
 D2.en.w_char="Character Info";D2.th.w_char="ข้อมูลตัวละคร";
@@ -2338,9 +2384,11 @@ const AUD=(()=>{
     field1:{bpm:92,root:62,scale:[0,2,3,5,7,9,10],prog:[0,5,3,4],lead:"p25",arpOct:12,drums:"soft",bass:"walk",seed:23,dens:.65},     // calm and curious (dorian)
     field2:{bpm:80,root:57,scale:[0,1,3,5,7,8,10],prog:[0,1,0,6],lead:"p125",arpOct:12,drums:"soft",bass:"long",seed:37,dens:.55},    // dusk (phrygian)
     field3:{bpm:72,root:64,scale:[0,2,4,6,8,10],prog:[0,2,1,3],lead:"triangle",arpOct:24,drums:"none",bass:"long",seed:41,dens:.5},   // icy, sparkling (whole tone)
+    geo:{bpm:76,root:52,scale:[0,2,3,5,7,8,11],prog:[0,5,2,6],lead:"p125",arpOct:12,drums:"soft",bass:"long",seed:67,dens:.5},          // ancient, heavy (harmonic minor)
+    ruins:{bpm:104,root:55,scale:[0,1,4,5,7,8,11],prog:[0,1,5,4],lead:"square",arpOct:12,drums:"drive",bass:"pulse",seed:79,dens:.8},     // scorched, driving (double harmonic)
     boss:{bpm:152,root:54,scale:[0,2,3,5,7,8,11],prog:[0,5,6,4],lead:"square",arpOct:12,drums:"drive",bass:"pulse",seed:53,dens:.9}   // tense
   };
-  const MAPTRACK={town:"town",field1:"field1",field2:"field2",field3:"field3"};
+  const MAPTRACK={town:"town",field1:"field1",field2:"field2",field3:"field3",geo:"geo",ruins:"ruins"};
   function deg(sp,d){const L=sp.scale.length;return sp.root+sp.scale[((d%L)+L)%L]+12*Math.floor(d/L)}
   function makeTrack(sp){
     const R=rng(sp.seed),steps=[];for(let i=0;i<64;i++)steps.push({});
@@ -2464,7 +2512,7 @@ const TW=64,TH=32,HW=32,HH=16,N=49;
 /* Lite mode: phones and low-memory devices get a smaller ground texture and keep only one map in memory */
 const LITE=(()=>{try{const sm=Math.min(screen.width||9999,screen.height||9999)<=820;return matchMedia("(pointer:coarse)").matches||sm||(navigator.deviceMemory&&navigator.deviceMemory<=4)}catch(e){return true}})();
 const GS=LITE?1:1.25;
-const T_G=0,T_R=1,T_P=2,T_W=3,T_D=4,T_F=5;
+const T_G=0,T_R=1,T_P=2,T_W=3,T_D=4,T_F=5,T_C=6;   // T_C = chasm (blocked fault crack)
 const I=(x,y)=>y*N+x, inb=(x,y)=>x>=0&&y>=0&&x<N&&y<N;
 function hash(x,y){let h=(x*374761393+y*668265263)|0;h=Math.imul(h^(h>>>13),1274126177);h^=h>>>16;return (h>>>0)/4294967296}
 function P(x,y,z=0){return [(x-y)*HW,(x+y)*HH-z]}
@@ -2476,6 +2524,7 @@ const inEll=(x,y,e)=>((x-e[0])/e[2])**2+((y-e[1])/e[3])**2<=1;
 
 /* ================= town ================= */
 const HOUSE_ROOFS=["#d0409a","#2aa8c8","#8ad030","#8a50e0","#20c0a0","#e08a30"];
+const TOWN_GATES=[[46,24],[2,24],[24,46]];   // east (Field 01), west (Path to the Geosyncline), south (Road to the Ruins)
 function buildTown(){
   const m=newMap("town");Object.assign(m,{nameK:"mapName",subK:"mapSub",bg:["#1a1040","#070418"]});
   const {map,blk}=m;m.pools=[[37,12,4.2,3]];
@@ -2509,15 +2558,20 @@ function buildTown(){
     blk[I(x,y)]=1;addS(m,{kind:"lamp",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x,y)});
   }
   {const used=[],near=(x,y,d)=>used.some(q=>Math.hypot(q[0]-x,q[1]-y)<d);
-    const okT=(x,y)=>{const tp=map[I(x,y)];return inb(x,y)&&(tp===T_G||tp===T_F)&&!blk[I(x,y)]&&Math.hypot(x+.5-24.5,y+.5-24.5)>9.5&&Math.hypot(x-46,y-24)>5&&x>2&&y>2&&x<N-3&&y<N-3};
+    const okT=(x,y)=>{const tp=map[I(x,y)];return inb(x,y)&&(tp===T_G||tp===T_F)&&!blk[I(x,y)]&&Math.hypot(x+.5-24.5,y+.5-24.5)>9.5&&TOWN_GATES.every(q=>Math.hypot(x-q[0],y-q[1])>5)&&x>2&&y>2&&x<N-3&&y<N-3};
     const put=(kind,x,y,s)=>{blk[I(x,y)]=1;used.push([x,y]);addS(m,{kind,x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x*3,y*7),s});};
     for(let i=0;i<6;i++){const a=i*Math.PI/3+.4;let x=Math.round(24.5+Math.cos(a)*12.5),y=Math.round(24.5+Math.sin(a)*12.5);if(okT(x,y)&&!near(x,y,3))put("mono",x,y,1.05)}
     const kinds=[["eye",.0042,1.05],["pod",.0075,1],["tent",.0055,1],["float",.0042,1.05]];
     for(let y=3;y<N-3;y++)for(let x=3;x<N-3;x++){if(!okT(x,y))continue;const r=hash(x*13+5,y*17+3);let acc=0;for(const [k,p,s] of kinds){acc+=p;if(r<acc){if(!near(x,y,3.2))put(k,x,y,s*(.9+hash(x,y)*.25));break}}}}
   const pt={x:46,y:24,to:"field1",labelK:"field1_name"};m.portals.push(pt);addS(m,{kind:"portal",p:pt,cx:46.5,cy:24.5,k:71});
+  /* v19: west gate -> Path to the Geosyncline (Lv 25+, CP 2,000+), south gate -> Road to the Ruins (Lv 30+, CP 3,000+); each has a warning sign */
+  const pw={x:2,y:24,to:"geo",labelK:"geo_name"},ps={x:24,y:46,to:"ruins",labelK:"ruins_name"};
+  m.portals.push(pw);addS(m,{kind:"portal",p:pw,cx:2.5,cy:24.5,k:27});
+  m.portals.push(ps);addS(m,{kind:"portal",p:ps,cx:24.5,cy:46.5,k:71});
+  for(const [x,y,lv] of [[4,21,25],[21,44,30]])if(!blk[I(x,y)]){blk[I(x,y)]=1;addS(m,{kind:"warnsign",x,y,cx:x+.5,cy:y+.5,k:x+y+1,lv})}
   for(const [x,y] of [[26,21],[31,18],[19,26],[28,27]])blk[I(x,y)]=1;
   plantTrees(m,(x,y,border,r)=>{
-    if(Math.hypot(x-46,y-24)<4)return null;
+    if(TOWN_GATES.some(q=>Math.hypot(x-q[0],y-q[1])<4))return null;
     if(r<(border?.62:.05)){const hv=hash(y*7,x*11);return hv<.14?{kind:"shroom",v:hash(x,y*5),alt:hv<.07?2:0}:{kind:"tree",v:hv<.45?4:hv<.78?5:hv<.92?3:0}}
     return null;
   });
@@ -2540,7 +2594,9 @@ function plantTrees(m,pick){
 const FPAL={
  field1:{gH:150,gHr:28,gS:30,gSr:14,gL:30,gLr:10,tA:"rgba(140,240,220,.5)",tB:"rgba(10,40,50,.5)",fl:["#8ff7ff","#c9a8ff","#7dffb0","#fff3a8"],edge:"rgba(20,60,55,.45)",side:["#5a4a5a","#231a2a","#44384a","#18121e"],rim:"#2b6e64",pool:["#7ff0e6","#1d5f86"],shore:"#6a5f7a",pad:["#3fae98","#d6c2ff"],blob:["rgba(150,120,255,.09)","rgba(0,30,40,.1)"],glow:["rgba(120,240,255,.16)","rgba(170,140,255,.16)"],mote:"150,240,255",mini:["#246a60","#2f8a7a","#5fd8d0"],dirt:26,drip:"rgba(140,230,255,.35)"},
  field2:{gH:266,gHr:30,gS:22,gSr:12,gL:27,gLr:10,tA:"rgba(240,190,255,.45)",tB:"rgba(30,10,40,.5)",fl:["#ffb86b","#ff7ad9","#ffe08a","#b9f2ff"],edge:"rgba(50,20,50,.45)",side:["#6a4a3a","#2a1a14","#4f3628","#1d120c"],rim:"#5a3a6e",pool:["#ffd18a","#a8406e"],shore:"#7a5a4a",pad:["#c86a3a","#fff0b0"],blob:["rgba(255,170,90,.08)","rgba(30,0,30,.12)"],glow:["rgba(255,170,90,.16)","rgba(255,110,220,.16)"],mote:"255,200,150",mini:["#4a2e5e","#5e3a70","#e09a6a"],dirt:18,drip:"rgba(255,190,120,.35)"},
- field3:{gH:200,gHr:25,gS:30,gSr:12,gL:46,gLr:12,tA:"rgba(220,245,255,.5)",tB:"rgba(10,30,60,.45)",fl:["#ffffff","#bfe8ff","#d8c8ff","#fff3c0"],edge:"rgba(30,60,90,.45)",side:["#4a5a78","#1a2236","#38465e","#121a2a"],rim:"#4a78a8",pool:["#bff4ff","#3a78c8"],shore:"#8a9ab8",pad:["#6ac0d8","#ffffff"],blob:["rgba(200,230,255,.1)","rgba(0,20,50,.12)"],glow:["rgba(160,220,255,.18)","rgba(200,170,255,.16)"],mote:"200,230,255",mini:["#3a7088","#5a98b0","#a8e8f8"],dirt:215,drip:"rgba(190,230,255,.35)"}
+ field3:{gH:200,gHr:25,gS:30,gSr:12,gL:46,gLr:12,tA:"rgba(220,245,255,.5)",tB:"rgba(10,30,60,.45)",fl:["#ffffff","#bfe8ff","#d8c8ff","#fff3c0"],edge:"rgba(30,60,90,.45)",side:["#4a5a78","#1a2236","#38465e","#121a2a"],rim:"#4a78a8",pool:["#bff4ff","#3a78c8"],shore:"#8a9ab8",pad:["#6ac0d8","#ffffff"],blob:["rgba(200,230,255,.1)","rgba(0,20,50,.12)"],glow:["rgba(160,220,255,.18)","rgba(200,170,255,.16)"],mote:"200,230,255",mini:["#3a7088","#5a98b0","#a8e8f8"],dirt:215,drip:"rgba(190,230,255,.35)"},
+ geo:{gH:28,gHr:18,gS:14,gSr:8,gL:25,gLr:9,tA:"rgba(200,170,130,.4)",tB:"rgba(20,14,10,.45)",fl:["#7ff0ff","#c8b88a","#a0e0ff","#ffe0a0"],edge:"rgba(30,20,14,.5)",side:["#4a3a30","#1c1410","#3a2c24","#120c08"],rim:"#6a4a30",pool:["#8ff8ff","#1c6fa8"],shore:"#7a6a58",pad:["#4a8a78","#cfeeff"],blob:["rgba(120,200,230,.08)","rgba(30,10,0,.14)"],glow:["rgba(120,220,255,.16)","rgba(255,170,90,.12)"],mote:"170,225,255",mini:["#4a3c30","#5e4c3c","#3aa8d0"],dirt:34,drip:"rgba(160,220,255,.3)"},
+ ruins:{gH:8,gHr:14,gS:16,gSr:8,gL:17,gLr:7,tA:"rgba(255,140,60,.4)",tB:"rgba(10,4,4,.5)",fl:["#ff9a3c","#ffd27a","#ff5a2a","#ffe9b0"],edge:"rgba(20,6,4,.55)",side:["#3a2220","#150a0a","#2c1814","#0e0606"],rim:"#a8401a",pool:["#ffd36a","#d8340a"],shore:"#5a3a30",pad:["#7a3a1a","#ffcf7a"],blob:["rgba(255,100,40,.09)","rgba(0,0,0,.16)"],glow:["rgba(255,120,40,.2)","rgba(255,200,90,.12)"],mote:"255,150,70",mini:["#3a2220","#4e2c24","#ff7a2a"],dirt:12,drip:"rgba(255,140,60,.3)"}
 };
 const fPathY=x=>24+Math.round(Math.sin((x-2)*.21)*3);
 const fPathX=y=>27+Math.round(Math.sin(y*.19+1)*3);
@@ -2548,6 +2604,14 @@ const f2PathX=y=>18+Math.round(Math.sin(y*.2)*3);
 const f2PathY=x=>20+Math.round(Math.sin(x*.23)*3);
 const f3PathX=y=>24+Math.round(Math.sin(y*.18+.5)*3);
 const f3PathY=x=>33+Math.round(Math.sin(x*.2)*2);
+/* v19 map shapes: Geosyncline (west) has fault cracks and mysterious water, Ruins (south) has lava and broken columns */
+const geoPathY=x=>24+Math.round(Math.sin(x*.2+1)*3);
+const geoPathX=y=>22+Math.round(Math.sin(y*.17)*3);
+const ruinPathX=y=>24+Math.round(Math.sin(y*.16+.8)*4);
+const ruinPathY=x=>26+Math.round(Math.sin(x*.19)*3);
+const FAULTS=[[[5,6],[12,11],[19,10],[27,16],[33,15]],[[8,40],[15,35],[22,38],[30,33],[38,36]],[[36,4],[40,10],[37,16]],[[4,17],[9,24],[6,31]]];
+const segD=(px,py,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],l=dx*dx+dy*dy,u=l?Math.max(0,Math.min(1,((px-a[0])*dx+(py-a[1])*dy)/l)):0;return Math.hypot(px-a[0]-u*dx,py-a[1]-u*dy)};
+const geoChasm=(x,y)=>{const px=x+.5,py=y+.5;for(const f of FAULTS)for(let i=0;i<f.length-1;i++)if(segD(px,py,f[i],f[i+1])<.62+hash(x,y)*.25)return true;return false};
 const FCFG={
  field1:{nameK:"field1_name",subK:"field1_sub",bg:["#10262e","#061115"],rec:150,pools:[[33,36,3.4,2.4],[14,11,2.6,2]],
    paths:(x,y)=>{const py=fPathY(x);if(y===py||y===py+1)return true;if(y>=2&&y<=44){const px=fPathX(y);if(x===px||x===px+1)return true}return false},
@@ -2557,7 +2621,18 @@ const FCFG={
    portals:[{x:f2PathX(46),y:46,to:"field1",labelK:"field1_name"},{x:f2PathX(2),y:2,to:"field3",labelK:"field3_name"}],trees:[5,6],alt:1},
   field3:{nameK:"field3_name",subK:"field3_sub",bg:["#0f2030","#050c14"],rec:900,pools:[[10,39,3,2],[38,41,3.2,2.2],[40,12,2.4,1.8],[8,14,2.6,2]],arena:[24.5,14.5,5.6],
     paths:(x,y)=>{if(Math.hypot(x+.5-24.5,y+.5-14.5)<=5.6)return true;if(y>=19&&y<=46){const px=f3PathX(y);if(x===px||x===px+1)return true}if(x>=4&&x<=44){const py=f3PathY(x);if(y===py||y===py+1)return true}return false},
-    portals:[{x:f3PathX(46),y:46,to:"field2",labelK:"field2_name"}],trees:[7,8],alt:2}
+    portals:[{x:f3PathX(46),y:46,to:"field2",labelK:"field2_name"}],trees:[7,8],alt:2},
+  geo:{nameK:"geo_name",subK:"geo_sub",bg:["#1c1612","#0a0706"],rec:2000,pools:[[12,29,3.4,2.2],[37,41,3.6,2.4],[38,9,3,2.2],[7,11,2.4,1.7],[27,31,2.4,1.6]],
+    paths:(x,y)=>{if(x>=3){const py=geoPathY(x);if(y===py||y===py+1)return true}if(y>=4&&y<=44){const px=geoPathX(y);if(x===px||x===px+1)return true}return false},
+    chasm:geoChasm,
+    portals:[{x:46,y:geoPathY(46),to:"town",labelK:"mapName"}],trees:[9,9],alt:3,
+    pick:(x,y,border,r)=>{if(border)return r<.4?{kind:"tree",v:9}:null;if(r<.012)return {kind:"stele",v:hash(x*5,y)};if(r<.034)return {kind:"crys",v:hash(x,y*7),alt:3};if(r<.05)return {kind:"rock",v:hash(x*3,y*3)};if(r<.06)return {kind:"shroom",v:hash(x*7,y),alt:3};if(r<.07)return {kind:"tree",v:9};return null},
+    after:m=>{const py=geoPathY(46);for(const [x,y] of [[44,py-2],[44,py+3]])if(inb(x,y)&&!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:"stele",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:.5})}}},
+  ruins:{nameK:"ruins_name",subK:"ruins_sub",bg:["#2a0e0a","#0c0404"],rec:3000,pools:[[9,13,3,2.2],[39,15,3.4,2.4],[11,38,3.4,2.2],[39,39,3,2],[35,30,2.4,1.6]],
+    paths:(x,y)=>{if(y>=2){const px=ruinPathX(y);if(x===px||x===px+1)return true}if(x>=3&&x<=45){const py=ruinPathY(x);if(y===py||y===py+1)return true}return false},
+    portals:[{x:ruinPathX(2),y:2,to:"town",labelK:"mapName"}],trees:[10,10],alt:4,
+    pick:(x,y,border,r)=>{if(border)return r<.35?{kind:"tree",v:10}:null;if(r<.012)return {kind:"pillar",v:hash(x*5,y*3)};if(r<.02)return {kind:"brazier",v:hash(x,y*9)};if(r<.04)return {kind:"crys",v:hash(x,y*7),alt:4};if(r<.056)return {kind:"rock",v:hash(x*3,y*3)};if(r<.066)return {kind:"tree",v:10};return null},
+    after:m=>{let i=0;for(let y=7;y<=44;y+=5,i++)for(const sx of [-2,3]){const x=ruinPathX(y)+sx;if(inb(x,y)&&!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:(i+(sx>0?1:0))%2?"brazier":"pillar",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x*5,y*3)})}}}}
 };
 function buildField(id){
   const c=FCFG[id],m=newMap(id);Object.assign(m,{nameK:c.nameK,subK:c.subK,bg:c.bg,rec:c.rec,pal:FPAL[id],pools:c.pools,arena:c.arena||null});
@@ -2567,6 +2642,7 @@ function buildField(id){
     if(hash((x>>2)+40,(y>>2)+3)<.22&&hash(x+9,y)<.5)tp=T_F;
     if(c.paths(x,y))tp=T_D;
     for(const e of m.pools)if(inEll(x+.5,y+.5,e)){tp=T_W;blk[I(x,y)]=1}
+    if(c.chasm&&tp!==T_W&&c.chasm(x,y)&&![-1,0,1].some(j=>[-1,0,1].some(i=>c.paths(x+i,y+j)))&&Math.hypot(x-c.portals[0].x,y-c.portals[0].y)>6){tp=T_C;blk[I(x,y)]=1}
     map[I(x,y)]=tp;
     if(x===0||y===0||x===N-1||y===N-1)blk[I(x,y)]=1;
   }
@@ -2574,6 +2650,7 @@ function buildField(id){
   plantTrees(m,(x,y,border,r)=>{
     if(c.portals.some(p=>Math.hypot(x-p.x,y-p.y)<5))return null;
     if(c.arena&&Math.hypot(x+.5-c.arena[0],y+.5-c.arena[1])<c.arena[2]+2)return null;
+    if(c.pick){const q=c.pick(x,y,border,r);if(q!==undefined)return q}
     if(border)return r<.6?{kind:"tree",v:hash(x,y*3)<.55?c.trees[0]:c.trees[1]}:null;
     if(r<.028)return {kind:"shroom",v:hash(x*7,y),alt:c.alt};
     if(r<.05)return {kind:"crys",v:hash(x,y*7),alt:c.alt};
@@ -2581,11 +2658,12 @@ function buildField(id){
     if(r<.08)return {kind:"tree",v:c.trees[0]};
     return null;
   });
+  if(c.after)c.after(m);
   return m;
 }
-const town=buildTown(),field1=buildField("field1"),field2=buildField("field2"),field3=buildField("field3");
-const MAPS={town,field1,field2,field3};
-const FIELDS=[field1,field2,field3];
+const town=buildTown(),field1=buildField("field1"),field2=buildField("field2"),field3=buildField("field3"),geo=buildField("geo"),ruins=buildField("ruins");
+const MAPS={town,field1,field2,field3,geo,ruins};
+const FIELDS=[field1,field2,field3,geo,ruins];
 let cur=town;
 const walkM=(m,x,y)=>inb(x,y)&&!m.blk[I(x,y)];
 const walk=(x,y)=>walkM(cur,x,y);
@@ -2758,7 +2836,13 @@ const MPAL={
  crawlix:{b1:"#4fb3ac",b2:"#174649",head:"#2a6a6c",l1:"#1d4a4f",l2:"#123236",c:["#7ff0ff","#c8faff","#5fd8e8"],cb:"#1c8aa0",eye:"#b6ff7a",glow:"rgba(110,240,255,.25)"},
  shardback:{b1:"#7a4fa8",b2:"#2e1846",head:"#5a3880",l1:"#3a2058",l2:"#24123a",c:["#ffc46b","#fff0b8","#ff9a3c"],cb:"#b8561c",eye:"#ff6ad5",glow:"rgba(255,180,90,.3)"},
  oculoth:{s1:"#7a685c",s2:"#352a26",crack:"255,140,50",i0:"#ffe38a",i1:"#ff7a1a",i2:"#a8350a",glow:"rgba(255,130,60,.18)",lid:"#5e4e44",rock:"#6a5a50",drip:"#463830"},
- cryoculus:{s1:"#7c8aa0",s2:"#2c3446",crack:"120,220,255",i0:"#e8fbff",i1:"#5ad2ff",i2:"#1a5aa8",glow:"rgba(120,210,255,.22)",lid:"#4e5a6e",rock:"#8fa6c0",drip:"#3a4658"}
+ cryoculus:{s1:"#7c8aa0",s2:"#2c3446",crack:"120,220,255",i0:"#e8fbff",i1:"#5ad2ff",i2:"#1a5aa8",glow:"rgba(120,210,255,.22)",lid:"#4e5a6e",rock:"#8fa6c0",drip:"#3a4658"},
+ faultcrawler:{b1:"#8a7a68",b2:"#3a2e26",plate:"#6e6252",l1:"#4a3c30",l2:"#2e241c",head:"#5a4c3e",eye:"#7ff0ff",seam:"110,235,255",glow:"rgba(110,230,255,.2)"},
+ tidewraith:{aura:"rgba(90,170,255,.4)",top:"#e4f8ff",mid:"#6ab8f0",st:"rgba(20,60,130,.55)",hood:"#0a2038",eye:"#bff8ff",glyph:"rgba(220,250,255,.85)",orb:"#7ad0ff"},
+ stratagolem:{s:["#6a5a4a","#8c7a64","#74634f","#9a8870"],l1:"#54463a",l2:"#3c3228",a1:"#7a6a56",a2:"#4a3e32",fist:"#8a7860",eye:"#9ff4ff",rock:"#8a7a66"},
+ cinderling:{aura:"rgba(255,120,40,.4)",f0:"#d8340a",f1:"#ff7a2a",f2:"#ffd27a",horn:"#2a1410",eye:"#fff6d0"},
+ magmaback:{b1:"#3a2a28",b2:"#1a0f0e",head:"#4a3430",l1:"#2c1c1a",l2:"#1a0e0c",spine:"#5a3a30",eye:"#ffd060"},
+ ashsentinel:{a1:"#4a4240",a2:"#2e2826",a3:"#5e5450",helm:"#3a3230",spike:"#6a5e58",blade:"#2a2220"}
 };
 const MON={
  lumite:{sprite:"lumite",map:"field1",nameK:"mon_lumite",lv:1,hp:60,atk:10,def:1,aspd:1.6,speed:1.3,exp:[20,14],sc:[3,7],drop:["mat_gel",.45],h:50,size:1.05,zone:[5,24,3,45],count:9},
@@ -2770,13 +2854,19 @@ const MON={
   glacilite:{sprite:"lumite",map:"field3",nameK:"mon_glacilite",lv:13,hp:540,atk:44,def:10,aspd:1.5,speed:1.4,exp:[230,150],sc:[38,60],drop:["mat_gel3",.4],h:50,size:1.15,zone:[5,26,24,45],count:9},
   rimeback:{sprite:"crawlix",map:"field3",nameK:"mon_rimeback",lv:15,hp:760,atk:54,def:13,aspd:1.5,speed:1.8,exp:[330,215],sc:[52,82],drop:["mat_rime",.35],h:32,size:1.25,zone:[24,45,24,45],count:7},
   magnoculus:{sprite:"oculoth",map:"field3",nameK:"mon_magnoculus",lv:17,hp:1000,atk:66,def:15,aspd:1.7,speed:1.15,exp:[470,300],sc:[80,120],drop:["mat_mag",.3],h:66,size:1.3,zone:[4,45,3,26],count:5},
+  faultcrawler:{sprite:"faultcrawler",map:"geo",nameK:"mon_faultcrawler",lv:25,hp:2000,atk:78,def:22,aspd:1.5,speed:1.5,exp:[750,480],sc:[120,180],drop:["mat_fault",.4],h:38,size:1.25,zone:[24,45,3,45],count:8,aggr:5.5,skills:["tremor"]},
+  tidewraith:{sprite:"tidewraith",map:"geo",nameK:"mon_tidewraith",lv:27,hp:2300,atk:84,def:16,aspd:1.7,speed:1.4,exp:[880,560],sc:[140,210],drop:["mat_tide",.38],h:66,size:1.15,zone:[10,36,3,45],count:7,aggr:6,skills:["undertow"]},
+  stratagolem:{sprite:"stratagolem",map:"geo",nameK:"mon_stratagolem",lv:30,hp:3200,atk:100,def:26,aspd:2.0,speed:1.0,exp:[1060,680],sc:[170,260],drop:["mat_strata",.35],h:76,size:1.25,zone:[3,24,3,45],count:5,aggr:4.5,skills:["crust","debris"]},
+  cinderling:{sprite:"cinderling",map:"ruins",nameK:"mon_cinderling",lv:32,hp:3000,atk:104,def:24,aspd:1.4,speed:1.9,exp:[1250,800],sc:[190,290],drop:["mat_cinder",.4],h:56,size:1.1,zone:[3,45,5,24],count:8,aggr:6.5,skills:["emberburst"]},
+  magmaback:{sprite:"magmaback",map:"ruins",nameK:"mon_magmaback",lv:35,hp:4000,atk:122,def:34,aspd:1.6,speed:1.6,exp:[1480,940],sc:[230,350],drop:["mat_magma",.36],h:38,size:1.3,zone:[3,45,16,38],count:7,aggr:5.5,skills:["lavaspit"]},
+  ashsentinel:{sprite:"ashsentinel",map:"ruins",nameK:"mon_ashsentinel",lv:38,hp:5200,atk:140,def:38,aspd:1.9,speed:1.1,exp:[1750,1110],sc:[275,415],drop:["mat_relic",.32],h:84,size:1.3,zone:[3,45,28,45],count:5,aggr:5,skills:["inferno","ashwave"]},
   gadolith:{sprite:"gadolith",map:"field3",nameK:"mon_gadolith",boss:true,lv:20,hp:8000,atk:58,def:12,aspd:2.6,speed:1.0,exp:[2600,1700],sc:[1000,1600],drop:["mat_gheart",1],h:100,size:2.2,zone:[22,27,12,17],count:0}
 };
 const ELITE={hp:5,atk:1.6,def:3,exp:5,sc:4,size:1.3};
 function spawnPos(m,type){const z=MON[type].zone;for(let k=0;k<400;k++){const x=z[0]+Math.floor(Math.random()*(z[1]-z[0])),y=z[2]+Math.floor(Math.random()*(z[3]-z[2]));
   if(walkM(m,x,y)&&!m.portals.some(p=>Math.hypot(x-p.x,y-p.y)<7)&&(MON[type].boss||!m.arena||Math.hypot(x+.5-m.arena[0],y+.5-m.arena[1])>m.arena[2]+1))return [x+.5,y+.5]}return [24.5,24.5]}
 function newMon(type,elite){const d=MON[type],m=MAPS[d.map],[x,y]=spawnPos(m,type),hp=d.hp*(elite?ELITE.hp:1);
-  return mk({mon:true,type,boss:!!d.boss,slamT:6+Math.random()*3,tele:null,elite:!!elite,x,y,home:[x,y],hp,maxHp:hp,speed:d.speed,wait:Math.random()*3,aggro:false,atkCd:0,hitT:0,dieT:0,dead:false,respawn:0,repath:0,phase:Math.random()*9})}
+  return mk({mon:true,type,boss:!!d.boss,slamT:6+Math.random()*3,tele:null,skCd:null,elite:!!elite,x,y,home:[x,y],hp,maxHp:hp,speed:d.speed,wait:Math.random()*3,aggro:false,atkCd:0,hitT:0,dieT:0,dead:false,respawn:0,repath:0,phase:Math.random()*9})}
 for(const k in MON){const m=MAPS[MON[k].map];if(MON[k].boss){m.monsters.push(newMon(k,false));continue}
   for(let i=0;i<MON[k].count;i++)m.monsters.push(newMon(k,false));m.monsters.push(newMon(k,true))}
 function respawnMon(mo){Object.assign(mo,newMon(mo.type,mo.elite))}
@@ -2811,7 +2901,7 @@ for(const k in MON){const d=MON[k];if(d.boss)continue;const id=k==="shardback"?"
   if(QD[id]){QD[id].r=huntReward(d,QD[id].stages[0].n);continue}   // older hand-written hunts use the same formula
   QD[id]={type:"normal",rep:true,qmap:d.map,titleK:"qn_"+k,stages:[{t:"kill",mon:k,map:d.map,n:15}],r:huntReward(d,15)}}
 /* Elite hunt per map + boss hunt */
-const ELQ={field1:{n:3,b:900,j:500,sc:700,y:5},field2:{n:3,b:2400,j:1400,sc:1500,y:8},field3:{n:3,b:5200,j:3000,sc:3000,y:12}};
+const ELQ={field1:{n:3,b:900,j:500,sc:700,y:5},field2:{n:3,b:2400,j:1400,sc:1500,y:8},field3:{n:3,b:5200,j:3000,sc:3000,y:12},geo:{n:3,b:9000,j:5600,sc:4800,y:16},ruins:{n:3,b:16000,j:10000,sc:8000,y:22}};
 for(const m in ELQ){const e=ELQ[m];QD["qe_"+m]={type:"normal",rep:true,qmap:m,titleK:"qe_"+m,stages:[{t:"kill",elite:true,map:m,n:e.n}],r:{b:e.b,j:e.j,sc:e.sc,y:e.y}}}
 QD.qb_gadolith={type:"normal",rep:true,qmap:"field3",titleK:"qb_gadolith",stages:[{t:"kill",mon:"gadolith",map:"field3",n:1}],r:{b:2500,j:1500,sc:2500,y:20}};
 
@@ -2902,6 +2992,18 @@ const ART={
  mat_magcoil:artWrap(`<path d="M10 14c8-8 14 4 6 8s-6 8 2 12 14-4 14-10" stroke="#8a96e8" stroke-width="7" fill="none" stroke-linecap="round"/>
   <path d="M10 14c8-8 14 4 6 8s-6 8 2 12 14-4 14-10" stroke="#241a2e" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".7"/>
   <path d="M12 16l6-2M28 34l5-2" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>`),
+ mat_fault:artWrap(`<path d="M8 38l6-20 10-10 12 6 4 16-8 10z" fill="#c9b08a" ${ART_OUT}/><path d="M18 18l6 10-4 10M24 28l10-4" stroke="#5a4630" stroke-width="1.4" fill="none"/><path d="M24 8l12 6-12 3z" fill="#e8d6b0"/>`),
+ mat_seismic:artWrap(`<circle cx="24" cy="24" r="16" fill="#8a6a4a" ${ART_OUT}/><path d="M12 20l8 2 3-8 4 10 9-3" stroke="#ffb860" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="26" r="6" fill="#ffb860" ${ART_OUT}/><circle cx="22" cy="24" r="2" fill="#fff3d0"/>`),
+ mat_tide:artWrap(`<path d="M24 5c8 9 13 15 13 23a13 13 0 0 1-26 0c0-8 5-14 13-23z" fill="#6ab8f0" ${ART_OUT}/><path d="M17 28a7 7 0 0 0 5 7" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8"/><circle cx="29" cy="22" r="2" fill="#dff6ff"/>`),
+ mat_glyph:artWrap(`<path d="M12 8h24l2 32H10z" fill="#7a8896" ${ART_OUT}/><path d="M12 8h24l1 6H11z" fill="#a8b6c4"/><path d="M18 18h12M24 18v16M18 28l6-4 6 4M18 36h12" stroke="#9fe8ff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`),
+ mat_strata:artWrap(`<path d="M6 16l18-8 18 8v6l-18 8-18-8z" fill="#c4ae90" ${ART_OUT}/><path d="M6 24l18 8 18-8v6l-18 8-18-8z" fill="#9a8468" ${ART_OUT}/><path d="M6 16l18 8 18-8M24 24v14" stroke="#6a5640" stroke-width="1.4" fill="none"/>`),
+ mat_press:artWrap(`<path d="M24 4l12 12-4 24H16L12 16z" fill="#7fb8ff" ${ART_OUT}/><path d="M24 4l-4 12 4 24 4-24z" fill="#bfe0ff"/><path d="M12 16h24" stroke="#2a5aa8" stroke-width="1.4"/><path d="M6 24l6 2M42 24l-6 2M24 46v-4" stroke="#7fb8ff" stroke-width="2" stroke-linecap="round"/>`),
+ mat_cinder:artWrap(`<path d="M6 40c2-12 8-18 18-18s16 6 18 18z" fill="#6a5048" ${ART_OUT}/><circle cx="18" cy="32" r="2.5" fill="#ff8a3a"/><circle cx="29" cy="29" r="2" fill="#ffb060"/><circle cx="25" cy="36" r="1.8" fill="#ff6a2a"/><path d="M24 22c-4-4 0-8 0-12 4 4 5 8 0 12z" fill="#ff9a3a" ${ART_OUT}/>`),
+ mat_embercore:artWrap(`<circle cx="24" cy="24" r="18" fill="#ff8a2a" opacity=".3"/><circle cx="24" cy="24" r="12" fill="#e0501a" ${ART_OUT}/><circle cx="24" cy="24" r="7" fill="#ffc060"/><circle cx="24" cy="24" r="3" fill="#fff6d0"/><path d="M24 3v5M24 40v5M3 24h5M40 24h5M9 9l4 4M35 35l4 4M39 9l-4 4M13 35l-4 4" stroke="#ff9a3a" stroke-width="2" stroke-linecap="round"/>`),
+ mat_magma:artWrap(`<path d="M24 5l16 9v18L24 43 8 32V14z" fill="#3a2420" ${ART_OUT}/><path d="M24 5l16 9-16 9-16-9z" fill="#5a3a30"/><path d="M14 20l8 4-2 10M30 18l-4 8 8 6" stroke="#ff7a2a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`),
+ mat_lavaglass:artWrap(`<path d="M14 8l16 4 8 16-10 14-16-6-4-16z" fill="#ffb040" ${ART_OUT}/><path d="M14 8l10 12 14 8M24 20l-6 16" stroke="#fff0c0" stroke-width="1.4" fill="none" opacity=".8"/><path d="M18 14l6 2" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`),
+ mat_relic:artWrap(`<path d="M8 38c0-14 7-24 16-24s16 10 16 24z" fill="#6e5e54" ${ART_OUT}/><path d="M14 38v-8h20v8" fill="#4a3c34"/><rect x="21" y="23" width="6" height="2.6" fill="#ff7a2a"/><path d="M16 20l4 4M32 18l-3 5" stroke="#2a201c" stroke-width="1.6" stroke-linecap="round"/>`),
+ mat_infernoshard:artWrap(`<path d="M24 3l9 13-3 12 6 8-12 8-12-8 6-8-3-12z" fill="#ff5a1a" ${ART_OUT}/><path d="M24 3l-3 13 3 24 3-24z" fill="#ffb060"/><path d="M18 22h12" stroke="#fff0c0" stroke-width="1.4"/>`),
  mat_ore:artWrap(`<path d="M6 40l6-22 10-8 12 4 8 12-2 14z" fill="#8a8aa8" ${ART_OUT}/>
   <path d="M16 18l6 8-2 12M22 26l10-2" stroke="#5a5a78" stroke-width="1.4" fill="none"/>
   <path d="M24 16l4 6-4 6-4-6z" fill="#d8d2ff" ${ART_OUT}/>`),
@@ -3087,7 +3189,21 @@ const ITEMDB={
  mat_ore:{t:"mat",q:1,p:15,c:"#d8d2ff",ic:"gem",n:["Gadolinium Ore","แร่แกโดลิเนียม"],d:["Raw ore from the crystal fields. Used by quests.","แร่ดิบจากทุ่งคริสตัล ใช้กับเควสต์"]},
  refine_ore:{t:"mat",p:120,c:"#ffe28a",ic:"rock",n:["Refine Ore","แร่ตีบวก"],d:["Refines equipment: +1 on success.","ใช้ตีบวกอุปกรณ์ สำเร็จแล้ว +1"]},
  mat_core:{t:"mat",p:80,c:"#ffd76a",ic:"star",n:["Elite Core","แกนอีลิท"],d:["Pulled from an Elite monster.","ได้จากมอนสเตอร์ Elite"]},
- mat_gheart:{t:"mat",q:1,p:300,c:"#bff4ff",ic:"gem",n:["Crystal Heart","หัวใจคริสตัล"],d:["Heart of Gadolith. Keep it for quests.","หัวใจของกาโดลิธ เก็บไว้ทำเควสต์"]}
+ mat_gheart:{t:"mat",q:1,p:300,c:"#bff4ff",ic:"gem",n:["Crystal Heart","หัวใจคริสตัล"],d:["Heart of Gadolith. Keep it for quests.","หัวใจของกาโดลิธ เก็บไว้ทำเควสต์"]},
+ /* v19: Path to the Geosyncline */
+ mat_fault:{t:"mat",p:20,c:"#c9b08a",ic:"rock",n:["Fault Shard","เศษหินรอยเลื่อน"],d:["A splinter from a cracked fault line.","เศษหินจากรอยเลื่อนที่ปริแตก"]},
+ mat_seismic:{t:"mat",p:70,c:"#e8a85a",ic:"gem",n:["Seismic Core","แกนแผ่นดินไหว"],d:["A core that still trembles.","แกนพลังที่ยังสั่นไหวอยู่"]},
+ mat_tide:{t:"mat",p:24,c:"#6ab8f0",ic:"drop",n:["Abyssal Tear","หยดน้ำเหวลึก"],d:["Water from the deep, cold as the abyss.","น้ำจากเบื้องลึก เย็นเท่าก้นเหว"]},
+ mat_glyph:{t:"mat",p:85,c:"#9fe8ff",ic:"star",n:["Sunken Glyph","อักขระจมน้ำ"],d:["A carved glyph of a lost civilization.","อักขระสลักของอารยธรรมที่สูญหาย"]},
+ mat_strata:{t:"mat",p:28,c:"#a89478",ic:"shield",n:["Strata Slab","แผ่นชั้นหิน"],d:["Layers of ancient rock pressed into one slab.","ชั้นหินโบราณอัดแน่นเป็นแผ่นเดียว"]},
+ mat_press:{t:"mat",p:100,c:"#7fb8ff",ic:"gem",n:["Pressure Crystal","คริสตัลแรงอัด"],d:["Crystal born under crushing pressure.","คริสตัลที่เกิดใต้แรงกดมหาศาล"]},
+ /* v19: Road to the Ruins */
+ mat_cinder:{t:"mat",p:30,c:"#d8683a",ic:"flame",n:["Cinder Ash","ขี้เถ้าเพลิง"],d:["Ash that still glows at the edges.","ขี้เถ้าที่ขอบยังเรืองแสง"]},
+ mat_embercore:{t:"mat",p:105,c:"#ff8a2a",ic:"star",n:["Ember Core","แกนเพลิง"],d:["A heart of living flame.","หัวใจของเปลวเพลิงที่ยังมีชีวิต"]},
+ mat_magma:{t:"mat",p:38,c:"#c8401a",ic:"shield",n:["Magma Plate","แผ่นหินหลอม"],d:["Black plate veined with lava.","แผ่นหินดำมีเส้นลาวาไหลผ่าน"]},
+ mat_lavaglass:{t:"mat",p:125,c:"#ffb040",ic:"gem",n:["Lava Glass","แก้วลาวา"],d:["Glass formed from cooled lava.","แก้วที่เกิดจากลาวาเย็นตัว"]},
+ mat_relic:{t:"mat",p:45,c:"#8a7060",ic:"rock",n:["Scorched Relic","ซากโบราณไหม้เกรียม"],d:["A burnt piece of the old ruins.","ชิ้นส่วนซากปรักหักพังที่ถูกไฟไหม้"]},
+ mat_infernoshard:{t:"mat",p:160,c:"#ff5a1a",ic:"flame",n:["Inferno Shard","เศษหัวใจนรก"],d:["A shard of hellfire made solid.","เศษไฟนรกที่แข็งตัวเป็นผลึก"]}
 };
 /* equipment */
 /* 10 equipment slots (v15). Item families made before this layout still work: they equip into the slot they map to. */
@@ -3244,9 +3360,15 @@ const LOOT={
  glacilite:[["mat_gel3",.4,1,2],["mat_sparkfrost",.15,1,1],["herb_frost",.08,1,1]],
  rimeback:[["mat_rime",.35,1,2],["mat_rimebone",.18,1,1],["herb_sage",.07,1,1]],
  magnoculus:[["mat_mag",.3,1,2],["mat_magcoil",.15,1,1],["red_l",.05,1,1]],
+ faultcrawler:[["mat_fault",.4,1,2],["mat_seismic",.14,1,1],["red_l",.06,1,1]],
+ tidewraith:[["mat_tide",.38,1,2],["mat_glyph",.12,1,1],["herb_frost",.08,1,1]],
+ stratagolem:[["mat_strata",.35,1,2],["mat_press",.12,1,1],["herb_sage",.07,1,1]],
+ cinderling:[["mat_cinder",.4,1,2],["mat_embercore",.13,1,1],["herb_ember",.09,1,1]],
+ magmaback:[["mat_magma",.36,1,2],["mat_lavaglass",.12,1,1],["red_l",.07,1,1]],
+ ashsentinel:[["mat_relic",.32,1,2],["mat_infernoshard",.1,1,1],["herb_dew",.07,1,1]],
  gadolith:[]
 };
-const REFINE_CH={lumite:.02,crawlix:.03,oculoth:.04,nebulite:.03,shardback:.04,cryoculus:.05,glacilite:.04,rimeback:.05,magnoculus:.06};
+const REFINE_CH={lumite:.02,crawlix:.03,oculoth:.04,nebulite:.03,shardback:.04,cryoculus:.05,glacilite:.04,rimeback:.05,magnoculus:.06,faultcrawler:.06,tidewraith:.07,stratagolem:.08,cinderling:.08,magmaback:.09,ashsentinel:.10};
 function rollRarity(kind){const w=kind==="boss"?[10,30,35,20,5]:kind==="elite"?[45,30,15,8,2]:[70,22,6,1.8,.2];let x=Math.random()*100;for(let i=0;i<5;i++){x-=w[i];if(x<0)return i+1}return 1}
 /* a random piece of gear for a tier: random class, slot, rarity and one of its 3 sets */
 function rollDropGear(L,kind){
@@ -3482,7 +3604,9 @@ const gameState={lv:1,exp:0,jlv:1,jexp:0,hp:420,sp:120,sc:1250,y:0,la:0,arch:"be
   sound:true,music:true,gfx:"hi",autoIdle:true,bag:[],equip:null,uidN:1};
 const S=gameState;
 /* ---- combat state: buffs, cooldowns, derived stats (REOC) ---- */
-const BF={warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0};
+const BF={warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0,burn:0,burnDps:0,burnAcc:0,slow:0};
+/* v19: gates of the two new maps (Base Lv and Combat Power both needed) */
+let gateT=0,aggroGrace=0;
 const CD={};
 let _pd=null,_pdKey="";
 /* derived stats = base stats + equipped gear + herb buffs (combat math lives in REOC) */
@@ -3502,6 +3626,9 @@ function pd(){
 const hpMax=()=>pd().maxHP,spMax=()=>pd().maxSP;
 const atkV=()=>pd().statusAtk+pd().watk+pd().mastery,defV=()=>pd().softDef;
 const cpV=()=>REOC.combatPower(S.arch,S.lv,effStats(),gearMods());
+const GATE={geo:{lv:25,cp:2000},ruins:{lv:30,cp:3000}};
+function gateCheck(id){const q=GATE[id];if(!q)return {ok:true};const cp=cpV();return {ok:S.lv>=q.lv&&cp>=q.cp,lv:q.lv,cp:q.cp,myCp:cp}}
+const gateMsg=q=>fmt("gate_block",{l:q.lv,c:num(q.cp),a:S.lv,d:num(q.myCp)});
 const statFree=()=>REOC.statPointsTotal(S.lv)-REOC.spent(S.stats);
 const need=lv=>Math.round(60*Math.pow(lv,1.5)),jneed=jl=>Math.round(20*Math.pow(jl,1.5));
 const jcap=()=>S.arch==="beginner"?10:50;
@@ -3654,13 +3781,25 @@ function* groundGen(m){
     g.save();g.globalCompositeOperation="lighter";const rg=g.createRadialGradient(sx,sy,0,sx,sy,26);rg.addColorStop(0,c);rg.addColorStop(1,"rgba(0,0,0,0)");g.fillStyle=rg;g.beginPath();g.ellipse(sx,sy,26,13,0,0,TAU);g.fill();g.restore()}
   g=gctx;m._gp=1;m.ground=cvs;
 }
+function drawChasmTile(pts,x,y){
+  const h=hash(x*3,y*5),c=P(x+.5,y+.5);
+  fillPoly(pts,"#0b080c");
+  g.save();path(pts);g.clip();
+  const rg=g.createRadialGradient(c[0],c[1],1,c[0],c[1],20);rg.addColorStop(0,"rgba(90,230,255,.55)");rg.addColorStop(.5,"rgba(40,120,170,.25)");rg.addColorStop(1,"rgba(0,0,0,0)");
+  g.fillStyle=rg;g.fillRect(c[0]-24,c[1]-14,48,28);
+  g.strokeStyle="rgba(140,240,255,.55)";g.lineWidth=1.2;line(P(x+.15+h*.3,y+.2),P(x+.6+h*.3,y+.8));
+  g.strokeStyle="rgba(255,190,120,.35)";g.lineWidth=1;line(P(x+.7,y+.15),P(x+.3,y+.65));
+  g.restore();
+  g.strokeStyle="rgba(30,18,10,.85)";g.lineWidth=2;path(pts);g.stroke();
+}
 function tile(m,x,y){
   const fieldMap=m.id!=="town",fp=m.pal;let tp=m.map[I(x,y)];
   if(tp===T_P)tp=isRoadBand(x,y)?T_R:T_G;
   if(tp===T_W)tp=T_G;
   const pts=[P(x,y),P(x+1,y),P(x+1,y+1),P(x,y+1)],h=hash(x,y);
   const pathT=(nx,ny)=>{if(!inb(nx,ny))return true;const q=m.map[I(nx,ny)];return q===T_R||q===T_P||q===T_D};
-  if(tp===T_R||tp===T_D){
+  if(tp===T_C){drawChasmTile(pts,x,y)}
+  else if(tp===T_R||tp===T_D){
     const dirt=tp===T_D;
     const c=dirt?`hsl(${(fieldMap?fp.dirt:26)+h*6},${28+h*8}%,${38+h*6}%)`:`hsl(268,${16+h*8}%,${50+h*8}%)`;fillPoly(pts,c,c,1);
     g.save();path(pts);g.clip();
@@ -3688,7 +3827,7 @@ function drawTree(o){
   ell(x+5*s,y+1,20*s,8*s,"rgba(10,30,15,.28)");
   const tg=g.createLinearGradient(x-4*s,0,x+4*s,0);tg.addColorStop(0,"#7a5640");tg.addColorStop(1,"#3e2a1e");
   g.fillStyle=tg;g.beginPath();g.moveTo(x-4.5*s,y);g.lineTo(x-2.6*s,y-26*s);g.lineTo(x+2.6*s,y-26*s);g.lineTo(x+4.5*s,y);g.closePath();g.fill();
-  const P4=[["#2c6438","#3d8645","#5eaa52","#a8dc70"],["#21503a","#2e6c48","#4a915f","#8cc890"],["#99481d","#c8682a","#e8963e","#ffd27a"],["#a34e74","#cf769c","#f1a6c4","#ffe2ee"],["#16424f","#1f6672","#36a0a4","#9ff0e4"],["#3e1f48","#62306e","#9a56a8","#f0bff0"],["#5a3418","#8a5224","#c88a3a","#ffd890"],["#3a5878","#5688b0","#8cc4e0","#eaf8ff"],["#6a7890","#98a8c0","#c8d6e8","#ffffff"]][o.v];
+  const P4=[["#2c6438","#3d8645","#5eaa52","#a8dc70"],["#21503a","#2e6c48","#4a915f","#8cc890"],["#99481d","#c8682a","#e8963e","#ffd27a"],["#a34e74","#cf769c","#f1a6c4","#ffe2ee"],["#16424f","#1f6672","#36a0a4","#9ff0e4"],["#3e1f48","#62306e","#9a56a8","#f0bff0"],["#5a3418","#8a5224","#c88a3a","#ffd890"],["#3a5878","#5688b0","#8cc4e0","#eaf8ff"],["#6a7890","#98a8c0","#c8d6e8","#ffffff"],["#3a3a38","#5c564a","#7e7664","#b0a890"],["#140c0a","#32201a","#5e2c18","#ff8a3a"]][o.v];
   const sw=Math.sin(T*1.3+o.x*.7+o.y*.3)*1.3*s,cy=y-36*s;
   const bl=[[0,0,18],[-11,5,12.5],[11,5,12.5],[-6,-10,12.5],[7,-9,12],[0,-18,10]];
   for(const [bx,by,r] of bl)ell(x+bx*s+sw*.6,cy+(by+3)*s,(r+2)*s,(r+1.5)*s,P4[0]);
@@ -3906,10 +4045,14 @@ function drawChibi(c,X,Y,sc=1){
 /* ================= field props ================= */
 const SHR=[[["90,240,230","#0f4f5a","#a6fff2","#2fbfb2","#156a74"],["190,130,255","#3e2272","#e3c6ff","#9a5cf0","#5a2aa8"]],
  [["255,170,80","#5a2a10","#ffe2a6","#ff9a3c","#a8461a"],["255,110,200","#4a1040","#ffd0f0","#e85ab8","#8a2070"]],
- [["150,210,255","#1a3a5a","#e0f4ff","#7ab8f0","#2a5a9a"],["200,170,255","#2a2a5a","#f0e8ff","#a890f0","#4a3a9a"]]];
+ [["150,210,255","#1a3a5a","#e0f4ff","#7ab8f0","#2a5a9a"],["200,170,255","#2a2a5a","#f0e8ff","#a890f0","#4a3a9a"]],
+ [["120,220,255","#1a3a50","#d8f6ff","#5ab8d8","#1c5a78"],["170,150,120","#3a2c20","#f0e0c0","#b89870","#5a4028"]],
+ [["255,140,60","#4a1408","#ffd9a0","#ff7a2a","#a82a08"],["255,200,90","#4a2a08","#fff0b8","#ffb030","#a85a08"]]];
 const CRP=[[["rgba(100,240,255,.3)","#1e7a96","#d8fbff"],["rgba(180,140,255,.3)","#5a3fb8","#efe6ff"]],
  [["rgba(255,120,200,.3)","#9a2a78","#ffd6f2"],["rgba(255,180,90,.3)","#b8561c","#fff0c0"]],
- [["rgba(170,225,255,.32)","#3a78c8","#f4fcff"],["rgba(210,190,255,.32)","#6a58c8","#f6f0ff"]]];
+ [["rgba(170,225,255,.32)","#3a78c8","#f4fcff"],["rgba(210,190,255,.32)","#6a58c8","#f6f0ff"]],
+ [["rgba(100,220,255,.3)","#1a6a8a","#d8fbff"],["rgba(200,170,120,.3)","#7a5a30","#fff0d0"]],
+ [["rgba(255,130,50,.32)","#a83a10","#ffd8a0"],["rgba(255,200,80,.3)","#b86a10","#fff2c0"]]];
 function drawShroom(o){
   const [x,y]=P(o.cx,o.cy),s=o.s*1.05,teal=o.v<.5,A=o.alt;
   ell(x+4,y+1,16*s,6*s,"rgba(5,20,25,.3)");
@@ -3942,6 +4085,52 @@ function drawRock(o){
   ell(x,y-7*s,15*s,10*s,"#5b5f6e");ell(x-4*s,y-10*s,10*s,8*s,"#757a8a");ell(x+6*s,y-6*s,8*s,6*s,"#4d505d");
   ell(x-6*s,y-14*s,4*s,2.5*s,"rgba(255,255,255,.35)");
   ell(x+2*s,y-15*s,7*s,2.5*s,"#3d8f7a");ell(x+1*s,y-16*s,4*s,1.4*s,"#6fd0b0");
+}
+function drawStele(o){
+  const [x,y]=P(o.cx,o.cy),s=1.05+o.v*.25,h=46*s,w=10*s,pul=.55+Math.sin(T*2+o.x*1.7)*.3;
+  ell(x+5,y+1,15*s,5.5*s,"rgba(5,8,12,.34)");
+  fillPoly([[x-w,y],[x-w+2,y-h],[x+w-2,y-h-4],[x+w,y-3]],"#7d7a74","rgba(10,8,8,.75)",1.2);
+  fillPoly([[x+w,y-3],[x+w-2,y-h-4],[x+w+5,y-h],[x+w+5,y+1]],"#555049","rgba(10,8,8,.75)",1);
+  fillPoly([[x-w+2,y-h],[x+w-2,y-h-4],[x+w+5,y-h],[x+1,y-h+4]],"#9a968c");
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(110,235,255,${pul})`;g.lineWidth=1.6;g.lineCap="round";g.lineJoin="round";
+  g.beginPath();g.moveTo(x-4,y-h*.78);g.lineTo(x+4,y-h*.78);g.moveTo(x,y-h*.78);g.lineTo(x,y-h*.35);g.moveTo(x-5,y-h*.5);g.lineTo(x,y-h*.62);g.lineTo(x+5,y-h*.5);g.moveTo(x-4,y-h*.25);g.lineTo(x+4,y-h*.25);g.stroke();
+  g.restore();glow(x,y-h*.55,26*s,`rgba(90,220,255,${.12+pul*.12})`);
+  g.strokeStyle="rgba(20,16,14,.7)";g.lineWidth=1.2;g.beginPath();g.moveTo(x-w+3,y-h*.3);g.lineTo(x-1,y-h*.45);g.lineTo(x+2,y-h*.2);g.stroke();
+  ell(x-w-3,y-1,5,2.6,"#625e56");ell(x+w+7,y,4,2.2,"#4e4a44");
+}
+function drawPillar(o){
+  const [x,y]=P(o.cx,o.cy),s=1+o.v*.2,h=(30+o.v*30)*s,w=8*s,fl=.6+Math.sin(T*3+o.x)*.2;
+  ell(x+5,y+1,14*s,5*s,"rgba(10,4,4,.38)");
+  fillPoly([[x-w-3,y],[x-w-3,y-6],[x+w+3,y-6],[x+w+3,y]],"#4a3c38","rgba(10,6,6,.8)",1.2);
+  fillPoly([[x-w,y-6],[x-w+1,y-h],[x+3,y-h-3],[x+w-1,y-h+4],[x+w,y-6]],"#6a5a52","rgba(10,6,6,.8)",1.2);
+  fillPoly([[x+3,y-6],[x+3,y-h-3],[x+w-1,y-h+4],[x+w,y-6]],"#463a34");
+  g.strokeStyle="rgba(20,10,8,.55)";g.lineWidth=1;for(const k of [-.35,0,.4])line([x+k*w,y-8],[x+k*w,y-h+3]);
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(255,120,40,${fl})`;g.lineWidth=1.4;g.beginPath();g.moveTo(x-w+2,y-h*.4);g.lineTo(x-1,y-h*.5);g.lineTo(x+3,y-h*.3);g.stroke();g.restore();
+  glow(x,y-h*.45,20*s,`rgba(255,110,40,${.08+fl*.08})`);
+  ell(x+w+9,y-1,5,2.4,"#4a3c38");
+}
+function drawBrazier(o){
+  const [x,y]=P(o.cx,o.cy),t=T*6+o.x*3;
+  ell(x+3,y+1,11,4,"rgba(10,4,4,.34)");
+  fillPoly([[x-3,y],[x+3,y],[x+2,y-18],[x-2,y-18]],"#3a2e2a","rgba(10,6,6,.8)",1);
+  fillPoly([[x-8,y-18],[x+8,y-18],[x+5,y-25],[x-5,y-25]],"#54443c","rgba(10,6,6,.8)",1.2);
+  ell(x,y-25,6,2.4,"#1a100c");
+  glow(x,y-30,40,`rgba(255,130,50,${.28+Math.sin(t*.7)*.06})`);
+  g.save();g.globalCompositeOperation="lighter";
+  for(const [sc,col] of [[1,"rgba(255,110,30,.9)"],[.7,"rgba(255,180,60,.95)"],[.4,"rgba(255,240,180,.95)"]]){const tp=y-26-14*sc-Math.sin(t)*2;g.fillStyle=col;g.beginPath();g.moveTo(x,tp);g.bezierCurveTo(x+6*sc,y-26-5*sc,x+5*sc,y-24,x,y-24);g.bezierCurveTo(x-5*sc,y-24,x-6*sc,y-26-5*sc,x,tp);g.fill()}
+  g.restore();
+}
+/* warning sign at the new town gates: the text is the one asked for ("Monster Lv.25+" / "Monster Lv.30+") */
+function drawWarnSign(o){
+  const [x,y]=P(o.cx,o.cy),pul=.5+Math.sin(T*4)*.5;
+  ell(x+4,y+1,15,5,"rgba(8,6,20,.35)");
+  g.fillStyle="#4a3426";g.fillRect(x-28,y-52,4,52);g.fillRect(x+24,y-52,4,52);
+  rr(x-38,y-86,76,40,6);g.fillStyle="#2a1c30";g.fill();g.strokeStyle="#e9c46a";g.lineWidth=2;g.stroke();
+  rr(x-36,y-84,72,13,4);g.fillStyle=`rgba(216,40,60,${.86+pul*.14})`;g.fill();
+  g.textAlign="center";g.textBaseline="middle";
+  g.font=`800 9px ${FONT}`;g.fillStyle="#fff3c8";g.fillText("⚠ "+t("sign_warn"),x,y-77.3);
+  g.font=`700 12px ${FONT}`;g.fillStyle="#ffe9a0";g.fillText("Monster Lv."+o.lv+"+",x,y-57);
+  g.save();g.globalCompositeOperation="lighter";glow(x,y-66,46,`rgba(255,70,70,${.10+pul*.10})`);g.restore();
 }
 function drawPortal(o){
   const [x,y]=P(o.cx,o.cy);
@@ -4012,6 +4201,103 @@ const MDRAW={
   g.fillStyle=p.lid;g.beginPath();g.ellipse(0,fy-(blink?0:8),15,blink?13:6.5,0,Math.PI,TAU);if(blink)g.ellipse(0,fy,15,13,0,0,Math.PI);g.fill();
   for(let k=0;k<2;k++){const a=T*1.3+k*Math.PI+mo.phase,rx=Math.cos(a)*27,ry=fy+4+Math.sin(a)*8;fillPoly([[rx,ry-5],[rx+4,ry],[rx,ry+4],[rx-4,ry]],p.rock,`rgba(${p.crack},.5)`,1)}
  }
+};
+/* ---- v19 monster sprites ---- */
+MDRAW.faultcrawler=function(mo,p){
+  const ph=mo.phase+(mo.moving?T*10:0),bob=Math.abs(Math.sin(ph))*(mo.moving?1.2:0);
+  ell(0,1,19,6.5,"rgba(10,10,15,.32)");
+  g.save();g.scale(mo.dir,1);g.lineCap="round";g.lineJoin="round";
+  for(const [lx,near] of [[-9,0],[5,0],[-3,1],[11,1]]){const sw=Math.sin(ph+lx*.4+(near?Math.PI:0))*2.2;g.strokeStyle=near?p.l1:p.l2;g.lineWidth=4;g.beginPath();g.moveTo(lx,-8);g.lineTo(lx+sw,-1);g.stroke()}
+  const bg=g.createLinearGradient(0,-24,0,-4);bg.addColorStop(0,p.b1);bg.addColorStop(1,p.b2);
+  g.fillStyle=bg;g.beginPath();g.ellipse(0,-12-bob,17,10,0,0,TAU);g.fill();g.strokeStyle="rgba(10,8,6,.65)";g.lineWidth=1.2;g.stroke();
+  for(const [px,py,w,h] of [[-9,-19,9,7],[0,-22,10,8],[9,-18,8,7]])fillPoly([[px-w/2,py+h-bob],[px-w/2+1,py-bob],[px+w/2-1,py-1-bob],[px+w/2,py+h-bob]],p.plate,"rgba(10,8,6,.6)",1);
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(${p.seam},${.6+Math.sin(T*3+mo.phase)*.25})`;g.lineWidth=1.8;g.beginPath();g.moveTo(-14,-15-bob);g.lineTo(-6,-19-bob);g.lineTo(-1,-13-bob);g.lineTo(6,-21-bob);g.lineTo(13,-14-bob);g.stroke();g.restore();
+  glow(0,-14,22,p.glow);
+  ell(16,-9,6.5,5.5,p.head);g.strokeStyle="rgba(10,8,6,.6)";g.lineWidth=1;g.stroke();
+  for(const ey of [-11,-8]){ell(19,ey,1.7,1.7,p.eye);ell(19.4,ey,.7,.7,"#0a0608")}
+  g.strokeStyle="#e8e0d0";g.lineWidth=1.6;g.beginPath();g.moveTo(20,-6);g.lineTo(24,-3);g.stroke();
+  g.restore();
+};
+MDRAW.tidewraith=function(mo,p){
+  const t=T*1.7+mo.phase,fy=-34+Math.sin(t)*3.5;
+  ell(0,0,13-Math.sin(t)*1.2,4.5,"rgba(10,20,40,.26)");
+  glow(0,fy,34,p.aura);
+  const bg=g.createLinearGradient(0,fy-22,0,fy+24);bg.addColorStop(0,p.top);bg.addColorStop(.55,p.mid);bg.addColorStop(1,"rgba(30,90,170,0)");
+  g.fillStyle=bg;g.beginPath();g.moveTo(-13,fy+2);g.bezierCurveTo(-15,fy-24,15,fy-24,13,fy+2);
+  for(let i=6;i>=-6;i--)g.lineTo(i*2.2,fy+18+Math.sin(t*2+i*.9)*3+(i%2?4:0));
+  g.closePath();g.fill();g.strokeStyle=p.st;g.lineWidth=1;g.stroke();
+  ell(0,fy-8,7.5,8.5,p.hood);
+  const ex=mo.dir*1;
+  g.save();g.globalCompositeOperation="lighter";ell(-3+ex,fy-9,1.8,2.2,p.eye);ell(3+ex,fy-9,1.8,2.2,p.eye);g.restore();
+  g.strokeStyle=p.glyph;g.lineWidth=1.3;g.lineCap="round";g.beginPath();g.moveTo(-4,fy+3);g.lineTo(0,fy-1);g.lineTo(4,fy+3);g.moveTo(0,fy-1);g.lineTo(0,fy+9);g.stroke();
+  for(let k=0;k<3;k++){const a=t*1.3+k*TAU/3,rx=Math.cos(a)*22,ry=fy+4+Math.sin(a)*7;ell(rx,ry,3.2,3.2,p.orb);ell(rx-1,ry-1,1,1,"#fff")}
+  g.strokeStyle="rgba(255,255,255,.6)";g.lineWidth=1.6;g.beginPath();g.ellipse(-5,fy-14,5,3,-.4,Math.PI*1.1,Math.PI*1.7);g.stroke();
+};
+MDRAW.stratagolem=function(mo,p){
+  const ph=mo.phase+(mo.moving?T*5:0),sw=Math.sin(ph)*(mo.moving?2.4:.5),br=Math.sin(T*1.5+mo.phase)*.8,OL="rgba(10,8,6,.7)";
+  ell(0,1,24,7.5,"rgba(10,8,8,.36)");g.lineJoin="round";
+  for(const s of [-1,1]){const lx=s*9+sw*s*.4;fillPoly([[lx-6,-20],[lx+6,-20],[lx+7,-1],[lx-7,-1]],s<0?p.l2:p.l1,OL,1.2)}
+  const arm=(s,near)=>{const ax=s*22-sw*s*.5,ay=-42+br;fillPoly([[ax-7,ay],[ax+7,ay],[ax+8,ay+24],[ax-8,ay+24]],near?p.a1:p.a2,OL,1.2);fillPoly([[ax-9,ay+22],[ax+9,ay+22],[ax+8,ay+35],[ax-8,ay+35]],near?p.fist:p.a2,OL,1.2)};
+  arm(-1,false);
+  for(let i=0;i<4;i++){const y0=-20-i*8+br*(i/3),y1=y0-8,h0=12+i*1.6,h1=h0+1.6;fillPoly([[-h0,y0],[h0,y0],[h1,y1],[-h1,y1]],p.s[i],OL,1)}
+  g.save();g.globalCompositeOperation="lighter";const pul=.6+Math.sin(T*2.4+mo.phase)*.3;
+  glow(0,-37+br,16,`rgba(110,235,255,${.35*pul})`);g.strokeStyle=`rgba(110,235,255,${.7*pul})`;g.lineWidth=1.6;g.lineCap="round";
+  g.beginPath();g.moveTo(0,-44+br);g.lineTo(5,-37+br);g.lineTo(0,-30+br);g.lineTo(-5,-37+br);g.closePath();g.stroke();g.restore();
+  g.strokeStyle="rgba(10,8,6,.6)";g.lineWidth=1.2;g.beginPath();g.moveTo(-12,-28);g.lineTo(-7,-33);g.lineTo(-9,-40);g.moveTo(11,-34);g.lineTo(8,-44);g.stroke();
+  for(const s of [-1,1])ell(s*17,-52+br,8,6.5,p.rock),ell(s*17-1.5,-54+br,4,2.6,"rgba(255,255,255,.18)");
+  fillPoly([[-9,-55+br],[9,-55+br],[8,-67+br],[-8,-67+br]],p.s[3],OL,1.2);
+  g.save();g.globalCompositeOperation="lighter";g.fillStyle=p.eye;g.fillRect(-6,-62+br,12,2.6);glow(0,-61+br,10,"rgba(120,240,255,.5)");g.restore();
+  arm(1,true);
+};
+MDRAW.cinderling=function(mo,p){
+  const t=T*3+mo.phase,fy=-26+Math.sin(t*.7)*3;
+  ell(0,0,10,4,"rgba(20,5,0,.3)");glow(0,fy,30,p.aura);
+  for(const [sc,col] of [[1,p.f0],[.78,p.f1],[.5,p.f2]]){const tp=fy-24*sc-Math.sin(t*2)*2;g.fillStyle=col;g.beginPath();g.moveTo(0,tp);g.bezierCurveTo(12*sc,fy-10*sc,14*sc,fy+4*sc,0,fy+10*sc);g.bezierCurveTo(-14*sc,fy+4*sc,-12*sc,fy-10*sc,0,tp);g.fill()}
+  fillPoly([[-7,fy-11],[-12,fy-22],[-3,fy-14]],p.horn);fillPoly([[7,fy-11],[12,fy-22],[3,fy-14]],p.horn);
+  const lx=mo.dir*.8;
+  for(const k of [-1,1]){ell(k*4.5,fy-2,2.4,3,"#fff");ell(k*4.5+lx,fy-1.5,1.2,1.6,"#2a0a00")}
+  g.strokeStyle="#2a0a00";g.lineWidth=1.3;g.lineCap="round";g.beginPath();g.moveTo(-4,fy+4);g.lineTo(-2,fy+6);g.lineTo(0,fy+4);g.lineTo(2,fy+6);g.lineTo(4,fy+4);g.stroke();
+  g.save();g.globalCompositeOperation="lighter";for(let i=0;i<5;i++){const ph=(T*.8+i/5+mo.phase)%1;ell(Math.sin(ph*7+i)*8,fy+10-ph*40,1.8*(1-ph)+.2,1.8*(1-ph)+.2,`rgba(255,${160+i*20},60,${1-ph})`)}g.restore();
+};
+MDRAW.magmaback=function(mo,p){
+  const ph=mo.phase+(mo.moving?T*11:0),fl=.6+Math.sin(T*4+mo.phase)*.25;
+  ell(0,1,21,7,"rgba(10,4,2,.36)");
+  g.save();g.scale(mo.dir,1);g.lineCap="round";g.lineJoin="round";
+  const leg=(lx,near)=>{const sw=Math.sin(ph+lx*.3+(near?Math.PI:0))*3;g.strokeStyle=near?p.l1:p.l2;g.lineWidth=4.5;g.beginPath();g.moveTo(lx,-12);g.lineTo(lx+sw,-1);g.stroke();g.save();g.globalCompositeOperation="lighter";ell(lx+sw,-1,3,1.5,`rgba(255,120,30,${.5*fl})`);g.restore()};
+  leg(-11,false);leg(5,false);
+  const bg=g.createLinearGradient(0,-26,0,-6);bg.addColorStop(0,p.b1);bg.addColorStop(1,p.b2);
+  g.fillStyle=bg;g.beginPath();g.ellipse(0,-15,19,11,0,0,TAU);g.fill();g.strokeStyle="rgba(10,4,2,.7)";g.lineWidth=1.3;g.stroke();
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(255,130,40,${.55+fl*.35})`;g.lineWidth=1.8;
+  g.beginPath();g.moveTo(-14,-14);g.lineTo(-7,-19);g.lineTo(-3,-12);g.lineTo(4,-20);g.lineTo(10,-13);g.lineTo(15,-17);g.stroke();
+  g.beginPath();g.moveTo(-8,-9);g.lineTo(-2,-7);g.lineTo(6,-9);g.stroke();g.restore();
+  glow(0,-15,26,`rgba(255,110,30,${.16*fl})`);
+  for(const [bx,h] of [[-10,11],[-2,15],[7,12]])fillPoly([[bx-3.4,-23],[bx+3.4,-23],[bx+.5,-23-h]],p.spine,"rgba(10,4,2,.6)",.9);
+  g.save();g.globalCompositeOperation="lighter";for(let i=0;i<3;i++){const bx=-6+i*6,fh=8+Math.sin(T*7+i+mo.phase)*3;g.fillStyle=`rgba(255,${140+i*25},50,.75)`;g.beginPath();g.moveTo(bx-3,-25);g.quadraticCurveTo(bx,-25-fh-4,bx+3,-25);g.fill()}g.restore();
+  ell(17,-12,8,6.5,p.head);g.strokeStyle="rgba(10,4,2,.7)";g.lineWidth=1.1;g.stroke();
+  g.strokeStyle="#f0e0c8";g.lineWidth=2;g.beginPath();g.moveTo(21,-8);g.lineTo(26,-12);g.moveTo(19,-7);g.lineTo(23,-3);g.stroke();
+  ell(18.5,-14,2,1.8,p.eye);glow(18.5,-14,6,"rgba(255,200,80,.6)");
+  leg(-4,true);leg(12,true);
+  g.restore();
+};
+MDRAW.ashsentinel=function(mo,p){
+  const ph=mo.phase+(mo.moving?T*5:0),sw=Math.sin(ph)*(mo.moving?2:.4),fl=.6+Math.sin(T*3+mo.phase)*.3,br=Math.sin(T*1.4+mo.phase)*.8,OL="rgba(8,4,2,.75)";
+  ell(0,1,22,7,"rgba(10,4,2,.38)");g.lineJoin="round";g.lineCap="round";
+  g.save();g.globalCompositeOperation="lighter";glow(0,-66+br,36,`rgba(255,110,30,${.2*fl+.08})`);
+  g.strokeStyle=`rgba(255,${150+fl*60|0},60,.85)`;g.lineWidth=2.4;g.beginPath();g.arc(0,-66+br,15,T*1.2,T*1.2+TAU*.78);g.stroke();
+  g.strokeStyle="rgba(255,230,160,.6)";g.lineWidth=1;g.beginPath();g.arc(0,-66+br,11,-T*1.5,-T*1.5+TAU*.6);g.stroke();g.restore();
+  for(const s of [-1,1]){const lx=s*7+sw*s*.4;fillPoly([[lx-5.5,-22],[lx+5.5,-22],[lx+6,-1],[lx-6,-1]],s<0?p.a2:p.a1,OL,1.2)}
+  fillPoly([[-23,-42+br],[-18,-42+br],[-17,-22+br],[-23,-22+br]],p.a2,OL,1.2);
+  fillPoly([[-14,-24],[14,-24],[17,-50+br],[-17,-50+br]],p.a1,OL,1.3);
+  fillPoly([[-14,-24],[14,-24],[12,-32],[-12,-32]],p.a2);
+  g.save();g.globalCompositeOperation="lighter";glow(0,-40+br,14,`rgba(255,120,30,${.5*fl})`);ell(0,-40+br,4.5,5.5,`rgba(255,${170+fl*60|0},70,.95)`);g.restore();
+  g.strokeStyle="rgba(255,130,40,.55)";g.lineWidth=1.2;g.beginPath();g.moveTo(-9,-30);g.lineTo(-4,-36);g.moveTo(8,-34);g.lineTo(11,-44);g.stroke();
+  for(const s of [-1,1]){fillPoly([[s*13,-52+br],[s*24,-48+br],[s*22,-40+br],[s*12,-44+br]],p.a3,OL,1.2);fillPoly([[s*20,-50+br],[s*25,-60+br],[s*23,-47+br]],p.spike)}
+  fillPoly([[18,-42+br],[23,-42+br],[24,-22+br],[18,-22+br]],p.a1,OL,1.2);
+  fillPoly([[26,-70+br],[29,-70+br],[30,-18+br],[25,-18+br]],p.blade,OL,1.1);
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(255,${130+fl*60|0},40,.8)`;g.lineWidth=1.6;g.beginPath();g.moveTo(27.6,-68+br);g.lineTo(27.6,-22+br);g.stroke();
+  for(let i=0;i<3;i++){const ph2=(T*.9+i/3)%1;ell(27.5+Math.sin(ph2*6+i)*3,-30+br-ph2*38,1.6*(1-ph2)+.3,1.6*(1-ph2)+.3,`rgba(255,170,60,${1-ph2})`)}g.restore();
+  fillPoly([[-9,-52+br],[9,-52+br],[7,-66+br],[0,-70+br],[-7,-66+br]],p.helm,OL,1.2);
+  g.save();g.globalCompositeOperation="lighter";g.fillStyle=`rgba(255,${190+fl*50|0},90,.95)`;g.fillRect(-5,-62+br,10,2.4);glow(0,-61+br,10,"rgba(255,150,50,.5)");g.restore();
 };
 MDRAW.gadolith=function(mo,p){
   const t=T*1.3+mo.phase,fy=-48+Math.sin(t)*3,rage=mo.aggro;
@@ -4123,10 +4409,10 @@ function buildMini(m){
   const q=c.getContext("2d");q.translate(N*4,0);const F=m.id!=="town",mp=F?m.pal.mini:null;
   const Q=(x,y)=>[(x-y)*4,(x+y)*2];
   const dia=(x,y,col)=>{const a=Q(x,y),b=Q(x+1,y),cc=Q(x+1,y+1),d=Q(x,y+1);q.beginPath();q.moveTo(...a);q.lineTo(...b);q.lineTo(...cc);q.lineTo(...d);q.closePath();q.fillStyle=col;q.fill();q.strokeStyle=col;q.lineWidth=.6;q.stroke()};
-  for(let y=0;y<N;y++)for(let x=0;x<N;x++){const tp=m.map[I(x,y)];dia(x,y,tp===T_R?"#cdbf9f":tp===T_P?"#ebe4d4":tp===T_W?(F?mp[2]:"#4aa0d8"):tp===T_D?"#8a6c4c":tp===T_F?(F?mp[1]:"#5f9952"):(F?mp[0]:"#4c8746"))}
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){const tp=m.map[I(x,y)];dia(x,y,tp===T_C?"#0c0a10":tp===T_R?"#cdbf9f":tp===T_P?"#ebe4d4":tp===T_W?(F?mp[2]:"#4aa0d8"):tp===T_D?"#8a6c4c":tp===T_F?(F?mp[1]:"#5f9952"):(F?mp[0]:"#4c8746"))}
   for(const o of m.statics){
-    if(o.kind==="tree")dia(o.x,o.y,o.v===3?"#c97a9e":o.v===2?"#b86a2e":o.v===4?"#123f48":o.v===5?"#4a2058":o.v===6?"#7a4a1e":o.v===7?"#5a88b0":o.v===8?"#b8c8dc":"#2b5a33");
-    else if(o.kind==="shroom")dia(o.x,o.y,o.alt===2?"#8ac0f0":o.alt?"#ff9a5a":o.v<.5?"#3fd0c4":"#9a6cf0");else if(o.kind==="crys")dia(o.x,o.y,o.alt===2?"#e8f6ff":o.alt?"#ffd890":"#b7f4ff");else if(o.kind==="rock")dia(o.x,o.y,"#6a6e7c");
+    if(o.kind==="tree")dia(o.x,o.y,o.v===3?"#c97a9e":o.v===2?"#b86a2e":o.v===4?"#123f48":o.v===5?"#4a2058":o.v===6?"#7a4a1e":o.v===7?"#5a88b0":o.v===8?"#b8c8dc":o.v===9?"#7a7260":o.v===10?"#2a1812":"#2b5a33");
+    else if(o.kind==="shroom")dia(o.x,o.y,o.alt===3?"#5ac0e0":o.alt===4?"#ff7a2a":o.alt===2?"#8ac0f0":o.alt?"#ff9a5a":o.v<.5?"#3fd0c4":"#9a6cf0");else if(o.kind==="crys")dia(o.x,o.y,o.alt===3?"#7fe0ff":o.alt===4?"#ff9a50":o.alt===2?"#e8f6ff":o.alt?"#ffd890":"#b7f4ff");else if(o.kind==="rock")dia(o.x,o.y,"#6a6e7c");else if(o.kind==="stele"||o.kind==="pillar")dia(o.x,o.y,"#8a8a98");else if(o.kind==="brazier")dia(o.x,o.y,"#ff9a3a");else if(o.kind==="warnsign")dia(o.x,o.y,"#ff4a5a");
     else if(o.kind==="bld"){const b=o.b;for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)dia(x,y,b.roof)}}
   if(!F)for(let y=19;y<22;y++)for(let x=19;x<22;x++)dia(x,y,"#8a78ff");
   m.mini=c;
@@ -4201,9 +4487,15 @@ function arriveAt(to,from){
 function setBanner(){$("#bName").textContent=t(cur.nameK);$("#bSub").textContent=t(cur.subK);$("#mmName").textContent=t(cur.nameK);
   $("#bRec").textContent=cur.rec?fmt("rec",{n:num(cur.rec)}):"";
   const b=$("#banner");b.classList.remove("away");clearTimeout(setBanner.tm);setBanner.tm=setTimeout(()=>b.classList.add("away"),4500)}
+/* a closed gate pushes the player back to the tile beside the portal and explains why */
+function blockGate(p,gk){
+  player.path=[];player.nav=null;player.target=null;player.moving=false;player.onArrive=null;
+  const a=walkableNear(cur,p.x,p.y);player.x=a[0];player.y=a[1];
+  if(gateT<=0){gateT=2.5;AUD.sfx("err");toast(gateMsg(gk));fx.push({k:"ring",x:p.x+.5,y:p.y+.5,t:0,d:.7,c:"#ff6a7a",r:60})}
+}
 function deaggroAll(){for(const m of FIELDS)for(const mo of m.monsters){mo.aggro=false;mo.speed=MON[mo.type].speed}}
-const AHEAD={town:"field1",field1:"field2",field2:"field3",field3:"field2"};   // phones keep only the current map + the one ahead in memory
-const NEIGH={town:["field1"],field1:["town","field2"],field2:["field1","field3"],field3:["field2"]};
+const AHEAD={town:"field1",field1:"field2",field2:"field3",field3:"field2",geo:"town",ruins:"town"};   // phones keep only the current map + the one ahead in memory
+const NEIGH={town:["field1","geo","ruins"],field1:["town","field2"],field2:["field1","field3"],field3:["field2"],geo:["town"],ruins:["town"]};
 function goMap(id,ax,ay){
   if(warping)return;warping=true;
   whenReady([MAPS[id]],()=>{$("#fade").classList.add("on");setTimeout(()=>applyMap(id,ax,ay),380)},"ld_map");
@@ -4214,7 +4506,7 @@ function applyMap(id,ax,ay){
   if(LITE)for(const m of Object.values(MAPS))if(m.id!==id&&m.id!==AHEAD[id]&&m.ground){m.ground.width=m.ground.height=0;m.ground=null}
   cur=MAPS[id];S.visited[id]=1;netExpand();AUD.sfx("warp");AUD.setMap(id);buildMini(cur);
   player.x=ax;player.y=ay;player.path=[];player.target=null;player.onArrive=null;marker=null;fx=[];
-  deaggroAll();setBanner();
+  deaggroAll();setBanner();aggroGrace=3;
   questEvent({t:"reach",map:id});renderQuest();renderIdle();renderMM();save();
   for(const n of (LITE?[AHEAD[id]]:NEIGH[id]||[]))queueBuild(MAPS[n],false);
   $("#fade").classList.remove("on");warping=false;
@@ -4224,7 +4516,7 @@ function applyMap(id,ax,ay){
 function warpTown(){if(player.dead||warping)return;if(cur===town){toast(t("inTown"));return}player.nav=null;fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:.5,c:"#cfc4ff"});
   setTimeout(()=>{goMap("town",24.5,24.5);setTimeout(()=>toast(t("warpTown")),420)},250)}
 /* next portal toward a destination map */
-const ROUTE={town:{field1:0,field2:0,field3:0},field1:{town:0,field2:1,field3:1},field2:{town:0,field1:0,field3:1},field3:{town:0,field1:0,field2:0}};
+const ROUTE={town:{field1:0,field2:0,field3:0,geo:1,ruins:2},field1:{town:0,field2:1,field3:1,geo:0,ruins:0},field2:{town:0,field1:0,field3:1,geo:0,ruins:0},field3:{town:0,field1:0,field2:0,geo:0,ruins:0},geo:{town:0,field1:0,field2:0,field3:0,ruins:0},ruins:{town:0,field1:0,field2:0,field3:0,geo:0}};
 function routeTo(dest){const i=(ROUTE[cur.id]||{})[dest];if(i==null)return;const p=cur.portals[i];
   if(!player.path.length||player.navPortal!==p){player.navPortal=p;walkTo(player,p.x,p.y)}}
 
@@ -4421,11 +4713,13 @@ function die(){
   $("#deathOv").classList.remove("hidden");pushChat({ch:"sys",k:"sys_dead"});
 }
 function respawn(){player.dead=false;S.hp=hpMax();S.sp=spMax();$("#deathOv").classList.add("hidden");goMap("town",24.5,24.5)}
-function resetCombatState(){BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
+function resetCombatState(){BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=0;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
 function addMomentum(n){BF.momentum=Math.min(5,BF.momentum+n);BF.momT=5}
 function updateCombat(dt){
   player.atkCd=Math.max(0,player.atkCd-dt);player.lunge=Math.max(0,player.lunge-dt);player.combatT+=dt;
   for(const k of ["warCry","blessing","leap","regen","herbAtk","herbDef","sage"])if(BF[k]>0)BF[k]=Math.max(0,BF[k]-dt);
+  if(BF.slow>0)BF.slow=Math.max(0,BF.slow-dt);player.speed=3.6*(BF.slow>0?.65:1);
+  if(BF.burn>0&&!player.dead){BF.burn=Math.max(0,BF.burn-dt);BF.burnAcc+=dt;if(BF.burnAcc>=1){BF.burnAcc-=1;damagePlayer(Math.max(1,Math.round(BF.burnDps)),t("fx_burn"))}}
   if(BF.momT>0){BF.momT-=dt;if(BF.momT<=0)BF.momentum=0}
   for(const k in CD)if(CD[k]>0)CD[k]=Math.max(0,CD[k]-dt);
   if(BF.zone){const z=BF.zone,k=REOC.SK.sanctuary;z.t-=dt;
@@ -4439,6 +4733,37 @@ function updateCombat(dt){
   if(d>R){player.chaseT-=dt;if(player.chaseT<=0||!player.path.length){player.chaseT=.35;walkTo(player,Math.floor(tg.x),Math.floor(tg.y))}}
   else{player.path=[];player.moving=false;faceToward(player,tg.x,tg.y);if(player.atkCd<=0){player.atkCd=pd().interval;basicAttack(tg)}}
 }
+/* ---- v19 monster skills: a red circle on the ground (around the monster, or on the player) that lands after a short wind-up; some leave Burning or Slow ---- */
+const MSK={
+ tremor:{k:"self",r:3.0,wind:1.1,mult:1.5,cd:[6,9],rng:3.2,nameK:"msk_tremor"},
+ undertow:{k:"ground",r:1.8,wind:1.0,mult:1.4,cd:[5,8],rng:8,nameK:"msk_undertow",deb:{slow:4}},
+ crust:{k:"self",r:3.6,wind:1.3,mult:1.9,cd:[8,11],rng:3.6,nameK:"msk_crust"},
+ debris:{k:"ground",r:2.2,wind:1.1,mult:1.5,cd:[7,10],rng:7,nameK:"msk_debris"},
+ emberburst:{k:"ground",r:1.7,wind:.8,mult:1.2,cd:[4.5,7],rng:7,nameK:"msk_emberburst",deb:{burn:5}},
+ lavaspit:{k:"ground",r:2.1,wind:1.0,mult:1.5,cd:[6,9],rng:8,nameK:"msk_lavaspit",deb:{burn:4}},
+ inferno:{k:"ground",r:2.8,wind:1.3,mult:1.9,cd:[8,11],rng:8,nameK:"msk_inferno",deb:{burn:6}},
+ ashwave:{k:"self",r:4.2,wind:1.4,mult:1.7,cd:[10,14],rng:4.2,nameK:"msk_ashwave"}
+};
+function castMonSkill(mo,id){
+  const s=MSK[id],self=s.k==="self";
+  mo.tele={t:s.wind,total:s.wind,x:self?mo.x:player.x,y:self?mo.y:player.y,r:s.r,mult:s.mult,deb:s.deb||null,nameK:s.nameK};
+  mo.path=[];mo.moving=false;faceToward(mo,player.x,player.y);
+  fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.9,txt:t(s.nameK),c:"#ffb08a",ox:0,h:MON[mo.type].h*mSize(mo)+16});
+  AUD.sfx("warn");
+}
+function monSkillTick(mo,d,dt){
+  const ds=MON[mo.type].skills;if(!ds||mo.tele)return false;
+  mo.skCd=mo.skCd||[];
+  for(let i=0;i<ds.length;i++){const s=MSK[ds[i]];
+    if(mo.skCd[i]==null)mo.skCd[i]=s.cd[0]*(.35+rnd()*.5);
+    mo.skCd[i]-=dt;
+    if(mo.skCd[i]<=0&&d<=s.rng){mo.skCd[i]=s.cd[0]+rnd()*(s.cd[1]-s.cd[0]);castMonSkill(mo,ds[i]);return true}}
+  return false;
+}
+function applyDeb(deb,mo){   // Burning: 10% of the monster's ATK per second
+  if(deb.burn){BF.burn=Math.max(BF.burn,deb.burn);BF.burnDps=Math.max(BF.burnDps||0,mprof(mo).atk*.1)}
+  if(deb.slow)BF.slow=Math.max(BF.slow,deb.slow);
+}
 function updateMon(mo,dt){
   if(mo.dead){mo.respawn-=dt;if(mo.respawn<=0)respawnMon(mo);return}
   if(mo.dieT>0){mo.dieT-=dt;if(mo.dieT<=0){mo.dead=true;mo.tele=null;mo.respawn=mo.boss?120:mo.elite?45+Math.random()*15:8+Math.random()*7}return}
@@ -4449,10 +4774,13 @@ function updateMon(mo,dt){
   if(mo.boss&&mo.aggro&&!player.dead){mo.slamT-=dt;if(!mo.tele&&mo.slamT<=0){mo.tele={t:1.4,total:1.4,x:mo.x,y:mo.y,r:3.4};AUD.sfx("warn");mo.slamT=9+Math.random()*3;mo.path=[]}}
   if(mo.tele){mo.tele.t-=dt;if(mo.tele.t<=0){const tl=mo.tele;mo.tele=null;
     AUD.sfx("slam");fx.push({k:"ring",x:tl.x,y:tl.y,t:0,d:.6,c:"#ff9a7a",r:tl.r*55});fx.push({k:"burst",x:tl.x,y:tl.y,t:0,d:.6,c:"#ffd0b0",n:26,z:10});
-    if(!player.dead&&Math.hypot(player.x-tl.x,player.y-tl.y)<=tl.r){const raw=mprof(mo).atk*1.8*(.9+rnd()*.2);damagePlayer(Math.max(1,Math.round(raw*(1-pd().hardDef)-pd().softDef)),t("slam"))}}}
+    if(!player.dead&&Math.hypot(player.x-tl.x,player.y-tl.y)<=tl.r){const raw=mprof(mo).atk*(tl.mult||1.8)*(.9+rnd()*.2);damagePlayer(Math.max(1,Math.round(raw*(1-pd().hardDef)-pd().softDef)),t(tl.nameK||"slam"));if(tl.deb&&!player.dead)applyDeb(tl.deb,mo)}}}
+  {const dd=MON[mo.type];   // aggressive monsters (v19) attack first when you come close
+    if(!mo.aggro&&dd.aggr&&!mo.boss&&aggroGrace<=0&&!player.dead&&dist(mo,player)<=dd.aggr+(mo.elite?1:0)){mo.aggro=true;mo.speed=dd.speed*1.6;mo.path=[];mo.repath=0;fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:"!",c:"#ff5a6a",big:true,ox:0,h:dd.h*mSize(mo)+10})}}
   if(mo.aggro&&!player.dead){
     const d=dist(mo,player);
     if(mo.tele){mo.path=[];mo.moving=false}
+    else if(d<=16&&monSkillTick(mo,d,dt)){}
     else if(d>16){mo.aggro=false;mo.speed=MON[mo.type].speed;walkTo(mo,Math.floor(mo.home[0]),Math.floor(mo.home[1]))}
     else if(d>1.25){mo.repath-=dt;if(mo.repath<=0||!mo.path.length){mo.repath=.5;walkTo(mo,Math.floor(player.x),Math.floor(player.y))}}
     else{mo.path=[];mo.moving=false;faceToward(mo,player.x,player.y);if(mo.atkCd<=0){mo.atkCd=MON[mo.type].aspd;monHit(mo)}}
@@ -4676,9 +5004,11 @@ function renderFx(){
   if(BF.blessing>0)list.push({ic:"star",c:SKG.supporter,nk:"sk_blessing",dk:"fx_bless_d",val:fmtSec(BF.blessing)});
   if(BF.shield>0)list.push({ic:"shield",c:SKG.supporter,nk:"fx_grace",dk:"fx_grace_d",val:num(BF.shield)});
   if(BF.zone)list.push({ic:"halo",c:SKG.supporter,nk:"sk_sanctuary",dk:"fx_sanct_d",val:fmtSec(BF.zone.t)});
+  if(BF.burn>0)list.push({ic:"flame",c:"linear-gradient(135deg,#ffb060,#d8340a)",nk:"fx_burn",dk:"fx_burn_d",val:fmtSec(BF.burn),deb:1});
+  if(BF.slow>0)list.push({ic:"drop",c:"linear-gradient(135deg,#bfe8ff,#3a78c8)",nk:"fx_slow",dk:"fx_slow_d",val:fmtSec(BF.slow),deb:1});
   const key=lang+list.map(x=>x.nk+x.val).join("|");
   if(key===renderFx.key)return;renderFx.key=key;
-  $("#fxRow").innerHTML=list.map(x=>`<span class="fx" title="${t(x.nk)} — ${t(x.dk)}"><span class="fxi" style="--c:${x.c}">${svg(x.ic)}</span><b>${x.val}</b></span>`).join("");
+  $("#fxRow").innerHTML=list.map(x=>`<span class="fx${x.deb?" debuff":""}" title="${t(x.nk)} — ${t(x.dk)}"><span class="fxi" style="--c:${x.c}">${svg(x.ic)}</span><b>${x.val}</b></span>`).join("");
 }
 $("#fxRow").addEventListener("click",e=>{const c=e.target.closest(".fx");if(c)toast(c.title)});
 function measurePing(){
@@ -4717,7 +5047,7 @@ function render(){
     switch(o.kind){
       case "tree":drawTree(o);break;case "lamp":drawLamp(o);break;case "bld":drawBuilding(o.b);break;case "crystal":drawCrystal();break;case "eye":drawEye(o);break;case "pod":drawPod(o);break;case "tent":drawTent(o);break;case "mono":drawMono(o);break;case "float":drawFloat(o);break;
       case "barrel":drawBarrel(o);break;case "crate":drawCrate(o);break;case "stall":drawStall(o);break;
-      case "shroom":drawShroom(o);break;case "crys":drawCrys(o);break;case "rock":drawRock(o);break;case "portal":drawPortal(o);break;
+      case "shroom":drawShroom(o);break;case "crys":drawCrys(o);break;case "rock":drawRock(o);break;case "portal":drawPortal(o);break;case "stele":drawStele(o);break;case "pillar":drawPillar(o);break;case "brazier":drawBrazier(o);break;case "warnsign":drawWarnSign(o);break;
       case "mon":drawMon(o.c,o.sx,o.sy);break;
       case "char":{const c=o.c;let sx=o.sx,sy=o.sy;
         if(c.me&&c.lunge>0&&c.target){const [tx,ty]=P(c.target.x,c.target.y),l=Math.sin((1-c.lunge/.2)*Math.PI)*7,d=Math.hypot(tx-sx,ty-sy)||1;sx+=(tx-sx)/d*l;sy+=(ty-sy)/d*l}
@@ -4797,11 +5127,11 @@ function updateIdle(dt){
   autoSkill();
 }
 function update(dt){
-  T+=dt;if((T*2|0)!==(update.q|0)){update.q=T*2;AUD.setBoss(cur.id==="field3"&&cur.monsters.some(m=>m.boss&&m.aggro&&!m.dead&&m.dieT<=0))}watchWins(dt);updateMobBar(dt);updateAnn(dt);
+  T+=dt;gateT=Math.max(0,gateT-dt);aggroGrace=Math.max(0,aggroGrace-dt);if((T*2|0)!==(update.q|0)){update.q=T*2;AUD.setBoss(cur.id==="field3"&&cur.monsters.some(m=>m.boss&&m.aggro&&!m.dead&&m.dieT<=0))}watchWins(dt);updateMobBar(dt);updateAnn(dt);
   if(player.dead){deathT-=dt;if(deathT<=0)respawn()}
   if(holding&&lastHold&&!player.dead){holdTimer+=dt;if(holdTimer>.3){holdTimer=0;const [wx,wy]=toWorld(lastHold.x,lastHold.y),[tx,ty]=isoToTile(wx,wy),a=Math.floor(tx),b=Math.floor(ty);if(!player.target&&inb(a,b)&&walk(a,b)&&walkTo(player,a,b))setMarker(a+.5,b+.5)}}
   if(!player.dead){updateCombat(dt);moveChar(player,dt)}
-  if(!warping&&!player.dead)for(const p of cur.portals)if(Math.hypot(player.x-p.x-.5,player.y-p.y-.5)<.6){const a=arriveAt(p.to,cur.id);goMap(p.to,a[0],a[1]);break}
+  if(!warping&&!player.dead)for(const p of cur.portals)if(Math.hypot(player.x-p.x-.5,player.y-p.y-.5)<.6){const gk=gateCheck(p.to);if(!gk.ok){blockGate(p,gk);break}const a=arriveAt(p.to,cur.id);goMap(p.to,a[0],a[1]);break}
   if(marker){marker.t+=dt*1.6;if(!player.path.length&&marker.t>1.2)marker=null}
   if(cur===town){
     for(const w of town.wanderers){if(w.path.length&&town.npcs.some(n=>Math.hypot(n.x-w.x,n.y-w.y)<2)){w.path=[];w.wait=.4}moveChar(w,dt);w.wait-=dt;
@@ -4865,7 +5195,7 @@ $("#cin").addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter")
 const MENU=[["char","user"],["status","bars"],["inv","bag"],["skill","star"],["quest","scroll"],["party","users"],["guild","flag"],["shop","store"],["set","gear"]];
 function renderMenu(){$("#menu").innerHTML=MENU.map(([k,ic])=>`<button class="mb" data-w="${k}" title="${t("m_"+k)}">${svg(ic)}<span>${t("m_"+k)}</span></button>`).join("")}
 $("#menu").addEventListener("click",e=>{const b=e.target.closest(".mb");if(!b)return;const k=b.dataset.w;if(winId===k)closeWin();else openWin(k)});
-const ITEMC={red:"#e8475f",blue:"#3d7fe0",wing:"#e8f2ff",apple:"#e63b3b",mat_gel:"#b98cff",mat_shell:"#5fd8e8",mat_lens:"#ff8a3a",mat_ore:"#d8d2ff",mat_gel2:"#6cc8ff",mat_amber:"#ffb84a",mat_frost:"#bff0ff",mat_core:"#ffd76a",mat_gel3:"#9fe0ff",mat_rime:"#c8dcf0",mat_mag:"#9aa8ff",mat_gheart:"#bff4ff"};
+const ITEMC={red:"#e8475f",blue:"#3d7fe0",wing:"#e8f2ff",apple:"#e63b3b",mat_gel:"#b98cff",mat_shell:"#5fd8e8",mat_lens:"#ff8a3a",mat_ore:"#d8d2ff",mat_gel2:"#6cc8ff",mat_amber:"#ffb84a",mat_frost:"#bff0ff",mat_core:"#ffd76a",mat_gel3:"#9fe0ff",mat_rime:"#c8dcf0",mat_mag:"#9aa8ff",mat_gheart:"#bff4ff",mat_fault:"#c9b08a",mat_seismic:"#e8a85a",mat_tide:"#6ab8f0",mat_glyph:"#9fe8ff",mat_strata:"#a89478",mat_press:"#7fb8ff",mat_cinder:"#d8683a",mat_embercore:"#ff8a2a",mat_magma:"#c8401a",mat_lavaglass:"#ffb040",mat_relic:"#8a7060",mat_infernoshard:"#ff5a1a"};
 const SHOP=[["red",50],["blue",120],["wing",60],["apple",15]];
 let resetArm=false,pickArm=null,accArm=false;
 /* ---- mock equipment: display only, it does not change stats yet ---- */
@@ -4931,7 +5261,7 @@ const WIN={
       return `<div class="row qrow" style="--qc:${QCOL[d.type]}"><span class="qbar"></span><div class="grow"><b>${t(d.titleK)}</b> <small style="display:inline;color:${QCOL[d.type]}">${t("qt_"+d.type)}${d.rep?" · "+t("q_repeat"):""}${lv?" · Lv "+lv:""}</small><small>${on?objText(id):fmtObjPreview(id)}</small></div>
       ${on?`<button class="btn sm ${pin?"pri":""}" data-act="pin" data-q="${id}">${t(pin?"q_tracked":"q_track")}</button><button class="btn sm" data-act="auto" data-q="${id}">${t("q_auto")}</button>${id!=="main"?`<button class="btn sm" data-act="abandon" data-q="${id}">×</button>`:""}`:`<button class="btn sm pri" data-act="accept" data-q="${id}">${t("q_accept")}</button>`}</div>`};
     const grp={};for(const id of av){const k=QD[id].qmap||"gen";(grp[k]=grp[k]||[]).push(id)}
-    const groups=["field1","field2","field3","gen"].filter(k=>grp[k]).map(k=>`<div class="w-sec sub">${k==="gen"?t("q_general"):t(MAPS[k].nameK)}${k!=="gen"&&MAPS[k].rec?` <span class="muted">· ${fmt("rec",{n:num(MAPS[k].rec)})}</span>`:""}</div><div class="rows">${grp[k].sort((a,b)=>qlv(a)-qlv(b)).map(id=>row(id,false)).join("")}</div>`).join("");
+    const groups=["field1","field2","field3","geo","ruins","gen"].filter(k=>grp[k]).map(k=>`<div class="w-sec sub">${k==="gen"?t("q_general"):t(MAPS[k].nameK)}${k!=="gen"&&MAPS[k].rec?` <span class="muted">· ${fmt("rec",{n:num(MAPS[k].rec)})}</span>`:""}</div><div class="rows">${grp[k].sort((a,b)=>qlv(a)-qlv(b)).map(id=>row(id,false)).join("")}</div>`).join("");
     return `<div class="w-sec">${t("q_active")} <span class="muted">· ${fmt("q_count",{n:S.pins.filter(id=>S.q[id]&&S.q[id].s==="active").length})}</span></div><div class="rows">${act.map(id=>row(id,true)).join("")||`<p class="muted">—</p>`}</div>
     <div class="w-sec">${t("q_avail")}</div>${groups||`<p class="muted">—</p>`}
     <p class="muted">${fmt("q_completed",{n:done})}</p>`},
@@ -5008,8 +5338,8 @@ addEventListener("pointerup",()=>{ptrDown=false},true);addEventListener("pointer
 for(const sl of WSLOT)$("#"+sl.x).addEventListener("click",()=>closeSlot(sl.k));
 
 /* ================= World Map: connected maps, teleport with Scandium, and per-map info ================= */
-const WM={town:{lx:12,ly:70,px:24,py:84},field1:{lx:36,ly:30,px:72,py:64},field2:{lx:62,ly:72,px:26,py:40},field3:{lx:86,ly:28,px:72,py:14}};
-const WM_LINKS=[["town","field1"],["field1","field2"],["field2","field3"]];
+const WM={town:{lx:34,ly:54,px:28,py:50},field1:{lx:58,ly:26,px:72,py:36},field2:{lx:66,ly:70,px:28,py:22},field3:{lx:88,ly:28,px:72,py:8},geo:{lx:15,ly:26,px:72,py:64},ruins:{lx:34,ly:86,px:28,py:80}};
+const WM_LINKS=[["town","field1"],["field1","field2"],["field2","field3"],["town","geo"],["town","ruins"]];
 const TP_COST=150;   // Scandium per map you pass
 function mapDist(a,b){if(a===b)return 0;const q=[[a,0]],seen=new Set([a]);while(q.length){const [m,d]=q.shift();for(const n of NEIGH[m]||[]){if(n===b)return d+1;if(!seen.has(n)){seen.add(n);q.push([n,d+1])}}}return 99}
 const tpCost=id=>TP_COST*mapDist(cur.id,id);
@@ -5017,7 +5347,8 @@ const mapCols=id=>FPAL[id]?FPAL[id].mini:["#3c8a4a","#6ab56a","#c8e0a0"];
 const mapMons=id=>Object.keys(MON).filter(k=>MON[k].map===id&&!MON[k].boss);
 const mapBoss=id=>Object.keys(MON).filter(k=>MON[k].map===id&&MON[k].boss);
 const elChip=e=>e?`<span class="el" style="--ec:${ELC[e]||"#ccc"}">● ${t("el_"+e)}</span>`:"";
-function monCol(k){const d=MON[k],P0=MPAL[k];return d.sprite==="lumite"?P0.mid:d.sprite==="crawlix"?P0.c[0]:d.sprite==="gadolith"?P0.f2:P0.i1}
+const MCOL={faultcrawler:"#c9b08a",tidewraith:"#6ab8f0",stratagolem:"#a89478",cinderling:"#ff7a2a",magmaback:"#d8401a",ashsentinel:"#ff9a4a"};
+function monCol(k){if(MCOL[k])return MCOL[k];const d=MON[k],P0=MPAL[k];return d.sprite==="lumite"?P0.mid:d.sprite==="crawlix"?P0.c[0]:d.sprite==="gadolith"?P0.f2:P0.i1}
 function tpArrive(id){   // arrive at the entrance that leads back toward town
   if(id==="town")return [24.5,24.5];
   let first=null;const q=[[id]],seen=new Set([id]);
@@ -5029,6 +5360,7 @@ function doTeleport(id){
   if(player.dead||warping){toast(t("tp_busy"));return}
   if(!S.visited[id]){toast(t("wm_locked"));return}   // only maps the character has been to
   if(id===cur.id){toast(t("tp_here"));return}
+  const gk=gateCheck(id);if(!gk.ok){AUD.sfx("err");toast(gateMsg(gk));return}
   const c=tpCost(id);if(S.sc<c){toast(fmt("tp_need",{c:num(c)}));return}
   S.sc-=c;player.nav=null;wantIdle=false;fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:.5,c:"#cfc4ff"});
   const [ax,ay]=tpArrive(id);closeWin();
@@ -5049,7 +5381,7 @@ WIN.mapinfo=()=>{
   const id=mapSel;if(!id||!MAPS[id])return "";
   const vis=!!S.visited[id],m=MAPS[id],[c0,c1,c2]=mapCols(id),here=cur.id===id,cost=tpCost(id);
   const head=`<div class="mi-head"><span class="mi-th${vis?"":" lock"}" style="--c0:${c0};--c1:${c1};--c2:${c2}"></span><div><b>${vis?t(m.nameK):"???"}</b><small>${vis?t(m.subK):t("wm_locked")}</small></div></div>`;
-  let can=vis&&!here&&S.sc>=cost&&!player.dead,why=!vis?t("wm_locked"):here?t("tp_here"):S.sc<cost?fmt("tp_need",{c:num(cost)}):"";
+  const gk=gateCheck(id);let can=vis&&!here&&S.sc>=cost&&!player.dead&&gk.ok,why=!vis?t("wm_locked"):here?t("tp_here"):!gk.ok?fmt("gate_short",{l:gk.lv,c:num(gk.cp)}):S.sc<cost?fmt("tp_need",{c:num(cost)}):"";
   const foot=`<div class="mi-foot"><button class="btn pri mi-tp" data-act="tp" data-m="${id}" ${can?"":"disabled"}>${here?t("wm_here"):fmt("tp_btn",{c:num(cost)})}</button>${why&&!here?`<small>${why}</small>`:""}</div>`;
   if(!vis)return head+`<div class="mi-lock">${svg("lock")}<b>${t("wm_unknown")}</b><span>${t("wm_unknown_d")}</span></div>`+foot;
   const tabs=`<div class="seg mi-tabs">${[["info","mt_info"],["mon","mt_mon"],["boss","mt_boss"],["drop","mt_drop"],["quest","mt_quest"]].map(([k,n])=>`<button class="${mapTab===k?"on":""}" data-act="maptab" data-v="${k}">${t(n)}</button>`).join("")}</div>`;
@@ -5058,12 +5390,13 @@ WIN.mapinfo=()=>{
     const lvs=mons.map(k=>MON[k].lv),links=(NEIGH[id]||[]).map(n=>S.visited[n]?t(MAPS[n].nameK):"???").join(" · ");
     body=`<p class="mi-desc">${t("mapd_"+id)}</p><div class="kvs">
       <div class="kv"><span>${t("mi_rec")}</span><b>${m.rec?num(m.rec):t("wm_safe")}</b></div>
+      ${GATE[id]?`<div class="kv"><span>${t("mi_req")}</span><b>Lv ${GATE[id].lv}+ · CP ${num(GATE[id].cp)}+</b></div>`:""}
       <div class="kv"><span>${t("mi_lv")}</span><b>${lvs.length?`Lv ${Math.min(...lvs)}–${Math.max(...lvs)}`:"—"}</b></div>
       <div class="kv"><span>${t("mt_mon")}</span><b>${mons.length}${mons.length?` (+${mons.length} ★ ${t("elite")})`:""}</b></div>
       <div class="kv"><span>${t("mt_boss")}</span><b>${bs.length?bs.map(k=>t(MON[k].nameK)).join(", "):"—"}</b></div>
       <div class="kv"><span>${t("mi_links")}</span><b>${links||"—"}</b></div></div>`;
   }else if(mapTab==="mon"){
-    body=mons.length?`<div class="rows">${mons.map(k=>{const d=MON[k],pr=REOC.MONC[k];return `<div class="row mrow"><span class="m-dot" style="--c:${monCol(k)}"></span><div class="grow"><b>${t(d.nameK)}</b> <small style="display:inline">Lv ${d.lv} ${elChip(pr.elem)}</small><small>HP ${num(d.hp)} · EXP ${num(d.exp[0])} / ${num(d.exp[1])} · ${d.sc[0]}–${d.sc[1]} Sc</small></div></div>`}).join("")}</div><p class="muted">${t("mi_elite_note")}</p>`:`<p class="muted">${t("mi_none_mon")}</p>`;
+    body=mons.length?`<div class="rows">${mons.map(k=>{const d=MON[k],pr=REOC.MONC[k];return `<div class="row mrow"><span class="m-dot" style="--c:${monCol(k)}"></span><div class="grow"><b>${t(d.nameK)}</b> <small style="display:inline">Lv ${d.lv} ${elChip(pr.elem)}</small><small>HP ${num(d.hp)} · EXP ${num(d.exp[0])} / ${num(d.exp[1])} · ${d.sc[0]}–${d.sc[1]} Sc</small>${d.aggr?`<small>⚔ ${t("mi_aggr")} · ${(d.skills||[]).map(x=>t(MSK[x].nameK)).join(", ")}</small>`:""}</div></div>`}).join("")}</div><p class="muted">${t("mi_elite_note")}</p>`:`<p class="muted">${t("mi_none_mon")}</p>`;
   }else if(mapTab==="boss"){
     body=bs.length?bs.map(k=>{const d=MON[k],pr=REOC.MONC[k];return `<div class="boss-card"><div class="bc-h"><span class="m-dot" style="--c:${monCol(k)}"></span><div><b>${t(d.nameK)}</b><small>${t("bt_"+k)}</small></div><span class="bc-lv">Lv ${d.lv}</span></div>
       <div class="kvs"><div class="kv"><span>HP</span><b>${num(d.hp)}</b></div><div class="kv"><span>${t("mi_el")}</span><b>${elChip(pr.elem)}</b></div><div class="kv"><span>EXP</span><b>${num(d.exp[0])} / ${num(d.exp[1])}</b></div><div class="kv"><span>Scandium</span><b>${num(d.sc[0])}–${num(d.sc[1])}</b></div><div class="kv"><span>${t("mi_respawn")}</span><b>120 s</b></div></div>
@@ -5547,7 +5880,7 @@ function frame(now){
 $("#errReset").addEventListener("click",()=>{try{SLS.removeItem(SAVE_KEY);if(AUTH.isGuest)SLS.removeItem(OLD_KEY)}catch(_){}resetDone=true;location.reload()});
 $("#errHide").addEventListener("click",()=>$("#errBox").classList.add("hidden"));
 window.addEventListener("error",e=>showErr(e.error||e.message));
-window.__reo={gainItem,AUD,npcBlocked,staticBox,netExpand,applyUiMode,acceptQuest,closeWin,t,tpCost,doTeleport,announce,sortInventory,invMax,stopIdle,mapDist,gFull,GBASE,itemArt,GEAR_TINT,RARN,ITEMDB,equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
+window.__reo={GATE,gateCheck,MON,MSK,castMonSkill,updateMon,gainItem,AUD,npcBlocked,staticBox,netExpand,applyUiMode,acceptQuest,closeWin,t,tpCost,doTeleport,announce,sortInventory,invMax,stopIdle,mapDist,gFull,GBASE,itemArt,GEAR_TINT,RARN,ITEMDB,equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
 requestAnimationFrame(frame);
 };
 

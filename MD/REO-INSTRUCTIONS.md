@@ -76,7 +76,7 @@ Grid: **49 × 49** tiles. Center tile **(24, 24)**.
 | Houses | (36,19) (9,19) (27,7) (37,35) (8,34) (18,40), each 3 × 3 | Varied roof colors |
 | Pond | ellipse center (37, 12), radii 4.2 × 3 | Blocked, animated glints |
 | Market stalls | (28,21) (21,28) | Striped awnings |
-| Forest edge | outer 4 tiles | Dense trees, road gaps act as gates |
+| Forest edge | outer 4 tiles | Dense trees, road gaps act as gates (east → Field 01, west → Path to the Geosyncline, south → Road to the Ruins) |
 
 Every building door is connected to the main road with a cobblestone path.
 
@@ -227,6 +227,7 @@ Skills belong to the archetype, not to a fixed list. The hotbar shows the curren
 2. ◐ **Job system:** Archetype Trial done (v5.1); the 16 classes and 32 jobs are still open (`JOBS.md`)
 3. ✅ **Inventory and equipment** (10 slots, compare, multi-sell, refine)
 4. **Party and guild** with real networking
-5. **Next regions** named after rare-earth elements (e.g. Neodymium, Europium, Cerium)
-6. ◐ **Sound and music:** generated 8-bit audio done (v18); volume sliders still open (`AUDIO.md`)
-7. ◐ **Save system:** local accounts done; server accounts still open (`ACCOUNTS.md`)
+5. ✅ **Path to the Geosyncline and Road to the Ruins** (v19): gated by Lv and CP, aggressive monsters with skills, no boss yet
+6. **Next regions** named after rare-earth elements (e.g. Neodymium, Europium, Cerium)
+7. ◐ **Sound and music:** generated 8-bit audio done (v18); volume sliders still open (`AUDIO.md`)
+8. ◐ **Save system:** local accounts done; server accounts still open (`ACCOUNTS.md`)

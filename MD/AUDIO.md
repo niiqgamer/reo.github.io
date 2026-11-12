@@ -16,6 +16,8 @@ Each track is built from a scale, a chord progression (4 bars) and a seed, so it
 | field1 | Field 01 | 92 | calm, curious (Dorian), soft drums |
 | field2 | Field 02 | 80 | dusk (Phrygian), long bass |
 | field3 | Field 03 | 72 | icy, sparkling (whole tone), no drums |
+| geo | Path to the Geosyncline | 76 | ancient, heavy (harmonic minor), soft drums, long bass |
+| ruins | Road to the Ruins | 104 | scorched, driving (double harmonic), driving drums, pulsing bass |
 | boss | Field 03 while Gadolith is fighting | 152 | tense (harmonic minor), driving drums, pulsing bass |
 Changing map fades the new track in. The boss track plays while the boss is aggressive and the normal track returns when the fight ends.
 

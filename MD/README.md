@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v18.3. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v19.0. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -19,6 +19,8 @@
 | FIELD-01.md | Field 01 (CP 150): monsters, portals, save |
 | FIELD-02.md | Field 02 (CP 450): monsters, Elites for every field |
 | FIELD-03.md | Field 03 (CP 900): monsters and the Gadolith boss |
+| FIELD-GEOSYNCLINE.md | Path to the Geosyncline (town west gate, Lv 25+ / CP 2,000+): aggressive Earth and Water monsters, skills, drops |
+| FIELD-RUINS.md | Road to the Ruins (town south gate, Lv 30+ / CP 3,000+): aggressive Fire monsters, skills, drops |
 | WORLD-MAP.md | World Map, teleport, Map Info, announcements |
 | LOADING.md | Loading screens and background asset builds |
 
@@ -41,11 +43,16 @@
 | COMBAT-TEST-REPORT.md | Simulator results and balance evidence (historical) |
 
 ## Key numbers (single source)
-- Recommended CP: Field 01 **150**, Field 02 **450**, Field 03 **900**.
+- Recommended CP: Field 01 **150**, Field 02 **450**, Field 03 **900**, Path to the Geosyncline **2,000**, Road to the Ruins **3,000**.
+- Gates: Geosyncline needs Base Lv 25+ and CP 2,000+; Ruins needs Base Lv 30+ and CP 3,000+.
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in this update
+## Changes in v19.0 (this update)
+- Two new maps from the town gates (west and south), with warning signs, entry gates (Lv + CP), 6 aggressive monsters with ground-circle skills, Burning and Soaked debuffs, 12 new materials, 2 new music tracks, new World Map layout (6 maps), Elite hunts and per-monster hunts.
+- New docs: `FIELD-GEOSYNCLINE.md`, `FIELD-RUINS.md`. Updated: `WORLD-MAP`, `GADOLINIUM`, `TOWN-ALIEN`, `ITEMS`, `QUESTS`, `AUDIO`, `COMBAT-FORMULAS`, `REO-INSTRUCTIONS`, wiki.
+
+## Changes in the v18.3 update
 - Recommended CP fixed in FIELD-01 (400 → 150), FIELD-02 (900 → 450), IDLE (formula example). FIELD-03 test table now labels 1,100 as a test value; the map recommends 900.
 - FIELD-01: old v1 combat, idle and save sections replaced with pointers to COMBAT-FORMULAS, IDLE and ACCOUNTS.
 - ITEMS: equipment count corrected to 2,500; the slot list now reflects 10 slots.

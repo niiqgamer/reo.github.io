@@ -4,13 +4,14 @@
 
 ## 1. World Map
 - Open with the globe button in the minimap header, or press **M**.
-- The chart shows the connected maps (Town → Field 01 → Field 02 → Field 03). Each map is a card with its name, recommended CP, and the teleport cost. "You are here" marks the current map.
+- The chart shows the connected maps: Town → Field 01 → Field 02 → Field 03, plus Town → Path to the Geosyncline (west) and Town → Road to the Ruins (south). Each map is a card with its name, recommended CP, and the teleport cost. "You are here" marks the current map.
 - Tap a map to open **Map Info** beside the chart.
 
 ## 2. Teleport
 | Rule | Value |
 |---|---|
-| Price | **150 Scandium per map passed** (Town → Field 02 = 300). Same map: not allowed |
+| Price | **150 Scandium per map passed** (Town → Field 02 = 300; Field 03 → Geosyncline = 600 via Field 02, Field 01, Town). Same map: not allowed |
+| Gate | Geosyncline needs Base Lv 25+ and CP 2,000+; Ruins needs Lv 30+ and CP 3,000+. The teleport button is disabled and says what is missing |
 | Where | **Only maps the character has already visited.** Others show `???`, a lock and "Not visited yet" |
 | Arrival | at the entrance that leads back toward town (Town: the plaza) |
 | Side effects | ends Idle; blocked while dead or while changing map; blocked if Scandium is short (the button says how much is needed) |
@@ -37,4 +38,5 @@ An unvisited map shows only a lock message. No info and no teleport.
 1. Teleport price curve (per map vs. distance, free first teleport, cooldown, daily limit).
 2. Should teleport be allowed from inside a boss fight or a party?
 3. Real GM roles and who can announce, plus per-channel or per-map announcements.
-4. More maps will need a new chart layout (the chart is hand-placed for 4 maps).
+4. The chart is hand-placed for 6 maps (v19: landscape 340 px high, portrait 440 px); more maps need a new layout.
+5. Map Info of a gated map shows an extra row **Entry needs** (Lv + CP). The Monster tab shows an Aggressive line with the skill names.

@@ -52,7 +52,7 @@ Set bonuses are not part of the comparison (they depend on the whole set).
 | **Quest item** | yes | Lumite Gel, Gadolinium Ore, Crystal Heart | **no** | **no** |
 | **Equipment** | no (each piece is its own item, with its own refine level) | gear by class, tier and rarity | yes | yes |
 
-Stackable items total **34** (12 consumables, 22 materials/ores/quest items). Equipment has **2,500** distinct pieces (see §3).
+Stackable items total **46** (12 consumables, 34 materials/ores/quest items; v19 added 12 materials). Equipment has **2,500** distinct pieces (see §3).
 
 ## 2. Consumables
 
@@ -134,6 +134,12 @@ Every monster has a loot table (`LOOT`). Elites roll their table at ×1.6 chance
 | Glacilite | Glacial Gel, Frost Spark, Frost Bloom |
 | Rimeback | Rime Plate, Rime Bone, Sage Leaf |
 | Magnoculus | Magnet Lens, Magnetic Coil, Greater Red Potion |
+| Faultcrawler | Fault Shard, Seismic Core, Greater Red Potion |
+| Tidewraith | Abyssal Tear, Sunken Glyph, Frost Bloom |
+| Strata Golem | Strata Slab, Pressure Crystal, Sage Leaf |
+| Cinderling | Cinder Ash, Ember Core, Ember Root |
+| Magmaback | Magma Plate, Lava Glass, Greater Red Potion |
+| Ashen Sentinel | Scorched Relic, Inferno Shard, Aether Dew |
 | Gadolith (boss) | Crystal Heart (quest), Elite Core ×3, Gadolinium Ore ×5, Refine Ore ×2–4, **2 gear pieces** |
 
 **Refine Ore** drops from every monster (chance 2%–6%, ×3 for Elites). **Gear** drops: normal 3%, Elite 12%, boss 2 pieces.
@@ -168,3 +174,21 @@ A drop's tier = the monster's level rounded down to a multiple of 10 (minimum Lv
 - **Capacity:** 100 slots base. **Inventory Expansion Pack** (Cash Shop tab of the Shop): +20 slots per pack, up to 500 per character. Placeholder price per pack: 40 Yttrium or 8 Lanthanum (to be reviewed).
 - **Pages:** 50 cells per page, per type tab. The grid always has 50 cells, so the window never changes size.
 - **Auto sort:** type (equipment, consumable, material, quest) > name > stars (high first) > price (high first). Equipment sorts by slot first. New items are added at the end until the next sort.
+
+## v19 materials (Geosyncline and Ruins)
+| ID | EN / TH | Sell |
+|---|---|---|
+| `mat_fault` | Fault Shard / เศษหินรอยเลื่อน | 20 |
+| `mat_seismic` | Seismic Core / แกนแผ่นดินไหว | 70 |
+| `mat_tide` | Abyssal Tear / หยดน้ำเหวลึก | 24 |
+| `mat_glyph` | Sunken Glyph / อักขระจมน้ำ | 85 |
+| `mat_strata` | Strata Slab / แผ่นชั้นหิน | 28 |
+| `mat_press` | Pressure Crystal / คริสตัลแรงอัด | 100 |
+| `mat_cinder` | Cinder Ash / ขี้เถ้าเพลิง | 30 |
+| `mat_embercore` | Ember Core / แกนเพลิง | 105 |
+| `mat_magma` | Magma Plate / แผ่นหินหลอม | 38 |
+| `mat_lavaglass` | Lava Glass / แก้วลาวา | 125 |
+| `mat_relic` | Scorched Relic / ซากโบราณไหม้เกรียม | 45 |
+| `mat_infernoshard` | Inferno Shard / เศษหัวใจนรก | 160 |
+
+Drop chances, Refine Ore chances (6–10%) and sources are in `FIELD-GEOSYNCLINE.md` and `FIELD-RUINS.md`. Gear tier: Lv 25–29 monsters drop tier 20, Lv 30+ drop tier 30. These materials are not quest items and have no use yet (crafting is still open).

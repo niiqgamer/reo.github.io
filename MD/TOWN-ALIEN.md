@@ -13,5 +13,7 @@
 - Wandering townspeople never pick a target near an NPC, stop if they get within 2 tiles, and are moved away at the start. Measured closest approach over 40 s: 1.96 tiles.
 - **Name plate:** a bigger gold-edged plate above the head with the NPC name and a role tag (GUIDE, SHOP, QUESTS, ARCHETYPE). The quest "!" sits above it.
 
+- **Gates (v19):** the east, west and south road ends are portals. Nothing is planted within 4 tiles of any gate, and NPC or decor search keeps 5 tiles away. The west and south gates have a **warning sign**: two wooden posts, a dark board with a gold frame, a pulsing red banner (WARNING / คำเตือน) and the text "Monster Lv.25+" or "Monster Lv.30+".
+
 ## 3. If you add props or NPCs
 Give every new prop kind a depth key `k` and an entry in `staticBox` (screen box). The NPC spot search then avoids it automatically.

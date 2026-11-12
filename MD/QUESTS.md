@@ -13,7 +13,7 @@
 `talk(npc)` · `crystal` · `reach(map)` · `kill(map, mon?, elite?, n)` · `collect(item, n, consume?)`
 
 ## Quests window
-Available quests are **grouped by map** (Field 01, 02, 03, General) with the map's recommended CP, and sorted by monster level. Each row shows type, repeatable tag and the monster level.
+Available quests are **grouped by map** (Field 01, 02, 03, Path to the Geosyncline, Road to the Ruins, General) with the map's recommended CP, and sorted by monster level. Each row shows type, repeatable tag and the monster level.
 
 ## Current quests
 | ID | Type | Title (EN / TH) | Stages | Reward |
@@ -47,6 +47,14 @@ Every monster has one repeatable **Normal** hunt (15 kills, Hunt Lumite/Nebulite
 | Elite Hunt: Field 02 (`qe_field2`) | 02 | 3 × Elite | 2,400 | 1,400 | 1,500 (+8 Y) |
 | Elite Hunt: Field 03 (`qe_field3`) | 03 | 3 × Elite | 5,200 | 3,000 | 3,000 (+12 Y) |
 | Boss Hunt: Gadolith (`qb_gadolith`) | 03 | 1 × Gadolith | 2,500 | 1,500 | 2,500 (+20 Y) |
+| Hunt: Faultcrawler (`qn_faultcrawler`) | Geosyncline | 15 × Faultcrawler | 10,125 | 6,480 | 3,600 |
+| Hunt: Tidewraith (`qn_tidewraith`) | Geosyncline | 15 × Tidewraith | 11,880 | 7,560 | 4,200 |
+| Hunt: Strata Golem (`qn_stratagolem`) | Geosyncline | 15 × Strata Golem | 14,310 | 9,180 | 5,160 |
+| Hunt: Cinderling (`qn_cinderling`) | Ruins | 15 × Cinderling | 16,875 | 10,800 | 5,760 |
+| Hunt: Magmaback (`qn_magmaback`) | Ruins | 15 × Magmaback | 19,980 | 12,690 | 6,960 |
+| Hunt: Ashen Sentinel (`qn_ashsentinel`) | Ruins | 15 × Ashen Sentinel | 23,625 | 14,985 | 8,280 |
+| Elite Hunt: Geosyncline (`qe_geo`) | Geosyncline | 3 × Elite | 9,000 | 5,600 | 4,800 (+16 Y) |
+| Elite Hunt: Ruins (`qe_ruins`) | Ruins | 3 × Elite | 16,000 | 10,000 | 8,000 (+22 Y) |
 
 Repeatable quests are unlimited in the prototype. Add daily limits before release.
 
