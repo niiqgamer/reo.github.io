@@ -1152,6 +1152,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .inv-pager .grow{flex:1}
 .inv-foot{flex:none;display:flex;align-items:center;gap:8px;padding-top:2px}
 .inv-foot .grow{flex:1}
+.inv-foot .bulk{background:#2f7fd6;color:#fff;border-color:#2f7fd6}
+.inv-foot .bulk.pri{background:#1d5fb5;border-color:#1d5fb5}
 .inv-fix .ii-st{font-size:9.6px;letter-spacing:-.6px;white-space:nowrap;left:0;right:0;text-align:center;bottom:1px}
 .inv-fix .ii-rf{font-size:9.5px}
 
@@ -2053,7 +2055,7 @@ D2.en.cmp_title="Compared with equipped";D2.th.cmp_title="เทียบกั�
 D2.en.cmp_with="Equipped";D2.th.cmp_with="ที่ใส่อยู่";
 D2.en.cmp_none="Nothing equipped in this slot — this would be a new bonus.";D2.th.cmp_none="ช่องนี้ยังว่าง ชิ้นนี้จะเพิ่มค่าทั้งหมดให้";
 D2.en.cmp_same="No difference.";D2.th.cmp_same="ไม่ต่างกัน";
-D2.en.cmp_multi="Select many";D2.th.cmp_multi="เลือกหลายชิ้น";
+D2.en.cmp_multi="Sell in bulk";D2.th.cmp_multi="ขายหลายชิ้น";
 D2.en.cmp_off="Cancel selection";D2.th.cmp_off="ยกเลิกการเลือก";
 D2.en.cmp_count="{n} selected · {t} Sc";D2.th.cmp_count="เลือก {n} ชิ้น · รวม {t} Sc";
 D2.en.cmp_sell_sel="Sell selected";D2.th.cmp_sell_sel="ขายที่เลือก";
@@ -2227,7 +2229,7 @@ D2.en.sort_rarity="Sort by Rarity";D2.th.sort_rarity="เรียงตาม�
 D2.en.sort_price="Sort by sell price";D2.th.sort_price="เรียงตามราคาขาย";
 D2.en.inv_sort="Sort items";D2.th.inv_sort="เรียงไอเท็ม";
 D2.en.inv_sort_tip="Press to change the sort: Name, Rarity (Equipment only), Sell price";D2.th.inv_sort_tip="กดเพื่อเปลี่ยนการเรียง: ชื่อ, ความหายาก (เฉพาะอุปกรณ์), ราคาขาย";
-D2.en.inv_expand="Expand slots";D2.th.inv_expand="ขยายช่อง";
+D2.en.inv_expand="Expand Slot";D2.th.inv_expand="ขยายช่อง";
 D2.en.npcr_lumi="GUIDE";D2.th.npcr_lumi="ไกด์";
 D2.en.npcr_bors="SHOP";D2.th.npcr_bors="ร้านค้า";
 D2.en.npcr_veyra="QUESTS";D2.th.npcr_veyra="เควสต์";
@@ -3388,8 +3390,8 @@ function invWin(){
   const used=invSlots(),mx=invMax();
   return `<div class="inv-fix"><div class="inv-top"><div class="seg inv-tabs">${tabs}</div></div>
    ${invMulti?invMultiBar():""}<div class="inv-grid">${cells.join("")}</div>
-   <div class="inv-pager"><button class="btn sm ${invMulti?"pri":""}" data-act="invmulti">${t(invMulti?"cmp_off":"cmp_multi")}</button><span class="grow"></span><button class="btn sm" data-act="invpage" data-d="-1" ${pg<=0?"disabled":""}>◀</button><span>${fmt("inv_page",{p:pg+1,n:pages})}</span><button class="btn sm" data-act="invpage" data-d="1" ${pg>=pages-1?"disabled":""}>▶</button><span class="grow"></span></div>
-   <div class="inv-foot"><button class="btn sm" data-act="invsort" title="${t("inv_sort_tip")}">${t(invSortMode?"sort_"+invSortMode:"inv_sort")}</button><span class="grow"></span><span class="inv-cap${used>=mx?" full":""}">${fmt("inv_slots",{u:used,m:mx})}</span><button class="btn sm gold" data-act="invexp">+ ${t("inv_expand")}</button></div></div>`;
+   <div class="inv-pager"><button class="btn sm" data-act="invpage" data-d="-1" ${pg<=0?"disabled":""}>◀</button><span>${fmt("inv_page",{p:pg+1,n:pages})}</span><button class="btn sm" data-act="invpage" data-d="1" ${pg>=pages-1?"disabled":""}>▶</button></div>
+   <div class="inv-foot"><button class="btn sm" data-act="invsort" title="${t("inv_sort_tip")}">${t(invSortMode?"sort_"+invSortMode:"inv_sort")}</button><button class="btn sm bulk${invMulti?" pri":""}" data-act="invmulti">${t(invMulti?"cmp_off":"cmp_multi")}</button><span class="grow"></span><span class="inv-cap${used>=mx?" full":""}">${fmt("inv_slots",{u:used,m:mx})}</span><button class="btn sm gold" data-act="invexp">+ ${t("inv_expand")}</button></div></div>`;
 }
 /* sort toggle: Name > Rarity (Equipment tab only) > Sell price. Each press switches the mode and sorts. */
 function sortInventory(mode){
