@@ -268,3 +268,29 @@ Damage numbers the player deals now use a bouncy cartoon style. Drawn on the gam
 - The old "!" after a critical number is gone; the label replaces it.
 - Unchanged: MISS, damage taken by the player, `+EXP` / `+Sc` / item floats, boss warnings (they still use the old `dmg` style without `pop`).
 - Changed in code: `applyHit` (adds `pop`, `crit`, longer life for crits) and `drawFx` (new branch before the old `dmg` branch).
+
+
+---
+
+## 15. Pixel hit effects (v18.4)
+
+Every hit the player lands on a monster now plays a small pixel-art effect, replacing the old 6-dot `burst`. Pixels are 2×2 world px (one "cell"); everything snaps to that grid. Effects are centred on the monster's body (half its height) and scale with monster size (`k = height / 36`, clamped 0.8–1.8). Code: `hitFx()` (spawns), `hfxDraw()` (draws), `k:"hfx"` entries in `fx`.
+
+| | Normal hit | Critical hit | Weak-point hit |
+|---|---|---|---|
+| Palette | white → skill colour → dark (white → yellow → orange → dark red if the skill has no colour) | gold ramp `#fff → #fff2a8 → #ffd84a → #f29a1d → #a3441a` | ice ramp `#fff → #c9f6ff → #8ff0ff → #3aa5d6 → #17336b` |
+| Flash | small cross, 0.09 s | solid white disc, 0.05 s (hero frame) | like normal |
+| Slash | 3-line diagonal streak, 0.14 s, angled from the attack direction | – | like normal |
+| Sparks | 7 pixel sparks, 1–2 cells, gravity, one bounce off the ground | 18 shards, 2–3 cells, faster, one bounce | like normal |
+| Extras | – | dithered expanding ring (4×4 Bayer, 0.4 s, max 6 at once), 10 speed rays, 5 twinkling stars | – |
+| Screen shake | none | ±3 px, decays over 0.3 s | none |
+| Hit-stop | none | 0.06 s freeze of the whole update loop, at most once per 0.4 s | none |
+
+**Performance / comfort**
+- Low graphics (`S.gfx==="lo"`) and LITE devices: fewer sparks (4 / 10), rays (6) and stars (3).
+- More than 420 live effects: new hit effects are skipped.
+- `prefers-reduced-motion`: no screen shake and no hit-stop (the pixel effects still play).
+
+**Floating text:** unchanged from §14 and still drawn on top.
+
+**Code touched:** `applyHit` (calls `hitFx`), `drawFx` (new `hfx` branch), `update` (hit-stop and shake timers at the top), `render` (shake offset in the world transform; clicks are not affected because `ox/oy` are not modified).

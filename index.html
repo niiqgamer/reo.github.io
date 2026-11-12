@@ -4661,7 +4661,7 @@ function applyHit(mo,res,o){
   { const ab=pd().ab||{}; if(res.crit&&ab.cd)res.dmg=Math.round(res.dmg*(1+ab.cd/100)); mo.hp-=res.dmg; if(ab.ls)S.hp=Math.min(hpMax(),S.hp+res.dmg*ab.ls/100); }
   mo.hitT=.16;
   fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:res.crit?1.15:.95,txt:num(res.dmg),c:res.crit?"#ffd84a":res.weak?"#8ff0ff":(o&&o.c)||"#ffffff",big:res.crit||res.weak,pop:true,crit:!!res.crit,ox:(rnd()-.5)*(res.crit?18:30),h});
-  fx.push({k:"burst",x:mo.x,y:mo.y,t:0,d:.25,c:res.crit?"#ffe28a":(o&&o.c)||"#ffffff",n:6,z:MON[mo.type].h*.5});
+  hitFx(mo,res,o,h);
   if(mo.hp<=0)killMon(mo);
 }
 function physAttack(mo,o){const d=pd();const res=REOC.physHit(d,mprof(mo),Object.assign({dist:d.ranged?dist(player,mo):0},o),rnd);applyHit(mo,res,o);return res}
@@ -4957,6 +4957,54 @@ function castBar(x,y){
 
 /* ================= effects ================= */
 const FONT='Kanit,"Noto Sans Thai",sans-serif';
+/* ---- pixel hit FX (v18.4): slash + sparks for normal hits; flash, dithered ring, rays, gold shards, shake and hit-stop for crits ---- */
+const FXN=["#ffffff","#ffe9a0","#ffb347","#d6562b","#5a2340"],FXG=["#ffffff","#fff2a8","#ffd84a","#f29a1d","#a3441a"],FXI=["#ffffff","#c9f6ff","#8ff0ff","#3aa5d6","#17336b"];
+const FXB=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+const FXRM=(()=>{try{return matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){return false}})();
+let hitStopT=0,hsCd=0,shakeT=0;
+const fxQ=v=>Math.round(v/2)*2,fxCol=(r,p)=>r[Math.min(r.length-1,Math.max(0,(p*r.length)|0))],fxEo=p=>1-Math.pow(1-p,3);
+function fxSq(x,y,sz,c){g.fillStyle=c;g.fillRect(fxQ(x),fxQ(y),2*sz,2*sz)}
+function fxLine(x0,y0,x1,y1,c){x0=Math.round(x0/2);y0=Math.round(y0/2);x1=Math.round(x1/2);y1=Math.round(y1/2);const dx=Math.abs(x1-x0),dy=-Math.abs(y1-y0),sx=x0<x1?1:-1,sy=y0<y1?1:-1;let e=dx+dy;g.fillStyle=c;
+  for(let i=0;i<200;i++){g.fillRect(x0*2,y0*2,2,2);if(x0===x1&&y0===y1)break;const e2=2*e;if(e2>=dy){e+=dy;x0+=sx}if(e2<=dx){e+=dx;y0+=sy}}}
+function hitFx(mo,res,o,h){
+  if(fx.length>420)return;
+  const lo=LITE||S.gfx==="lo",crit=!!res.crit,weak=!!res.weak&&!crit,k=Math.max(.8,Math.min(1.8,h/36)),Wf=2*k,z=h*.5,x=mo.x,y=mo.y;
+  let seed=(Math.random()*1e9)|0;const r=()=>{seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+  let ramp=FXN;if(weak)ramp=FXI;else if(crit)ramp=FXG;else if(o&&typeof o.c==="string"&&/^#[0-9a-f]{6}$/i.test(o.c))ramp=["#ffffff",shade(o.c,.55),o.c,shade(o.c,-.35),shade(o.c,-.7)];
+  const [mx,my]=P(mo.x,mo.y),[qx,qy]=P(player.x,player.y),aa=Math.atan2(my-qy,mx-qx),fw=Math.cos(aa)>=0?1:-1;
+  const add=(sub,d,e)=>fx.push(Object.assign({k:"hfx",sub,x,y,z,t:0,d,Wf,kk:k},e));
+  if(crit){
+    add("disc",.05,{r:13});
+    if(fx.filter(f=>f.k==="hfx"&&f.sub==="ring").length<6)add("ring",.4,{r0:5,r1:48,w:7,ramp:FXG});
+    const nr=lo?6:10;for(let i=0;i<nr;i++)add("ray",.17,{a:i/nr*TAU+r()*.25,r0:12,r1:40});
+    const ns=lo?10:18;for(let i=0;i<ns;i++){const a=r()*TAU,sp=70+r()*120;add("pp",.5+r()*.35,{vx:Math.cos(a)*sp*Wf,vy:(Math.sin(a)*sp-40)*Wf,g:240*Wf,s:r()<.4?3:2,ramp:FXG})}
+    const nt=lo?3:5;for(let i=0;i<nt;i++){const a=r()*TAU,sp=14+r()*26;add("pp",.7+r()*.3,{star:1,ox:Math.cos(a)*10*Wf,oy:Math.sin(a)*8*Wf,vx:Math.cos(a)*sp*Wf,vy:(-18-r()*14)*Wf,g:0,ramp:FXG})}
+    if(!FXRM){shakeT=Math.max(shakeT,.3);if(hsCd<=0){hitStopT=.06;hsCd=.4}}
+  }else{
+    const sl=aa+Math.PI/2+(r()<.5?-.6:.6);
+    add("slash",.14,{dx:Math.cos(sl),dy:Math.sin(sl),ramp:ramp});
+    add("cross",.09,{ramp:ramp});
+    const n=lo?4:7;for(let i=0;i<n;i++){const a=-Math.PI*.15-r()*Math.PI*.9,sp=50+r()*70,sg=r()<.75?fw:-fw;add("pp",.3+r()*.25,{vx:Math.abs(Math.cos(a))*sp*Wf*sg,vy:Math.sin(a)*sp*Wf,g:260*Wf,s:r()<.3?2:1,ramp:ramp})}
+  }
+}
+function hfxDraw(f,cx,cy){
+  const p=f.t/f.d,Wf=f.Wf,k=f.kk;
+  if(f.sub==="disc"){const R=Math.round(f.r*k*(1-p*.4)),bx=Math.round(cx/2),by=Math.round(cy/2);g.fillStyle="#ffffff";
+    for(let yy=-R;yy<=R;yy++){const hw=Math.floor(Math.sqrt(R*R-yy*yy));g.fillRect((bx-hw)*2,(by+yy)*2,(hw*2+1)*2,2)}}
+  else if(f.sub==="cross"){const sW=(Math.round(6*(1-p))+2)*Wf,c=p<.5?"#ffffff":f.ramp[1];fxLine(cx-sW,cy,cx+sW,cy,c);fxLine(cx,cy-sW,cx,cy+sW,c)}
+  else if(f.sub==="slash"){const L=21*Wf,sx=cx-f.dx*L,sy=cy-f.dy*L,ex=cx+f.dx*L,ey=cy+f.dy*L,q=Math.min(1,p*2.4),tp=Math.max(0,(p-.3)*1.6);
+    const hx=sx+(ex-sx)*q,hy=sy+(ey-sy)*q,tx=sx+(ex-sx)*tp,ty=sy+(ey-sy)*tp;
+    fxLine(tx,ty,hx,hy,"#ffffff");fxLine(tx+2,ty,hx+2,hy,f.ramp[1]);fxLine(tx,ty+2,hx,hy+2,f.ramp[2])}
+  else if(f.sub==="ray"){const hr=(f.r0+(f.r1-f.r0)*fxEo(p))*Wf,len=(12*(1-p)+2)*Wf,c=fxCol(FXG,p*.9),ca=Math.cos(f.a),sa=Math.sin(f.a);
+    fxLine(cx+ca*(hr-len),cy+sa*(hr-len)*.8,cx+ca*hr,cy+sa*hr*.8,c)}
+  else if(f.sub==="ring"){const r=(f.r0+(f.r1-f.r0)*fxEo(p))*k,wd=(f.w*(1-p)+1)*k,al=1-p,ri=Math.max(0,r-wd/2),ro=r+wd/2,bx=Math.round(cx/2),by=Math.round(cy/2),RO=Math.ceil(ro);
+    for(let yy=-RO;yy<=RO;yy++){const o2=ro*ro-yy*yy;if(o2<0)continue;const xo=Math.floor(Math.sqrt(o2)),i2=ri*ri-yy*yy,xi=i2>0?Math.ceil(Math.sqrt(i2)):0;
+      for(let sg=-1;sg<=1;sg+=2)for(let xx=xi;xx<=xo;xx++){if(xx===0&&sg===1)continue;const X=sg*xx,de=Math.abs(Math.hypot(X,yy)-r);
+        if(FXB[(by+yy)&3][(bx+X)&3]/16<al){g.fillStyle=fxCol(f.ramp,Math.min(.99,p*.8+de/(wd/2)*.3));g.fillRect((bx+X)*2,(by+yy)*2,2,2)}}}}
+  else if(f.sub==="pp"){const X=cx+(f.ox||0)+f.vx*f.t;let Y=cy+(f.oy||0)+f.vy*f.t+.5*f.g*f.t*f.t;const gnd=cy+f.z;if(f.g&&Y>gnd)Y=gnd-Math.min(6,(Y-gnd)*.3);
+    if(f.star){const on=Math.floor(f.t*18)%2===0,c=fxCol(f.ramp,p),s=(on?3:2)*Wf;fxLine(X-s,Y,X+s,Y,c);fxLine(X,Y-s,X,Y+s,c);fxSq(X,Y,1,"#ffffff")}
+    else fxSq(X,Y,p>.7?1:f.s,fxCol(f.ramp,p))}
+}
 function drawFx(f){
   if(f.t<0)return;const p=Math.max(0,f.t/f.d);
   const [x,y]=f.follow?P(player.x,player.y):P(f.x,f.y);
@@ -4970,6 +5018,7 @@ function drawFx(f){
   else if(f.k==="bolt"){g.globalAlpha=1-p;g.strokeStyle=f.c;g.lineWidth=4;g.beginPath();let yy=y-240,xx=x;g.moveTo(xx,yy);while(yy<y-20){yy+=24;xx=x+(hash(Math.floor(yy),Math.floor(f.x*10))-.5)*26;g.lineTo(xx,yy)}g.lineTo(x,y-20);g.stroke();g.strokeStyle="#fff";g.lineWidth=1.5;g.stroke()}
   else if(f.k==="proj"){const [tx,ty]=P(f.tx,f.ty);const px=x+(tx-x)*p,py=y-26+(ty-y)*p-Math.sin(p*Math.PI)*30;ell(px,py,6,6,f.c);ell(px,py,3,3,"#fff");g.globalAlpha=.5;ell(px-(tx-x)*.06,py+4,5,5,f.c)}
   else if(f.k==="float"){g.globalCompositeOperation="source-over";g.globalAlpha=1-p*p;g.font=`600 13px ${FONT}`;g.textAlign="center";g.textBaseline="middle";g.lineWidth=3;g.strokeStyle="rgba(20,10,30,.8)";const yy=y-70-(f.oy||0)-p*30;g.strokeText(f.txt,x,yy);g.fillStyle=f.c;g.fillText(f.txt,x,yy)}
+  else if(f.k==="hfx"){g.globalCompositeOperation="source-over";g.globalAlpha=1;hfxDraw(f,x,y-(f.z||0))}
   else if(f.k==="dmg"&&f.pop){g.globalCompositeOperation="source-over";
     const e=1-Math.pow(1-p,3),c=!!f.crit,ph=(a,b)=>(p-a)/(b-a);let sc,rot=0;
     if(c){sc=p<.09?.1+1.4*ph(0,.09):p<.16?1.5-.5*ph(.09,.16):1;
@@ -5037,7 +5086,8 @@ function render(){
   const bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,cur.bg[0]);bg.addColorStop(1,cur.bg[1]);g.fillStyle=bg;g.fillRect(0,0,W,H);
   if(cur===town)drawAlienSky();
   [camX,camY]=P(player.x,player.y);ox=W/2-camX*zoom;oy=H/2+24*zoom-camY*zoom;
-  g.setTransform(dpr*zoom,0,0,dpr*zoom,dpr*ox,dpr*oy);
+  const shx=shakeT>0?(Math.random()-.5)*shakeT*24:0,shy=shakeT>0?(Math.random()-.5)*shakeT*14:0;
+  g.setTransform(dpr*zoom,0,0,dpr*zoom,dpr*(ox+shx),dpr*(oy+shy));
   const vx0=-ox/zoom,vx1=(W-ox)/zoom,vy0=-oy/zoom,vy1=(H-oy)/zoom,gd=cur.ground;
   if(gd){const sx0=Math.max(0,(vx0+N*HW)*GS),sy0=Math.max(0,vy0*GS),sx1=Math.min(gd.width,(vx1+N*HW)*GS),sy1=Math.min(gd.height,vy1*GS);
     if(sx1>sx0&&sy1>sy0)g.drawImage(gd,sx0,sy0,sx1-sx0,sy1-sy0,sx0/GS-N*HW,sy0/GS,(sx1-sx0)/GS,(sy1-sy0)/GS)}
@@ -5137,6 +5187,8 @@ function updateIdle(dt){
   autoSkill();
 }
 function update(dt){
+  hsCd-=dt;if(hitStopT>0){hitStopT-=dt;return}
+  shakeT=Math.max(0,shakeT-dt);
   T+=dt;gateT=Math.max(0,gateT-dt);aggroGrace=Math.max(0,aggroGrace-dt);if((T*2|0)!==(update.q|0)){update.q=T*2;AUD.setBoss(cur.id==="field3"&&cur.monsters.some(m=>m.boss&&m.aggro&&!m.dead&&m.dieT<=0))}watchWins(dt);updateMobBar(dt);updateAnn(dt);
   if(player.dead){deathT-=dt;if(deathT<=0)respawn()}
   if(holding&&lastHold&&!player.dead){holdTimer+=dt;if(holdTimer>.3){holdTimer=0;const [wx,wy]=toWorld(lastHold.x,lastHold.y),[tx,ty]=isoToTile(wx,wy),a=Math.floor(tx),b=Math.floor(ty);if(!player.target&&inb(a,b)&&walk(a,b)&&walkTo(player,a,b))setMarker(a+.5,b+.5)}}
