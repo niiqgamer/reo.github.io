@@ -86,29 +86,37 @@ supporter: tbd_4_1 … tbd_4_4
 
 ## 4. How to change jobs
 
-```
- C0 Beginner ──(Base Lv ≥ 10, Job Lv 10/10, archetype change quest)──► C1 Class
- C1 Class    ──(Base Lv ≥ 50, Job Lv 50/50, upper class change quest)─► C2 Job
- C2 Job      ──► level to Base Lv 99 (cap), Job Lv 50 (cap)
-```
+### C0 → C1: the Archetype Trial (built in v5.1)
+
+| Step | What happens |
+|---|---|
+| 1 | Every new character is a **Beginner (C0)**, Job Lv cap 10. |
+| 2 | Talk to **Archetype Helper Sera** in Gadolinium plaza (tile 28, 27). She explains the 4 archetypes. Before Job Lv 10 she only teaches and says to come back. |
+| 3 | At **Job Lv 10** she offers the quest **Archetype Trial**: defeat **10 Elite monsters** in any field. The quest is only given by her (it never appears in the Quests window list). |
+| 4 | Return to her. A choice window shows the 4 archetypes; the player picks **exactly one** (Choose → Confirm). |
+| 5 | The character becomes that archetype (**C1**). **Job Lv resets to 1** with a new cap of **50**. Reward: 500 Base EXP, 30 Yttrium. |
+| 6 | The choice is **permanent**. Talking to her again only gives encouragement. |
+
+- Requirement used: **Job Lv 10**. The earlier draft also required Base Lv 10; it was dropped to match the latest direction.
+- The archetype is the C1 tier for now. When each archetype gets its 4 classes, the same trial picks the archetype and a later step picks the class.
+- Elites per field: 1 per monster type (6 total in Fields 01–02), respawn 45–60 s. Expect the trial to take a while; Elites wear a golden circle at their feet.
+
+### C1 → C2 (planned)
 
 | Step | Requirement | Result |
 |---|---|---|
-| 1 | New character | **Beginner (C0)** |
-| 2 | Base Lv **10+** and Job Lv **10 (max)** | Eligible for C1 |
-| 3 | Complete the **archetype change quest** | Becomes a **Class (C1)** |
-| 4 | Base Lv **50+** and Job Lv **50 (max)** | Eligible for C2 |
-| 5 | Complete the **upper class change quest** | Becomes a **Job (C2)** |
-| 6 | Level to Base Lv **99** and Job Lv **50** | Current cap (will be raised later) |
+| 1 | Base Lv **50+** and Job Lv **50 (max)** | Eligible |
+| 2 | Complete the **upper class change quest** | Becomes a **Job (C2)** |
+| 3 | Level to Base Lv **99** and Job Lv **50** | Current cap |
 
 Implementation rules:
-- Requirements are checked **server-side** when the quest is started and when it is completed.
-- Store `tier`, `archetype`, `class`, `job` on the character; derive range type and skill list from data.
-- UI shows the requirement checklist in the quest window with current progress (e.g. “Job Lv 7 / 10”).
-
----
+- Requirements are checked when the quest is offered and when it is turned in.
+- Store `arch` on the character. `jcap()` = 10 for Beginner, 50 for an archetype.
+- Saves from v5 (when classes could be switched freely for testing) keep their class, and the trial is marked done.
 
 ## 5. Prototype mapping
+
+- v5: one **baseline prototype per archetype** is playable (see `ARCHETYPES.md`). It stands in for that archetype's classes until each class gets its own kit.
 
 - Prototype label **“Novice / ผู้ฝึกหัด”** must become **“Beginner”** (Thai name TBD, see below).
 - The prototype hotbar skills are **placeholders**; real skill lists will be defined per class/job.
@@ -120,7 +128,7 @@ Implementation rules:
 1. Names for Spellcaster class 3.2 and its two jobs (the draft repeated Wizard/Warlock).
 2. All 4 Supporter classes and 8 jobs.
 3. Is the archetype chosen separately before the class, or implied by the class choice? (This doc assumes implied.)
-4. Does Job Lv reset to 1 on each job change? Do unspent skill points carry over?
+4. ✅ Job Lv resets to 1 on the C0 → C1 change (v5.1). Still open: do unspent skill points carry over?
 5. Thai display names for archetypes, classes and jobs, or keep English names in both languages?
 6. Spelling check: “Swordman” (kept as written) vs “Swordsman”.
 7. Archetype accent colors for UI (job icons, name tags, skill effects).

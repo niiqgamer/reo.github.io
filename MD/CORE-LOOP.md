@@ -131,3 +131,14 @@ The exact formula is an open question; implement CP as a single function so it c
 8. Daily dungeon: entries per day, reset time (server time zone), rewards.
 9. Idle farming: hours cap for offline rewards, material tables per area.
 10. Do stat/skill points come from Base Lv, Job Lv, or both?
+
+
+## Field boss (v6)
+The first boss, **Gadolith** (Field 03, Lv 20), is a **field boss**: it stands in an open arena, respawns on a timer, and drops Crystal Hearts. Instance bosses (private maps) are still planned; see `FIELD-03.md` for the boss mechanics.
+
+## Auto stat points (v13)
+
+- With **Auto-assign** on (default), points are spent automatically on every level-up, on class change, on load, and after pressing Auto-assign.
+- The Character window refreshes right away when the character levels up (before, it showed old stats until reopened).
+- A stat raise costs at least 2 points, so one leftover point may wait for the next level-up. The window shows this as "แจกอัตโนมัติอยู่: เหลือ N แต้ม".
+- Pressing a manual **+** turns Auto-assign off. Turn it on again with the button.

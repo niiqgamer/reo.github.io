@@ -36,6 +36,7 @@ Every building door connects to the main road with a cobblestone path.
 | `lumi` | Guide Lumi / ผู้นำทาง ลูมิ | (26, 21) | Starter quest giver |
 | `bors` | Bors the Merchant / พ่อค้าบอร์ส | (31, 18) | Potions, Scandium shop |
 | `veyra` | Captain Veyra / กัปตันเวย์รา | (19, 26) | Combat and idle tips |
+| `helper` | Archetype Helper Sera / ผู้แนะแนวอาร์คีไทป์ เซร่า | (28, 27) | Teaches the 4 archetypes; gives the Archetype Trial at Job Lv 10 |
 
 NPCs face the player within 3.5 tiles. Click an NPC → walk to an adjacent tile → dialog opens on arrival.
 

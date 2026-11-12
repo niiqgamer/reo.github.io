@@ -1,174 +1,231 @@
 # Rare Earth Online (REO) — Project Instructions
 
-> Master instruction file. Read it before every task, then read the design file that matches the task (see **Document map**). When a request conflicts with these files, follow the request and update the affected file in the same change.
+> This is the source of truth for building REO. Read it before every task. When a request conflicts with this file, follow the request and then update this file so it stays accurate.
 
 ---
 
 ## 1. Vision
 
-REO is a **browser-based MMORPG with idle mechanics**. It plays like a classic quarter-view MMO (Ragnarok Online) with the cozy, hand-painted town feel of Tree of Savior. Every region, currency and key item is named after a **rare-earth element**; their magnetic, silver-violet glow is the visual and narrative thread of the world.
+REO is a **browser-based MMORPG with idle mechanics**. It plays like a classic quarter-view MMO (Ragnarok Online) with the cozy, hand-painted town feel of Tree of Savior. Every region is named after a **rare-earth element**; the magnetic, silver-violet glow of these elements is the visual and narrative thread of the world.
 
-- **Genre:** MMORPG + idle (auto-hunt, idle material farming, offline rewards)
-- **Platform:** web browser first; must also work as a mobile web app / wrapped app
+- **Genre:** MMORPG + idle (auto-hunt, offline rewards)
+- **Platform:** Web browser first; must also work as a mobile web app / wrapped app
 - **Languages:** Thai (default) and English, switchable at any time without a reload
-- **Starting town:** every new player begins in **Gadolinium (แกโดลิเนียม) — Town of Beginnings** as a **Beginner (C0)**
+- **Starting town:** every new player begins in **Gadolinium (แกโดลิเนียม) — Town of Beginnings (เมืองแห่งการเริ่มต้น)**
 
 ---
 
-## 2. Document map
+## 2. Non-negotiable rules
 
-| File | Read it when working on |
-|---|---|
-| `REO-INSTRUCTIONS.md` (this file) | Anything — rules, art, tech, workflow, glossary |
-| `design/CORE-LOOP.md` | Combat rewards, leveling, EXP, equipment, CP, quests, instance bosses, daily dungeons, idle farming |
-| `design/JOBS.md` | Archetypes, classes, jobs, attack ranges, job change quests, level caps |
-| `design/ECONOMY.md` | Currencies (Scandium, Yttrium, Lanthanum), shops, trading, fees |
-| `design/GADOLINIUM.md` | Starting town map, buildings, NPCs, starter quest |
-| `design/UI-UX.md` | HUD, layouts (horizontal / vertical), windows, hotbar, localization |
-
-Each design file ends with **Open questions**. Do not invent answers to those in code; use clearly marked placeholders until they are decided.
+1. **Camera:** always locked on the player character at the center of the screen. No free camera panning.
+2. **Movement:** click/tap anywhere on the map to walk there. Use A* pathfinding (8 directions, no corner cutting) plus line-of-sight smoothing. Holding the pointer keeps re-targeting (~every 0.3 s).
+3. **Spawn:** new players spawn at the exact center of the starting map (Gadolinium tile 24, 24 → world 24.5, 24.5).
+4. **Projection:** 2.5D isometric quarter view. Tile = 64 × 32 px. Depth-sort everything by `x + y`.
+5. **Language swap:** never hard-code user-facing text. Every string goes through `t(key)`. Switching language must instantly update HTML UI, canvas labels, chat, dialogs, open windows and toasts.
+6. **Layout swap:** support **Auto / Horizontal / Vertical**. Auto picks by aspect ratio. Switching must not reload or reset game state.
+7. **Art is drawn in code** (canvas) unless real sprite assets are added later. No copyrighted characters, logos or assets from Ragnarok Online, Tree of Savior or any other game.
 
 ---
 
-## 3. Non-negotiable rules
-
-1. **Camera** is always locked on the player character at the center of the screen. No free panning.
-2. **Movement:** click/tap anywhere on the map to walk there. A* pathfinding (8 directions, no corner cutting) plus line-of-sight smoothing. Holding the pointer keeps re-targeting (~every 0.3 s).
-3. **Spawn:** new characters spawn at the exact center of Gadolinium (tile 24, 24 → world 24.5, 24.5).
-4. **Projection:** 2.5D isometric quarter view. Tile = 64 × 32 px. Depth-sort by `x + y`.
-5. **Ranges are measured in tiles** (see `design/JOBS.md`).
-6. **No hard-coded user-facing text.** Every string goes through `t(key)` and exists in both `th` and `en`.
-7. **Layout swap** Auto / Horizontal / Vertical never reloads or resets state.
-8. **Original art only.** No characters, logos or assets from Ragnarok Online, Tree of Savior or any other game.
-9. **Use the official terms** in the glossary below — in code identifiers, UI text and docs.
-
----
-
-## 4. Glossary
-
-| Term | Meaning |
-|---|---|
-| **Archetype** | One of 4 combat roles: Fighter, Ranger, Spellcaster, Supporter |
-| **Class** | One of 16 first-tier specializations (e.g. Swordman). Reached at **C1** |
-| **Job** | One of 32 final specializations (e.g. Knight). Reached at **C2** |
-| **C0 / C1 / C2** | Character tier: Beginner / Class / Job |
-| **Base Level (Base Lv)** | Character level. Current cap **99** |
-| **Job Level (Job Lv)** | Level within the current tier. Cap 10 at C0, 50 at C1, 50 at C2 |
-| **Base EXP / Job EXP** | Separate EXP pools for Base Lv and Job Lv |
-| **CP** | Combat Power — a single number summarizing a character’s strength |
-| **Refine** | Upgrade level on a piece of equipment |
-| **Card slot** | Socket on equipment that holds a card |
-| **Equipment options** | Random or rolled bonus stats on equipment |
-| **Scandium (Sc)** | Common in-game gold |
-| **Yttrium (Y)** | Untradable, earnable cash (bound) |
-| **Lanthanum (La)** | Tradable premium cash |
-| **Instance boss** | Boss fought in a private instanced map |
-| **Daily dungeon** | Dungeon with a daily entry limit |
-| **Idle farming** | Offline/auto activity that yields materials |
-
----
-
-## 5. Art direction
+## 3. Art direction
 
 **Style:** 2.5D anime, chibi proportions, semi-realistic shading.
 
 | Element | Direction |
 |---|---|
-| Characters | Head ≈ 45% of height (~56 px at zoom 1). Glossy eyes with two highlights, blush, spiky bangs, hair shine, thin outline `rgba(42,26,40,.6)` |
-| Animation | Walk cycle (leg lift, arm swing, bob), idle breathing, cape/ponytail sway |
+| Characters | Head ≈ 45% of height (~56 px tall at zoom 1). Big glossy eyes with two highlights, blush, spiky bangs, hair "angel ring" shine, thin dark outline `rgba(42,26,40,.6)` |
+| Animation | Walk cycle (leg lift + arm swing + body bob), idle breathing bob, cape/ponytail sway |
 | Facing | Front or back view, mirrored left/right from screen-space velocity |
-| Buildings | Half-timbered walls, stone foundation, hip roofs with tile courses, warm windows with flower boxes |
-| Nature | Layered round canopies (green, deep green, autumn, sakura), grass tufts, flower patches |
-| Lighting | Sun from upper-left, shadows to lower-right; additive glow for lamps, crystals, skills |
+| Buildings | Half-timbered walls, stone foundation, hip roofs with tile courses, warm lit windows with flower boxes, door awning |
+| Nature | Layered round tree canopies (green, deep green, autumn, sakura), grass tufts, flower patches, smooth elliptical pond |
+| Lighting | Sun from upper-left, shadows fall to the lower-right; lamps and crystal use additive glow |
 | Ambience | Floating violet motes, soft vignette |
 
 ### Palette
 
 | Name | Hex | Use |
 |---|---|---|
-| Gadolinium Violet | `#6E58E8` | Brand accent, crystal, primary buttons |
-| Silver | `#EEF1FA` | Crystal light, highlights |
-| Lantern Gold | `#E9C46A` | NPC names, level-up, quest marks |
-| Plaza Stone | `#E3DCCD` | Town paving |
+| Gadolinium Violet | `#6E58E8` | Brand accent, crystal, buttons |
+| Silver | `#EEF1FA` | Crystal light, player hair |
+| Lantern Gold | `#E9C46A` | Highlights, NPC names, level-up |
+| Plaza Stone | `#E3DCCD` | Town plaza |
 | Meadow Green | `#4F8A4A` | Grass |
 | Night Ink | `#141831` | Dark panels, banner |
 
-Archetype accent colors are defined in `design/JOBS.md`; currency colors in `design/ECONOMY.md`.
-
 ### Type
 
-- **Kanit** (Google Fonts) for all UI — Thai and Latin in one family.
+- **Kanit** (Google Fonts) for all UI — supports Thai and Latin with one family.
 - Fallbacks: `"Noto Sans Thai", Tahoma, system-ui, sans-serif`.
-- Sentence case, no all-caps labels, typographic apostrophes (’) in English.
+- No all-caps labels. Sentence case. Use typographic apostrophes (’) in English text.
 
 ---
 
-## 6. Technical architecture
+## 4. Gadolinium — map spec
 
-### Current prototype
+Grid: **49 × 49** tiles. Center tile **(24, 24)**.
 
-- **Single self-contained HTML file** (HTML + CSS + JS inline, Google Fonts only). No build step.
-- **Canvas 2D** for the world; HTML overlay `#ui` for HUD (`pointer-events: none` except panels).
-- **Ground** pre-rendered once to an offscreen canvas at 1.25×; each frame draws only the visible rect.
-- **Frame order:** background → ground → water glints → click marker → depth-sorted objects & characters → effects → labels → screen-space motes & vignette.
-- **Constants:** `TW=64, TH=32, N=49, GS=1.25`; iso helper `P(x, y, z)`.
-- **State:** single `S` object. Must be extended to hold `baseLv, jobLv, baseExp, jobExp, tier, archetype, class, job, sc, y, la` (see design files).
+| Feature | Location (tiles) | Notes |
+|---|---|---|
+| Main roads | rows 23–25 and columns 23–25 | Cobblestone, run edge to edge |
+| Plaza | circle radius 7.3 around (24.5, 24.5) | Star inlay, rings, curb |
+| Gadolinium Crystal | footprint 19–21 × 19–21 | Floating crystal, orbit rings, interactable |
+| Adventurers’ Guild | x 13, y 13, 5 × 4 | Flag on roof |
+| Tool Dealer | x 29, y 15, 3 × 3 | Bors stands outside |
+| Silver Moon Inn | x 30, y 29, 4 × 4 | Two stories |
+| Ironhart Forge | x 15, y 29, 4 × 3 | Chimney smoke, barrels |
+| Houses | (36,19) (9,19) (27,7) (37,35) (8,34) (18,40), each 3 × 3 | Varied roof colors |
+| Pond | ellipse center (37, 12), radii 4.2 × 3 | Blocked, animated glints |
+| Market stalls | (28,21) (21,28) | Striped awnings |
+| Forest edge | outer 4 tiles | Dense trees, road gaps act as gates |
 
-### Production direction
+Every building door is connected to the main road with a cobblestone path.
+
+### NPCs
+
+| ID | Name (EN / TH) | Tile | Role |
+|---|---|---|---|
+| `lumi` | Guide Lumi / ผู้นำทาง ลูมิ | (26, 21) | Starter quest giver |
+| `bors` | Bors the Merchant / พ่อค้าบอร์ส | (31, 18) | Gives potions, shop |
+| `veyra` | Captain Veyra / กัปตันเวย์รา | (19, 26) | Combat and idle tips |
+| `helper` | Archetype Helper Sera / ผู้แนะแนวอาร์คีไทป์ เซร่า | (28, 27) | Explains the 4 archetypes; Archetype Trial at Job Lv 10 |
+
+NPCs turn to face the player when within 3.5 tiles. Click an NPC → walk to an adjacent tile → open dialog on arrival.
+
+### Starter quest chain — “A New Beginning / จุดเริ่มต้นใหม่”
+
+| Stage | Objective | Reward |
+|---|---|---|
+| 0 | Talk to Guide Lumi | +40 Base EXP |
+| 1 | Visit Bors at the Tool Dealer | +5 Red Potions, +60 Base EXP |
+| 2 | Touch the Gadolinium Crystal | Light pillar effect, +180 Base EXP |
+| 3 | Complete | — |
+
+The current target shows a bouncing gold **!** marker. The quest tracker’s **Go** button auto-walks to it.
+
+---
+
+## 5. UI spec
+
+### Horizontal (desktop)
+
+```
+┌──────────────┬──────────── map banner ───────────┬──────── tools ┐
+│ Player card  │   Town of Beginnings / Gadolinium  │ ไทย|EN  ⟳ − + │
+│ Idle panel   │   coords · channel · online        │ Minimap        │
+│              │                                    │ Quest tracker  │
+│                     (game world, player centered)                 │
+│ Chat (tabs)  │            Hotbar 1–0              │ Menu 4×2       │
+└──────────────┴────────────────────────────────────┴───────────────┘
+```
+
+### Vertical (mobile)
+
+```
+┌ Player card ────────┬ lang/layout/zoom ┐
+│ Idle toggle         │ Minimap          │
+│ Map banner          │ Quest tracker    │
+│        (game world, player centered)   │
+│ Chat ticker (tap to expand)            │
+│        Hotbar 5 × 2                    │
+├ Bottom nav: 8 menu icons ──────────────┤
+```
+
+- When forced **Vertical on a wide screen** → render inside a phone frame (9 : 19.5).
+- When forced **Horizontal on a tall screen** → rotate the stage 90° and remap pointer input.
+- Respect safe areas (`viewport-fit=cover`, `env(safe-area-inset-*)`).
+- Theme-aware panels (light and dark tokens); the game world itself does not change with theme.
+
+### Components
+
+| Component | Contents |
+|---|---|
+| Player card | Chibi portrait, name, job, Lv badge, HP / SP / EXP bars, Gold |
+| Idle panel | Auto-hunt switch, session time, defeated count, EXP/h, Gold/h, claim offline rewards |
+| Map banner | Subtitle, town name, coordinates, channel, online count |
+| Minimap | Whole-map iso view; dots: player (white/violet), NPC (gold), players (blue); click to walk |
+| Quest tracker | Title, objective, Go button |
+| Chat | Tabs All / Party / Guild / System, input (Enter to focus), speech bubbles over heads |
+| Hotbar | 8 skills + 2 potions, keys 1–0, conic cooldown overlay, SP cost |
+| Menu | Character, Bag, Skills, Quests, Party, Guild, Shop, Settings |
+| Windows | Centered, draggable in horizontal mode, Esc to close |
+| Dialog | NPC portrait, name, text, Next / Close |
+| Toasts | Neutral and gold (level-up, quest complete) |
+
+### Skills (hotbar)
+
+Skills belong to the archetype, not to a fixed list. The hotbar shows the current job's active skills plus the potions. Full skill kits are in `ARCHETYPES.md`. The old fixed table (Guard, Thunder, Gd Pulse and so on) was removed.
+
+---
+
+## 6. Progression
+
+- Base EXP to next level: `round(60 × lv^1.5)` (placeholder, see `CORE-LOOP.md`).
+- Stat points, HP/SP growth and combat numbers: `COMBAT-FORMULAS.md` and `ARCHETYPES.md`.
+- Idle rules and offline rewards: `IDLE.md`.
+- Job Lv caps: Beginner 10, archetype 50 (`JOBS.md`).
+
+---
+
+## 7. Localization
+
+- Dictionary `D = { en: {...}, th: {...} }`; lookup `t(key)` falls back to English, then the key.
+- Placeholders use `{x}` with `fmt(key, {x: ...})`.
+- Numbers use `toLocaleString("th-TH" | "en-US")`.
+- Chat messages store both languages (`{en, th}`) or a key (`{k}`) so the log re-renders on swap. Player-typed text is stored raw.
+- Hint text differs by input type: “Click…” on mouse, “Tap…” on touch.
+- Thai tone: friendly fantasy-RPG voice; NPCs address the player as “เจ้า”.
+
+**Adding any new text:** add the key to **both** `en` and `th` in the same change.
+
+---
+
+## 8. Technical architecture (current prototype)
+
+- **Single self-contained HTML file**: HTML + CSS + JS inline, Google Fonts only. No build step.
+- **Canvas 2D** for the world; HTML overlay for UI (`#ui`, `pointer-events: none` except panels).
+- **Ground** pre-rendered once to an offscreen canvas at 1.25× scale; each frame draws only the visible source rect.
+- **Draw order per frame:** background → ground → water glints → click marker → depth-sorted objects and characters → effects → labels (signs, names, bubbles, quest marks) → screen-space motes and vignette.
+- **Culling:** skip objects outside the view plus a margin.
+- **Key constants:** `TW=64, TH=32, N=49, GS=1.25`; iso helper `P(x, y, z)`.
+- **Input:** pointer events; sprite hit-test before tile hit-test; wheel and +/− zoom (0.6–1.8×).
+- **State:** single `S` object (level, EXP, HP, SP, gold, potions, quest stage, idle data, settings).
+
+### Planned production direction
 
 | Area | Target |
 |---|---|
 | Client | TypeScript + PixiJS (WebGL) or Phaser, sprite atlases |
-| Server | Authoritative game server over WebSocket; server validates movement, damage, drops, currency |
-| Data | Maps, monsters, jobs, skills, items, quests, shops and strings as JSON |
+| Server | Authoritative game server (WebSocket), tick-based movement validation |
+| Data | Maps, NPCs, quests, items and strings in JSON |
 | Packaging | PWA first, then Capacitor for app stores |
 
-**Server authority rule:** anything that creates value — EXP, items, Scandium, Yttrium, Lanthanum, refine results — is decided on the server, never the client.
-
 ---
 
-## 7. Localization rules
+## 9. How to work on this project
 
-- Dictionary `D = { en: {...}, th: {...} }`; `t(key)` falls back to English, then the key.
-- Placeholders `{x}` with `fmt(key, {x})`; numbers via `toLocaleString("th-TH" | "en-US")`.
-- Chat stores `{en, th}` or `{k}` so the log re-renders on swap; player-typed text stays raw.
-- **Proper names stay in English in both languages** for jobs/classes/currencies unless a Thai name is defined in the design file (e.g. show “Knight” in Thai UI as `Knight` until a Thai name is approved).
-- NPC voice in Thai: friendly fantasy-RPG tone; NPCs call the player “เจ้า”.
-- Add every new key to **both** languages in the same change.
-
----
-
-## 8. How to work on this project
-
-1. Read this file, then the design file for the task.
+1. Read this file first.
 2. Keep the prototype a single HTML file until the move to a real engine is decided.
-3. Small changes: edit the existing artifact in place instead of rewriting it.
-4. Every change must work in **both languages** and **both layouts**.
+3. For small changes, edit the existing artifact in place instead of rewriting it.
+4. Every change must keep working in **both languages** and **both layouts**.
 5. Test: click-to-walk, NPC dialog, quest chain, idle toggle, language swap mid-dialog, layout swap with a window open.
-6. Update the relevant design file whenever behavior changes.
+6. After adding a feature, update the relevant section of this file.
 
 ### Definition of done
 
 - [ ] No hard-coded user-facing strings
-- [ ] Works in Horizontal, Vertical and forced/rotated modes
-- [ ] Player stays centered; pathfinding avoids blocked tiles
-- [ ] Uses glossary terms (Scandium, not “Gold”; Beginner, not “Novice”)
+- [ ] Works in Horizontal, Vertical, and forced/rotated modes
+- [ ] Player stays centered; pathfinding avoids all blocked tiles
 - [ ] No console errors
 - [ ] Original art only
 
 ---
 
-## 9. Roadmap
+## 10. Roadmap
 
-| Step | Goal | Design file |
-|---|---|---|
-| 1 | Rename prototype terms: Gold → Scandium, Novice → Beginner (C0); split EXP into Base/Job | CORE-LOOP, ECONOMY |
-| 2 | Field map east of Gadolinium with original monsters and real combat (targeting, damage numbers, drops) | CORE-LOOP |
-| 3 | C0 → C1 class change quests for the 4 archetypes | JOBS |
-| 4 | Equipment: refine, card slots, options, CP | CORE-LOOP |
-| 5 | Daily dungeon + first instance boss | CORE-LOOP |
-| 6 | Idle material farming + offline rewards | CORE-LOOP |
-| 7 | Currency wallet, NPC shop (Scandium), Yttrium shop, Lanthanum premium shop and trading | ECONOMY |
-| 8 | C1 → C2 job change quests | JOBS |
-| 9 | Party, guild, real networking | — |
-| 10 | Next regions named after rare-earth elements (e.g. Neodymium, Europium, Cerium) | — |
+1. ✅ **Field maps 01–03** with monsters, Elites and the Gadolith boss
+2. ◐ **Job system:** Archetype Trial done (v5.1); the 16 classes and 32 jobs are still open (`JOBS.md`)
+3. ✅ **Inventory and equipment** (10 slots, compare, multi-sell, refine)
+4. **Party and guild** with real networking
+5. **Next regions** named after rare-earth elements (e.g. Neodymium, Europium, Cerium)
+6. ◐ **Sound and music:** generated 8-bit audio done (v18); volume sliders still open (`AUDIO.md`)
+7. ◐ **Save system:** local accounts done; server accounts still open (`ACCOUNTS.md`)
