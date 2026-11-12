@@ -1754,7 +1754,7 @@ th:{
 }};
 
 const D2={
-en:{field1_name:"Gadolinium Field 01",field1_sub:"Outskirts of Gadolinium",field2_name:"Gadolinium Field 02",field2_sub:"Amber Dusk Meadows",
+en:{fctCrit:"CRITICAL!",field1_name:"Gadolinium Field 01",field1_sub:"Outskirts of Gadolinium",field2_name:"Gadolinium Field 02",field2_sub:"Amber Dusk Meadows",
  idleStart:"Start idle",idleGoField:"Go to a field to idle",idleRunning:"Idling",idleRule:"Idle stops only when you change maps or return to town.",
  vipOn:"VIP: close the game anytime — you vanish from other players’ screens and rewards are calculated while you’re away.",vipOff:"Closing the game stops idle. Offline idle is a VIP feature.",
  vipRate:"Offline estimate: {k} kills/h · {p}% efficiency",idleEnded:"Idle ended — you changed maps.",st_nav:"Auto-quest: {q}",
@@ -1767,7 +1767,7 @@ en:{field1_name:"Gadolinium Field 01",field1_sub:"Outskirts of Gadolinium",field
  qs_gel_b:"Beautiful! The whole shop will glow tonight. Here’s your pay.",qs_crawl_b:"Good work. The crawlers will think twice before nesting near the road.",qs_eye_b:"Those icy eyes watched the road for days. Thank you, adventurer.",
  mon_nebulite:"Nebulite",mon_shardback:"Shardback",mon_cryoculus:"Cryoculus",elite:"Elite",
  mat_gel2:"Nebula Gel",mat_amber:"Amber Shard",mat_frost:"Frost Lens",mat_core:"Elite Core",rec:"Rec. CP {n}"},
-th:{field1_name:"ทุ่งแกโดลิเนียม 01",field1_sub:"ชานเมืองแกโดลิเนียม",field2_name:"ทุ่งแกโดลิเนียม 02",field2_sub:"ทุ่งอำพันยามสนธยา",
+th:{fctCrit:"คริติคอล!",field1_name:"ทุ่งแกโดลิเนียม 01",field1_sub:"ชานเมืองแกโดลิเนียม",field2_name:"ทุ่งแกโดลิเนียม 02",field2_sub:"ทุ่งอำพันยามสนธยา",
  idleStart:"เริ่ม Idle",idleGoField:"ไปทุ่งเพื่อเริ่ม Idle",idleRunning:"กำลัง Idle",idleRule:"Idle จะหยุดเมื่อย้ายแมพหรือวาปกลับเมืองเท่านั้น",
  vipOn:"VIP: ปิดเกมได้เลย ตัวละครจะหายไปจากจอผู้เล่นอื่น และระบบจะคำนวณรางวัลให้ระหว่างที่ไม่อยู่",vipOff:"ปิดเกม = หยุด Idle (Idle ออฟไลน์เป็นสิทธิ์ VIP)",
  vipRate:"ประมาณการออฟไลน์: {k} ตัว/ชม. · ประสิทธิภาพ {p}%",idleEnded:"Idle สิ้นสุดแล้ว เพราะย้ายแมพ",st_nav:"เควสต์ออโต้: {q}",
@@ -4660,7 +4660,7 @@ function applyHit(mo,res,o){
   if(res.miss){fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:t("miss"),c:"#c8c8d8",ox:(rnd()-.5)*24,h});return}
   { const ab=pd().ab||{}; if(res.crit&&ab.cd)res.dmg=Math.round(res.dmg*(1+ab.cd/100)); mo.hp-=res.dmg; if(ab.ls)S.hp=Math.min(hpMax(),S.hp+res.dmg*ab.ls/100); }
   mo.hitT=.16;
-  fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.95,txt:num(res.dmg)+(res.crit?"!":""),c:res.crit?"#ffd84a":res.weak?"#8ff0ff":(o&&o.c)||"#ffffff",big:res.crit||res.weak,ox:(rnd()-.5)*30,h});
+  fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:res.crit?1.15:.95,txt:num(res.dmg),c:res.crit?"#ffd84a":res.weak?"#8ff0ff":(o&&o.c)||"#ffffff",big:res.crit||res.weak,pop:true,crit:!!res.crit,ox:(rnd()-.5)*(res.crit?18:30),h});
   fx.push({k:"burst",x:mo.x,y:mo.y,t:0,d:.25,c:res.crit?"#ffe28a":(o&&o.c)||"#ffffff",n:6,z:MON[mo.type].h*.5});
   if(mo.hp<=0)killMon(mo);
 }
@@ -4970,6 +4970,16 @@ function drawFx(f){
   else if(f.k==="bolt"){g.globalAlpha=1-p;g.strokeStyle=f.c;g.lineWidth=4;g.beginPath();let yy=y-240,xx=x;g.moveTo(xx,yy);while(yy<y-20){yy+=24;xx=x+(hash(Math.floor(yy),Math.floor(f.x*10))-.5)*26;g.lineTo(xx,yy)}g.lineTo(x,y-20);g.stroke();g.strokeStyle="#fff";g.lineWidth=1.5;g.stroke()}
   else if(f.k==="proj"){const [tx,ty]=P(f.tx,f.ty);const px=x+(tx-x)*p,py=y-26+(ty-y)*p-Math.sin(p*Math.PI)*30;ell(px,py,6,6,f.c);ell(px,py,3,3,"#fff");g.globalAlpha=.5;ell(px-(tx-x)*.06,py+4,5,5,f.c)}
   else if(f.k==="float"){g.globalCompositeOperation="source-over";g.globalAlpha=1-p*p;g.font=`600 13px ${FONT}`;g.textAlign="center";g.textBaseline="middle";g.lineWidth=3;g.strokeStyle="rgba(20,10,30,.8)";const yy=y-70-(f.oy||0)-p*30;g.strokeText(f.txt,x,yy);g.fillStyle=f.c;g.fillText(f.txt,x,yy)}
+  else if(f.k==="dmg"&&f.pop){g.globalCompositeOperation="source-over";
+    const e=1-Math.pow(1-p,3),c=!!f.crit,ph=(a,b)=>(p-a)/(b-a);let sc,rot=0;
+    if(c){sc=p<.09?.1+1.4*ph(0,.09):p<.16?1.5-.5*ph(.09,.16):1;
+      rot=(p<.09?-12+20*ph(0,.09):p<.16?8-13*ph(.09,.16):p<.24?-5+8*ph(.16,.24):p<.32?3-3*ph(.24,.32):0)*Math.PI/180}
+    else sc=p<.1?.3+.95*ph(0,.1):p<.2?1.25-.25*ph(.1,.2):1;
+    g.globalAlpha=p<.05?p/.05:p>.7?(1-p)/.3:1;
+    const sz=c?30:f.big?22:18,xx=x+f.ox*e,yy=y-(f.h||40)-(c?16:8)-e*(c?36:30);
+    g.translate(xx,yy);g.rotate(rot);g.scale(sc,sc);g.textAlign="center";g.textBaseline="middle";g.lineJoin="round";
+    g.font=`700 ${sz}px ${FONT}`;g.lineWidth=c?5:4;g.strokeStyle="rgba(13,18,48,.92)";g.strokeText(f.txt,0,0);g.fillStyle=f.c;g.fillText(f.txt,0,0);
+    if(c){g.font=`700 12px ${FONT}`;g.lineWidth=3.5;const ct=t("fctCrit");g.strokeText(ct,0,-sz*.78);g.fillText(ct,0,-sz*.78)}}
   else if(f.k==="dmg"){g.globalCompositeOperation="source-over";const e=1-Math.pow(1-p,3),sc=p<.12?1.6-p/.12*.6:1;g.globalAlpha=p>.7?(1-p)/.3:1;
     g.font=`700 ${Math.round((f.big?21:16)*sc)}px ${FONT}`;g.textAlign="center";g.textBaseline="middle";g.lineJoin="round";g.lineWidth=4;g.strokeStyle="rgba(25,10,20,.85)";
     const xx=x+f.ox*e,yy=y-(f.h||40)-8-e*30;g.strokeText(f.txt,xx,yy);g.fillStyle=f.c;g.fillText(f.txt,xx,yy)}

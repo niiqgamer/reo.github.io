@@ -246,3 +246,25 @@ The old status bar (`FPS | PING | USER ONLINE | USER ON MAP | SERVER TIME`) is *
 - There is no room beside the minimap (the player card fills the left), so the same four islands sit in **one row at the very top**, right-aligned (22 px tall, 9.8 px text). Below 350 px width the `ONLINE` label is hidden so the row still fits (checked at 320 px).
 
 **Data and rules (unchanged):** FPS is measured every 0.5 s; ping and online are simulated until a server exists (hover says so); the row is redrawn only when a value, the language or the minute changes. English labels: `FPS`, `ms`, `ONLINE`; Thai: `FPS`, `ms`, `ออนไลน์`. `netExpand()` still exists for old callers and does nothing.
+
+
+---
+
+## 14. Floating combat text (v18.4)
+
+Damage numbers the player deals now use a bouncy cartoon style. Drawn on the game canvas in `drawFx` (`k:"dmg"` with `pop:true`); font is **Kanit** (`FONT`), weight 700.
+
+| | Normal hit | Critical hit | Weak-point hit |
+|---|---|---|---|
+| Colour | white (or skill colour) | gold `#ffd84a` | cyan `#8ff0ff` |
+| Size | 18 px | 30 px | 22 px |
+| Outline | 4 px, `rgba(13,18,48,.92)` | 5 px, same colour | 4 px |
+| Entrance | scale 0.3 → 1.25 → 1.0 (first 20 % of life) | scale 0.1 → 1.5 → 1.0 with a wobble −12° → +8° → −5° → +3° → 0° (first 32 %) | like normal, larger |
+| Rise | 30 px | 36 px | 30 px |
+| Life | 0.95 s | 1.15 s | 0.95 s |
+| Label | none | **CRITICAL!** (EN) / **คริติคอล!** (TH), 12 px, above the number | none |
+
+- The label comes from the localization key `fctCrit` (`D2.en` / `D2.th`) and follows the language setting instantly.
+- The old "!" after a critical number is gone; the label replaces it.
+- Unchanged: MISS, damage taken by the player, `+EXP` / `+Sc` / item floats, boss warnings (they still use the old `dmg` style without `pop`).
+- Changed in code: `applyHit` (adds `pop`, `crit`, longer life for crits) and `drawFx` (new branch before the old `dmg` branch).
