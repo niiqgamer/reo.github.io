@@ -96,7 +96,7 @@ Let `m = (3 + Lv × 0.8) × rarity multiplier × (1 + 0.04 × refine)` with mult
 
 | Slot | Bonus |
 |---|---|
-| Weapon | ATK = m × 2.2 |
+| Weapon | ATK = m × 2.2 (Spellcaster staff: weaponMATK = m × 2.2 instead, see `COMBAT-FORMULAS.md` §1) |
 | Armor | DEF = m × 0.9, HP = m × 6 |
 | Legs | DEF = m × 0.6, HP = m × 3 |
 | Off-hand | DEF = m × 0.7, DEF% = rarity × 1% |

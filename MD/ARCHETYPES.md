@@ -55,7 +55,7 @@ Every spell has a cast time reduced by DEX (×(1 − DEX/150)). Spells **never m
 
 | Active | Effect | SP | CD | Cast |
 |---|---|---|---|---|
-| Fire Bolt | 3 × 100% MATK, fire | 12 | 0.5 s | 1.0 s |
+| Fire Bolt | 100% MATK per fireball, fire; fireballs = skill Lv (Lv 1–10), dropped one at a time, 0.3 s apart (0.2 s from Lv 6), they stop if the target dies | 12 + 2 per Lv | 0 s, then 1.4 s Global Delay | 0.5 s + 0.3 s per Lv |
 | Frost Nova | 260% MATK water, all within 2.5 tiles; 40% freeze 2 s | 20 | 5 s | 0.6 s |
 | Lightning Spear | 380% MATK wind | 22 | 3 s | 1.6 s |
 | Stone Spike | 260% MATK earth; 20% stun 1 s | 16 | 2 s | 1.0 s |
@@ -66,6 +66,8 @@ Every spell has a cast time reduced by DEX (×(1 − DEX/150)). Spells **never m
 | Elemental Attunement | Weakness bonus 150% → 175% |
 
 Basic attack: Arcane Bolt, 70% MATK neutral, 7 tiles.
+
+Fire Bolt now follows `SKILL-SPEC.md` (draft, Lv 1–10, range 7, overMul 0.5). The other three spells are still Lv 5 prototypes. MATK now includes a flat `weaponMATK` from the staff (`COMBAT-FORMULAS.md` §1).
 
 ## Supporter — Sustain
 Heal follows iRO Classic: `[(BaseLv + INT) / 8] × (4 + 8 × SkillLv)`. Overhealing turns into a **Grace shield** (up to 20% Max HP) that absorbs damage.

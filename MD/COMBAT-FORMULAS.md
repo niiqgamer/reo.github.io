@@ -9,7 +9,8 @@
 |---|---|---|
 | Status ATK (melee) | `STR + ⌊STR/10⌋² + ⌊DEX/5⌋ + ⌊LUK/5⌋` | iRO |
 | Status ATK (bow) | `DEX + ⌊DEX/10⌋² + ⌊STR/5⌋ + ⌊LUK/5⌋` | iRO |
-| MATK | min `INT + ⌊INT/7⌋²` ~ max `INT + ⌊INT/5⌋²`, × (1 + weapon MATK%) | iRO |
+| MATK | min `(INT + ⌊INT/7⌋²) + weaponMATK + mastery` ~ max `(INT + ⌊INT/5⌋²) + weaponMATK + mastery`, then × (1 + MATK%) | iRO, **REO** (flat `weaponMATK`) |
+| weaponMATK (Spellcaster staff) | base `2 + 0.65 × (Lv − 1)` (stands in for gear upgrades, like weapon ATK) + staff gear `m × 2.2` | **REO** (replaces the old +20% MATK on the staff) |
 | HIT | `DEX + BaseLv` (+ passives) | iRO |
 | FLEE | `AGI + BaseLv` (+ buffs) | iRO |
 | Perfect dodge | `1 + LUK × 0.1` % | iRO |
@@ -42,9 +43,47 @@ crit   = ⌊(statusATK + weaponATK + mastery) × skill% × element × bonus × 1
 
 ## 3. Magic damage
 ```
-MATKroll = U(MATKmin, MATKmax)
+MATKroll = U(MATKmin, MATKmax)                                  // MATKmin/max already include weaponMATK and MATK%
 dmg = max(1, ⌊MATKroll × skill% × element × (1 − targetMDEF%) − targetSoftMDEF⌋)     // never misses
 ```
+
+## 3b. Overload (เกินพิกัด): magic critical — DRAFT, not in code or the simulator yet
+
+Overload is the magic counterpart of a physical critical hit. Spec from NIIQ; items marked ⚠ are not decided (see the list below).
+
+```
+over_dmg = ⌊(statusMATK + weaponMATK + mastery) × skill% × element × bonus × 1.3⌋     // Overload Damage (ดาเมจเกินพิกัด)
+over%    = CRIT × overMul − targetLUK/5                                              // Overload Chance (อัตราเกินพิกัด)
+```
+- `overMul` (Overload Multiple, ตัวคูณอัตราเกินพิกัด) is set per skill. If a skill does not state it, it is **1**.
+- Rolled **per hit** for True multi-hit skills (see `SKILL-SPEC.md` for hit types). Example: Fire Bolt Lv 10 rolls Overload 10 times per cast.
+- Compare physical: crit = `… × 1.4`, chance `CRIT × critMul − targetLUK/5`.
+
+**⚠ Open items**
+1. `statusMATK`, `weaponMATK` and `mastery` do not exist for magic. Today: `MATKroll = U(MATKmin, MATKmax)` from INT, × (1 + gear MATK%) (§1, §3).
+2. The formula has no `(1 − targetMDEF%)` and no `− targetSoftMDEF`. Does Overload ignore MDEF, as a physical crit ignores DEF?
+3. `overMul` below 1 with a flat `− targetLUK/5`: at `overMul` 0.5 and CRIT 1 the chance is 0 against any monster with LUK ≥ 3 (monster LUK is 5–13).
+4. Default `overMul` = 1 makes every magic skill able to Overload; physical only crits on basic attacks and Piercing Shot.
+5. Does the *Crit damage* ability (+10–30%) apply to Overload? Does Overload use the CRITICAL! floating text, or its own label?
+
+## 3b. Overload (เกินพิกัด): magic critical — DRAFT, not in code yet
+
+Overload is the magic counterpart of a physical critical hit. Spec from NIIQ; items marked ⚠ are assumptions waiting for a yes or no.
+
+```
+over_dmg = ⌊(statusMATK + weaponMATK + mastery) × skill% × element × bonus × 1.3 × (1 − targetMDEF%) − targetSoftMDEF⌋   // Overload Damage (ดาเมจเกินพิกัด)
+over%    = max(0, CRIT − targetLUK/5) × overMul                                                                          // Overload Chance (อัตราเกินพิกัด), capped at 100
+```
+- `overMul` (Overload Multiple, ตัวคูณอัตราเกินพิกัด) is set per skill. **A skill that does not state it has overMul 0: it cannot Overload.** (Physical crit works the same way: only the basic attack and Piercing Shot can crit.)
+- Rolled **per hit** for True multi-hit skills (hit types are in `SKILL-SPEC.md`). Fire Bolt Lv 10 rolls Overload 10 times per cast.
+- **Magic does not ignore MDEF.** Overload still takes `(1 − targetMDEF%)` and `− targetSoftMDEF`.
+- The chance now subtracts the target’s LUK first, then multiplies: `(CRIT − targetLUK/5) × overMul`. (The first draft subtracted after multiplying, which gave 0% at overMul 0.5 for almost every character.)
+- ⚠ `statusMATK` is the top of the status range, `INT + ⌊INT/5⌋²`, the way a physical crit always uses the full weapon ATK. `weaponMATK` and `mastery` are the same values as in §1 (Spellcaster has no mastery passive yet, so 0), and MATK% multiplies the total as it does for normal hits. In other words `over_dmg` uses `MATKmax` from §1.
+- Compare physical: crit = `… × 1.4`, ignores DEF and FLEE, chance `CRIT × critMul − targetLUK/5` (§2).
+
+**⚠ Still open**
+1. Does the *Crit damage* ability (+10–30%) apply to Overload? Does Overload use the CRITICAL! floating text or its own label (for example OVERLOAD! / เกินพิกัด!)?
+2. How strong Overload should be. In the draft simulator (Lv 30, full tier-30 ★3 gear, CRIT ≈ 11, Fire Bolt Lv 5) it adds only about +1.0% damage at overMul 0.5 and ×1.3, +1.4% at overMul 1, +3.6% at overMul 2 with ×2.0. Spellcaster CRIT comes only from rings, bracelets and affixes, so it stays low.
 
 ## 4. Heal (iRO Classic)
 ```
@@ -101,7 +140,7 @@ EffectiveHP  = MaxHP / (1 − hardDEF) + softDEF × 30
 It uses the simulation because counting only basic attacks undervalued Spellcasters by about 2.5× (see the test report).
 
 ## 7b. Gear and herbs (v7)
-Equipped gear feeds the same derivation as the base stats: weapon ATK adds to weapon ATK, armor/legs/off-hand add to soft DEF, Off-hand adds hard DEF %, necklace adds HP and SP, ring adds CRIT and HIT, and each piece's primary stat adds to the character's stats before the formulas run. Herb buffs apply afterwards: Ember Root ×1.1 ATK, Frost Bloom ×1.15 soft DEF, Sage Leaf ×1.5 SP regen. CP and offline idle use the same totals (see `ITEMS.md` §3).
+Equipped gear feeds the same derivation as the base stats: weapon ATK adds to weapon ATK (a Spellcaster staff adds its `m × 2.2` to weaponMATK instead), armor/legs/off-hand add to soft DEF, Off-hand adds hard DEF %, necklace adds HP and SP, ring adds CRIT and HIT, and each piece's primary stat adds to the character's stats before the formulas run. Herb buffs apply afterwards: Ember Root ×1.1 ATK, Frost Bloom ×1.15 soft DEF, Sage Leaf ×1.5 SP regen. CP and offline idle use the same totals (see `ITEMS.md` §3).
 
 ## 8. Offline idle (VIP and non-VIP)
 Kills per hour now come from the same simulator, using the character's real stats, skills and map monsters (deaths included). Reward rules (80% / 100% / 120%, Yttrium upgrades) are unchanged; see `IDLE.md`.

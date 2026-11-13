@@ -135,6 +135,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .slot .ic{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:var(--c);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -3px 6px rgba(0,0,0,.22)}
 .slot svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
 .slot .k{position:absolute;top:1px;left:4px;font-size:9.5px;color:var(--ink2);font-weight:500;z-index:2}
+.slot.unl .ic{filter:grayscale(1) brightness(.55)}
+.slot .lvb{color:#ffd76a;font-size:9px;letter-spacing:-.2px}
+.sk-sel{background:rgba(255,255,255,.94);color:#1a1f4a;border:1px solid rgba(40,50,120,.35);border-radius:8px;padding:4px 6px;font:inherit;font-size:12px;max-width:46vw}
 .slot .n{position:absolute;bottom:0;right:4px;font-size:10px;color:var(--ink);font-weight:600;z-index:2;text-shadow:0 0 3px var(--slot)}
 .slot::after{content:"";position:absolute;inset:0;background:conic-gradient(rgba(8,8,22,.62) calc(var(--cd,0)*1turn),transparent 0);pointer-events:none}
 .slot:active{transform:scale(.93)}
@@ -1349,7 +1352,7 @@ const ARCH={
  ranger:{type:"RANGED",range:9,hpLv:38,spLv:6,aspd:1.0,weapon:{atk:34,lvAtk:2.2,ranged:true},armor:.10,
    tpl:{str:0,agi:4,vit:1,int:0,dex:6,luk:2},basic:{kind:"phys",ratio:1},
    actives:["double_strafe","arrow_shower","piercing_shot","evasive_leap"],passives:["eagle_eye","steady_aim"]},
- spellcaster:{type:"MAGIC",range:7,hpLv:30,spLv:11,aspd:1.3,weapon:{atk:12,lvAtk:1,ranged:false,matkPct:.20},armor:.05,
+ spellcaster:{type:"MAGIC",range:7,hpLv:30,spLv:11,aspd:1.3,weapon:{atk:12,lvAtk:1,ranged:false,matkBase:2,matkLv:.65},armor:.05,
    tpl:{str:0,agi:0,vit:2,int:6,dex:4,luk:0},basic:{kind:"magic",ratio:.7,elem:"neutral"},
    actives:["fire_bolt","frost_nova","lightning_spear","stone_spike"],passives:["mana_flow","elemental_attunement"]},
  supporter:{type:"SUPPORT",range:9,healRange:15,hpLv:42,spLv:9,aspd:1.1,weapon:{atk:25,lvAtk:1.5,ranged:false,matkPct:.10},armor:.12,
@@ -1375,7 +1378,7 @@ const SK={
  piercing_shot:{arch:"ranger",kind:"phys",ratio:3.2,ignoreDef:.5,canCrit:true,critMul:2,sp:18,cd:6,range:12,ranged:true,ic:"pierce"},
  evasive_leap:{arch:"ranger",kind:"move",leap:3,buff:"leap",dur:4,sp:10,cd:10,ic:"wing"},
  // spellcaster — Casting (DEX shortens cast) + elemental weakness; spells never miss
- fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.0,hits:3,sp:12,cd:.5,cast:1.0,range:7,ic:"flame"},
+ fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.0,hits:5,sp:20,cd:0,gd:1.4,cast:1.7,gap:.3,range:7,overMul:.5,lv:5,ic:"flame"},   // v20: this is the Lv 5 row; skAt() gives every level (SKILL-SPEC.md)
  frost_nova:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.6,sp:20,cd:5,cast:.6,aoe:2.5,at:"self",freeze:.4,freezeDur:2,ic:"snow"},
  lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:3.8,sp:22,cd:3,cast:1.6,range:7,ic:"bolt"},
  stone_spike:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:2.6,sp:16,cd:2,cast:1.0,range:7,stunChance:.2,stun:1,ic:"spike"},
@@ -1401,15 +1404,17 @@ function derive(p){
   const A=ARCH[p.arch]||ARCH.beginner,b=p.buffs||{},s={};
   for(const k of STATS)s[k]=Math.max(1,(p.stats&&p.stats[k])||1);
   if(b.blessing){s.str+=8;s.int+=8;s.dex+=8}
-  const has=k=>A.passives.includes(k);
+  const has=k=>A.passives.includes(k)&&(!p.learned||p.learned.includes(k));   // v20: p.learned (game only) = passives the player has learned; the simulator leaves it out = all
   const ranged=A.weapon.ranged;
   // iRO: melee status ATK = STR + [STR/10]^2 + [DEX/5] + [LUK/5]; ranged swaps STR and DEX
   const statusAtk=ranged? s.dex+fl(s.dex/10)**2+fl(s.str/5)+fl(s.luk/5) : s.str+fl(s.str/10)**2+fl(s.dex/5)+fl(s.luk/5);
   const watk=Math.round(A.weapon.atk+A.weapon.lvAtk*(p.lv-1));   // REO: weapon ATK grows with level to stand in for gear upgrades
   const mastery=has("weapon_mastery")?PASSIVE.weapon_mastery.atk:0;
   const mm=1+(A.weapon.matkPct||0);
+  // REO (v20): weaponMATK is flat. The staff's base grows with level (stands in for gear upgrades); staff gear adds more below.
+  const wm=Math.round((A.weapon.matkBase||0)+(A.weapon.matkLv||0)*(p.lv-1));
   // iRO: MATK min = INT + [INT/7]^2 ; max = INT + [INT/5]^2
-  const matkMin=fl((s.int+fl(s.int/7)**2)*mm),matkMax=fl((s.int+fl(s.int/5)**2)*mm);
+  const matkMin=fl((s.int+fl(s.int/7)**2)*mm)+wm,matkMax=fl((s.int+fl(s.int/5)**2)*mm)+wm;
   const baseHP=300+A.hpLv*(p.lv-1),baseSP=80+A.spLv*(p.lv-1);
   // iRO: Max HP +1% per VIT ; Max SP +1% per INT
   const maxHP=fl(baseHP*(1+s.vit/100)*(has("iron_body")?1+PASSIVE.iron_body.hpPct:1));
@@ -1438,7 +1443,7 @@ function derive(p){
     healMul:1+(has("divine_grace")?PASSIVE.divine_grace.healPct:0),shieldCap:has("divine_grace")?PASSIVE.divine_grace.shieldCap:0,healRange:A.healRange||A.range};
   // gear: flat bonuses from equipped items (weapon ATK, DEF, HP, ...)
   const G=p.gear||{};
-  d.watk+=G.atk||0;d.softDef+=G.def||0;d.hardDef=Math.min(.7,d.hardDef+(G.hardDef||0));d.maxHP+=G.hp||0;d.maxSP+=G.sp||0;d.hit+=G.hit||0;d.crit+=G.crit||0;d.flee+=G.flee||0;
+  d.watk+=G.atk||0;d.matkMin+=G.matk||0;d.matkMax+=G.matk||0;d.softDef+=G.def||0;d.hardDef=Math.min(.7,d.hardDef+(G.hardDef||0));d.maxHP+=G.hp||0;d.maxSP+=G.sp||0;d.hit+=G.hit||0;d.crit+=G.crit||0;d.flee+=G.flee||0;
   // percentage bonuses (set bonuses and affixes)
   d.statusAtk*=(1+(G.atkPct||0));d.watk*=(1+(G.atkPct||0));d.softDef*=(1+(G.defPct||0));d.maxHP=Math.floor(d.maxHP*(1+(G.hpPct||0)));d.matkMin*=(1+(G.matkPct||0));d.matkMax*=(1+(G.matkPct||0));d.healMul+=(G.healPct||0);
   if(G.atkPct||G.defPct||G.matkPct){d.statusAtk=Math.round(d.statusAtk);d.watk=Math.round(d.watk);d.softDef=Math.round(d.softDef);d.matkMin=Math.round(d.matkMin);d.matkMax=Math.round(d.matkMax)}
@@ -1488,6 +1493,10 @@ function physHit(d,m,o,r){
 function magicHit(d,m,o,r){
   const matk=d.matkMin+(d.matkMax-d.matkMin)*r();
   const em=elemMult(o.elem||"neutral",m.elem,d.attune);
+  // Overload (magic critical, COMBAT-FORMULAS.md 3b): chance = max(0, CRIT - targetLUK/5) x overMul; a skill without overMul never Overloads.
+  // Damage uses the top of the MATK range x1.3 and still takes MDEF.
+  const op=Math.min(100,Math.max(0,(d.crit-(m.luk||0)/5)*(o.overMul||0)));
+  if(op>0&&r()*100<op)return {dmg:Math.max(1,fl(d.matkMax*o.ratio*em*(o.bonus||1)*1.3*(1-m.mdef)-m.softMdef)),weak:em>1,over:true};
   return {dmg:Math.max(1,fl(matk*o.ratio*em*(o.bonus||1)*(1-m.mdef)-m.softMdef)),weak:em>1};
 }
 // iRO Heal: [(BaseLv + INT) / 8] x (4 + 8 x SkillLv)
@@ -1513,10 +1522,21 @@ function autoStats(arch,lv,base){
   return s;
 }
 
+/* ---------- skill levels (v20) ----------
+   Skills listed in SKLV have levels; every other skill is still the fixed Lv 5 prototype.
+   Fire Bolt (SKILL-SPEC.md): Lv N = N fireballs of 100% MATK, SP 12+2(N-1), cast 0.5+0.3(N-1) s, 0.3 s apart (0.2 s from Lv 6), cooldown 0, Global Delay 1.4 s. */
+const SKLV={fire_bolt:{max:10,def:5}};
+const skMax=id=>SKLV[id]?SKLV[id].max:1;   // every other skill is learn-only (one level) until its levels are designed
+function skAt(id,lv){
+  const k=SK[id];if(!k||!SKLV[id])return k;
+  const L=clamp(Math.floor(lv)||SKLV[id].def,1,SKLV[id].max);
+  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:L,sp:10+2*L,cast:+(.2+.3*L).toFixed(2),gap:L>=6?.2:.3});
+  return k;
+}
 /* ---------- skill AI (used by idle play and by the simulator) ----------
  ctx: {d, hp, sp, cd{}, momentum, buffs{}, dist (to target), near (# targets within 2.5), tgtElem, inZone} */
 function pickSkill(ctx){
-  const d=ctx.d,A=ARCH[d.arch],ready=id=>{const k=SK[id];return k&&!(ctx.cd[id]>0)&&ctx.sp>=k.sp*d.spCost};
+  const d=ctx.d,A=ARCH[d.arch],skx=id=>skAt(id,(ctx.skLv&&ctx.skLv[id])||0),ready=id=>{const k=skx(id);return k&&!(ctx.gd>0)&&(!ctx.learned||ctx.learned.includes(id))&&!(ctx.cd[id]>0)&&ctx.sp>=k.sp*d.spCost};
   const reserve=ctx.sp>d.maxSP*.2;
   const hpPct=ctx.hp/d.maxHP;
   switch(d.arch){
@@ -1542,7 +1562,7 @@ function pickSkill(ctx){
     if(!spells.length)return null;
     // prefer the spell the target is weak to, then the biggest hitter
     let best=null,bv=-1;
-    for(const id of spells){const k=SK[id];const v=k.ratio*(k.hits||1)*elemMult(k.elem,ctx.tgtElem,d.attune)/(k.cast||1);if(v>bv){bv=v;best=id}}
+    for(const id of spells){const k=skx(id);const v=k.ratio*(k.hits||1)*elemMult(k.elem,ctx.tgtElem,d.attune)/(k.cast||1);if(v>bv){bv=v;best=id}}
     if(!reserve&&elemMult(SK[best].elem,ctx.tgtElem,d.attune)<=1)return null;
     return best;}
    case "supporter":
@@ -1559,12 +1579,12 @@ function pickSkill(ctx){
  Fights packs of `pack` monsters for `secs` seconds. Monsters are passive until hit, then chase at 1.6x speed.
  Returns kills, deaths, damage dealt/taken, average HP left. Used by tests and offline-idle estimates. */
 function simulate(arch,lv,monKeys,opt){
-  opt=opt||{};const r=rngOf(opt.seed||7),secs=opt.secs||300,pack=opt.pack||1,dt=.05,travel=opt.travel??4;
+  opt=opt||{};const KL=id=>skAt(id,(opt.skLv||{})[id]||0);const r=rngOf(opt.seed||7),secs=opt.secs||300,pack=opt.pack||1,dt=.05,travel=opt.travel??4;
   const stats=opt.stats||autoStats(arch,lv);
   const buffs={},cd={};let zone=0,shield=0,momentum=0,momT=0;
   let d=derive({arch,lv,stats,buffs,gear:opt.gear});
   let hp=d.maxHP,sp=d.maxSP,t=0,kills=0,deaths=0,dealt=0,taken=0,hpSum=0,hpN=0,casting=null,swing=0,mi=0,wait=0;
-  let mobs=[];
+  let mobs=[],pending=[],gdT=0;
   const spawn=()=>{const key=monKeys[mi++%monKeys.length];const m=Object.assign({},opt.elite?eliteOf(MONC[key]):MONC[key]);
     mobs=[];for(let i=0;i<pack;i++)mobs.push(Object.assign({},m,{key,hpNow:m.hp,dist:d.type==="MELEE"?2.2:Math.min(d.range,8),aggro:false,atkCd:0,stun:0}))};
   spawn();
@@ -1573,7 +1593,7 @@ function simulate(arch,lv,monKeys,opt){
   const doBasic=m=>{const b=ARCH[arch].basic;
     if(b.kind==="phys"){const res=physHit(d,m,{ratio:b.ratio,dist:d.ranged?m.dist:0},r);hitMob(m,res);if(arch==="fighter"&&!res.miss){momentum=Math.min(5,momentum+1);momT=5}}
     else hitMob(m,magicHit(d,m,{ratio:b.ratio,elem:b.elem},r))};
-  const doSkill=(id,m)=>{const k=SK[id];sp-=k.sp*d.spCost;cd[id]=k.cd;
+  const doSkill=(id,m)=>{const k=KL(id);sp-=k.sp*d.spCost;cd[id]=k.cd;if(k.gd)gdT=k.gd;
     const targets=k.aoe?mobs.filter(x=>x.hpNow>0&&(k.at==="self"?x.dist<=k.aoe:true)):(m?[m]:[]);
     if(k.kind==="phys"){for(const x of targets)for(let h=0;h<(k.hits||1);h++){
         const ratio=k.ratio+(k.spend?k.perStack*momentum:0);
@@ -1581,7 +1601,7 @@ function simulate(arch,lv,monKeys,opt){
       if(buffs.leapShot&&k.ranged)buffs.leapShot=0;
       if(k.momentum)momentum=Math.min(5,momentum+k.momentum),momT=5;
       if(k.spend){if(momentum>=k.stunAt&&m)m.stun=k.stun;momentum=0}}
-    else if(k.kind==="magic"){for(const x of targets)for(let h=0;h<(k.hits||1);h++)hitMob(x,magicHit(d,x,{ratio:k.ratio,elem:k.elem},r));
+    else if(k.kind==="magic"){for(const x of targets)for(let h=0;h<(k.hits||1);h++){if(k.gap)pending.push({t:(k.gap||0)*h+(k.gap?k.gap-.02:0),x,k});else hitMob(x,magicHit(d,x,{ratio:k.ratio,elem:k.elem,overMul:k.overMul},r))};
       if(k.freeze)for(const x of targets)if(r()<k.freeze)x.stun=Math.max(x.stun,k.freezeDur);
       if(k.stunChance&&m&&r()<k.stunChance)m.stun=Math.max(m.stun,k.stun)}
     else if(k.kind==="heal"){const h=healAmount(d,k),over=Math.max(0,hp+h-d.maxHP);hp=Math.min(d.maxHP,hp+h);if(d.shieldCap)shield=Math.min(d.maxHP*d.shieldCap,shield+over)}
@@ -1591,7 +1611,9 @@ function simulate(arch,lv,monKeys,opt){
     else if(k.kind==="zone"){zone=k.dur}};
   while(t<secs){
     t+=dt;
-    for(const k in cd)cd[k]=Math.max(0,cd[k]-dt);
+    for(const k in cd)cd[k]=Math.max(0,cd[k]-dt);gdT=Math.max(0,gdT-dt);
+    for(const q of pending)q.t-=dt;
+    for(let i=0;i<pending.length;){const q=pending[i];if(q.x.hpNow<=0){pending.splice(i,1);continue}if(q.t<=0){pending.splice(i,1);hitMob(q.x,magicHit(d,q.x,{ratio:q.k.ratio,elem:q.k.elem,overMul:q.k.overMul},r));continue}i++}
     for(const k of Object.keys(buffs)){if(k==="leapShot")continue;buffs[k]-=dt;if(buffs[k]<=0){delete buffs[k];d=derive({arch,lv,stats,buffs,gear:opt.gear})}}
     if(momT>0){momT-=dt;if(momT<=0)momentum=0}
     sp=Math.min(d.maxSP,sp+d.spRegen*dt);
@@ -1606,15 +1628,15 @@ function simulate(arch,lv,monKeys,opt){
     for(const x of mobs){if(x.hpNow<=0||!x.aggro)continue;if(x.stun>0){x.stun-=dt;continue}
       if(x.dist>1.2){x.dist=Math.max(1.2,x.dist-x.speed*1.6*dt);continue}
       x.atkCd-=dt;if(x.atkCd<=0){x.atkCd=x.aspd;const res=monHit(x,d,r);if(!res.miss){let dmg=res.dmg;if(shield>0){const a=Math.min(shield,dmg);shield-=a;dmg-=a}hp-=dmg;taken+=dmg}}}
-    if(hp<=0){deaths++;hp=d.maxHP;sp=d.maxSP;momentum=0;shield=0;zone=0;wait=20;casting=null;spawn();continue}
+    if(hp<=0){deaths++;hp=d.maxHP;sp=d.maxSP;momentum=0;shield=0;zone=0;wait=20;casting=null;pending=[];spawn();continue}
     // player
     if(d.type==="MELEE"&&m.dist>d.range){m.dist=Math.max(d.range,m.dist-3.6*dt);continue}
     if(casting){casting.t-=dt;if(casting.t<=0){const c=casting;casting=null;doSkill(c.id,tgt())}continue}
     swing-=dt;
     const near=mobs.filter(x=>x.hpNow>0&&x.dist<=2.5).length;
-    const ctx={d,hp,sp,cd,momentum,buffs,dist:m.dist,near:pack>1?mobs.filter(x=>x.hpNow>0).length:1,tgtElem:m.elem,inZone:zone>0,engaged:m.aggro};
+    const ctx={d,hp,sp,cd,momentum,buffs,dist:m.dist,near:pack>1?mobs.filter(x=>x.hpNow>0).length:1,tgtElem:m.elem,inZone:zone>0,engaged:m.aggro,skLv:opt.skLv,gd:gdT};
     const id=pickSkill(ctx);
-    if(id){const k=SK[id];if(k.cast){casting={id,t:k.cast*d.castMul};continue}doSkill(id,m);continue}
+    if(id){const k=KL(id);if(k.cast){casting={id,t:k.cast*d.castMul};continue}doSkill(id,m);continue}
     if(swing<=0&&m.dist<=d.range){swing=d.interval;doBasic(m)}
   }
   return {arch,lv,kills,deaths,dealt:Math.round(dealt),taken:Math.round(taken),dps:+(dealt/secs).toFixed(1),hpLeft:hpN?+(hpSum/hpN).toFixed(2):0,maxHP:d.maxHP,stats};
@@ -1640,7 +1662,7 @@ function combatPower(arch,lv,stats,gear){
   const ehp=d.maxHP/(1-d.hardDef)+d.softDef*30;
   const v=Math.round(sim.dps*6+ehp/20);_cpc.set(key,v);return v;
 }
-return {STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower};
+return {STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax};
 })();
 
 
@@ -1890,7 +1912,17 @@ D2.en.skd_eagle_eye="+3 range (12 tiles) and +10 HIT.";D2.th.skd_eagle_eye="ร�
 D2.en.sk_steady_aim="Steady Aim";D2.th.sk_steady_aim="Steady Aim";
 D2.en.skd_steady_aim="Distance bonus (+2% per tile beyond 3) and +5% crit.";D2.th.skd_steady_aim="โบนัสระยะ (+2% ต่อช่องที่เกิน 3) และคริติคอล +5%";
 D2.en.sk_fire_bolt="Fire Bolt";D2.th.sk_fire_bolt="Fire Bolt";
-D2.en.skd_fire_bolt="3 bolts of 100% MATK, fire.";D2.th.skd_fire_bolt="ลูกไฟ 3 ลูก ลูกละ 100% MATK ธาตุไฟ";
+D2.en.skd_fire_bolt="Drops one fireball per skill level on one enemy, 100% MATK each, 0.3 s apart (0.2 s from Lv 6). If the target dies, the fireballs still to come are not released. Can Overload.";D2.th.skd_fire_bolt="ลูกไฟตกใส่ศัตรู 1 ตัว เท่ากับเลเวลสกิล ลูกละ 100% MATK ห่างกัน 0.3 วิ (0.2 วิ ตั้งแต่ Lv 6) ถ้าเป้าหมายตายก่อน ลูกที่เหลือจะไม่ออก เกิดเกินพิกัดได้";
+D2.en.skpLine="Skill points: {n} (1 per Job Lv)";D2.th.skpLine="แต้มสกิล: {n} (1 Job Lv = 1 แต้ม)";
+D2.en.gdLbl="Global Delay";D2.th.gdLbl="ดีเลย์รวม";
+D2.en.fbLbl="Fireballs";D2.th.fbLbl="ลูกไฟ";
+D2.en.hotCfg="Hotbar setup";D2.th.hotCfg="ตั้งค่า Hotbar";
+D2.en.hotNone="Empty";D2.th.hotNone="ว่าง";
+D2.en.hotMax="Highest learned";D2.th.hotMax="สูงสุดที่เรียน";
+D2.en.hotNote="Choose which skill, and which level of it, each slot uses. The potion slots (8–0) stay as they are.";D2.th.hotNote="เลือกสกิลและเลเวลที่ใช้ในแต่ละช่อง ส่วนช่องยา (8–0) คงที่";
+D2.en.fctOver="OVERLOAD!";D2.th.fctOver="เกินพิกัด!";
+D2.en.skNone="Not learned";D2.th.skNone="ยังไม่ได้เรียน";
+D2.en.skNotLearned="Skill not learned yet. Spend a skill point in the Skills window.";D2.th.skNotLearned="ยังไม่ได้เรียนสกิลนี้ ใช้แต้มสกิลในหน้าสกิล";
 D2.en.sk_frost_nova="Frost Nova";D2.th.sk_frost_nova="Frost Nova";
 D2.en.skd_frost_nova="260% MATK water to enemies within 2.5 tiles; 40% chance to freeze 2 s.";D2.th.skd_frost_nova="260% MATK ธาตุน้ำ รอบตัว 2.5 ช่อง โอกาสแช่แข็ง 40% นาน 2 วิ";
 D2.en.sk_lightning_spear="Lightning Spear";D2.th.sk_lightning_spear="Lightning Spear";
@@ -3231,9 +3263,9 @@ const tierOf=lv=>Math.max(1,Math.floor(lv/10)*10);
 /* base stats of a piece (before its random roll) */
 function gStats(arch,slot,L,r,ref){
   const m=(3+L*.8)*[1,1.4,2,2.8,4][r-1]*(1+.04*(ref||0));
-  const o={atk:0,def:0,hardDef:0,hp:0,sp:0,hit:0,crit:0,flee:0,attr:{str:0,agi:0,vit:0,int:0,dex:0,luk:0}};
+  const o={atk:0,matk:0,def:0,hardDef:0,hp:0,sp:0,hit:0,crit:0,flee:0,attr:{str:0,agi:0,vit:0,int:0,dex:0,luk:0}};
   switch(slot){
-    case "weapon":o.atk=Math.round(m*2.2);break;
+    case "weapon":if(arch==="spellcaster")o.matk=Math.round(m*2.2);else o.atk=Math.round(m*2.2);break;   // v20: a Spellcaster staff gives weaponMATK instead of ATK
     case "armor":o.def=Math.round(m*.9);o.hp=Math.round(m*6);break;
     case "legs":o.def=Math.round(m*.6);o.hp=Math.round(m*3);break;
     case "offhand":o.def=Math.round(m*.7);o.hardDef=+(r*.01*(1+.04*(ref||0))).toFixed(3);break;
@@ -3298,11 +3330,11 @@ const ABIL_BY_ID=Object.fromEntries(ABIL.map(a=>[a.id,a]));
 function newGearItem(arch,slot,L,r,k){return {id:gearId(arch,slot,L,r,k),ref:0,roll:rollGear(arch,L,r,k,slot)}}
 /* a piece's full modifier list: base stats x roll, plus affixes and abilities */
 const MOD_PCT=new Set(["atkPct","matkPct","defPct","hpPct","healPct","hardDef"]);
-function mkMods(){return {atk:0,def:0,hardDef:0,hp:0,sp:0,hit:0,crit:0,flee:0,atkPct:0,matkPct:0,defPct:0,hpPct:0,healPct:0,spPct:0,attr:{str:0,agi:0,vit:0,int:0,dex:0,luk:0},ab:{}}}
+function mkMods(){return {atk:0,matk:0,def:0,hardDef:0,hp:0,sp:0,hit:0,crit:0,flee:0,atkPct:0,matkPct:0,defPct:0,hpPct:0,healPct:0,spPct:0,attr:{str:0,agi:0,vit:0,int:0,dex:0,luk:0},ab:{}}}
 function addMod(m,k,v){if(AFF_ATTR.includes(k))m.attr[k]+=v;else m[k]=(m[k]||0)+v}
 function gFull(it){
   const p=gParse(it.id),ro=it.roll||{f:1,aff:[],ab:[]},b=gStats(p.arch,p.slot,p.L,p.r,it.ref||0),m=mkMods();
-  for(const k of ["atk","def","hp","sp","hit","crit","flee"])m[k]=b[k]*ro.f;
+  for(const k of ["atk","matk","def","hp","sp","hit","crit","flee"])m[k]=b[k]*ro.f;
   m.hardDef=b.hardDef;for(const k of AFF_ATTR)m.attr[k]=b.attr[k]*ro.f;
   for(const [k,v] of ro.aff)addMod(m,k,v);
   for(const [id,v] of ro.ab)m.ab[id]=(m.ab[id]||0)+v;
@@ -3316,13 +3348,13 @@ function setBonusMods(m,p,n){
   for(const k in b){const v=b[k]*sc;if(AFF_ATTR.includes(k))m.attr[k]+=v;else m[k]=(m[k]||0)+v}
 }
 /* ---- labels for stats ---- */
-const MODLBL={atk:["ATK","ATK"],def:["DEF","DEF"],hp:["HP","HP"],sp:["SP","SP"],hit:["HIT","HIT"],flee:["FLEE","FLEE"],crit:["CRIT","CRIT"],
+const MODLBL={atk:["ATK","ATK"],matk:["MATK","MATK"],def:["DEF","DEF"],hp:["HP","HP"],sp:["SP","SP"],hit:["HIT","HIT"],flee:["FLEE","FLEE"],crit:["CRIT","CRIT"],
  atkPct:["ATK","ATK"],matkPct:["MATK","MATK"],defPct:["DEF","DEF"],hpPct:["HP","HP"],healPct:["Heal","ฮีล"],spPct:["SP","SP"],hardDef:["DEF","DEF"]};
 const fmtMod=(k,v)=>MOD_PCT.has(k)||k.endsWith("Pct")?`+${(v*100).toFixed(1).replace(/\.0$/,"")}%`:`+${k==="crit"?(Math.round(v*10)/10).toFixed(1):Math.round(v)}`;
 function gDescLines(it){
   const m=gFull(it),L=[];
   const pr=(k,v)=>{const l=MODLBL[k];return `${lang==="th"?l[1]:l[0]} ${fmtMod(k,v)}`};
-  for(const k of ["atk","def","hp","sp","hit","flee","crit","hardDef"]){if(m[k])L.push({t:"stat",s:k==="hardDef"?`DEF ${fmtMod("hardDef",m[k])}`:`${MODLBL[k][0]} ${fmtMod(k,m[k])}`,cls:"base"})}
+  for(const k of ["atk","matk","def","hp","sp","hit","flee","crit","hardDef"]){if(m[k])L.push({t:"stat",s:k==="hardDef"?`DEF ${fmtMod("hardDef",m[k])}`:`${MODLBL[k][0]} ${fmtMod(k,m[k])}`,cls:"base"})}
   for(const k of AFF_ATTR)if(m.attr[k])L.push({t:"stat",s:`${k.toUpperCase()} +${Math.round(m.attr[k])}`,cls:"base"});
   for(const [k] of [["atkPct"],["matkPct"],["defPct"],["hpPct"]]){if(m[k])L.push({t:"stat",s:pr(k,m[k]),cls:"pct"})}
   for(const [id,v] of it.roll?it.roll.ab:[]){const a=ABIL_BY_ID[id];L.push({t:"ab",s:`${lang==="th"?a.th:a.en} ${a.unit==="%"?v.toFixed(1)+"%":"+"+v}`})}
@@ -3470,7 +3502,7 @@ function gCompareRows(newIt,oldIt){
   const pf=(k,v)=>MOD_PCT.has(k)||k.endsWith("Pct")?`${(v*100).toFixed(1).replace(/\.0$/,"")}%`:k==="crit"?(Math.round(v*10)/10).toFixed(1):`${Math.round(v)}`;
   const df=(k,d)=>{const sg=d>0?"+":"";return MOD_PCT.has(k)||k.endsWith("Pct")?`${sg}${(d*100).toFixed(1).replace(/\.0$/,"")}%`:k==="crit"?`${sg}${(Math.round(d*10)/10).toFixed(1)}`:`${sg}${Math.round(d)}`};
   const push=(label,k,av,bv)=>{if(av===0&&bv===0)return;const d=av-bv;if(Math.abs(d)<1e-9)return;rows.push({label,old:pf(k,bv),nw:pf(k,av),diff:df(k,d),cls:d>0?"up":"down"})};
-  for(const k of ["atk","def","hp","sp","hit","flee","crit","hardDef"])push(MODLBL[k]?(lang==="th"?MODLBL[k][1]:MODLBL[k][0]):k,k,a[k],b[k]);
+  for(const k of ["atk","matk","def","hp","sp","hit","flee","crit","hardDef"])push(MODLBL[k]?(lang==="th"?MODLBL[k][1]:MODLBL[k][0]):k,k,a[k],b[k]);
   for(const k of AFF_ATTR)push(k.toUpperCase(),k,a.attr[k],b.attr[k]);
   for(const k of ["atkPct","matkPct","defPct","hpPct","healPct"]){const l=MODLBL[k];push((lang==="th"?l[1]:l[0])+"%",k,a[k],b[k])}
   const ids=new Set([...Object.keys(a.ab),...Object.keys(b.ab)]);
@@ -3602,7 +3634,7 @@ const SAVE_KEY=AUTH.saveKey,OLD_KEY=AUTH.oldKey;
 const gameState={lv:1,exp:0,jlv:1,jexp:0,hp:420,sp:120,sc:1250,y:0,la:0,arch:"beginner",stats:REOC.autoStats("beginner",1),autoStat:true,
   inv:{red:3,blue:2,wing:2,apple:8,mat_gel:0,mat_shell:0,mat_lens:0,mat_ore:0,mat_gel2:0,mat_amber:0,mat_frost:0,mat_core:0,mat_gel3:0,mat_rime:0,mat_mag:0,mat_gheart:0},
   q:{main:{s:"active",st:0,p:0,n:0}},pins:["main"],kills:0,deaths:0,idle:false,vip:false,sess:{t:0,kills:0,base:0,job:0,sc:0,mats:0,items:{},gear:0},offline:null,visited:{town:1},uiMode:"system",invPacks:0,menuHide:false,gm:false,
-  sound:true,music:true,gfx:"hi",autoIdle:true,bag:[],equip:null,uidN:1};
+  sound:true,music:true,gfx:"hi",autoIdle:true,bag:[],equip:null,uidN:1,skLv:{},hot:null,hotArch:""};
 const S=gameState;
 /* ---- combat state: buffs, cooldowns, derived stats (REOC) ---- */
 const BF={warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0,burn:0,burnDps:0,burnAcc:0,slow:0};
@@ -3612,10 +3644,10 @@ const CD={};
 let _pd=null,_pdKey="";
 /* derived stats = base stats + equipped gear + herb buffs (combat math lives in REOC) */
 function pd(){
-  const b=BF,k=S.arch+"|"+S.lv+"|"+JSON.stringify(S.stats)+"|"+eqKey()+"|"+(b.warCry>0?1:0)+(b.blessing>0?1:0)+(b.leap>0?1:0)+(b.herbAtk>0?1:0)+(b.herbDef>0?1:0)+(b.sage>0?1:0);
+  const b=BF,k=S.arch+"|"+S.lv+"|"+JSON.stringify(S.stats)+"|"+eqKey()+"|"+learnedPas().join()+"|"+(b.warCry>0?1:0)+(b.blessing>0?1:0)+(b.leap>0?1:0)+(b.herbAtk>0?1:0)+(b.herbDef>0?1:0)+(b.sage>0?1:0);
   if(k!==_pdKey){
     _pdKey=k;const m=gearMods();
-    const d=REOC.derive({arch:S.arch,lv:S.lv,stats:effStats(),buffs:{warCry:b.warCry>0,blessing:b.blessing>0,leap:b.leap>0},gear:m});
+    const d=REOC.derive({learned:learnedPas(),arch:S.arch,lv:S.lv,stats:effStats(),buffs:{warCry:b.warCry>0,blessing:b.blessing>0,leap:b.leap>0},gear:m});
     d.ab=m.ab;
     if(b.herbAtk>0){d.statusAtk=Math.round(d.statusAtk*1.1);d.watk=Math.round(d.watk*1.1)}
     if(b.herbDef>0)d.softDef=Math.round(d.softDef*1.15);
@@ -4448,7 +4480,7 @@ const liveMon=()=>cur.monsters.filter(m=>!m.dead&&m.dieT<=0);
 function clickAt(sx,sy){
   if(player.dead||warping)return;
   const [wx,wy]=toWorld(sx,sy);player.manualT=3;player.nav=null;renderQuest();
-  if(player.casting){const c=player.casting;S.sp=Math.min(spMax(),S.sp+Math.ceil(REOC.SK[c.id].sp*pd().spCost));CD[c.id]=0;player.casting=null}
+  if(player.casting){const c=player.casting;S.sp=Math.min(spMax(),S.sp+(c.cost!=null?c.cost:Math.ceil(REOC.SK[c.id].sp*pd().spCost)));CD[c.id]=0;player.casting=null}
   for(const mo of liveMon().sort((a,b)=>(b.x+b.y)-(a.x+a.y))){const [mx,my]=P(mo.x,mo.y),d=MON[mo.type],sz=mSize(mo);
     if(Math.abs(wx-mx)<20*sz&&wy>my-d.h*sz-6&&wy<my+8){player.target=mo;player.chaseT=0;marker=null;return}}
   for(const c of [...cur.npcs,...cur.wanderers].sort((a,b)=>(b.x+b.y)-(a.x+a.y))){const [cx,cy]=P(c.x,c.y);if(Math.abs(wx-cx)<15&&wy>cy-60&&wy<cy+6){
@@ -4502,6 +4534,7 @@ function goMap(id,ax,ay){
   whenReady([MAPS[id]],()=>{$("#fade").classList.add("on");setTimeout(()=>applyMap(id,ax,ay),380)},"ld_map");
 }
 function applyMap(id,ax,ay){
+  volleys.length=0;balls.length=0;
   if(S.idle){setIdle(false,true);toast(t("idleEnded"))}
   if(dlg){dlg=null;$("#dlg").classList.add("hidden");stage.classList.remove("dlg-open")}
   if(LITE)for(const m of Object.values(MAPS))if(m.id!==id&&m.id!==AHEAD[id]&&m.ground){m.ground.width=m.ground.height=0;m.ground=null}
@@ -4655,13 +4688,13 @@ const ELC={fire:"#ff7a3a",water:"#4fb8ff",wind:"#9cf06a",earth:"#c8964a",holy:"#
 const mprof=mo=>mo.elite?REOC.eliteOf(REOC.MONC[mo.type]):REOC.MONC[mo.type];
 function nearestMon(max,noElite){let best=null,bd=max||99;for(const m of liveMon()){if(noElite&&(m.boss||(m.elite&&S.lv<mLv(m)+3)))continue;const d=dist(m,player);if(d<bd){bd=d;best=m}}return best}
 function applyHit(mo,res,o){
-  if(!mo||mo.dead||mo.dieT>0)return;AUD.sfx(res&&res.miss?"miss":(res&&res.crit)?"crit":"hit");
+  if(!mo||mo.dead||mo.dieT>0)return;AUD.sfx(res&&res.miss?"miss":(res&&(res.crit||res.over))?"crit":"hit");
   player.combatT=0;if(!mo.aggro){mo.aggro=true;mo.speed=MON[mo.type].speed*1.6}
   const h=MON[mo.type].h*mSize(mo);
   if(res.miss){fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:t("miss"),c:"#c8c8d8",ox:(rnd()-.5)*24,h});return}
   { const ab=pd().ab||{}; if(res.crit&&ab.cd)res.dmg=Math.round(res.dmg*(1+ab.cd/100)); mo.hp-=res.dmg; if(ab.ls)S.hp=Math.min(hpMax(),S.hp+res.dmg*ab.ls/100); }
   mo.hitT=.16;
-  fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:res.crit?1.15:.95,txt:num(res.dmg),c:res.crit?"#ffd84a":res.weak?"#8ff0ff":(o&&o.c)||"#ffffff",big:res.crit||res.weak,pop:true,crit:!!res.crit,ox:(rnd()-.5)*(res.crit?18:30),h});
+  fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:(res.crit||res.over)?1.15:.95,txt:num(res.dmg),c:res.over?"#ff8a3c":res.crit?"#ffd84a":res.weak?"#8ff0ff":(o&&o.c)||"#ffffff",big:res.crit||res.over||res.weak,pop:true,crit:!!(res.crit||res.over),lbl:res.over?"fctOver":null,ox:(rnd()-.5)*((res.crit||res.over)?18:30),h});
   hitFx(mo,res,o,h);
   if(mo.hp<=0)killMon(mo);
 }
@@ -4709,13 +4742,29 @@ function monHit(mo){
   { const th=pd().ab&&pd().ab.th; if(th&&!mo.dead&&mo.dieT<=0){ mo.hp-=Math.max(1,Math.round(res.dmg*th/100)); if(mo.hp<=0)killMon(mo); } }
 }
 function die(){
-  if(player.dead)return;AUD.sfx("death");player.dead=true;deathT=3;S.deaths++;player.path=[];player.target=null;player.casting=null;
+  if(player.dead)return;AUD.sfx("death");player.dead=true;deathT=3;S.deaths++;player.path=[];player.target=null;player.casting=null;volleys.length=0;balls.length=0;
   player.nav=null;if(S.idle)setIdle(false,true);deaggroAll();resetCombatState();
   $("#deathOv").classList.remove("hidden");pushChat({ch:"sys",k:"sys_dead"});
 }
 function respawn(){player.dead=false;S.hp=hpMax();S.sp=spMax();$("#deathOv").classList.add("hidden");goMap("town",24.5,24.5)}
-function resetCombatState(){BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=0;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
+function resetCombatState(){volleys.length=0;balls.length=0;player.gd=0;BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=0;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
 function addMomentum(n){BF.momentum=Math.min(5,BF.momentum+n);BF.momT=5}
+/* ---- Fire Bolt volley (v20): fireballs are released one at a time (0.3 s apart, 0.2 s from Lv 6). If the target dies, the ones not yet released never come out.
+   A fireball falls for (gap - 0.02) s and deals its damage when it lands. ---- */
+const volleys=[],balls=[];
+function startVolley(m,k,o){volleys.push({m,k,o,n:0,t:0,fall:Math.max(.12,(k.gap||.3)-.02)})}
+function releaseBall(v){
+  const m=v.m,h=MON[m.type].h*mSize(m),kk=Math.max(.8,Math.min(1.6,h/36));
+  balls.push({m,t:0,fall:v.fall,o:v.o});
+  fx.push({k:"fball",x:m.x,y:m.y,m,t:0,d:v.fall,hz:h*.5,kk,sx:(Math.random()<.5?-1:1)*(26+Math.random()*30)});
+}
+function landBall(b){if(alive(b.m))magicAttack(b.m,b.o);else fx.push({k:"burst",x:b.m.x,y:b.m.y,t:0,d:.35,c:"#ff9a4a",n:8,z:4})}
+function updateVolleys(dt){
+  for(let i=volleys.length-1;i>=0;i--){const v=volleys[i];v.t-=dt;
+    while(v.t<=0&&v.n<v.k.hits){if(!alive(v.m)){v.n=v.k.hits;break}releaseBall(v);v.n++;v.t+=v.k.gap}
+    if(v.n>=v.k.hits)volleys.splice(i,1)}
+  for(let i=balls.length-1;i>=0;i--){const b=balls[i];b.t+=dt;if(b.t>=b.fall){balls.splice(i,1);landBall(b)}}
+}
 function updateCombat(dt){
   player.atkCd=Math.max(0,player.atkCd-dt);player.lunge=Math.max(0,player.lunge-dt);player.combatT+=dt;
   for(const k of ["warCry","blessing","leap","regen","herbAtk","herbDef","sage"])if(BF[k]>0)BF[k]=Math.max(0,BF[k]-dt);
@@ -4723,11 +4772,13 @@ function updateCombat(dt){
   if(BF.burn>0&&!player.dead){BF.burn=Math.max(0,BF.burn-dt);BF.burnAcc+=dt;if(BF.burnAcc>=1){BF.burnAcc-=1;damagePlayer(Math.max(1,Math.round(BF.burnDps)),t("fx_burn"))}}
   if(BF.momT>0){BF.momT-=dt;if(BF.momT<=0)BF.momentum=0}
   for(const k in CD)if(CD[k]>0)CD[k]=Math.max(0,CD[k]-dt);
+  if((player.gd||0)>0)player.gd=Math.max(0,player.gd-dt);
+  updateVolleys(dt);
   if(BF.zone){const z=BF.zone,k=REOC.SK.sanctuary;z.t-=dt;
     if(z.map===cur.id){if(Math.hypot(player.x-z.x,player.y-z.y)<=k.radius)S.hp=Math.min(hpMax(),S.hp+hpMax()*k.healPct*dt);
       z.acc+=dt;if(z.acc>=.5){z.acc-=.5;for(const m of liveMon())if(Math.hypot(m.x-z.x,m.y-z.y)<=k.radius)magicAttack(m,{ratio:k.ratio*.5,elem:"holy",c:"#ffe9a0"})}}
     if(z.t<=0)BF.zone=null}
-  if(player.casting){const c=player.casting;c.t-=dt;if(c.t<=0){player.casting=null;finishSkill(c.id,c.tg)}return}
+  if(player.casting){const c=player.casting;c.t-=dt;if(c.t<=0){player.casting=null;finishSkill(c.id,c.tg,c.lv)}return}
   const tg=player.target;if(!tg)return;
   if(!alive(tg)){player.target=null;return}
   const d=dist(player,tg),R=pd().range;
@@ -4803,24 +4854,45 @@ const SKG_EL={fire:"linear-gradient(135deg,#ffd27a,#de4f25)",water:"linear-gradi
 const skGrad=id=>{const k=REOC.SK[id];return (k.elem&&SKG_EL[k.elem])||SKG[k.arch]||SKG.beginner};
 const ITEMS={wing:{item:"wing",ic:"wing",c:"linear-gradient(135deg,#f0f8ff,#7aa4c4)",cd:3},red:{item:"red",ic:"potion",c:"linear-gradient(135deg,#ffa2ae,#c02843)",cd:.8},blue:{item:"blue",ic:"potion",c:"linear-gradient(135deg,#a2d4ff,#2a5fc0)",cd:.8}};
 let SLOTS=[];
+/* ---- skill levels (v20): 1 Job Lv = 1 skill point, spent by the player. Lv 1 of a levelled skill is free (ASSUMPTION, see SKILL-SPEC.md) ---- */
+/* v20: EVERY skill (active or passive, every archetype) starts at Lv 0 and is raised by hand: 1 skill point per level, 1 point per Job Lv gained.
+   Only Fire Bolt has several levels (max 10); every other skill has one level (learn it for 1 point) until its levels are designed. */
+function skMine(){const A=REOC.ARCH[S.arch];return [...A.actives,...A.passives]}
+function skMaxOf(id){return REOC.skMax(id)}
+function skLvOf(id){return Math.max(0,Math.min(skMaxOf(id),(S.skLv&&S.skLv[id])|0))}
+function learnedPas(){return REOC.ARCH[S.arch].passives.filter(id=>skLvOf(id)>0)}
+function learnedAct(){return REOC.ARCH[S.arch].actives.filter(id=>skLvOf(id)>0)}
+function skSpent(){let n=0;for(const id of skMine())n+=skLvOf(id);return n}
+function skAvail(){return Math.max(0,S.jlv-1)-skSpent()}
+function skFix(){   // keep every level inside the points the character has (Job Lv resets when the class changes)
+  if(!S.skLv||typeof S.skLv!=="object")S.skLv={};
+  for(const id of Object.keys(S.skLv))S.skLv[id]=skLvOf(id);
+  while(skAvail()<0){let best=null;for(const id of skMine())if(skLvOf(id)>0&&(!best||skLvOf(id)>skLvOf(best)))best=id;if(!best)break;S.skLv[best]--}
+}
+function skRaise(id){if(!skMine().includes(id)||skLvOf(id)>=skMaxOf(id)||skAvail()<=0)return;S.skLv[id]=skLvOf(id)+1;_pdKey="";buildSlots();renderWin();save()}
+const slotLv=sl=>sl&&sl.id&&REOC.SKLV[sl.id]?(sl.lv>0?Math.min(sl.lv,skLvOf(sl.id)):skLvOf(sl.id)):0;   // lv 0 on a slot = the highest level learned
+function lvFor(id){   // level Idle uses: the level set on the first hotbar slot that holds the skill, else the highest learned
+  if(!REOC.SKLV[id])return 0;const sl=SLOTS.find(x=>x.id===id&&!x.item);return sl?slotLv(sl):skLvOf(id)}
+const hotDefault=()=>{const ids=REOC.ARCH[S.arch].actives;return Array.from({length:7},(_,i)=>ids[i]?{id:ids[i],lv:0}:null)};
 function buildSlots(){
-  const ids=REOC.ARCH[S.arch].actives;SLOTS=[];
-  for(let i=0;i<7;i++)SLOTS.push(ids[i]?{id:ids[i]}:{id:null});
+  const A=REOC.ARCH[S.arch];
+  if(!Array.isArray(S.hot)||S.hot.length!==7||S.hotArch!==S.arch||S.hot.some(h=>h&&!A.actives.includes(h.id))){S.hot=hotDefault();S.hotArch=S.arch}
+  SLOTS=S.hot.map(h=>h?{id:h.id,lv:h.lv|0}:{id:null});
   for(const k of ["wing","red","blue"])SLOTS.push(Object.assign({id:k,left:0},ITEMS[k]));
   renderHotbar();
 }
 function renderHotbar(){
   $("#hotbar").innerHTML=SLOTS.map((s,i)=>{
-    if(!s.id)return `<button class="slot empty" data-i="${i}" aria-label="—"><span class="k">${(i+1)%10}</span></button>`;
-    const name=s.item?t(s.item):t("sk_"+s.id),ic=s.item?s.ic:REOC.SK[s.id].ic,c=s.item?s.c:skGrad(s.id);
-    return `<button class="slot" data-i="${i}" title="${name}" aria-label="${name}"><span class="k">${(i+1)%10}</span><span class="ic" style="--c:${c}">${s.item?itemArt(s.item):svg(IC[ic]?ic:"star")}</span>${s.item?`<span class="n">${S.inv[s.item]}</span>`:""}</button>`}).join("");
+    if(!s.id)return `<button class="slot empty" data-i="${i}" aria-label="--"><span class="k">${(i+1)%10}</span></button>`;
+    const lv=s.item?0:slotLv(s),name=(s.item?t(s.item):t("sk_"+s.id))+(lv?" Lv "+lv:""),ic=s.item?s.ic:REOC.SK[s.id].ic,c=s.item?s.c:skGrad(s.id);
+    return `<button class="slot" data-i="${i}" title="${name}" aria-label="${name}"><span class="k">${(i+1)%10}</span><span class="ic" style="--c:${c}">${s.item?itemArt(s.item):svg(IC[ic]?ic:"star")}</span>${s.item?`<span class="n">${S.inv[s.item]}</span>`:lv?`<span class="n lvb">Lv${lv}</span>`:""}</button>`}).join("");
 }
 $("#hotbar").addEventListener("click",e=>{const b=e.target.closest(".slot");if(b)useSlot(+b.dataset.i)});
 function flashSlot(i){const b=$(`.slot[data-i="${i}"]`);if(b){b.classList.add("flash");setTimeout(()=>b.classList.remove("flash"),160)}}
 function useSlot(i,auto){
   const s=SLOTS[i];if(!s||!s.id||player.dead)return false;
   if(s.item){if(s.left>0||S.inv[s.item]<=0)return false;S.inv[s.item]--;s.left=s.cd;flashSlot(i);useItem(s.item);renderHotbar();return true}
-  const ok=useSkill(s.id,auto);if(ok)flashSlot(i);return ok;
+  const ok=useSkill(s.id,auto,slotLv(s));if(ok)flashSlot(i);return ok;
 }
 function floatText(txt,c){const n=fx.filter(f=>f.k==="float"&&f.t<.3).length;fx.push({k:"float",t:0,d:1.3,c,txt,follow:true,oy:n*15})}
 function useItem(id){
@@ -4842,14 +4914,16 @@ function useItem(id){
    case "herb_sage":BF.sage=60;floatText(t("buff_sp"),"#c9b8ff");break;
    case "wing":{fx.push({k:"ring",x,y,t:0,d:.5,c:"#fff",r:50});let tx,ty,gd=0;
      do{tx=cur===town?17+Math.floor(Math.random()*16):5+Math.floor(Math.random()*40);ty=cur===town?17+Math.floor(Math.random()*16):5+Math.floor(Math.random()*40)}while((!walk(tx,ty)||cur.portals.some(p=>Math.hypot(tx-p.x,ty-p.y)<4))&&gd++<300);
-     player.x=tx+.5;player.y=ty+.5;player.path=[];player.target=null;player.casting=null;deaggroAll();
+     player.x=tx+.5;player.y=ty+.5;player.path=[];player.target=null;player.casting=null;volleys.length=0;balls.length=0;deaggroAll();
      fx.push({k:"ring",x:player.x,y:player.y,t:0,d:.6,c:"#fff",r:60});toast(t("tele"));break}
   }
 }
 function skillTargetRange(k,d){return k.ranged?d.range:(k.range||d.range)}
-function useSkill(id,auto){
-  const k=REOC.SK[id],d=pd();if(!k||player.dead)return false;
-  if(CD[id]>0||player.casting)return false;
+function useSkill(id,auto,lvArg){
+  const d=pd();let k=REOC.SK[id];if(!k||player.dead)return false;
+  if(skLvOf(id)<1){if(!auto)toast(t("skNotLearned"));return false}   // not learned yet: spend a skill point in the Skills window
+  const lv=REOC.SKLV[id]?Math.min(lvArg||lvFor(id),skLvOf(id)):0;if(lv)k=REOC.skAt(id,lv);
+  if(CD[id]>0||player.casting||(player.gd||0)>0)return false;   // Global Delay: no skill until it ends (basic attacks are not blocked)
   const cost=Math.ceil(k.sp*d.spCost);if(S.sp<cost){if(!auto)toast(t("noSp"));return false}
   let tg=null;
   const needsTarget=(k.kind==="phys"||k.kind==="magic")&&!(k.aoe&&k.at==="self");
@@ -4863,8 +4937,8 @@ function useSkill(id,auto){
   }
   if((k.kind==="phys"||k.kind==="magic")&&k.aoe&&k.at==="self"&&!isField()){if(!auto)toast(t("noTarget"));return false}
   AUD.sfx("skill");S.sp-=cost;CD[id]=k.cd*(1-((pd().ab&&pd().ab.cdr)||0)/100);
-  if(k.cast){const ct=k.cast*d.castMul;if(ct>.05){player.casting={id,tg,t:ct,total:ct};player.path=[];player.moving=false;return true}}
-  finishSkill(id,tg);return true;
+  if(k.cast){const ct=k.cast*d.castMul;if(ct>.05){player.casting={id,lv,tg,t:ct,total:ct,cost};player.path=[];player.moving=false;return true}}
+  finishSkill(id,tg,lv);return true;
 }
 function leapAway(n){
   const m=nearestMon(30);let dx=-player.dir,dy=player.dir;
@@ -4873,8 +4947,9 @@ function leapAway(n){
   for(let r=n;r>=1;r-=.5){const tx=player.x+dx*r,ty=player.y+dy*r;if(walk(Math.floor(tx),Math.floor(ty))&&los(player.x,player.y,tx,ty)){player.x=tx;player.y=ty;break}}
   player.path=[];
 }
-function finishSkill(id,tg){
-  const k=REOC.SK[id],d=pd(),x=player.x,y=player.y,col=SKC[id]||"#fff";
+function finishSkill(id,tg,lv){
+  const k=lv?REOC.skAt(id,lv):REOC.SK[id],d=pd(),x=player.x,y=player.y,col=SKC[id]||"#fff";
+  if(k.gd){player.gd=k.gd;player.gdMax=k.gd}   // Global Delay starts when the cast ends
   if(tg&&!alive(tg))tg=null;
   const area=k.aoe?(k.at==="self"?liveMon().filter(m=>dist(m,player)<=k.aoe):(tg?liveMon().filter(m=>dist(m,tg)<=k.aoe):[])):(tg?[tg]:[]);
   switch(k.kind){
@@ -4901,9 +4976,9 @@ function finishSkill(id,tg){
      if(id==="lightning_spear"&&tg)fx.push({k:"bolt",x:tg.x,y:tg.y,t:0,d:.45,c:col});
      if(id==="stone_spike"&&tg){fx.push({k:"burst",x:tg.x,y:tg.y,t:0,d:.5,c:col,n:14,z:6});fx.push({k:"ring",x:tg.x,y:tg.y,t:0,d:.4,c:col,r:36})}
      if(id==="holy_light"&&tg)fx.push({k:"pillar",x:tg.x,y:tg.y,t:0,d:.6,c:col});
-     const delay=id==="fire_bolt"?200:id==="holy_light"?250:0;
+     if(id==="fire_bolt"){startVolley(tg,k,Object.assign({fire:true,overMul:k.overMul},o));break}   // v20: fireballs fall one at a time
+     const delay=id==="holy_light"?250:0;
      area.forEach(m=>{for(let h=0;h<(k.hits||1);h++){
-       if(id==="fire_bolt")fx.push({k:"proj",x,y,tx:m.x,ty:m.y,t:-h*.12,d:.2+h*.12,c:col});
        later(delay+h*120,()=>{if(!alive(m))return;magicAttack(m,o);
          if(k.freeze&&h===0&&Math.random()<k.freeze)m.stun=Math.max(m.stun||0,k.freezeDur);
          if(k.stunChance&&h===0&&Math.random()<k.stunChance)m.stun=Math.max(m.stun||0,k.stun)})}});
@@ -4923,19 +4998,19 @@ function autoSkill(){
   if(player.casting||player.dead)return;
   const tg=alive(player.target)?player.target:null,d=pd();
   const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0;
-  const id=REOC.pickSkill({d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0},
+  const id=REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0},
     dist:tg?dist(tg,player):99,near,tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
-  if(id)useSkill(id,true);
+  if(id)useSkill(id,true,lvFor(id));
 }
 function becomeArch(a){
-  S.arch=a;S.jlv=1;S.jexp=0;resetCombatState();player.casting=null;reconcileGear();
+  S.arch=a;S.jlv=1;S.jexp=0;S.skLv={};S.hot=null;skFix();resetCombatState();player.casting=null;reconcileGear();
   if(S.autoStat)S.stats=REOC.autoStats(a,S.lv);
   S.hp=hpMax();S.sp=spMax();buildSlots();renderWin();
   toast(fmt("archSet",{a:t("ar_"+a)}),true);fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:1.6,c:"#cfc4ff",follow:true});save();
 }
 function setArch(a){
   if(!REOC.ARCH[a]||a===S.arch)return;
-  S.arch=a;resetCombatState();player.casting=null;reconcileGear();
+  S.arch=a;S.hot=null;skFix();resetCombatState();player.casting=null;reconcileGear();
   if(S.autoStat)S.stats=REOC.autoStats(a,S.lv);
   S.hp=Math.min(Math.max(S.hp,1),hpMax());S.sp=Math.min(S.sp,spMax());
   buildSlots();renderWin();toast(fmt("archSet",{a:t("ar_"+a)}),true);
@@ -4953,13 +5028,13 @@ function castBar(x,y){
   const c=player.casting,p=1-c.t/c.total,w=48;
   rr(x-w/2-1,y-4,w+2,8,4);g.fillStyle="rgba(10,10,24,.8)";g.fill();
   rr(x-w/2,y-3,w*Math.min(1,p),6,3);g.fillStyle=SKC[c.id]||"#c9b8ff";g.fill();
-  nameTag(x,y-11,t("sk_"+c.id),"#ffffff",10);
+  nameTag(x,y-11,t("sk_"+c.id)+(c.lv?" Lv "+c.lv:""),"#ffffff",10);
 }
 
 /* ================= effects ================= */
 const FONT='Kanit,"Noto Sans Thai",sans-serif';
 /* ---- pixel hit FX (v18.4): slash + sparks for normal hits; flash, dithered ring, rays, gold shards, shake and hit-stop for crits ---- */
-const FXN=["#ffffff","#ffe9a0","#ffb347","#d6562b","#5a2340"],FXG=["#ffffff","#fff2a8","#ffd84a","#f29a1d","#a3441a"],FXI=["#ffffff","#c9f6ff","#8ff0ff","#3aa5d6","#17336b"];
+const FXN=["#ffffff","#ffe9a0","#ffb347","#d6562b","#5a2340"],FXG=["#ffffff","#fff2a8","#ffd84a","#f29a1d","#a3441a"],FXI=["#ffffff","#c9f6ff","#8ff0ff","#3aa5d6","#17336b"],FXF=["#ffffff","#fff2a8","#ffb347","#ff7a3a","#7a2a1a"],FXO=["#ffffff","#ffd0a0","#ff9a4a","#e0501e","#7a1e12"];
 const FXB=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
 const FXRM=(()=>{try{return matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){return false}})();
 let hitStopT=0,hsCd=0,shakeT=0;
@@ -4969,18 +5044,22 @@ function fxLine(x0,y0,x1,y1,c){x0=Math.round(x0/2);y0=Math.round(y0/2);x1=Math.r
   for(let i=0;i<200;i++){g.fillRect(x0*2,y0*2,2,2);if(x0===x1&&y0===y1)break;const e2=2*e;if(e2>=dy){e+=dy;x0+=sx}if(e2<=dx){e+=dx;y0+=sy}}}
 function hitFx(mo,res,o,h){
   if(fx.length>420)return;
-  const lo=LITE||S.gfx==="lo",crit=!!res.crit,weak=!!res.weak&&!crit,k=Math.max(.8,Math.min(1.8,h/36)),Wf=2*k,z=h*.5,x=mo.x,y=mo.y;
+  const lo=LITE||S.gfx==="lo",crit=!!(res.crit||res.over),RG=res.over?FXO:FXG,weak=!!res.weak&&!crit,k=Math.max(.8,Math.min(1.8,h/36)),Wf=2*k,z=h*.5,x=mo.x,y=mo.y;
   let seed=(Math.random()*1e9)|0;const r=()=>{seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
-  let ramp=FXN;if(weak)ramp=FXI;else if(crit)ramp=FXG;else if(o&&typeof o.c==="string"&&/^#[0-9a-f]{6}$/i.test(o.c))ramp=["#ffffff",shade(o.c,.55),o.c,shade(o.c,-.35),shade(o.c,-.7)];
+  let ramp=FXN;if(weak)ramp=FXI;else if(crit)ramp=RG;else if(o&&typeof o.c==="string"&&/^#[0-9a-f]{6}$/i.test(o.c))ramp=["#ffffff",shade(o.c,.55),o.c,shade(o.c,-.35),shade(o.c,-.7)];
   const [mx,my]=P(mo.x,mo.y),[qx,qy]=P(player.x,player.y),aa=Math.atan2(my-qy,mx-qx),fw=Math.cos(aa)>=0?1:-1;
   const add=(sub,d,e)=>fx.push(Object.assign({k:"hfx",sub,x,y,z,t:0,d,Wf,kk:k},e));
   if(crit){
     add("disc",.05,{r:13});
-    if(fx.filter(f=>f.k==="hfx"&&f.sub==="ring").length<6)add("ring",.4,{r0:5,r1:48,w:7,ramp:FXG});
+    if(fx.filter(f=>f.k==="hfx"&&f.sub==="ring").length<6)add("ring",.4,{r0:5,r1:48,w:7,ramp:RG});
     const nr=lo?6:10;for(let i=0;i<nr;i++)add("ray",.17,{a:i/nr*TAU+r()*.25,r0:12,r1:40});
-    const ns=lo?10:18;for(let i=0;i<ns;i++){const a=r()*TAU,sp=70+r()*120;add("pp",.5+r()*.35,{vx:Math.cos(a)*sp*Wf,vy:(Math.sin(a)*sp-40)*Wf,g:240*Wf,s:r()<.4?3:2,ramp:FXG})}
-    const nt=lo?3:5;for(let i=0;i<nt;i++){const a=r()*TAU,sp=14+r()*26;add("pp",.7+r()*.3,{star:1,ox:Math.cos(a)*10*Wf,oy:Math.sin(a)*8*Wf,vx:Math.cos(a)*sp*Wf,vy:(-18-r()*14)*Wf,g:0,ramp:FXG})}
+    const ns=lo?10:18;for(let i=0;i<ns;i++){const a=r()*TAU,sp=70+r()*120;add("pp",.5+r()*.35,{vx:Math.cos(a)*sp*Wf,vy:(Math.sin(a)*sp-40)*Wf,g:240*Wf,s:r()<.4?3:2,ramp:RG})}
+    const nt=lo?3:5;for(let i=0;i<nt;i++){const a=r()*TAU,sp=14+r()*26;add("pp",.7+r()*.3,{star:1,ox:Math.cos(a)*10*Wf,oy:Math.sin(a)*8*Wf,vx:Math.cos(a)*sp*Wf,vy:(-18-r()*14)*Wf,g:0,ramp:RG})}
     if(!FXRM){shakeT=Math.max(shakeT,.3);if(hsCd<=0){hitStopT=.06;hsCd=.4}}
+  }else if(o&&o.fire){   // v20: a fireball lands: white flash, fire ring, embers thrown up
+    add("disc",.06,{r:6});
+    if(fx.filter(f=>f.k==="hfx"&&f.sub==="ring").length<8)add("ring",.3,{r0:3,r1:15,w:4,ramp:FXF});
+    const ne=lo?7:13;for(let i=0;i<ne;i++){const a=-Math.PI*(.08+r()*.84),sp=60+r()*110,sg=r()<.5?-1:1;add("pp",.35+r()*.35,{vx:Math.abs(Math.cos(a))*sp*Wf*sg,vy:Math.sin(a)*sp*Wf,g:260*Wf,s:r()<.35?2:1,ramp:FXF})}
   }else{
     const sl=aa+Math.PI/2+(r()<.5?-.6:.6);
     add("slash",.14,{dx:Math.cos(sl),dy:Math.sin(sl),ramp:ramp});
@@ -5006,6 +5085,26 @@ function hfxDraw(f,cx,cy){
     if(f.star){const on=Math.floor(f.t*18)%2===0,c=fxCol(f.ramp,p),s=(on?3:2)*Wf;fxLine(X-s,Y,X+s,Y,c);fxLine(X,Y-s,X,Y+s,c);fxSq(X,Y,1,"#ffffff")}
     else fxSq(X,Y,p>.7?1:f.s,fxCol(f.ramp,p))}
 }
+function fxDisc(cx,cy,R,c){const bx=Math.round(cx/2),by=Math.round(cy/2);g.fillStyle=c;for(let yy=-R;yy<=R;yy++){const hw=Math.floor(Math.sqrt(R*R-yy*yy));g.fillRect((bx-hw)*2,(by+yy)*2,(hw*2+1)*2,2)}}
+/* v20 Fire Bolt: a fireball falls from high above, with a ground shadow that grows, a flame trail and flickering embers */
+function fballDraw(f){
+  const m=f.m,[tx,ty0]=P(m?m.x:f.x,m?m.y:f.y),p=Math.min(1,f.t/f.d),u=Math.pow(p,1.7),k=f.kk,tyb=ty0-f.hz;
+  const sx=tx+f.sx*k,sy=tyb-210*k,pos=q=>[sx+(tx-sx)*q,sy+(tyb-sy)*q];
+  g.save();g.globalAlpha=.18+.34*u;ell(tx,ty0+2,(5+15*u)*k,(5+15*u)*k*.5,"#2a0a0a");g.restore();
+  for(let i=8;i>=1;i--){const q=u-i*.045;if(q<0)continue;const [px,py]=pos(q);fxDisc(px,py,Math.max(1,Math.round((5-i*.5)*k)),fxCol(FXF,Math.min(.99,.3+i*.085)))}
+  const [bx,by]=pos(u);
+  glow(bx,by,(30+7*Math.sin(f.t*40))*k,"rgba(255,130,50,.55)");
+  fxDisc(bx,by,Math.round(5.4*k),FXF[3]);fxDisc(bx,by,Math.round(4.4*k),FXF[2]);fxDisc(bx,by,Math.round(3*k),FXF[1]);fxDisc(bx,by,Math.max(1,Math.round(1.4*k)),FXF[0]);
+  const fk=Math.floor(f.t*28);for(let i=0;i<6;i++){const a=hash(i,fk)*TAU,rr2=(6+hash(i+9,fk)*7)*k;fxSq(bx+Math.cos(a)*rr2,by+Math.sin(a)*rr2-3,1,FXF[1+(i%3)])}
+}
+function fireRune(x,y){   // while casting Fire Bolt: a turning ring of fire at the caster's feet and rising embers
+  const c=player.casting,u=1-c.t/c.total;g.save();g.globalCompositeOperation="lighter";
+  for(let i=0;i<2;i++){g.strokeStyle=i?"rgba(255,215,130,.55)":"rgba(255,110,50,.75)";g.lineWidth=2;g.setLineDash(i?[3,5]:[10,6]);g.lineDashOffset=(i?1:-1)*T*40;
+    const rx=(22+u*10)*(1+i*.35);g.beginPath();g.ellipse(x,y+4,rx,rx*.5,0,0,TAU);g.stroke()}
+  g.setLineDash([]);
+  for(let k=0;k<6;k++){const ph=(T*1.3+k/6)%1;ell(x+(hash(k,7)-.5)*36,y+2-ph*50,2.8*(1-ph)+.4,2.8*(1-ph)+.4,"rgba(255,170,80,"+(.9*(1-ph)).toFixed(2)+")")}
+  g.restore();
+}
 function drawFx(f){
   if(f.t<0)return;const p=Math.max(0,f.t/f.d);
   const [x,y]=f.follow?P(player.x,player.y):P(f.x,f.y);
@@ -5018,6 +5117,7 @@ function drawFx(f){
   else if(f.k==="dome"){const a=Math.min(1,(1-p)*3)*Math.min(1,p*6);g.globalAlpha=a*.5;const gr=g.createRadialGradient(x,y-26,6,x,y-26,34);gr.addColorStop(0,"rgba(220,230,255,0)");gr.addColorStop(1,f.c);g.fillStyle=gr;g.beginPath();g.ellipse(x,y-26,26,36,0,0,TAU);g.fill();g.globalAlpha=a;g.strokeStyle="#fff";g.lineWidth=1.2;g.stroke()}
   else if(f.k==="bolt"){g.globalAlpha=1-p;g.strokeStyle=f.c;g.lineWidth=4;g.beginPath();let yy=y-240,xx=x;g.moveTo(xx,yy);while(yy<y-20){yy+=24;xx=x+(hash(Math.floor(yy),Math.floor(f.x*10))-.5)*26;g.lineTo(xx,yy)}g.lineTo(x,y-20);g.stroke();g.strokeStyle="#fff";g.lineWidth=1.5;g.stroke()}
   else if(f.k==="proj"){const [tx,ty]=P(f.tx,f.ty);const px=x+(tx-x)*p,py=y-26+(ty-y)*p-Math.sin(p*Math.PI)*30;ell(px,py,6,6,f.c);ell(px,py,3,3,"#fff");g.globalAlpha=.5;ell(px-(tx-x)*.06,py+4,5,5,f.c)}
+  else if(f.k==="fball"){g.globalCompositeOperation="source-over";fballDraw(f)}
   else if(f.k==="float"){g.globalCompositeOperation="source-over";g.globalAlpha=1-p*p;g.font=`600 13px ${FONT}`;g.textAlign="center";g.textBaseline="middle";g.lineWidth=3;g.strokeStyle="rgba(20,10,30,.8)";const yy=y-70-(f.oy||0)-p*30;g.strokeText(f.txt,x,yy);g.fillStyle=f.c;g.fillText(f.txt,x,yy)}
   else if(f.k==="hfx"){g.globalCompositeOperation="source-over";g.globalAlpha=1;hfxDraw(f,x,y-(f.z||0))}
   else if(f.k==="dmg"&&f.pop){g.globalCompositeOperation="source-over";
@@ -5029,7 +5129,7 @@ function drawFx(f){
     const sz=c?30:f.big?22:18,xx=x+f.ox*e,yy=y-(f.h||40)-(c?16:8)-e*(c?36:30);
     g.translate(xx,yy);g.rotate(rot);g.scale(sc,sc);g.textAlign="center";g.textBaseline="middle";g.lineJoin="round";
     g.font=`700 ${sz}px ${FONT}`;g.lineWidth=c?5:4;g.strokeStyle="rgba(13,18,48,.92)";g.strokeText(f.txt,0,0);g.fillStyle=f.c;g.fillText(f.txt,0,0);
-    if(c){g.font=`700 12px ${FONT}`;g.lineWidth=3.5;const ct=t("fctCrit");g.strokeText(ct,0,-sz*.78);g.fillText(ct,0,-sz*.78)}}
+    if(c){g.font=`700 12px ${FONT}`;g.lineWidth=3.5;const ct=t(f.lbl||"fctCrit");g.strokeText(ct,0,-sz*.78);g.fillText(ct,0,-sz*.78)}}
   else if(f.k==="dmg"){g.globalCompositeOperation="source-over";const e=1-Math.pow(1-p,3),sc=p<.12?1.6-p/.12*.6:1;g.globalAlpha=p>.7?(1-p)/.3:1;
     g.font=`700 ${Math.round((f.big?21:16)*sc)}px ${FONT}`;g.textAlign="center";g.textBaseline="middle";g.lineJoin="round";g.lineWidth=4;g.strokeStyle="rgba(25,10,20,.85)";
     const xx=x+f.ox*e,yy=y-(f.h||40)-8-e*30;g.strokeText(f.txt,xx,yy);g.fillStyle=f.c;g.fillText(f.txt,xx,yy)}
@@ -5128,7 +5228,7 @@ function render(){
       const ew=g.measureText(lbl).width;ell(o.sx-ew/2-7,ly,3.4,3.4,ELC[REOC.MONC[mo.type].elem]||"#ccc");g.strokeStyle="rgba(10,12,26,.85)";g.lineWidth=1;g.stroke()}
     else if(o.kind==="char"){const c=o.c;
       if(c.npc){npcPlate(o.sx,o.sy-100,t(c.nameK),t("npcr_"+c.id),"#ffd76a");if(talkNpc.has(c.id)||(c.id==="helper"&&S.arch==="beginner"&&S.jlv>=10&&!S.q.arch))questMark(o.sx,o.sy-132)}
-      else if(c.me){nameTag(o.sx,o.sy+14,c.name,"#ffffff",11.5);if(player.casting&&!c.dead)castBar(o.sx,o.sy-(S.idle?96:82));
+      else if(c.me){nameTag(o.sx,o.sy+14,c.name,"#ffffff",11.5);if(player.casting&&!c.dead){if(player.casting.id==="fire_bolt")fireRune(o.sx,o.sy);castBar(o.sx,o.sy-(S.idle?96:82))}
         if(S.idle&&!c.dead){g.font=`600 9px ${FONT}`;rr(o.sx-17,o.sy-78,34,14,7);g.fillStyle="rgba(63,198,168,.92)";g.fill();g.fillStyle="#04261d";g.textAlign="center";g.textBaseline="middle";g.fillText(t("auto"),o.sx,o.sy-70.5)}}
       else nameTag(o.sx,o.sy+14,c.name,"#bfe3ff");
       if(c.bubble)bubble(o.sx,o.sy-(c.me&&S.idle?84:68),typeof c.bubble.txt==="string"?c.bubble.txt:(c.bubble.txt[lang]??c.bubble.txt.en));
@@ -5225,8 +5325,8 @@ function updateUI(){
   renderNet();renderFx();
   if(S.idle)$("#idleBtn").title=t("idle_lb_on")+" "+fmtClock(S.sess.t)+" · "+idleStatus();
   SLOTS.forEach((sl,i)=>{const b=document.querySelector(`.slot[data-i="${i}"]`);if(!b)return;let v=0;
-    if(sl.item)v=sl.left>0?sl.left/sl.cd:0;else if(sl.id&&CD[sl.id]>0)v=CD[sl.id]/REOC.SK[sl.id].cd;b.style.setProperty("--cd",v.toFixed(3));
-    if(sl.id&&!sl.item){const k=REOC.SK[sl.id];b.classList.toggle("nosp",S.sp<Math.ceil(k.sp*pd().spCost))}});
+    if(sl.item)v=sl.left>0?sl.left/sl.cd:0;else if(sl.id){const kc=REOC.SK[sl.id].cd;if(CD[sl.id]>0&&kc>0)v=CD[sl.id]/kc;if((player.gd||0)>0&&player.gdMax>0)v=Math.max(v,player.gd/player.gdMax)}b.style.setProperty("--cd",v.toFixed(3));
+    if(sl.id&&!sl.item){const lv=slotLv(sl)||1,k=REOC.SKLV[sl.id]?REOC.skAt(sl.id,lv):REOC.SK[sl.id];b.classList.toggle("nosp",S.sp<Math.ceil(k.sp*pd().spCost));b.classList.toggle("unl",skLvOf(sl.id)<1)}});
   document.querySelectorAll(".slot .n").forEach(n=>{const sl=SLOTS[+n.parentElement.dataset.i];if(sl&&sl.item)n.textContent=S.inv[sl.item]});
   $("#pcJob").textContent=t("ar_"+S.arch);$("#pcTier").textContent=S.arch==="beginner"?"C0":"C1";
 }
@@ -5312,11 +5412,20 @@ const WIN={
     <button class="btn sm ${pickArm===a?"danger":"pri"}" data-act="pick" data-v="${a}">${t(pickArm===a?"pick_confirm":"pick_choose")}</button></div>`}).join("")}</div>
    <p class="muted" style="margin-top:8px">${t("pick_note")}</p>`},
  skill:()=>{
-  const A=REOC.ARCH[S.arch],d=pd();
-  const act=A.actives.map(id=>{const k=REOC.SK[id],cast=k.cast?` · ${t("castLbl")} ${(k.cast*d.castMul).toFixed(1)}s`:"",rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"";
-    return `<div class="row"><span class="dot" style="--c:${skGrad(id)}">${svg(IC[k.ic]?k.ic:"star")}</span><div class="grow"><b>${t("sk_"+id)}</b>${k.elem?` <small style="display:inline;color:${k.elem==="holy"?"#b8861e":ELC[k.elem]}">● ${t("el_"+k.elem)}</small>`:""}<small>${t("skd_"+id)}</small><small>SP ${Math.ceil(k.sp*d.spCost)} · ${t("cd")} ${k.cd}s${cast}${rg}</small></div><b>Lv 5</b></div>`}).join("");
-  const pas=A.passives.map(id=>`<div class="row"><span class="dot" style="--c:linear-gradient(135deg,#d8d4e8,#6f6a8f)">${svg("gear")}</span><div class="grow"><b>${t("sk_"+id)}</b><small>${t("skd_"+id)}</small></div><b>${t("passive")}</b></div>`).join("");
-  return `<p class="muted" style="margin:0 0 8px">${t("mech_"+S.arch)}</p><div class="w-sec">${t("actives")}</div><div class="rows">${act}</div>${pas?`<div class="w-sec">${t("passives")}</div><div class="rows">${pas}</div>`:""}`},
+  const A=REOC.ARCH[S.arch],d=pd(),lvd=REOC.SKLV;
+  const upBtn=id=>`<button class="btn sm pri" data-act="skup" data-id="${id}" ${skLvOf(id)>=skMaxOf(id)||skAvail()<=0?"disabled":""}>+</button>`;
+  const lvTxt=id=>skLvOf(id)?`Lv ${skLvOf(id)}/${skMaxOf(id)}`:t("skNone");
+  const act=A.actives.map(id=>{const k0=REOC.SK[id],L=skLvOf(id),k=lvd[id]?REOC.skAt(id,L||1):k0,
+      cast=k.cast?` · ${t("castLbl")} ${(k.cast*d.castMul).toFixed(1)}s`:"",rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"",
+      gd=k.gd?` · ${t("gdLbl")} ${k.gd}s`:"",fb=lvd[id]?` · ${t("fbLbl")} ${k.hits}`:"";
+    return `<div class="row"${L?"":' style="opacity:.62"'}><span class="dot" style="--c:${skGrad(id)}">${svg(IC[k0.ic]?k0.ic:"star")}</span><div class="grow"><b>${t("sk_"+id)}</b>${k0.elem?` <small style="display:inline;color:${k0.elem==="holy"?"#b8861e":ELC[k0.elem]}">· ${t("el_"+k0.elem)}</small>`:""}<small>${t("skd_"+id)}</small><small>SP ${Math.ceil(k.sp*d.spCost)} · ${t("cd")} ${k.cd}s${gd}${cast}${rg}${fb}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`}).join("");
+  const pas=A.passives.map(id=>`<div class="row"${skLvOf(id)?"":' style="opacity:.62"'}><span class="dot" style="--c:linear-gradient(135deg,#d8d4e8,#6f6a8f)">${svg("gear")}</span><div class="grow"><b>${t("sk_"+id)}</b><small>${t("skd_"+id)}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`).join("");
+  const pts=`<p class="muted" style="margin:0 0 6px"><b>${fmt("skpLine",{n:skAvail()})}</b></p>`;
+  const hot=`<div class="w-sec">${t("hotCfg")}</div><div class="rows">${SLOTS.slice(0,7).map((sl,i)=>{
+      const opts=`<option value="">${t("hotNone")}</option>`+A.actives.map(id=>`<option value="${id}"${sl.id===id?" selected":""}>${t("sk_"+id)}</option>`).join("");
+      let lvSel="";if(sl.id&&lvd[sl.id]){const learned=skLvOf(sl.id);lvSel=`<select class="sk-sel" data-hot="${i}" data-part="lv"><option value="0"${!sl.lv?" selected":""}>${t("hotMax")}</option>${Array.from({length:learned},(_,j)=>`<option value="${j+1}"${sl.lv===j+1?" selected":""}>Lv ${j+1}</option>`).join("")}</select>`}
+      return `<div class="row"><b>${(i+1)%10}</b><select class="sk-sel" data-hot="${i}" data-part="id">${opts}</select>${lvSel}</div>`}).join("")}</div><p class="muted">${t("hotNote")}</p>`;
+  return `<p class="muted" style="margin:0 0 8px">${t("mech_"+S.arch)}</p>${pts}<div class="w-sec">${t("actives")}</div><div class="rows">${act}</div>${pas?`<div class="w-sec">${t("passives")}</div><div class="rows">${pas}</div>`:""}${hot}`},
  quest:()=>{
     const ids=Object.keys(QD),act=ids.filter(id=>S.q[id]&&S.q[id].s==="active"),av=ids.filter(id=>!QD[id].giver&&(!S.q[id]||S.q[id].s==="avail"));
     const done=ids.reduce((a,id)=>a+((S.q[id]&&S.q[id].n)||0),0);
@@ -5362,7 +5471,7 @@ function winSig(id){
     case "char":return eqKey()+"|"+S.lv+"|"+S.arch+"|"+cpV()+"|"+player.name+"|"+S.sc+"|"+S.y+"|"+S.la;
     case "status":pd();return [S.lv,Math.floor(S.exp),S.jlv,Math.floor(S.jexp),S.kills,S.deaths,_pdKey,statFree(),S.autoStat?1:0,S.arch].join("|");
     case "inv":return invSig();
-    case "skill":return S.arch+"|"+S.lv;
+    case "skill":return S.arch+"|"+S.lv+"|"+S.jlv+"|"+JSON.stringify(S.skLv)+"|"+JSON.stringify(S.hot)+"|"+lang;
     case "quest":return JSON.stringify(S.q)+"|"+S.pins.join();
     case "shop":return [S.sc,S.y,S.la,shopTab,S.invPacks,SHOP.map(([k])=>S.inv[k]).join()].join("|");
     case "set":return [S.sound,S.music,S.vip,S.autoIdle,S.gfx,lang,layoutMode,zIdx,S.gm,setTab,Math.floor(lastSave/30000)].join("|");
@@ -5599,6 +5708,12 @@ WIN.set=()=>{
   return tabs+`<div class="set-body">${body}</div>`;
 };
 
+document.addEventListener("change",e=>{   // hotbar setup (Skills window): pick the skill and the level of each slot
+  const sel=e.target&&e.target.closest?e.target.closest("select[data-hot]"):null;if(!sel)return;
+  const i=+sel.dataset.hot;
+  if(sel.dataset.part==="id")S.hot[i]=sel.value?{id:sel.value,lv:0}:null;else if(S.hot[i])S.hot[i].lv=+sel.value|0;
+  S.hotArch=S.arch;buildSlots();renderWin();save();
+});
 function winClick(e){const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;
   if(a==="uimode"){S.uiMode=b.dataset.v;applyUiMode();renderWin();save()}
   else if(a==="nav")navTo(b.dataset.w);
@@ -5642,6 +5757,7 @@ function winClick(e){const b=e.target.closest("[data-act]");if(!b)return;const a
   else if(a==="style")toast(t("style_soon"))
   else if(a==="trial")trialGo()
   else if(a==="pick"){const v=b.dataset.v;if(pickArm!==v){pickArm=v;renderWin();return}pickArm=null;chooseArchetype(v)}
+  else if(a==="skup")skRaise(b.dataset.id)
   else if(a==="tJob"){S.jlv=10;S.jexp=0;toast("Job Lv 10");renderWin();save()}
   else if(a==="tElite"){const q=S.q.arch,o=curObj("arch");if(q&&o&&o.t==="kill"){q.p=Math.min(o.n,q.p+10);if(q.p>=o.n)completeStage("arch");renderQuest();toast(`${t("qa_title")}: ${q.p}/${o.n}`)}else toast(t("tEliteNeed"));renderWin();save()}
   else if(a==="st"){const k=b.dataset.k,c=REOC.raiseCost(S.stats[k]);if(S.stats[k]>=99||statFree()<c)return;S.stats[k]++;S.autoStat=false;S.hp=Math.min(S.hp,hpMax());renderWin();save()}
@@ -5885,7 +6001,7 @@ try{if(saved){
   if(typeof S.autoIdle!=="boolean")S.autoIdle=true;
   sanitizeGear();
   if(S.autoStat||REOC.spent(S.stats)>REOC.statPointsTotal(Math.max(1,Math.floor(+S.lv||1))))S.stats=REOC.autoStats(S.arch,Math.max(1,Math.floor(+S.lv||1)));
-  for(const k of ["lv","jlv"])S[k]=Math.max(1,Math.floor(+S[k]||1));S.jlv=Math.min(jcap(),S.jlv);
+  for(const k of ["lv","jlv"])S[k]=Math.max(1,Math.floor(+S[k]||1));S.jlv=Math.min(jcap(),S.jlv);skFix();
   for(const k of ["exp","jexp","sc","y","la","kills","deaths","hp","sp"])S[k]=Math.max(0,+S[k]||0);
   for(const k in S.inv)S.inv[k]=Math.max(0,Math.floor(+S.inv[k]||0));
   if(!S.sess||typeof S.sess!=="object")S.sess={t:0,kills:0,base:0,job:0,sc:0,mats:0,items:{},gear:0};
@@ -5943,7 +6059,7 @@ function frame(now){
 $("#errReset").addEventListener("click",()=>{try{SLS.removeItem(SAVE_KEY);if(AUTH.isGuest)SLS.removeItem(OLD_KEY)}catch(_){}resetDone=true;location.reload()});
 $("#errHide").addEventListener("click",()=>$("#errBox").classList.add("hidden"));
 window.addEventListener("error",e=>showErr(e.error||e.message));
-window.__reo={GATE,gateCheck,MON,MSK,castMonSkill,updateMon,gainItem,AUD,npcBlocked,staticBox,netExpand,applyUiMode,acceptQuest,closeWin,t,tpCost,doTeleport,announce,sortInventory,invMax,stopIdle,mapDist,gFull,GBASE,itemArt,GEAR_TINT,RARN,ITEMDB,equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
+window.__reo={skAvail,skRaise,skLvOf,lvFor,slotLv,buildSlots,skFix,volleys,balls,GATE,gateCheck,MON,MSK,castMonSkill,updateMon,gainItem,AUD,npcBlocked,staticBox,netExpand,applyUiMode,acceptQuest,closeWin,t,tpCost,doTeleport,announce,sortInventory,invMax,stopIdle,mapDist,gFull,GBASE,itemArt,GEAR_TINT,RARN,ITEMDB,equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
 requestAnimationFrame(frame);
 };
 
