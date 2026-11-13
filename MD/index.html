@@ -1129,7 +1129,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .mm-zoom{gap:4px}
 
 /* windows: no bottom bar any more, so they can be a little shorter */
-.win[data-w=char]{--wih:640px}
+.win[data-w=char]{--wih:auto}   /* height follows the content, so the Character window never shows a scroll bar (a scroll bar returns only if the screen itself is too short) */
+.win[data-w=char] .chr-panel{min-height:447px;box-sizing:border-box}   /* Equipment and Costume pages keep the same height, so the window does not jump when switching tabs */
 .win[data-w=status]{--wih:520px}
 .win[data-w=inv]{--wih:520px}
 .win[data-w=itemdet]{--wih:480px}

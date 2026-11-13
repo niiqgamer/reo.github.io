@@ -189,7 +189,7 @@ Every earlier feature is still there; Status is where the old right-hand panel w
 **Menu (bottom right):** landscape has a collapse button; phones keep the full bottom bar.
 
 **Windows**
-- Up to three open at once: slot A (main), slot B (second), slot C (item detail). Each window has its own fixed size, so nothing bounces when the content changes.
+- Up to three open at once: slot A (main), slot B (second), slot C (item detail). Each window has its own fixed size, so nothing bounces when the content changes. **Exception: Character** has no fixed height. Its height follows the content, so it never shows a scroll bar; the Equipment and Costume pages share one minimum height (`.chr-panel{min-height:447px}`), so the window does not jump when you switch tabs. A scroll bar appears only if the screen itself is shorter than the window.
 - **Character** opens **Equipment + Status** together (side by side; stacked on phones in one scrolling column). Equipment is 20% smaller, with only your face beside the name, a **Title (soon)** row where the potions were, and no item strip: tap a worn piece to open the **Item Detail** window (Unequip, Refine).
 - **Inventory**: 100 base slots, 50 per page, per type, Auto sort (type > name > stars > price), Select many, and a **+** to the Cash Shop. Item details open in their own window (scrolls if long).
 - **Navigation bar** at the bottom of Character, Status, Inventory, Skills, Quests, Party and Guild, using the same words as the menu. It never shows a button to a window that is already open.
