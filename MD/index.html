@@ -1208,6 +1208,32 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .P #mobBar,.P #mobBar.boss{width:100%;padding:5px 9px 6px}
 .P .mo-name{font-size:12.5px}
 .P.dlg-open #mobC{opacity:0}
+
+/* ---- v19.1 HUD: idle inside the hotbar panel, cycle-arrow idling motion, portrait monster panel centred, portrait announcement at the bottom ---- */
+/* 1) one panel holds the hotbar and the Idle button, so Idle sits on the same plane as the slots */
+#botC{padding:7px;gap:9px;align-items:center;border-radius:14px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);pointer-events:auto}
+#botC #hotbar{padding:0;background:none;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+#idleDock{position:static}
+#idleDock .id-row::before{content:"";position:absolute;left:-5px;top:5px;bottom:5px;width:1px;background:var(--line);pointer-events:none}
+.idle-cfg{top:-7px;right:-7px}
+#claimBtn.has{right:0;bottom:calc(100% + 8px)}
+.P #botC{left:50%;right:auto;transform:translateX(-50%);padding:6px;gap:9px;align-items:flex-end}
+@media (pointer:coarse){#botC{-webkit-backdrop-filter:none !important;backdrop-filter:none !important}}
+/* 2) idling: four arrows chase each other round a circle (navy-to-sky, matching the gear badge) */
+#idleDock .ib-cyc{width:26px;height:26px;display:block;animation:idSpin 1.6s linear infinite;filter:drop-shadow(0 1px 1px rgba(255,255,255,.55))}
+#idleDock .ib-cyc .seg{fill:none;stroke:url(#cycG);stroke-width:3.2}
+#idleDock .ib-cyc .hd{fill:url(#cycG)}
+#idleDock.on .ib-ic{width:28px;height:26px}
+#idleDock.on .idle-btn{animation:idGlow 1.6s ease-in-out infinite}
+@keyframes idGlow{50%{box-shadow:0 0 0 2px #6e8cff,0 0 16px rgba(110,140,255,.75),0 3px 10px rgba(240,170,30,.5),inset 0 1px 0 rgba(255,255,255,.7)}}
+@media (prefers-reduced-motion:reduce){#idleDock .ib-cyc{animation-duration:4s}#idleDock.on .idle-btn{animation:none}}
+.cmp #idleDock .ib-cyc{width:21px;height:21px}
+/* 3) portrait monster panel: centred on the screen, same centre line as the hotbar panel */
+.P #mobC{left:50%;right:auto;transform:translateX(-50%);bottom:188px}
+/* 4) portrait announcement: low on the screen, above the monster panel, full width so it does not squeeze into a tall oval */
+.P #announce{top:auto;bottom:250px;left:8px;right:8px;max-width:none;transform:translateY(16px);border-radius:16px;padding:8px 14px 8px 10px}
+.P #announce.on{transform:translateY(0)}
+.P #topC.down{transform:none}
 </style>
 </head>
 <body>
@@ -5804,7 +5830,7 @@ let lastSess=null;
 function renderIdle(){
   const dock=$("#idleDock"),b=$("#idleBtn");
   dock.classList.toggle("on",!!S.idle);dock.classList.toggle("wait",!S.idle&&wantIdle);dock.classList.toggle("town",!isField()&&!S.idle&&!wantIdle);
-  b.innerHTML=S.idle?`<span class="ib-ring"></span><span class="ib-ic"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2" fill="currentColor"/></svg></span><span class="ib-lb">${t("idle_lb_on")}</span>`
+  b.innerHTML=S.idle?`<span class="ib-ic"><svg class="ib-cyc" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="cycG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2a8c"/><stop offset=".55" stop-color="#3f5fd8"/><stop offset="1" stop-color="#8fb4ff"/></linearGradient></defs><g transform="rotate(0 12 12)"><path class="seg" d="M12.77 4.64A7.4 7.4 0 0 1 18.53 8.53"/><path class="hd" d="M21.27 7.07L19.29 10.72L15.8 9.98z"/></g><g transform="rotate(90 12 12)"><path class="seg" d="M12.77 4.64A7.4 7.4 0 0 1 18.53 8.53"/><path class="hd" d="M21.27 7.07L19.29 10.72L15.8 9.98z"/></g><g transform="rotate(180 12 12)"><path class="seg" d="M12.77 4.64A7.4 7.4 0 0 1 18.53 8.53"/><path class="hd" d="M21.27 7.07L19.29 10.72L15.8 9.98z"/></g><g transform="rotate(270 12 12)"><path class="seg" d="M12.77 4.64A7.4 7.4 0 0 1 18.53 8.53"/><path class="hd" d="M21.27 7.07L19.29 10.72L15.8 9.98z"/></g></svg></span><span class="ib-lb">${t("idle_lb_on")}</span>`
     :wantIdle?`<span class="ib-ic">…</span><span class="ib-lb">${t("idle_lb_wait")}</span>`
     :`<span class="ib-ic"><svg viewBox="0 0 24 24"><path d="M8 5.500v13l11-6.500z" fill="currentColor"/></svg></span><span class="ib-lb">${t("idle_lb_off")}</span>`;
   b.setAttribute("aria-pressed",S.idle?"true":"false");b.title=t(S.idle?"idle_tip_stop":"idle_tip_start");$("#idleCfg").title=t("idle_cfg");

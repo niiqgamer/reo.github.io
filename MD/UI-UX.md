@@ -207,10 +207,10 @@ Every earlier feature is still there; Status is where the old right-hand panel w
 - **Navigation bar removed** from every window (it was repeated and used too much space). Windows are a little shorter.
 - **Character opens alone** (Equipment). **Status** has its own button in the menu, right after Character. The menu is a **3 × 3** grid on desktop; phones keep one bar with 9 buttons.
 - **Player card:** a bottom row with the **CP island on the left** and **Scandium on the right** (for example `CP 18,894` and `578,568 Scandiums`). The full wallet (Scandium, Yttrium, Lanthanum) moved to the **Equipment window, under the Title row**.
-- **Idle button:** the same size as a hotbar slot (46 px; 44 on phones), **gold** with a glint sweeping across it. It shows `IDLE` or `IDLING` and a spinning ring while on. The **settings gear is a small badge** on its top-right corner. Idle Summary and Idle Settings are unchanged.
+- **Idle button:** the same size as a hotbar slot (46 px; 44 on phones), **gold** with a glint sweeping across it. It shows `IDLE` or `IDLING` and a spinning ring while on (**v19.1:** the ring is replaced by four circling arrows, and the button now sits inside the hotbar panel, see §16). The **settings gear is a small badge** on its top-right corner. Idle Summary and Idle Settings are unchanged.
 - ~~**Status bar:** one row, top right~~ **Replaced in v18.3** by four status islands beside the minimap (see §13). The 30 second expand and collapse is gone.
 - **Minimap:** zoom buttons have no text (tooltip only). The **World Map button** is in the **top-right corner** of the map frame (the Return to town button stays at the bottom left).
-- **Announcements** appear at the top centre (v18.3: there is no status row any more, so they sit at 12 px).
+- **Announcements** appear at the top centre (v18.3: there is no status row any more, so they sit at 12 px). **v19.1:** portrait moved to the bottom, see §16.
 - **Inventory:** tabs **Consumable > Equipment > Material > Quest** (no "All"; opens on Consumable). Bottom of the window, top to bottom: grid; one row with `Select many` and the page arrows `Page x/x`; last row with `Sort items` on the left and `Slots xx/100` plus `+ Expand slots` on the right. **Sort items** is one toggle: Name > Rarity (Equipment tab only) > Sell price, and each press sorts. Stars are the same small size as in the Character window and never overflow the cell.
 - **Settings > Graphic > UI Display Mode:** System, Light, Dim. It changes the panels on the main screen (the windows stay navy). Saved.
 
@@ -222,7 +222,7 @@ Every earlier feature is still there; Status is where the old right-hand panel w
 **Monster panel** (name, Lv, element, live HP; Elite and Boss colours unchanged)
 - Now has its own container (`#mobC`) instead of sitting under the map banner, so it can be placed on its own.
 - **Landscape:** compact. 300 px wide (boss 380 px), about 48 px tall, smaller text and a 16 px HP bar. Top centre at 72 px, a little below the top edge, not at the very top. While a system announcement shows it shifts down 40 px to make room.
-- **Portrait:** bottom centre, directly above the hotbar (about 9 px gap; `bottom: 186px`). Width follows the screen (screen width − 140 px, max 260 px) so it never covers the Chat button or the Idle button. Hidden while an NPC dialog is open, because the dialog uses the same spot.
+- **Portrait:** bottom centre, directly above the hotbar (about 9 px gap; `bottom: 186px`; **v19.1:** `188px`, centred on the same line as the hotbar panel, see §16). Width follows the screen (screen width − 140 px, max 260 px) so it never covers the Chat button or the Idle button. Hidden while an NPC dialog is open, because the dialog uses the same spot.
 - Behaviour is unchanged: it shows when fighting, hides about 5 s after combat, white trail on damage, Crystal Slam warning for the boss.
 
 **Menu (landscape):** fixed **3 × 3** at every window width. Before, the compact layout (window narrower than 1120 px) switched it to 4 columns (4 × 3). Compact buttons keep their size (42 px, icons only). Portrait is unchanged: one bottom bar with 9 buttons.
@@ -294,3 +294,33 @@ Every hit the player lands on a monster now plays a small pixel-art effect, repl
 **Floating text:** unchanged from §14 and still drawn on top.
 
 **Code touched:** `applyHit` (calls `hitFx`), `drawFx` (new `hfx` branch), `update` (hit-stop and shake timers at the top), `render` (shake offset in the world transform; clicks are not affected because `ox/oy` are not modified).
+
+---
+
+## 16. HUD changes in v19.1
+
+**1. Idle button inside the hotbar panel (landscape and portrait)**
+- The hotbar and the Idle button now share **one panel** (`#botC` carries the panel background; `#hotbar` itself has no background any more). A thin divider line separates the slots from Idle.
+- Landscape: one row, slots 1–0, divider, Idle. Idle is vertically centred, level with the slots.
+- Portrait: the hotbar stays 5 × 2; Idle sits in a 6th column on the **bottom row, next to slot 0**. The cell above Idle is empty.
+- Portrait: the whole panel is now **centred** on the screen (before: pinned 12 px from the right edge).
+- The gear badge moved slightly in (`top/right: -7px`). The Claim button still appears above the panel, right-aligned.
+
+**2. Idling motion**
+- While idling, the icon is **four arrows chasing each other round a circle** (after the user's reference image), spinning once every 1.6 s. The old spinning ring and the stop square are removed.
+- Colour: navy → royal blue → sky blue gradient (`#1c2a8c → #3f5fd8 → #8fb4ff`), matching the navy gear badge, on the gold button. Icon 26 px.
+- The button's glow pulses between green and blue while idling.
+- `prefers-reduced-motion`: the arrows turn slower (4 s) and the glow does not pulse.
+
+**3. Monster panel, portrait**
+- Centred on the screen (`left: 50%`), so it lines up with the centred hotbar panel. `bottom: 188px` (about 9 px above the panel). Width unchanged: screen width − 140 px, max 260 px.
+- Landscape is unchanged (top centre, 72 px).
+
+**4. System / GM announcement, portrait**
+- Moved from the top to the **lower part of the screen, above the monster panel** (`bottom: 250px`), so it no longer covers the character card, minimap and status islands.
+- Full width (8 px from each side) with 16 px corners, so long text wraps to 2–3 lines instead of squeezing into a tall oval. It slides up 16 px as it appears.
+- The top-centre banner no longer shifts down in portrait when an announcement shows.
+- Landscape is unchanged (top centre).
+
+**Code touched:** one CSS block at the end of the stylesheet (`v19.1 HUD`) and `renderIdle()` (new `ib-cyc` icon).
+

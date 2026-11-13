@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v19.0. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v19.1. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v19.0 (this update)
+## Changes in v19.1 (this update)
+- HUD: Idle button moved inside the hotbar panel (same plane as the slots), new circling-arrows idling motion, portrait monster panel centred with the hotbar, portrait announcement moved to the bottom. See `UI-UX.md` §16.
+
+## Changes in v19.0
 - Two new maps from the town gates (west and south), with warning signs, entry gates (Lv + CP), 6 aggressive monsters with ground-circle skills, Burning and Soaked debuffs, 12 new materials, 2 new music tracks, new World Map layout (6 maps), Elite hunts and per-monster hunts.
 - New docs: `FIELD-GEOSYNCLINE.md`, `FIELD-RUINS.md`. Updated: `WORLD-MAP`, `GADOLINIUM`, `TOWN-ALIEN`, `ITEMS`, `QUESTS`, `AUDIO`, `COMBAT-FORMULAS`, `REO-INSTRUCTIONS`, wiki.
 
