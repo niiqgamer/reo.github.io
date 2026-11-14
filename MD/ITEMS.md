@@ -41,7 +41,7 @@ Pieces keep their rolls when they are equipped, sold or refined. The starter Beg
 
 Set bonuses are not part of the comparison (they depend on the whole set).
 
-**Select many and sell.** Press **Select many** in the Inventory. Tap pieces or stacks to add or remove them; a bar shows the count and the total Scandium. **Sell selected** sells everything chosen in one action. Stacks sell in full. Quest items are never sold and are skipped with a note.
+**Select many and sell.** ~~Press **Select many** in the Inventory.~~ **v19.2:** hold an item to start selecting (see the v19.2 section at the end). Tap pieces or stacks to add or remove them; the footer shows the count and the total Scandium. **Sell** sells everything chosen in one action. Stacks sell in full. Quest items are never sold and are skipped with a note.
 
 ## 1. Item types
 
@@ -149,8 +149,8 @@ A drop's tier = the monster's level rounded down to a multiple of 10 (minimum Lv
 
 ## 5. Inventory window (renamed from Bag)
 
-- **Capacity:** 60 slots. Each stack and each equipment piece uses one slot.
-- **Tabs:** Everything · Equipment · Consumable · Material · Quest.
+- **Capacity:** 60 slots. Each stack and each equipment piece uses one slot. *(Superseded: see Inventory v17.)*
+- **Tabs:** Everything · Equipment · Consumable · Material · Quest. *(Superseded: see Inventory v19.2.)*
 - **Grid:** each item shows its icon, count, refine level (**+N at the top-right corner**) and star tier (★ along the bottom) with its frame colour. Refine and stars never overlap.
 - **Details:** name, rarity, class and slot, stats (equipment), requirements (✓ / ✗), sell price.
 - **Buttons:**
@@ -168,11 +168,12 @@ A drop's tier = the monster's level rounded down to a multiple of 10 (minimum Lv
 3. Belt and Bracelet: which stats, and when they unlock.
 4. Gear trade and market (see `ECONOMY.md`, Lanthanum rules).
 5. Card slots: how cards are found and inserted.
+6. **(v19.2)** Which items go in the new **Cash** tab (none are flagged yet).
 
 
 ## Inventory v17 (capacity and sorting)
 - **Capacity:** 100 slots base. **Inventory Expansion Pack** (Cash Shop tab of the Shop): +20 slots per pack, up to 500 per character. Placeholder price per pack: 40 Yttrium or 8 Lanthanum (to be reviewed).
-- **Pages:** 50 cells per page, per type tab. The grid always has 50 cells, so the window never changes size.
+- **Pages:** ~~50 cells per page~~ **v19.2: 30 cells per page** (5 × 6), per type tab. The grid always has the same number of cells, so the window never changes size.
 - **Auto sort:** type (equipment, consumable, material, quest) > name > stars (high first) > price (high first). Equipment sorts by slot first. New items are added at the end until the next sort.
 
 ## v19 materials (Geosyncline and Ruins)
@@ -192,3 +193,11 @@ A drop's tier = the monster's level rounded down to a multiple of 10 (minimum Lv
 | `mat_infernoshard` | Inferno Shard / เศษหัวใจนรก | 160 |
 
 Drop chances, Refine Ore chances (6–10%) and sources are in `FIELD-GEOSYNCLINE.md` and `FIELD-RUINS.md`. Gear tier: Lv 25–29 monsters drop tier 20, Lv 30+ drop tier 30. These materials are not quest items and have no use yet (crafting is still open).
+
+## Inventory v19.2 (light window; replaces the page size and tabs of v17)
+- **Tabs:** Usable · Equipments · Other · Quest · **Cash** (Thai: ใช้ได้ · อุปกรณ์ · อื่น ๆ · เควสต์ · แคช). Opens on Usable. "Other" is the old Material tab.
+- **Cash tab:** shows items whose `ITEMDB` entry has `cash:true`. **No item has this flag yet**, so the tab is empty for now (the Inventory Expansion Pack is applied at once and never enters the bag).
+- **Pages:** **30 cells per page** (5 × 6 grid, as in the reference), per tab. Capacity rules (100 base, +20 per pack, max 500) are unchanged.
+- **Bulk sell:** **hold an item for 0.45 s** to start selecting (it is ticked). While selecting, tap more items to add or remove them; the footer shows `n selected · total Sc` and a **Cancel** button. **Sell** sells everything ticked in one action (quest items are skipped, as before). Sell with nothing ticked shows the hint "Hold an item to start selecting." The old "Sell in bulk" toggle button is gone.
+- **Sort:** same toggle as before (Name > Rarity in Equipments only > Price); the label reads `Sort by Name / Rarity / Price` (just `Sort` before the first press).
+- A normal tap still opens the Item Detail window (Use / Equip / Refine / Sell / Discard).

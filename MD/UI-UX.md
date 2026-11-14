@@ -143,7 +143,7 @@ Full-screen page shown before the game. Dark violet background with floating cry
 
 ## 9. Window system (v15, after the Character Info reference)
 
-All menu windows share one look. It is always dark navy, whatever the page theme.
+All menu windows share one look. It is always dark navy, whatever the page theme. **(v19.2: Character, Status, Inventory and Item Detail now use the light frame, see §17. The other windows stay navy.)**
 
 **Frame:** rounded navy frame with a periwinkle border; a **periwinkle title bar** (bold white title, round close button); an inner darker panel for the content; and, for the character group, a **bottom bar** of three buttons.
 
@@ -206,12 +206,12 @@ Every earlier feature is still there; Status is where the old right-hand panel w
 
 - **Navigation bar removed** from every window (it was repeated and used too much space). Windows are a little shorter.
 - **Character opens alone** (Equipment). **Status** has its own button in the menu, right after Character. The menu is a **3 × 3** grid on desktop; phones keep one bar with 9 buttons.
-- **Player card:** a bottom row with the **CP island on the left** and **Scandium on the right** (for example `CP 18,894` and `578,568 Scandiums`). The full wallet (Scandium, Yttrium, Lanthanum) moved to the **Equipment window, under the Title row**.
+- **Player card:** a bottom row with the **CP island on the left** and **Scandium on the right** (for example `CP 18,894` and `578,568 Scandiums`). The full wallet (Scandium, Yttrium, Lanthanum) moved to the **Equipment window, under the Title row**. **(v19.2: the wallet row is removed from the Character window, see §17.)**
 - **Idle button:** the same size as a hotbar slot (46 px; 44 on phones), **gold** with a glint sweeping across it. It shows `IDLE` or `IDLING` and a spinning ring while on (**v19.1:** the ring is replaced by four circling arrows, and the button now sits inside the hotbar panel, see §16). The **settings gear is a small badge** on its top-right corner. Idle Summary and Idle Settings are unchanged.
 - ~~**Status bar:** one row, top right~~ **Replaced in v18.3** by four status islands beside the minimap (see §13). The 30 second expand and collapse is gone.
 - **Minimap:** zoom buttons have no text (tooltip only). The **World Map button** is in the **top-right corner** of the map frame (the Return to town button stays at the bottom left).
 - **Announcements** appear at the top centre (v18.3: there is no status row any more, so they sit at 12 px). **v19.1:** portrait moved to the bottom, see §16.
-- **Inventory:** tabs **Consumable > Equipment > Material > Quest** (no "All"; opens on Consumable). Bottom of the window, top to bottom: grid; one row with `Select many` and the page arrows `Page x/x`; last row with `Sort items` on the left and `Slots xx/100` plus `+ Expand slots` on the right. **Sort items** is one toggle: Name > Rarity (Equipment tab only) > Sell price, and each press sorts. Stars are the same small size as in the Character window and never overflow the cell.
+- **Inventory:** tabs **Consumable > Equipment > Material > Quest** (no "All"; opens on Consumable). Bottom of the window, top to bottom: grid; one row with `Select many` and the page arrows `Page x/x`; last row with `Sort items` on the left and `Slots xx/100` plus `+ Expand slots` on the right. **Sort items** is one toggle: Name > Rarity (Equipment tab only) > Sell price, and each press sorts. Stars are the same small size as in the Character window and never overflow the cell. **(v19.2: tabs, page size and footer replaced, see §17.)**
 - **Settings > Graphic > UI Display Mode:** System, Light, Dim. It changes the panels on the main screen (the windows stay navy). Saved.
 
 
@@ -324,3 +324,72 @@ Every hit the player lands on a monster now plays a small pixel-art effect, repl
 
 **Code touched:** one CSS block at the end of the stylesheet (`v19.1 HUD`) and `renderIdle()` (new `ib-cyc` icon).
 
+---
+
+## 17. Light windows: Character, Status, Inventory (v19.2, after the user's reference image)
+
+These three windows, and the **Item Detail** window that opens from them, now use a **light frame**. Every other window (Skills, Quests, Shop, Settings, World Map, …) keeps the navy look of §9.
+
+**Frame (all four windows)**
+- Light grey body `#e6e5e2`, white 1 px edge, soft shadow, 16 px corners.
+- **Blue title bar** `#0a6fc2` with a white icon and a bold 25 px title, centred: Character (person), Status (pillared building), Inventory (backpack). Item Detail has no icon.
+- Close button: **white circle with a blue ×** on the right of the title bar.
+- Sections are split by a **double grey line** (`.lt-hr`).
+- Colour jobs: **blue** = active / information pills, **white** = idle buttons and empty cells, **grey** = info rows, **green** = gains and "Expand Slots", **red** = Reset Status and Sell.
+- Code: the window gets the class `lt` when it shows `char`, `status`, `inv` or `itemdet` (`LIGHT_W` in `drawSlot`); the styles are one CSS block at the end of the stylesheet (`v19.2 light windows`).
+
+**Character (420 px wide, height follows the content)**
+- Tabs **Basic Equipment** (selected: darker grey with an inset edge) and **Costume Equipment** (white). Thai: อุปกรณ์พื้นฐาน / อุปกรณ์คอสตูม.
+- Blue name bar: `Arin ✦ [archetype icon] Ranger ✦ C1 ✦ LV99 ✦ Job50`.
+- 10 slots in two columns of five (78 px, white, rounded) around the character, same order as before: left **Top Headgear, Lower Headgear, Weapon, Garment, Ring**; right **Mid Headgear, Armor, Shield, Shoes, Bracelet**. An empty slot shows a **grey line icon** for its slot (crown, mask, dagger, jacket, ring / glasses, shirt, shield, shoe, beads). A worn piece shows its art on white with a rarity-coloured frame, `Lv` tag, refine and stars. Tap a slot → Item Detail (unchanged).
+- The character stands on a soft blue platform (no navy disc). The round Style button is gone (the Costume tab does the same).
+- **Combat Point box** under the character: blue header `COMBAT POINT (CP)`, big dark number on white.
+- Two grey rows at the bottom: **NO TITLE** and **NO GUILD**, each with a blue **SOON** pill (tapping shows a "coming soon" toast).
+- **Removed:** the face portrait in the name bar and the wallet row (Scandium, Yttrium, Lanthanum). Scandium is still on the player card; Yttrium and Lanthanum are in the Shop.
+
+**Status (440 px wide)**
+- **ID card:** the character's head and shoulders (drawn live) on the left; on the right blue pills for **Name**, **Level | Job** (`99 | 50`), **Archetype** (icon + name), **Class** (`No Class`), **Job** (`No Job`). At C0 the Archetype pill is grey `No Archetype`; once Job Lv 10 is reached it becomes a gold **Archetype Trial** button (same action as the old trial button).
+- **Basic Status card** (white, blue header): Str, Agi, Vit (left) and Int, Dex, Luk (right). Each row: icon and name, then a grey bar with the value (`base` and a small green `+bonus` from gear and Blessing), a **1 ▶** button (+1), a **10 ▶** button (up to +10, as far as the free points allow) and the **points needed for the next +1**. At 99 the cost shows `—`.
+- Card footer: red **Reset Status**, a small **Auto** toggle (auto-assign, blue when on; kept because it was already a feature), and on the right **Status Point Left** in a green pill.
+- **Details table**, two striped columns:
+
+| Left | Right |
+|---|---|
+| Attack | Magic Attack |
+| Defence (`hard% +soft`) | Magic Defence |
+| Health Point | Stamina Point (SP) |
+| Attack Speed (`ASPD (x.xx sec)`) | Global Delay |
+| Flee | Perfect Dodge |
+| Hit | Perfect Hit |
+| Critical Rate | Critical Damage (`+40%`, the crit multiplier ×1.4) |
+| Overload Rate | Overload Damage (`+30%`, the Overload multiplier ×1.3) |
+| Variable Casting (`−(DEX/150)%`) | Fixed Casting |
+| Ignore DEF | Ignore Magic DEF |
+
+- **Placeholders:** Global Delay, Perfect Hit, Fixed Casting, Ignore DEF and Ignore Magic DEF have **no system yet** (nothing raises them), so they show `0%` / `0 sec`; hovering says so. **Overload Rate** shows the base chance (= CRIT); each magic skill multiplies it by its own Overload rate (`COMBAT-FORMULAS.md` 3b).
+- **Removed from Status:** kills / deaths record, the EXP bars (the player card has them), weapon and armor type rows.
+
+**Inventory (440 px wide)**
+- Five tabs: **Usable · Equipments · Other · Quest · Cash** (selected tab blue). Rules in `ITEMS.md` (Inventory v19.2).
+- **Blue well** with a **5 × 6 grid** of white cells (30 per page). Items show their art, count, refine and stars; the frame takes the rarity colour.
+- Footer row 1: green **Expand Slots** (opens the Cash Shop tab) and `Slots x/y` on the left; `◀ Page x/y ▶` with solid triangles on the right.
+- Footer row 2: **Sort** (`Sort by Name / Rarity / Price`) on the left; the hint "Hold & select items for bulk sell." and a red **Sell** button on the right.
+- **Hold an item 0.45 s** to start selecting (ticked in green, the well darkens a little); then tap to add or remove. While selecting, the hint changes to `n selected · total Sc` with a **Cancel** button. A finger that moves more than 10 px cancels the hold, and the click that follows a hold is ignored. On phones the hint text is hidden to save room.
+
+**Item Detail:** same content and buttons as before, on the light frame: white header card with the item art and name in its rarity colour, white stat and comparison cards, blue main button, red-tinted Discard.
+
+**Phones:** the windows fill the width as before; Character slots 64 px; Status portrait 118 px and the six stats in one column; the Inventory hint is hidden.
+
+**Tested:** desktop 1440 × 860 and phone 390 × 844, English and Thai, Beginner and Ranger Lv 99 with gear, hold-select + Sell (3 pieces sold for the right total), Sell with nothing selected, +1 / +10 stat buttons, item detail beside Character, and the whole game inside a sandboxed iframe (no errors).
+
+---
+
+## 18. Item cells in the light windows (v19.3)
+
+Applies to the **Character** equipment slots and the **Inventory** cells (both use the same rules now).
+
+- **Art fills the cell:** the item art is centred and stretched to the cell, with a 5% margin on the left, right and top and 13% at the bottom (room for the stars). Before, the art was a fixed 42 px (Character) or 70% (Inventory) and in Inventory it sat towards the top-left.
+- **Stars (rarity) bottom-centre** in both windows: 11 px (9.5 px on phones), drawn above the art. Before, Character had them at the bottom-left.
+- `Lv` tag stays top-left, refine `+N` top-right, stack count bottom-right; all drawn above the art.
+- **Phones:** the five Inventory tabs use 10.5 px text and less padding so "Equipments" is no longer cut to "Equipme…" (checked at 360 px width).
+- Code: one small CSS block inside the `v19.2 light windows` block, marked `v19.3`. No JavaScript changed.

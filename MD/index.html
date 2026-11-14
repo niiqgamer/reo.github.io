@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rare Earth Online — Gadolinium</title>
-<meta name="reo-version" content="18.3">
+<meta name="reo-version" content="19.3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1234,6 +1234,160 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .P #announce{top:auto;bottom:250px;left:8px;right:8px;max-width:none;transform:translateY(16px);border-radius:16px;padding:8px 14px 8px 10px}
 .P #announce.on{transform:translateY(0)}
 .P #topC.down{transform:none}
+/* ==== v19.2 light windows: Character / Status / Inventory / Item detail (after the user's reference image) ====
+   Frame light grey, blue title bar with icon, white close button; blue = active, white = idle, grey = info. */
+#wins .win.lt,.win.lt{--lb:#0a6fc2;--lb2:#075aa0;--lg:#e6e5e2;--lg2:#d3d2ce;--lline:#bdbcb8;--ink:#1d2433;--ink2:#5d6474;--line:#c9c8c4;--good:#1c9a52;--bad:#d23a4a;--gold2:#a8780e;
+ --wh:#fff;--navy-ink:#1d2433;--pv:#0a6fc2;color:var(--ink);background:var(--lg);border:1px solid #fff;border-radius:16px;padding:10px;
+ box-shadow:0 18px 44px rgba(10,20,50,.45),0 0 0 1px rgba(0,0,0,.18)}
+.win.lt .win-h{margin:0 0 10px;padding:6px 8px 6px 16px;border-radius:12px;background:var(--lb);color:#fff;font-size:25px;font-weight:700;letter-spacing:.02em;justify-content:center;position:relative;
+ text-shadow:0 1px 0 rgba(0,0,0,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 0 rgba(0,40,90,.25)}
+.win.lt .win-h>span{display:flex;align-items:center;gap:10px;line-height:1.25}
+.win.lt .wt-ic svg{width:22px;height:22px;display:block;stroke:#fff;fill:#fff;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.win.lt[data-w=status] .wt-ic svg,.win.lt[data-w=inv] .wt-ic svg{fill:none;stroke-width:2.2}
+.win.lt .win-x{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:#fff;color:var(--lb);font-size:21px;font-weight:700;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.win.lt .win-x:hover{background:#eef5ff}
+.win.lt .win-b{padding:0;background:none;border:0;border-radius:0}
+.win.lt .muted{color:var(--ink2)}
+.lt-hr{height:5px;margin:8px 0;border-top:1px solid var(--lline);border-bottom:1px solid var(--lline);flex:none}
+.lt-hr.thin{height:3px;margin:8px 0 7px}
+.lt-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.lt-tabs.five{grid-template-columns:repeat(5,1fr);gap:5px}
+.lt-tabs button{height:32px;border:1px solid var(--lline);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-tabs button:hover{background:#f4f8ff}
+.win[data-w=char] .lt-tabs button.on{background:#b9b8b5;border-color:#6f6f6c;color:#111;font-weight:700;box-shadow:inset 0 1px 2px rgba(0,0,0,.18)}
+.lt-tabs.five button{font-size:12px;height:30px}
+.lt-tabs.five button.on{background:var(--lb);border-color:var(--lb);color:#fff}
+/* Character */
+#wins .win.lt[data-w=char]{--wiw:420px;--wih:auto;zoom:1}
+.lt-namebar{display:flex;align-items:center;justify-content:center;gap:7px;margin:0 0 8px;padding:7px 12px;border-radius:12px;background:var(--lb);color:#fff;font-size:16px;font-weight:500;white-space:nowrap;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.lt-namebar b{font-weight:600;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.lt-sep{font-style:normal;font-size:10px;opacity:.75}
+.lt-arch{display:inline-flex;align-items:center;gap:4px}
+.lt-arch svg,.lt-pill svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.win.lt[data-w=char] .chr-panel{min-height:0;padding:0;background:none;border:0;border-radius:0}
+.win.lt .eq-board{grid-template-columns:78px minmax(0,1fr) 78px;grid-template-rows:repeat(5,78px);gap:14px 10px;padding:0 6px}
+.win.lt .eq-board .eqs{border-radius:12px;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.win.lt .eqs.empty{background:#fff;border:1px solid var(--lline);color:#9a9a9a}
+.win.lt .eqs.empty .eql{display:none}
+.win.lt .eq-ic svg{width:34px;height:34px;display:block;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.win.lt .eqs.empty:hover{background:#f4f8ff;color:var(--lb);filter:none}
+.win.lt .eqs:not(.empty){background:radial-gradient(circle at 50% 40%,#fff 40%,color-mix(in srgb,var(--rc) 22%,#fff));border:2px solid color-mix(in srgb,var(--rc) 80%,#777)}
+.win.lt .eqs.sel{box-shadow:0 0 0 3px var(--lb),0 0 12px rgba(10,111,200,.45)}
+.win.lt .eqs .lvt{color:#fff;background:rgba(29,36,51,.72);border-radius:0 0 6px 0;left:0;top:0;padding:0 4px;text-shadow:none}
+.win.lt .eqs .rf{color:#a8780e;text-shadow:0 0 2px #fff,0 0 2px #fff}
+.win.lt .eq-doll canvas{max-width:230px}
+.win.lt .eq-cpbox{border-radius:10px;overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.18);border:1px solid var(--lb)}
+.win.lt .cp-l{background:var(--lb);color:#fff;font-size:11px;font-weight:600;letter-spacing:.04em;padding:4px}
+.win.lt .cp-v{background:#fff;color:#1d2433;font-size:32px;font-weight:700;letter-spacing:.01em}
+.win.lt .cos{gap:8px}
+.win.lt .cos .eq-doll{height:398px}
+.win.lt .cos-soon{background:#fff;border:1px solid var(--lline)}
+.win.lt .cos-soon svg{stroke:var(--lb)}
+.lt-row{display:flex;align-items:center;justify-content:space-between;width:100%;height:30px;margin-top:6px;padding:0 6px 0 12px;border:0;border-radius:9px;background:#8d8d8a;color:#fff;font:inherit;font-size:11.5px;font-weight:600;letter-spacing:.06em;cursor:pointer}
+.lt-row:hover{background:#7f7f7c}
+.lt-row-l{display:flex;align-items:center;gap:7px}
+.lt-row-l svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lt-soon{padding:1px 10px;border-radius:9px;background:var(--lb);color:#fff;font-size:10.5px;font-weight:700;text-transform:uppercase}
+/* shared pills and buttons */
+.lt-pill{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:72px;height:24px;padding:0 10px;border:0;border-radius:12px;background:var(--lb);color:#fff;font:inherit;font-size:13px;font-weight:600;white-space:nowrap;line-height:1}
+.lt-pill.dim{background:#8d8d8a}
+.lt-pill.green{background:#2fb34a;min-width:56px}
+.lt-pill.gold{background:linear-gradient(#f3dd98,#d9b04a);color:#3a2a06;cursor:pointer;box-shadow:0 2px 0 rgba(120,80,0,.3)}
+.lt-btn{height:28px;padding:0 12px;border:1px solid var(--lline);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.lt-btn:hover{filter:brightness(.97)}
+.lt-btn.red{background:#ef5f6e;border-color:#ef5f6e;color:#fff}
+.lt-btn.green{background:#2fb34a;border-color:#2fb34a;color:#fff}
+.lt-btn.blue{background:var(--lb);border-color:var(--lb);color:#fff}
+.lt-btn:disabled{opacity:.45;cursor:default}
+/* Status */
+#wins .win.lt[data-w=status]{--wiw:440px;--wih:auto;min-width:0}
+.st-card{display:flex;gap:0;border:1px solid #333;border-radius:12px;background:#fff;overflow:hidden}
+.st-port{width:150px;flex:none;background:linear-gradient(160deg,#d9d9d9,#a8a8a8);border-right:1px solid #333;display:grid;place-items:center;overflow:hidden}
+.st-port canvas{width:150px;height:135px;display:block}
+.st-id{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:8px 8px 8px 12px}
+.st-id>div{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;font-weight:500}
+.st-id .lt-pill{min-width:86px;max-width:62%;overflow:hidden;text-overflow:ellipsis}
+.st-basic{border-radius:12px;background:#fff;overflow:hidden;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.st-bh{background:var(--lb);color:#fff;font-size:14px;font-weight:600;padding:5px 12px}
+.st-rows{display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(3,auto);gap:6px 10px;padding:8px 8px 0}
+.st-row{display:flex;align-items:center;gap:6px;min-width:0}
+.st-n{display:flex;align-items:center;gap:3px;width:52px;flex:none;font-size:15px;font-weight:600}
+.st-n svg{width:16px;height:16px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.st-box{flex:1;min-width:0;display:flex;align-items:center;gap:3px;height:24px;padding:0 6px 0 7px;border-radius:7px;background:#b9b8b5}
+.st-v{flex:1;min-width:0;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.st-v em{font-style:normal;font-size:10px;font-weight:500;color:#1c6e3a;margin-left:1px}
+.st-add{display:flex;align-items:center;gap:1px;height:17px;padding:0 0 0 4px;border:0;border-radius:4px;background:#242a36;color:#fff;font:inherit;font-size:10.5px;font-weight:700;cursor:pointer;line-height:1}
+.st-add i{width:0;height:0;border-left:7px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent;margin:0 2px 0 2px}
+.st-add:hover{background:var(--lb)}
+.st-add:disabled{opacity:.35;cursor:default;background:#242a36}
+.st-c{width:18px;text-align:right;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.st-foot{display:flex;align-items:center;gap:6px;padding:0 8px 8px}
+.st-foot .lt-btn{height:24px;font-size:12px;padding:0 10px}
+.st-left{font-size:12.5px;font-weight:600}
+.st-foot .grow{flex:1}
+.st-det{display:grid;grid-template-columns:1fr 1fr;gap:3px 4px}
+.sd{display:flex;align-items:center;justify-content:space-between;gap:6px;height:22px;padding:0 8px;background:#bdbcb9;font-size:11.5px;min-width:0}
+.sd:nth-child(4n+3),.sd:nth-child(4n+4){background:#cfcecb}
+.sd span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.sd b{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+/* Inventory */
+#wins .win.lt[data-w=inv]{--wiw:440px;--wih:auto}
+.win.lt .inv-fix{gap:8px;height:auto}
+.inv-well{padding:10px;border-radius:12px;background:var(--lb);box-shadow:inset 0 2px 4px rgba(0,0,0,.18)}
+.inv-well.multi{background:linear-gradient(180deg,#0a6fc2,#0d5ea6)}
+.win.lt .inv-fix .inv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;overflow:visible;padding:0;max-height:none}
+.win.lt .inv-fix .ii{aspect-ratio:1/1;border-radius:10px;background:#fff;border:2px solid #fff;color:var(--ink)}
+.win.lt .inv-fix .ii[data-k]{border-color:var(--rc,#fff);background:radial-gradient(circle at 50% 42%,#fff 45%,color-mix(in srgb,var(--rc,#fff) 18%,#fff))}
+.win.lt .inv-fix .ii.empty{opacity:1;border-color:#fff}
+.win.lt .ii.sel{box-shadow:0 0 0 3px #ffd84a,0 0 10px rgba(255,216,74,.7)}
+.win.lt .ii b{color:#1d2433;text-shadow:0 0 2px #fff,0 0 2px #fff}
+.win.lt .ii-rf{color:#a8780e;text-shadow:0 0 2px #fff,0 0 2px #fff}
+.win.lt .ii.pick{box-shadow:0 0 0 3px #2fb34a inset}
+.win.lt .ii.pick::after{background:#2fb34a}
+.inv-row{display:flex;align-items:center;gap:8px;min-height:28px}
+.inv-row .grow{flex:1}
+.win.lt .inv-cap{font-size:13px;font-weight:600;color:var(--ink)}
+.win.lt .inv-cap.full{color:var(--bad)}
+.inv-pg{font-size:13px;font-weight:600;min-width:62px;text-align:center}
+.inv-arr{width:22px;height:22px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.inv-arr::before{content:"";border-right:13px solid #1d2433;border-top:9px solid transparent;border-bottom:9px solid transparent}
+.inv-arr.r::before{border-right:0;border-left:13px solid #1d2433}
+.inv-arr:disabled{opacity:.3;cursor:default}
+.inv-hint{font-size:11.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.inv-hint.on{color:#1c7a3a;font-weight:600}
+.lt-btn.sell{min-width:84px}
+/* Item detail on a light frame */
+#wins .win.lt[data-w=itemdet]{--wiw:330px}
+.win.lt .det-top{padding:8px 10px;border-radius:10px;background:#fff;border:1px solid var(--lline)}
+.win.lt .det-meta .stars{text-shadow:0 0 1px #000,0 1px 1px rgba(0,0,0,.6)}
+.win.lt .det-stats,.win.lt .cmp{background:#fff;border:1px solid var(--lline);border-radius:10px}
+.win.lt .det-stats div.ab{color:#6a44c8 !important}
+.win.lt .det-price b{color:#a8780e}
+.win.lt .btn{border:1px solid var(--lline);border-radius:8px;background:#fff;color:var(--ink);box-shadow:none;text-shadow:none}
+.win.lt .btn.pri{background:var(--lb);border-color:var(--lb);color:#fff}
+.win.lt .btn.danger{background:#fde4e7;border-color:#f3b4bc;color:#b3192d}
+.win.lt .qty button{background:#fff;border:1px solid var(--lline);color:var(--ink)}
+/* v19.3: item art fills the cell, centred; stars bottom-centre (Character slots and Inventory cells alike) */
+.win.lt .eqs:not(.empty),.win.lt .inv-fix .ii[data-k]{position:relative;display:block;padding:0;overflow:hidden}
+.win.lt .eqs .eqi.art,.win.lt .inv-fix .ii-ic{position:absolute;left:5%;right:5%;top:5%;bottom:13%;width:auto;height:auto;margin:0;display:flex;align-items:center;justify-content:center;transform:none}
+.win.lt .eqs .eqi.art svg,.win.lt .inv-fix .ii-ic svg{width:100%;height:100%;max-width:none;max-height:none;display:block}
+.win.lt .eqs .cs,.win.lt .inv-fix .ii-st{position:absolute;left:0;right:0;top:auto;bottom:2px;transform:none;width:auto;height:auto;margin:0;display:block;text-align:center;font-size:11px;line-height:1;letter-spacing:-.4px;white-space:nowrap;z-index:2;pointer-events:none}
+.win.lt .eqs .lvt,.win.lt .eqs .rf,.win.lt .inv-fix .ii-rf,.win.lt .inv-fix .ii b{z-index:2}
+.win.lt .eqs .rf{position:absolute;right:4px;top:2px;left:auto;bottom:auto}
+.P .win.lt .eqs .cs,.P .win.lt .inv-fix .ii-st{font-size:9.5px}
+/* phones */
+.P #wins .win.lt{padding:8px}
+.P .win.lt .win-h{font-size:21px}
+.P .lt-namebar{font-size:14px;gap:5px}
+.P .win.lt .eq-board{grid-template-columns:64px minmax(0,1fr) 64px;grid-template-rows:repeat(5,64px);gap:10px 8px;padding:0}
+.P .win.lt .eq-ic svg{width:28px;height:28px}
+.P .win.lt .cp-v{font-size:26px}
+.P .lt-tabs button{font-size:12.5px}
+.P .lt-tabs.five{gap:4px}.P .lt-tabs.five button{font-size:10.5px;padding:0 2px;text-overflow:clip}
+.P .st-port{width:118px}.P .st-port canvas{width:118px;height:106px}
+.P .st-id>div{font-size:12.5px}
+.P .st-rows{grid-template-columns:1fr;grid-auto-flow:row;grid-template-rows:none}
+.P .inv-hint{display:none}
 </style>
 </head>
 <body>
@@ -2364,6 +2518,23 @@ D2.en.npcr_veyra="QUESTS";D2.th.npcr_veyra="เควสต์";
 D2.en.npcr_helper="ARCHETYPE";D2.th.npcr_helper="อาร์คีไทป์";
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
+/* v19.2 light windows (Character / Status / Inventory) */
+Object.assign(D.en,{lt_basic:"Basic Equipment",lt_costume:"Costume Equipment",lt_cp:"COMBAT POINT (CP)",lt_notitle:"NO TITLE",lt_noguild:"NO GUILD",lt_guild_soon:"Guilds are coming soon.",
+ lt_name:"Name",lt_lvjob:"Level | Job",lt_arch:"Archetype",lt_class:"Class",lt_job:"Job",lt_noclass:"No Class",lt_nojob:"No Job",lt_noarch:"No Archetype",lt_trial:"Archetype Trial",
+ lt_basic_st:"Basic Status",lt_reset:"Reset Status",lt_auto:"Auto",lt_left:"Status Point Left",lt_add1:"Raise by 1",lt_add10:"Raise by up to 10",lt_cost:"Points needed for the next +1",
+ lt_atk:"Attack",lt_matk:"Magic Attack",lt_def:"Defence",lt_mdef:"Magic Defence",lt_hp:"Health Point",lt_sp:"Stamina Point",lt_aspd:"Attack Speed",lt_gd:"Global Delay",lt_flee:"Flee",lt_pdodge:"Perfect Dodge",
+ lt_hit:"Hit",lt_phit:"Perfect Hit",lt_crit:"Critical Rate",lt_critd:"Critical Damage",lt_over:"Overload Rate",lt_overd:"Overload Damage",lt_vcast:"Variable Casting",lt_fcast:"Fixed Casting",lt_idef:"Ignore DEF",lt_imdef:"Ignore Magic DEF",
+ lt_sec:"sec",lt_tip_none:"Nothing raises this yet",lt_tip_over:"Base chance; each magic skill multiplies it by its own Overload rate",
+ inv_t_use:"Usable",inv_t_gear:"Equipments",inv_t_mat:"Other",inv_t_quest:"Quest",inv_t_cash:"Cash",lt_expand:"Expand Slots",lt_sort:"Sort by {m}",lt_sort0:"Sort",lt_m_name:"Name",lt_m_rarity:"Rarity",lt_m_price:"Price",
+ lt_hold:"Hold & select items for bulk sell.",lt_sel:"{n} selected · {t} Sc",lt_sell:"Sell",lt_cancel:"Cancel",lt_sell_hint:"Hold an item to start selecting."});
+Object.assign(D.th,{lt_basic:"อุปกรณ์พื้นฐาน",lt_costume:"อุปกรณ์คอสตูม",lt_cp:"พลังต่อสู้ (CP)",lt_notitle:"ยังไม่มีฉายา",lt_noguild:"ยังไม่มีกิลด์",lt_guild_soon:"ระบบกิลด์จะมาเร็ว ๆ นี้",
+ lt_name:"ชื่อ",lt_lvjob:"เลเวล | จ็อบ",lt_arch:"อาร์คีไทป์",lt_class:"คลาส",lt_job:"จ็อบ",lt_noclass:"ยังไม่มีคลาส",lt_nojob:"ยังไม่มีจ็อบ",lt_noarch:"ยังไม่มีอาร์คีไทป์",lt_trial:"ทดสอบอาร์คีไทป์",
+ lt_basic_st:"ค่าสถานะพื้นฐาน",lt_reset:"รีเซ็ตสถานะ",lt_auto:"อัตโนมัติ",lt_left:"แต้มสถานะคงเหลือ",lt_add1:"เพิ่ม 1",lt_add10:"เพิ่มสูงสุด 10",lt_cost:"แต้มที่ต้องใช้เพื่อเพิ่ม +1 ครั้งถัดไป",
+ lt_atk:"พลังโจมตี",lt_matk:"พลังเวท",lt_def:"ป้องกัน",lt_mdef:"ป้องกันเวท",lt_hp:"พลังชีวิต (HP)",lt_sp:"พลังงาน (SP)",lt_aspd:"ความเร็วโจมตี",lt_gd:"ดีเลย์รวม",lt_flee:"หลบหลีก",lt_pdodge:"หลบสมบูรณ์",
+ lt_hit:"แม่นยำ",lt_phit:"โจมตีแม่นยำสมบูรณ์",lt_crit:"อัตราคริติคอล",lt_critd:"ดาเมจคริติคอล",lt_over:"อัตราเกินพิกัด",lt_overd:"ดาเมจเกินพิกัด",lt_vcast:"ร่ายแปรผัน",lt_fcast:"ร่ายคงที่",lt_idef:"เจาะ DEF",lt_imdef:"เจาะ MDEF",
+ lt_sec:"วิ",lt_tip_none:"ยังไม่มีอะไรเพิ่มค่านี้",lt_tip_over:"โอกาสพื้นฐาน แต่ละสกิลเวทจะคูณด้วยอัตราเกินพิกัดของสกิลนั้น",
+ inv_t_use:"ใช้ได้",inv_t_gear:"อุปกรณ์",inv_t_mat:"อื่น ๆ",inv_t_quest:"เควสต์",inv_t_cash:"แคช",lt_expand:"ขยายช่อง",lt_sort:"เรียงตาม{m}",lt_sort0:"จัดเรียง",lt_m_name:"ชื่อ",lt_m_rarity:"ความหายาก",lt_m_price:"ราคา",
+ lt_hold:"กดค้างที่ไอเท็มเพื่อเลือกขายหลายชิ้น",lt_sel:"เลือก {n} ชิ้น · {t} Sc",lt_sell:"ขาย",lt_cancel:"ยกเลิก",lt_sell_hint:"กดค้างที่ไอเท็มเพื่อเริ่มเลือก"});
 let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
 const t=k=>(D[lang][k]??D.en[k]??k);
 const fmt=(k,o)=>t(k).replace(/\{(\w)\}/g,(_,c)=>o[c]);
@@ -2428,7 +2599,28 @@ const IC={
  data:'<path d="M7 7h11l-3-3M17 17H6l3 3"/>',
  gauge:'<path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l4-5"/>',
  pulse:'<path d="M3 12h4l2-5 4 10 2-5h6"/>',
- shrink:'<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>'
+ shrink:'<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>',
+ /* v19.2 light windows: slot and stat icons */
+ crown:'<path d="M3.5 8.5 7.5 13 12 6l4.5 7 4-4.5-1.8 10H5.3z"/><path d="M5.5 21h13"/>',
+ mask:'<path d="M3 5.5c3 1.2 6 1.2 9 0v5.5a4.5 4.5 0 0 1-9 0z"/><path d="M12 9.5c3 1.2 6 1.2 9 0V15a4.5 4.5 0 0 1-9 0"/><path d="M5.5 9h1.5M8.5 9H10M5.8 12.5c.8.8 2.6.8 3.4 0M14.5 13h1.5M17.5 13H19M15 16.6c.8-.8 2.6-.8 3.4 0"/>',
+ glasses:'<circle cx="6.5" cy="14" r="3.5"/><circle cx="17.5" cy="14" r="3.5"/><path d="M10 13.5c1.2-.8 2.8-.8 4 0M3 14l-.5-4.5L5 7.5M21 14l.5-4.5L19 7.5"/>',
+ shirt:'<path d="M8.5 3.5 3 6.5l2 4.5 2.5-1.2V20.5h9V9.8L19 11l2-4.5-5.5-3c-.5 1.5-2 2.3-3.5 2.3s-3-.8-3.5-2.3z"/>',
+ dagger:'<path d="M17.5 3.5 20.5 6.5 10 17l-3-3z"/><path d="m5.5 12.5 6 6M7 17l-3.5 3.5"/>',
+ shieldp:'<path d="M12 3 4.5 6v6c0 4.8 3.3 7.8 7.5 9 4.2-1.2 7.5-4.2 7.5-9V6z"/><path d="M12 8.5v7M8.5 12h7"/>',
+ jacket:'<path d="M9 3 4 5.5 3 20.5h5.5V13l2-3V3.6zM15 3l5 2.5 1 15h-5.5V13l-2-3V3.6z"/><path d="M9 3c.8 1.3 1.8 2 3 2s2.2-.7 3-2M8 15h2M14 15h2"/>',
+ shoe:'<path d="M3 17.5V9.5h5.5l1.5 3c2.5.5 5 .2 7.5 1.2 2 .8 3.5 2 3.5 3.8z"/><path d="M3 17.5h18M11.5 12.8l-1.2 2M14.2 13.2l-1 2"/>',
+ beads:'<path d="M5.5 6c-1.5 4.5 0 9.5 4 12.5M18.5 6c1.5 4.5 0 9.5-4 12.5"/><circle cx="5.5" cy="6" r="1.6"/><circle cx="4.8" cy="10.5" r="1.6"/><circle cx="6.5" cy="14.8" r="1.6"/><circle cx="18.5" cy="6" r="1.6"/><circle cx="19.2" cy="10.5" r="1.6"/><circle cx="17.5" cy="14.8" r="1.6"/><circle cx="12" cy="20" r="2.2"/>',
+ person:'<circle cx="12" cy="5.5" r="3"/><path d="M8 10.5h8l-1 6h-1.6l-.6 5h-1.6l-.6-5H9z"/>',
+ pillars:'<path d="M3 8.5 12 3l9 5.5z"/><path d="M5.5 10.5v8M10 10.5v8M14 10.5v8M18.5 10.5v8M3 21h18"/>',
+ backpack:'<path d="M9 5V3.5h6V5"/><path d="M5 9a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v11.5H5z"/><path d="M8.5 13h7v4h-7zM8.5 15h7"/>',
+ flex:'<path d="M4 20c0-4 1.5-7 3.5-9l1-5.5L11 4l1 2.5-1.5 3.5c3-.8 6 .2 7.8 2.5 1.8 2.5 1 6.5-2.3 7.5z"/>',
+ hourglass:'<path d="M6 3h12M6 21h12M7.5 3c0 5 4.5 6 4.5 9s-4.5 4-4.5 9M16.5 3c0 5-4.5 6-4.5 9s4.5 4 4.5 9"/><path d="M9.5 18.5h5"/>',
+ heart:'<path d="M12 20.5S3.5 15.5 3.5 9.5A4.5 4.5 0 0 1 12 7.2a4.5 4.5 0 0 1 8.5 2.3c0 6-8.5 11-8.5 11z"/>',
+ brain:'<path d="M8.5 20.5V17a6.5 6.5 0 1 1 7 0v3.5z"/><path d="M12 7.5v6M9.5 10.5h5"/>',
+ aim:'<circle cx="11" cy="13" r="7"/><circle cx="11" cy="13" r="3"/><path d="M15 9l5.5-5.5M17.5 3.5h3v3"/>',
+ clover:'<circle cx="8" cy="8" r="3.4"/><circle cx="16" cy="8" r="3.4"/><circle cx="8" cy="16" r="3.4"/><circle cx="16" cy="16" r="3.4"/>',
+ sparkle:'<path d="M12 3c.6 4.5 2.5 6.4 7 7-4.5.6-6.4 2.5-7 7-.6-4.5-2.5-6.4-7-7 4.5-.6 6.4-2.5 7-7z"/><path d="M19 15.5c.3 1.6.9 2.2 2.5 2.5-1.6.3-2.2.9-2.5 2.5-.3-1.6-.9-2.2-2.5-2.5 1.6-.3 2.2-.9 2.5-2.5z"/>',
+ castle:'<path d="M4 21V9h3V6h2v3h6V6h2v3h3v12z"/><path d="M10 21v-5h4v5"/>'
 };
 const svg=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]}</svg>`;
 
@@ -3405,7 +3597,7 @@ function itemName(id){if(isGear(id))return gName(id);const d=ITEMDB[id];return d
 function itemDesc(id){const d=ITEMDB[id];return d?(lang==="th"?d.d[1]:d.d[0]):""}
 function itemColor(id){if(isGear(id)){const r=gParse(id).r;return r===1?"var(--ink)":RARN[r-1][2]};const d=ITEMDB[id];return d?d.c:"#cccccc"}
 function itemIc(id){if(isGear(id))return SLOT_IC[gParse(id).slot]||"gear";const d=ITEMDB[id];return d?d.ic:"star"}
-function itemCat(id){if(isGear(id))return "gear";const d=ITEMDB[id];if(!d)return "mat";return d.q?"quest":d.t==="use"?"use":"mat"}
+function itemCat(id){if(isGear(id))return "gear";const d=ITEMDB[id];if(!d)return "mat";return d.q?"quest":d.cash?"cash":d.t==="use"?"use":"mat"}
 function itemPrice(id,ref){return isGear(id)?gPrice(id,ref):(ITEMDB[id]?ITEMDB[id].p:0)}
 
 /* ---- drops ---- */
@@ -3559,9 +3751,9 @@ function invSellMulti(){
   renderWin();save();
 }
 /* ---- inventory window ---- */
-let invTab="use",invSel=null,invQ=1,invArm=null,invMulti=false,invPick=new Set(),invPage={use:0,gear:0,mat:0,quest:0};
-const INV_PAGE=50;
-const INV_TABS=[["use",["Consumable","ใช้ได้"]],["gear",["Equipment","อุปกรณ์"]],["mat",["Material","วัสดุ"]],["quest",["Quest","เควสต์"]]];
+let invTab="use",invSel=null,invQ=1,invArm=null,invMulti=false,invPick=new Set(),invPage={use:0,gear:0,mat:0,quest:0,cash:0};
+const INV_PAGE=30;   // v19.2: 5 x 6 cells per page, as in the reference
+const INV_TABS=[["use",["Usable","ใช้ได้"]],["gear",["Equipments","อุปกรณ์"]],["mat",["Other","อื่น ๆ"]],["quest",["Quest","เควสต์"]],["cash",["Cash","แคช"]]];   // Cash: items flagged cash:true in ITEMDB (none yet)
 let invSortMode=null;
 function invEntries(){
   const L=[];for(const g of S.bag)L.push({k:"g:"+g.uid,id:g.id,qty:1,ref:g.ref||0,cat:"gear",uid:g.uid});
@@ -3583,14 +3775,17 @@ function invCell(e){
   return `<button class="ii${sel}${invPick.has(e.k)?" pick":""}" data-act="invsel" data-k="${e.k}" style="--rc:${col}" title="${itemName(e.id)}"><span class="ii-ic">${itemArt(e.id)}</span>${p?`<span class="ii-st" style="--sc:${RARN[p.r-1][2]}">${"★".repeat(p.r)}</span>`:""}${e.cat!=="gear"&&e.qty>1?`<b>${num(e.qty)}</b>`:""}${e.ref?`<span class="ii-rf">+${e.ref}</span>`:""}</button>`;
 }
 function invWin(){
-  const all=invEntries(),pages=Math.max(1,Math.ceil(all.length/INV_PAGE)),pg=Math.max(0,Math.min(invPage[invTab]|0,pages-1));invPage[invTab]=pg;
-  const cells=all.slice(pg*INV_PAGE,pg*INV_PAGE+INV_PAGE).map(invCell);while(cells.length<INV_PAGE)cells.push(`<div class="ii empty"></div>`);   // always 50 cells, so the window never changes size
-  const tabs=INV_TABS.map(([k,n])=>`<button class="${invTab===k?"on":""}" data-act="invtab" data-v="${k}">${lang==="th"?n[1]:n[0]}</button>`).join("");
-  const used=invSlots(),mx=invMax();
-  return `<div class="inv-fix"><div class="inv-top"><div class="seg inv-tabs">${tabs}</div></div>
-   ${invMulti?invMultiBar():""}<div class="inv-grid">${cells.join("")}</div>
-   <div class="inv-pager"><button class="btn sm" data-act="invpage" data-d="-1" ${pg<=0?"disabled":""}>◀</button><span>${fmt("inv_page",{p:pg+1,n:pages})}</span><button class="btn sm" data-act="invpage" data-d="1" ${pg>=pages-1?"disabled":""}>▶</button></div>
-   <div class="inv-foot"><button class="btn sm" data-act="invsort" title="${t("inv_sort_tip")}">${t(invSortMode?"sort_"+invSortMode:"inv_sort")}</button><button class="btn sm bulk${invMulti?" pri":""}" data-act="invmulti">${t(invMulti?"cmp_off":"cmp_multi")}</button><span class="grow"></span><span class="inv-cap${used>=mx?" full":""}">${fmt("inv_slots",{u:used,m:mx})}</span><button class="btn sm gold" data-act="invexp">+ ${t("inv_expand")}</button></div></div>`;
+  const all=invEntries(),pages=Math.max(1,Math.ceil(Math.max(all.length,1)/INV_PAGE)),pg=Math.max(0,Math.min(invPage[invTab]|0,pages-1));invPage[invTab]=pg;
+  const cells=all.slice(pg*INV_PAGE,pg*INV_PAGE+INV_PAGE).map(invCell);while(cells.length<INV_PAGE)cells.push(`<div class="ii empty"></div>`);   // always 30 cells, so the window never changes size
+  const tabs=INV_TABS.map(([k,n])=>`<button class="${invTab===k?"on":""}" data-act="invtab" data-v="${k}">${t("inv_t_"+k)}</button>`).join("");
+  const used=invSlots(),mx=invMax(),x=invPickTotal();
+  const sortL=invSortMode?fmt("lt_sort",{m:t("lt_m_"+invSortMode)}):t("lt_sort0");
+  const hint=invMulti?`<span class="inv-hint on">${fmt("lt_sel",{n:x.n,t:num(x.total)})}</span><button class="lt-btn" data-act="invmulti">${t("lt_cancel")}</button>`:`<span class="inv-hint">${t("lt_hold")}</span>`;
+  return `<div class="inv-fix"><div class="lt-tabs five">${tabs}</div>
+   <div class="inv-well${invMulti?" multi":""}"><div class="inv-grid">${cells.join("")}</div></div>
+   <div class="inv-row"><button class="lt-btn green" data-act="invexp">${t("lt_expand")}</button><span class="inv-cap${used>=mx?" full":""}">${fmt("inv_slots",{u:used,m:mx})}</span><span class="grow"></span>
+    <button class="inv-arr" data-act="invpage" data-d="-1" ${pg<=0?"disabled":""} aria-label="◀"></button><span class="inv-pg">${fmt("inv_page",{p:pg+1,n:pages})}</span><button class="inv-arr r" data-act="invpage" data-d="1" ${pg>=pages-1?"disabled":""} aria-label="▶"></button></div>
+   <div class="inv-row"><button class="lt-btn" data-act="invsort" title="${t("inv_sort_tip")}">${sortL}</button><span class="grow"></span>${hint}<button class="lt-btn red sell" data-act="invsellbtn">${t("lt_sell")}</button></div></div>`;
 }
 /* sort toggle: Name > Rarity (Equipment tab only) > Sell price. Each press switches the mode and sorts. */
 function sortInventory(mode){
@@ -5405,10 +5600,12 @@ const eqStat=(sl,it)=>sl==="weapon"?`ATK +${it.lv*8+it.ref*4}`:sl==="offhand"?`D
 const SLOT_LAYOUT={left:["headTop","headLow","weapon","garment","ring"],right:["headMid","armor","shield","shoes","bracelet"]};   // as in the reference screen
 const HAS_ITEMS=new Set(ITEM_SLOTS.map(x=>SLOT_ALIAS[x]||x));
 const RARBG_N=["#2c3566","#1f4f56","#1f3d7a","#3f2c7a","#6a2733"];
+const SLOT_EIC={headTop:"crown",headLow:"mask",headMid:"glasses",weapon:"dagger",garment:"jacket",ring:"ring",armor:"shirt",shield:"shieldp",shoes:"shoe",bracelet:"beads"};   // v19.2: grey line icon in an empty slot
+const ARCH_IC={beginner:"user",fighter:"sword",ranger:"bow",spellcaster:"staff",supporter:"mace"};
 let charView="equip";   // equip | costume | status
 function eqSlot(sl,col,row){
   const it=S.equip&&S.equip[sl],sel=eqSel===sl?" sel":"",pos=`grid-column:${col};grid-row:${row}`;
-  if(!it)return `<button class="eqs empty${sel}" style="${pos}" data-act="eqsel" data-s="${sl}" title="${t("sl_"+sl)}"><span class="eql">${t("sl_"+sl)}</span></button>`;
+  if(!it)return `<button class="eqs empty${sel}" style="${pos}" data-act="eqsel" data-s="${sl}" title="${t("sl_"+sl)}"><span class="eq-ic">${svg(SLOT_EIC[sl]||"plus")}</span><span class="eql">${t("sl_"+sl)}</span></button>`;
   const p=gParse(it.id),c=RARN[p.r-1][2];
   return `<button class="eqs${sel}" style="${pos};--rc:${c};--rb:${RARBG_N[p.r-1]}" data-act="eqsel" data-s="${sl}" title="${itemName(it.id)}"><span class="eqi art">${itemArt(it.id)}</span><span class="lvt">Lv ${p.L}</span>${it.ref?`<span class="rf">+${it.ref}</span>`:""}<span class="cs" style="--sc:${c}">${"★".repeat(p.r)}</span></button>`;
 }
@@ -5421,13 +5618,16 @@ function trialGo(){
   talkTo(h);
 }
 function drawDoll(){
-  const cvs=document.getElementById("dollCv");if(!cvs||winId!=="char")return;
-  const dg=cvs.getContext("2d"),old=g;g=dg;
-  dg.setTransform(1,0,0,1,0,0);dg.clearRect(0,0,cvs.width,cvs.height);
-  dg.fillStyle="rgba(86,104,214,.35)";dg.beginPath();dg.ellipse(130,296,104,32,0,0,TAU);dg.fill();
-  dg.fillStyle="#2b3a9a";dg.beginPath();dg.ellipse(130,294,86,24,0,0,TAU);dg.fill();
-  dg.strokeStyle="rgba(170,180,240,.55)";dg.lineWidth=2;dg.beginPath();dg.ellipse(130,294,86,24,0,0,TAU);dg.stroke();
-  drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},130,290,4.4);
+  const cvs=document.getElementById("dollCv"),pc=document.getElementById("stPortCv");if(!cvs&&!pc)return;
+  const old=g;
+  if(cvs){const dg=cvs.getContext("2d");g=dg;   // v19.2: soft light platform for the light Character window
+    dg.setTransform(1,0,0,1,0,0);dg.clearRect(0,0,cvs.width,cvs.height);
+    dg.fillStyle="rgba(10,111,200,.10)";dg.beginPath();dg.ellipse(130,298,100,28,0,0,TAU);dg.fill();
+    dg.fillStyle="rgba(10,111,200,.16)";dg.beginPath();dg.ellipse(130,296,76,20,0,0,TAU);dg.fill();
+    drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},130,292,4.4)}
+  if(pc){const dg=pc.getContext("2d");g=dg;   // Status portrait: head and shoulders
+    dg.setTransform(1,0,0,1,0,0);dg.clearRect(0,0,pc.width,pc.height);
+    drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},100,300,4.6)}
   g=old;
 }
 const WIN={
@@ -5506,10 +5706,12 @@ function winSig(id){
     default:return "";
   }}catch(e){return ""}
 }
+const LIGHT_W=new Set(["char","status","inv","itemdet"]),W_IC={char:"person",status:"pillars",inv:"backpack"};
 function drawSlot(sl,id,portrait){
   const el=$("#"+sl.el),B=$("#"+sl.b);el.classList.remove("hidden");el.dataset.w=id;
   const key=id+"|"+(id==="char"?charView:id==="itemdet"?(eqSel||invSel||""):id==="mapinfo"?mapSel+"|"+mapTab:""),top=B.scrollTop;
-  $("#"+sl.t).textContent=winTitle(id);
+  const lt=LIGHT_W.has(id);el.classList.toggle("lt",lt);   // v19.2: light windows with an icon in the title
+  $("#"+sl.t).innerHTML=(lt&&W_IC[id]?`<i class="wt-ic">${svg(W_IC[id])}</i>`:"")+esc(winTitle(id));
   B.innerHTML=WIN[id]();B.scrollTop=_wkey[sl.k]===key?top:0;_wkey[sl.k]=key;   // a new page starts at the top, the same page keeps its place
   $("#"+sl.n).classList.add("hidden");
   _wsig[sl.k]=winSig(id);
@@ -5617,47 +5819,61 @@ WIN.mapinfo=()=>{
 function equipView(){
   const L=SLOT_LAYOUT.left.map((x,i)=>eqSlot(x,1,i+1)).join(""),R=SLOT_LAYOUT.right.map((x,i)=>eqSlot(x,3,i+1)).join("");
   return `<div class="eq-board">${L}
-   <div class="eq-doll" style="grid-column:2;grid-row:1/5"><canvas id="dollCv" width="260" height="340"></canvas><button class="style-btn" data-act="cview" data-v="costume" title="${t("style_btn")}">${svg("armor")}</button></div>
-   <div class="eq-cpbox" style="grid-column:2;grid-row:5"><div class="cp-l">${t("cp_label")}</div><div class="cp-v">${num(cpV())}</div></div>${R}</div>
-   <button class="eq-title" data-act="title"><span class="et-l">${svg("star")}${t("title_l")}</span><b>${t("title_none")}</b><span class="et-soon">${t("soon")}</span></button>
-   <div class="eq-wallet"><span class="cur sc" title="Scandium"><i></i><b>${num(S.sc)}</b></span><span class="cur y" title="Yttrium"><i></i><b>${num(S.y)}</b></span><span class="cur la" title="Lanthanum"><i></i><b>${num(S.la)}</b></span></div>`;
+   <div class="eq-doll" style="grid-column:2;grid-row:1/5"><canvas id="dollCv" width="260" height="340"></canvas></div>
+   <div class="eq-cpbox" style="grid-column:2;grid-row:5"><div class="cp-l">${t("lt_cp")}</div><div class="cp-v">${num(cpV())}</div></div>${R}</div>`;
 }
+/* v19.2: light Character window, after the user's reference image */
+const ltSep=`<i class="lt-sep" aria-hidden="true">✦</i>`;
+const ltHr=`<div class="lt-hr" aria-hidden="true"></div>`;
 WIN.char=()=>{
   const c1=S.arch!=="beginner";
-  const bar=`<div class="chr-name"><span class="ptr sel"><img alt="" src="${$("#av").toDataURL()}"></span><b>${esc(player.name)} [${c1?"C1":"C0"}] [${t("ar_"+S.arch)}] Lv ${S.lv}</b></div>`;
-  const tabs=`<div class="chr-tabs"><button class="${charView==="equip"?"on":""}" data-act="cview" data-v="equip">${t("tab_equip")}</button><button class="${charView==="costume"?"on":""}" data-act="cview" data-v="costume">${t("tab_costume")}</button></div>`;
-  return bar+tabs+`<div class="chr-panel">${charView==="costume"?costumeView():equipView()}</div>`;
+  const tabs=`<div class="lt-tabs"><button class="${charView==="equip"?"on":""}" data-act="cview" data-v="equip">${t("lt_basic")}</button><button class="${charView==="costume"?"on":""}" data-act="cview" data-v="costume">${t("lt_costume")}</button></div>`;
+  const bar=`<div class="lt-namebar"><b>${esc(player.name)}</b>${ltSep}<span class="lt-arch">${svg(ARCH_IC[S.arch]||"user")}${t("ar_"+S.arch)}</span>${ltSep}<span>${c1?"C1":"C0"}</span>${ltSep}<span>LV${S.lv}</span>${ltSep}<span>Job${S.jlv}</span></div>`;
+  const rows=`<button class="lt-row" data-act="title"><span class="lt-row-l">${svg("sparkle")}${t("lt_notitle")}</span><span class="lt-soon">${t("soon")}</span></button>
+   <button class="lt-row" data-act="guildsoon"><span class="lt-row-l">${svg("castle")}${t("lt_noguild")}</span><span class="lt-soon">${t("soon")}</span></button>`;
+  return tabs+ltHr+bar+`<div class="chr-panel">${charView==="costume"?costumeView():equipView()}</div>`+ltHr+rows;
 };
 /* ---------- Status ---------- */
+const ST_IC={str:"flex",agi:"hourglass",vit:"heart",int:"brain",dex:"aim",luk:"clover"};
+const ST_NM={str:"Str",agi:"Agi",vit:"Vit",int:"Int",dex:"Dex",luk:"Luk"};
+/* raise one stat up to n times, as far as the free points allow */
+function stRaise(k,n){let did=0;for(let i=0;i<n;i++){const c=REOC.raiseCost(S.stats[k]);if(S.stats[k]>=99||statFree()<c)break;S.stats[k]++;did++}
+  if(!did){AUD.sfx("err");return}S.autoStat=false;S.hp=Math.min(S.hp,hpMax());renderWin();save()}
+/* v19.2: light Status window, after the user's reference image */
 function statusBody(){
-  const d=pd(),A=REOC.ARCH[S.arch],free=statFree(),c1=S.arch!=="beginner";
-  const bonus=k=>(BF.blessing>0&&["str","int","dex"].includes(k))?8:0;
-  const stile=k=>{const v=S.stats[k],c=REOC.raiseCost(v),can=v<99&&free>=c,b=bonus(k);
-    return `<div class="stile"><span class="sn">${k.toUpperCase()}</span><b>${v}${b?`<em>+${b}</em>`:""}</b><button class="st-plus" data-act="st" data-k="${k}" ${can?"":"disabled"} title="${fmt("stCost",{c})}">+</button></div>`};
-  const total=REOC.STATS.reduce((a,k)=>a+S.stats[k],0)+(BF.blessing>0?24:0);
-  const row=(k,v,tip)=>`<div class="dr"${tip?` title="${tip}"`:""}><span>${k}</span><b>${v}</b></div>`;
-  const need0=need(S.lv),jn=jneed(S.jlv),capJ=jcap();
-  const trialBtn=!c1?`<button class="btn gold sm" data-act="trial" ${S.jlv>=10?"":"disabled"} title="${S.jlv>=10?"":t("trial_need")}">${t("btn_trial")}</button>`:`<button class="btn gold sm" disabled title="${t("trial_soon")}">${t("btn_jobchg")}</button>`;
-  return `<div class="chr-panel st-panel">
-    <div class="rec-row"><span>${t("rec_kills")}</span><b>${num(S.kills)}</b><span class="sp"></span><span>${t("deaths")}</span><b>${num(S.deaths)}</b></div>
-    <div class="cls-head">${svg(ROLE_IC[A.type]||"sword")}<span>${t("role_"+A.type)}</span></div>
-    <div class="cls-line"><span class="cls-name">${esc(player.name)} [${c1?"C1":"C0"}] [<em>Lv ${S.lv}</em>] ${t("ar_"+S.arch)}</span><span class="cls-job">Job Lv ${S.jlv}/${capJ}</span>${trialBtn}</div>
-    <div class="xp"><i style="width:${Math.min(100,S.exp/need0*100)}%"></i><span>${(S.exp/need0*100).toFixed(2)}% (${num(S.exp)}/${num(need0)})</span></div>
-    <div class="xp job"><i style="width:${S.jlv>=capJ?100:Math.min(100,S.jexp/jn*100)}%"></i><span>Job ${S.jlv>=capJ?"MAX":(S.jexp/jn*100).toFixed(2)+"% ("+num(S.jexp)+"/"+num(jn)+")"}</span></div>
-    <div class="st-grid">${REOC.STATS.map(stile).join("")}<div class="stile tot"><span class="sn">${t("stTotal")}</span><b>${total}</b></div></div>
-    <div class="kv"><span>${t("wtype")}</span><b>${t("wt_"+S.arch)}</b></div>
-    <div class="kv"><span>${t("atype")}</span><b>${t("at_"+S.arch)}</b></div>
-    <div class="dh">${t("details")} <span class="muted">· ${fmt("stFree",{n:free})}</span></div>
-    <div class="dl">
-     ${row("ATK",Math.round(d.statusAtk+d.watk+d.mastery),`${Math.round(d.statusAtk)} + ${Math.round(d.watk+d.mastery)}`)}${row("MATK",`${Math.round(d.matkMin)} ~ ${Math.round(d.matkMax)}`)}
-     ${row("DEF",`${Math.round(d.hardDef*100)}% + ${Math.round(d.softDef)}`)}${row("MDEF",`${Math.round(d.mdef*100)}% + ${Math.round(d.softMdef)}`)}
-     ${row("HP",num(d.maxHP))}${row("SP",num(d.maxSP))}
-     ${row("ASPD",`${d.aspd} (${d.interval.toFixed(2)}s)`)}${row("HIT",d.hit)}${row("FLEE",d.flee)}
-     ${row("CRIT",d.crit.toFixed(1)+"%")}${row(t("pdodge"),d.pdodge.toFixed(1)+"%")}${row(t("castLbl"),Math.round(d.castMul*100)+"%")}
-    </div>
-    ${S.autoStat&&statFree()>0?`<div class="muted auto-left">${fmt("auto_left",{n:statFree()})}</div>`:""}
-    <div class="w-dev" style="margin-top:8px"><button class="btn sm ${S.autoStat?"pri":""}" data-act="stAuto">${t(S.autoStat?"stAutoOn":"stAutoOff")}</button><button class="btn sm" data-act="stReset">${t("stReset")}</button></div>
-   </div>`;
+  const d=pd(),free=statFree(),c1=S.arch!=="beginner",m=gearMods();
+  const bonus=k=>((m.attr&&m.attr[k])||0)+((BF.blessing>0&&["str","int","dex"].includes(k))?8:0);
+  const pill=(v,cls)=>`<span class="lt-pill${cls?" "+cls:""}">${v}</span>`;
+  const archV=c1?pill(svg(ARCH_IC[S.arch]||"user")+t("ar_"+S.arch))
+    :S.jlv>=10?`<button class="lt-pill gold" data-act="trial">${t("lt_trial")}</button>`:pill(t("lt_noarch"),"dim");
+  const head=`<div class="st-card"><div class="st-port"><canvas id="stPortCv" width="200" height="180"></canvas></div><div class="st-id">
+    <div><span>${t("lt_name")}</span>${pill(esc(player.name))}</div>
+    <div><span>${t("lt_lvjob")}</span>${pill(`${S.lv} | ${S.jlv}`)}</div>
+    <div><span>${t("lt_arch")}</span>${archV}</div>
+    <div><span>${t("lt_class")}</span>${pill(t("lt_noclass"))}</div>
+    <div><span>${t("lt_job")}</span>${pill(t("lt_nojob"))}</div></div></div>`;
+  const srow=k=>{const v=S.stats[k],c=REOC.raiseCost(v),can=v<99&&free>=c,b=bonus(k);
+    return `<div class="st-row"><span class="st-n">${svg(ST_IC[k])}${ST_NM[k]}</span><span class="st-box"><span class="st-v">${v}${b?`<em>+${Math.round(b*10)/10}</em>`:""}</span>
+      <button class="st-add" data-act="st" data-k="${k}" data-n="1" ${can?"":"disabled"} title="${t("lt_add1")}">1<i></i></button><button class="st-add" data-act="st" data-k="${k}" data-n="10" ${can?"":"disabled"} title="${t("lt_add10")}">10<i></i></button>
+      <b class="st-c" title="${t("lt_cost")}">${v>=99?"—":c}</b></span></div>`};
+  const basic=`<div class="st-basic"><div class="st-bh">${t("lt_basic_st")}</div><div class="st-rows">${["str","agi","vit","int","dex","luk"].map(k=>srow(k)).join("")}</div>
+    <div class="lt-hr thin"></div>
+    <div class="st-foot"><button class="lt-btn red" data-act="stReset">${t("lt_reset")}</button><button class="lt-btn${S.autoStat?" blue":""}" data-act="stAuto" title="${t(S.autoStat?"stAutoOn":"stAutoOff")}">${t("lt_auto")}</button><span class="grow"></span><span class="st-left">${t("lt_left")}</span><b class="lt-pill green">${free}</b></div></div>`;
+  const none=t("lt_tip_none");
+  const cell=(k,v,tip)=>`<div class="sd"${tip?` title="${tip}"`:""}><span>${t(k)}</span><b>${v}</b></div>`;
+  const vcast=Math.round((1-d.castMul)*100);
+  const det=`<div class="st-det">
+    ${cell("lt_atk",num(Math.round(d.statusAtk+d.watk+d.mastery)),`${Math.round(d.statusAtk)} + ${Math.round(d.watk+d.mastery)}`)}${cell("lt_matk",`${num(Math.round(d.matkMin))} ~ ${num(Math.round(d.matkMax))}`)}
+    ${cell("lt_def",`${Math.round(d.hardDef*100)}% +${Math.round(d.softDef)}`)}${cell("lt_mdef",`${Math.round(d.mdef*100)}% +${Math.round(d.softMdef)}`)}
+    ${cell("lt_hp",num(d.maxHP))}${cell("lt_sp",num(d.maxSP))}
+    ${cell("lt_aspd",`${d.aspd} (${d.interval.toFixed(2)} ${t("lt_sec")})`)}${cell("lt_gd","0%",none)}
+    ${cell("lt_flee",num(Math.round(d.flee)))}${cell("lt_pdodge",d.pdodge.toFixed(1)+"%")}
+    ${cell("lt_hit",num(Math.round(d.hit)))}${cell("lt_phit","0%",none)}
+    ${cell("lt_crit",d.crit.toFixed(1)+"%")}${cell("lt_critd","+40%")}
+    ${cell("lt_over",d.crit.toFixed(1)+"%",t("lt_tip_over"))}${cell("lt_overd","+30%")}
+    ${cell("lt_vcast",(vcast?"-":"")+vcast+"%")}${cell("lt_fcast","0 "+t("lt_sec"),none)}
+    ${cell("lt_idef","0%",none)}${cell("lt_imdef","0%",none)}</div>`;
+  return head+ltHr+basic+ltHr+det;
 }
 WIN.status=statusBody;
 WIN.inv=invWin;
@@ -5740,7 +5956,7 @@ document.addEventListener("change",e=>{   // hotbar setup (Skills window): pick 
   if(sel.dataset.part==="id")S.hot[i]=sel.value?{id:sel.value,lv:0}:null;else if(S.hot[i])S.hot[i].lv=+sel.value|0;
   S.hotArch=S.arch;buildSlots();renderWin();save();
 });
-function winClick(e){const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;
+function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;
   if(a==="uimode"){S.uiMode=b.dataset.v;applyUiMode();renderWin();save()}
   else if(a==="nav")navTo(b.dataset.w);
   else if(a==="invpage"){invPage[invTab]=Math.max(0,(invPage[invTab]|0)+ +b.dataset.d);renderWin()}
@@ -5755,6 +5971,7 @@ function winClick(e){const b=e.target.closest("[data-act]");if(!b)return;const a
   else if(a==="maptab"){mapTab=b.dataset.v;renderWin()}
   else if(a==="tp")doTeleport(b.dataset.m)
   else if(a==="title")toast(t("title_soon_t"))
+  else if(a==="guildsoon")toast(t("lt_guild_soon"))
   else if(a==="gm"){S.gm=!S.gm;renderWin()}
   else if(a==="annSend"){const v=($("#annIn")||{}).value;if(v&&v.trim()){announce({from:"gm",name:AUTH.session?AUTH.session.name:"",raw:v.trim()});toast(t("ann_sent"),true);$("#annIn").value=""}}
   else if(a==="annPrev")announce({from:"sys",k:ANN_AUTO[annIdx++%ANN_AUTO.length]})
@@ -5770,6 +5987,7 @@ function winClick(e){const b=e.target.closest("[data-act]");if(!b)return;const a
   else if(a==="invtab"){invTab=b.dataset.v;if(invSortMode==="rarity"&&invTab!=="gear")invSortMode="name";invSel=null;invArm=null;winDet=null;renderWin()}
   else if(a==="invsel"){if(invMulti){invPick.has(b.dataset.k)?invPick.delete(b.dataset.k):invPick.add(b.dataset.k);renderWin()}else if(invSel===b.dataset.k&&winDet){invSel=null;winDet=null;renderWin()}else{invSel=b.dataset.k;eqSel=null;invQ=1;invArm=null;winDet="itemdet";renderWin()}}
   else if(a==="invmulti"){invMulti=!invMulti;invPick.clear();invSel=null;renderWin()}
+  else if(a==="invsellbtn"){if(invMulti&&invPickTotal().n){invSellMulti();invMulti=false;renderWin()}else{AUD.sfx("err");toast(t("lt_sell_hint"))}}
   else if(a==="invsellmulti")invSellMulti()
   else if(a==="invq")invStep(b.dataset.d)
   else if(a==="invuse")invUse()
@@ -5786,7 +6004,7 @@ function winClick(e){const b=e.target.closest("[data-act]");if(!b)return;const a
   else if(a==="skup")skRaise(b.dataset.id)
   else if(a==="tJob"){S.jlv=10;S.jexp=0;toast("Job Lv 10");renderWin();save()}
   else if(a==="tElite"){const q=S.q.arch,o=curObj("arch");if(q&&o&&o.t==="kill"){q.p=Math.min(o.n,q.p+10);if(q.p>=o.n)completeStage("arch");renderQuest();toast(`${t("qa_title")}: ${q.p}/${o.n}`)}else toast(t("tEliteNeed"));renderWin();save()}
-  else if(a==="st"){const k=b.dataset.k,c=REOC.raiseCost(S.stats[k]);if(S.stats[k]>=99||statFree()<c)return;S.stats[k]++;S.autoStat=false;S.hp=Math.min(S.hp,hpMax());renderWin();save()}
+  else if(a==="st")stRaise(b.dataset.k,+(b.dataset.n||1))
   else if(a==="stAuto"){S.autoStat=!S.autoStat;if(S.autoStat)S.stats=REOC.autoStats(S.arch,S.lv);S.hp=Math.min(S.hp,hpMax());S.sp=Math.min(S.sp,spMax());renderWin();save()}
   else if(a==="stReset"){S.stats={str:1,agi:1,vit:1,int:1,dex:1,luk:1};S.autoStat=false;S.hp=Math.min(S.hp,hpMax());S.sp=Math.min(S.sp,spMax());renderWin();save()}
   else if(a==="rwYes")settleIdle(true);
@@ -5804,6 +6022,20 @@ function winClick(e){const b=e.target.closest("[data-act]");if(!b)return;const a
   else if(a==="reset"){if(!resetArm){resetArm=true;renderWin();return}try{SLS.removeItem(SAVE_KEY);if(AUTH.isGuest)SLS.removeItem(OLD_KEY)}catch(_){}resetDone=true;location.reload()}
 }
 for(const sl of WSLOT){$("#"+sl.b).addEventListener("click",winClick);$("#"+sl.n).addEventListener("click",winClick)}
+/* v19.2: hold an inventory item (0.45 s) to start bulk-sell selection; the click that follows the hold is ignored */
+let _lpT=0,_lpEat=false,_lpXY=null;
+function lpCancel(){if(_lpT){clearTimeout(_lpT);_lpT=0}}
+$("#wins").addEventListener("pointerdown",e=>{
+  const c=e.target.closest&&e.target.closest(".inv-grid .ii[data-k]");lpCancel();_lpEat=false;if(!c)return;
+  const k=c.dataset.k;_lpXY=[e.clientX,e.clientY];
+  _lpT=setTimeout(()=>{_lpT=0;_lpEat=true;
+    if(!invMulti){invMulti=true;invPick.clear();invSel=null;if(winDet==="itemdet")winDet=null}
+    invPick.add(k);AUD.sfx("click");if(navigator.vibrate)try{navigator.vibrate(18)}catch(_){}
+    renderWin()},450);
+});
+$("#wins").addEventListener("pointermove",e=>{if(_lpT&&_lpXY&&Math.hypot(e.clientX-_lpXY[0],e.clientY-_lpXY[1])>10)lpCancel()});
+addEventListener("pointerup",lpCancel,true);addEventListener("pointercancel",lpCancel,true);
+$("#wins").addEventListener("contextmenu",e=>{if(e.target.closest&&e.target.closest(".inv-grid"))e.preventDefault()});
 let resetDone=false;
 (()=>{let d=null;
   for(const sl of WSLOT){const h=$("#"+sl.h),el=$("#"+sl.el);
@@ -6077,7 +6309,7 @@ function frame(now){
   try{
     pumpJobs(waiters.length?40:4);checkWaiters();
     update(dt);
-    if(W>=120&&H>=120&&cv.width>0){render();if(mmOpen)drawMini();if(winId==="char")drawDoll()}
+    if(W>=120&&H>=120&&cv.width>0){render();if(mmOpen)drawMini();if(winId)drawDoll()}
   }catch(e){showErr(e);try{ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.globalCompositeOperation="source-over"}catch(_){}}
   ldT-=dt;if(ldT<=0){ldT=.1;try{updateLoader(.1)}catch(_){}}
   requestAnimationFrame(frame);
@@ -6085,7 +6317,7 @@ function frame(now){
 $("#errReset").addEventListener("click",()=>{try{SLS.removeItem(SAVE_KEY);if(AUTH.isGuest)SLS.removeItem(OLD_KEY)}catch(_){}resetDone=true;location.reload()});
 $("#errHide").addEventListener("click",()=>$("#errBox").classList.add("hidden"));
 window.addEventListener("error",e=>showErr(e.error||e.message));
-window.__reo={skAvail,skRaise,skLvOf,lvFor,slotLv,buildSlots,skFix,volleys,balls,GATE,gateCheck,MON,MSK,castMonSkill,updateMon,gainItem,AUD,npcBlocked,staticBox,netExpand,applyUiMode,acceptQuest,closeWin,t,tpCost,doTeleport,announce,sortInventory,invMax,stopIdle,mapDist,gFull,GBASE,itemArt,GEAR_TINT,RARN,ITEMDB,equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
+window.__reo={skAvail,skRaise,skLvOf,lvFor,slotLv,buildSlots,skFix,volleys,balls,GATE,gateCheck,MON,MSK,castMonSkill,updateMon,gainItem,AUD,npcBlocked,staticBox,netExpand,applyUiMode,acceptQuest,closeWin,t,tpCost,doTeleport,announce,sortInventory,invMax,stopIdle,mapDist,gFull,GBASE,itemArt,GEAR_TINT,RARN,ITEMDB,equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setLang,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
 requestAnimationFrame(frame);
 };
 
