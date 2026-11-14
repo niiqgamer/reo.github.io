@@ -143,7 +143,7 @@ Full-screen page shown before the game. Dark violet background with floating cry
 
 ## 9. Window system (v15, after the Character Info reference)
 
-All menu windows share one look. It is always dark navy, whatever the page theme. **(v19.2: Character, Status, Inventory and Item Detail now use the light frame, see §17. The other windows stay navy.)**
+All menu windows share one look. It is always dark navy, whatever the page theme. **(v19.2: Character, Status, Inventory and Item Detail use the light frame, see §17. v19.6: every window uses it, in Light or Dim, see §21. The navy look is retired.)**
 
 **Frame:** rounded navy frame with a periwinkle border; a **periwinkle title bar** (bold white title, round close button); an inner darker panel for the content; and, for the character group, a **bottom bar** of three buttons.
 
@@ -212,7 +212,7 @@ Every earlier feature is still there; Status is where the old right-hand panel w
 - **Minimap:** zoom buttons have no text (tooltip only). The **World Map button** is in the **top-right corner** of the map frame (the Return to town button stays at the bottom left).
 - **Announcements** appear at the top centre (v18.3: there is no status row any more, so they sit at 12 px). **v19.1:** portrait moved to the bottom, see §16.
 - **Inventory:** tabs **Consumable > Equipment > Material > Quest** (no "All"; opens on Consumable). Bottom of the window, top to bottom: grid; one row with `Select many` and the page arrows `Page x/x`; last row with `Sort items` on the left and `Slots xx/100` plus `+ Expand slots` on the right. **Sort items** is one toggle: Name > Rarity (Equipment tab only) > Sell price, and each press sorts. Stars are the same small size as in the Character window and never overflow the cell. **(v19.2: tabs, page size and footer replaced, see §17.)**
-- **Settings > Graphic > UI Display Mode:** System, Light, Dim. It changes the panels on the main screen (the windows stay navy). Saved.
+- **Settings > Graphic > UI Display Mode:** System, Light, Dim. It changes the panels on the main screen (~~the windows stay navy~~ **v19.6:** and every window, see §21). Saved.
 
 
 ---
@@ -328,7 +328,7 @@ Every hit the player lands on a monster now plays a small pixel-art effect, repl
 
 ## 17. Light windows: Character, Status, Inventory (v19.2, after the user's reference image)
 
-These three windows, and the **Item Detail** window that opens from them, now use a **light frame**. Every other window (Skills, Quests, Shop, Settings, World Map, …) keeps the navy look of §9.
+These three windows, and the **Item Detail** window that opens from them, now use a **light frame**. ~~Every other window keeps the navy look of §9.~~ **v19.6:** every window uses this frame, with a Dim version, see §21.
 
 **Frame (all four windows)**
 - Light grey body `#e6e5e2`, white 1 px edge, soft shadow, 16 px corners.
@@ -445,3 +445,34 @@ The **Item Detail** window is renamed **Item Info** (Thai: ข้อมูลไ
 **Also in v19.5 (see §19):** the set name has its own line, followed by one line for the (3) bonus and one for the (6) bonus; the "Requirement" label is now **REQ** (Thai **เงื่อนไข**).
 
 **Tested:** 1440 × 860, 1920 × 1000 and 1100 × 760: the Inventory does not move when Item Info opens; double-click at normal speed equips the piece; Item Info stays 360 × 550 with no overflow; no script errors.
+
+---
+
+## 21. One window theme, Light and Dim (v19.6)
+
+**Every window** now uses the frame and pieces of §17: Character, Status, Inventory, Item Info, Skills, Quests, Party, Guild, Shop, Settings, World Map, Map Info, Idle Summary, Idle Settings, Idle reward and Choose your Archetype. The old navy window look is gone.
+
+**Follows Settings > Graphic > UI Display Mode**, like the main-screen panels:
+
+| Mode | Windows |
+|---|---|
+| **Light** | light grey frame `#e6e5e2`, white cards and cells, dark text `#1d2433` |
+| **Dim** | dark grey frame `#24272e`, cards and cells `#2f333c`, light text `#e9ebf1`, lines `#474d59` |
+| **System** | Light or Dim from the device's own light/dark setting |
+
+What stays the same in both: the blue title bars and accent (`#0a6fc2`, slightly brighter `#1d7fd8` in Dim), green / red / gold buttons and pills, rarity colours, item art, and the World Map chart (a dark star chart in both modes). The Inventory well is a deeper blue in Dim (`#17518d`). The setting's description now says it changes "the panels on the main screen and the menu windows" (Thai: "เปลี่ยนทั้งแผงบนหน้าจอหลักและหน้าต่างเมนู").
+
+**Shared pieces** (same look in every window):
+- **Section bars** (e.g. "Active skills", "In progress"): solid blue bar with white text; sub-sections (e.g. a map group in Quests) a darker blue.
+- **Rows and setting rows**: card colour, 1 px line, 10 px corners.
+- **Tabs and segmented choices** (Shop, Settings, Map Info): white (Dim: card colour) with a line; the selected one blue. Same as the Inventory tabs.
+- **Buttons**: neutral = card colour with a line; main = blue; danger = light red with red text.
+- **Switches**: grey when off, green when on. **Drop-down lists**: card colour with a line.
+- **"Soon" notes and badges** (Idle Settings): soft yellow box with dark gold text (Dim: dark gold box with light gold text).
+- **Stat tiles and item tiles** (Idle Summary, Idle reward): card colour with a line.
+
+**How it works (code):** all window colours are CSS variables `--w-*` set on `.win.lt` (the Light values), with the Dim values under `:root[data-theme="dark"] .win.lt` and, for System on a dark device, under `@media (prefers-color-scheme: dark)`. The `lt` class is now on every window (`LIGHT_W` matches all ids). The CSS of §17–§20 was changed to use these variables instead of fixed colours, and a few colours written by JavaScript in Item Info (item name, common rarity, category and REQ pills) use them too. New CSS block: `v19.6 window theme`.
+
+**Not changed:** the HUD itself (player card, minimap, status islands, hotbar, 3 × 3 menu buttons) already followed System / Light / Dim and keeps its own look.
+
+**Tested:** all 16 windows in Light and in Dim at 1440 × 860 (Idle reward only in its empty state, as there were no offline rewards to show); System mode on a device set to dark (Map Info and World Map); Idle Summary with sample data; phone 390 × 844 switching to Dim with the real Settings button (Settings, Inventory, Quests); the whole game inside a sandboxed iframe. No script errors.
