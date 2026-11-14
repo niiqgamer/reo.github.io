@@ -111,7 +111,7 @@ Equipped gear adds to the combat stats (`REOC.derive` with `gear`). Gear counts 
 2. **Class** = the piece's class. A class change moves other classes' gear to the bag.
 3. **Stat** (uncommon and above, not Beginner): primary stat ≥ `Lv × 0.5 + 6`.
 
-Failing requirements show ✗ in the details; the Equip button stays disabled.
+Failing requirements show ✗ in the details; the Equip button stays disabled. *(v19.4: a failed requirement shows as a red pill in Item Info, and double-click to equip shows "cannot equip".)*
 
 ### Refine (ตีบวก)
 - Costs **1 Refine Ore** and a fee of **50% of the piece's sell price** (Scandium).
@@ -153,7 +153,7 @@ A drop's tier = the monster's level rounded down to a multiple of 10 (minimum Lv
 - **Tabs:** Everything · Equipment · Consumable · Material · Quest. *(Superseded: see Inventory v19.2.)*
 - **Grid:** each item shows its icon, count, refine level (**+N at the top-right corner**) and star tier (★ along the bottom) with its frame colour. Refine and stars never overlap.
 - **Details:** name, rarity, class and slot, stats (equipment), requirements (✓ / ✗), sell price.
-- **Buttons:**
+- **Buttons:** *(v19.4: Use / Equip by double-click, Discard removed, Refine only for worn pieces — see the v19.4 section at the end.)*
   - **Use** (consumables).
   - **Equip** (equipment; disabled until all requirements pass). Swapping moves the old piece to the bag.
   - **Refine** (equipment; shows how many Refine Ore you have).
@@ -200,4 +200,12 @@ Drop chances, Refine Ore chances (6–10%) and sources are in `FIELD-GEOSYNCLINE
 - **Pages:** **30 cells per page** (5 × 6 grid, as in the reference), per tab. Capacity rules (100 base, +20 per pack, max 500) are unchanged.
 - **Bulk sell:** **hold an item for 0.45 s** to start selecting (it is ticked). While selecting, tap more items to add or remove them; the footer shows `n selected · total Sc` and a **Cancel** button. **Sell** sells everything ticked in one action (quest items are skipped, as before). Sell with nothing ticked shows the hint "Hold an item to start selecting." The old "Sell in bulk" toggle button is gone.
 - **Sort:** same toggle as before (Name > Rarity in Equipments only > Price); the label reads `Sort by Name / Rarity / Price` (just `Sort` before the first press).
-- A normal tap still opens the Item Detail window (Use / Equip / Refine / Sell / Discard).
+- A normal tap still opens the item window (**v19.4:** now **Item Info**, see the section below).
+
+## Item Info, lock and double-click (v19.4)
+Window layout: `UI-UX.md` §19. Rule changes:
+- **Use / Equip by double-click** (double-tap on phones) on the Inventory cell or the Item Info icon. The Use and Equip buttons are gone.
+- **Lock** (equipment only): button under the icon in Item Info. A locked piece cannot be sold one by one or in bulk (skipped, with a toast). Stored on the piece (`lock:true`), kept when equipped or taken off.
+- **Discard is removed.** Sell replaces it. Quest items still cannot be sold.
+- **Refine** is only offered for a worn piece (Character window → Item Info → Refine). Pieces in the bag show Compare and Sell only.
+- **Compare ON/OFF** toggle replaces the always-on comparison block of v11; when ON, unchanged stats are listed too (with `-`).

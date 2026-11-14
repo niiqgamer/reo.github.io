@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rare Earth Online — Gadolinium</title>
-<meta name="reo-version" content="19.3">
+<meta name="reo-version" content="19.4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1375,6 +1375,58 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .win.lt .eqs .lvt,.win.lt .eqs .rf,.win.lt .inv-fix .ii-rf,.win.lt .inv-fix .ii b{z-index:2}
 .win.lt .eqs .rf{position:absolute;right:4px;top:2px;left:auto;bottom:auto}
 .P .win.lt .eqs .cs,.P .win.lt .inv-fix .ii-st{font-size:9.5px}
+/* v19.4 Item Info (fixed 360 x 550, no scroll) */
+#wins .win.lt[data-w=itemdet]{--wiw:360px;--wih:550px;width:360px;height:550px;max-height:100%}
+.win.lt[data-w=itemdet] .win-b{overflow:hidden}
+.win.lt[data-w=itemdet] .win-h{font-size:22px;margin-bottom:8px}
+.inf{display:grid;grid-template-columns:72px minmax(0,1fr);gap:6px;align-items:start}
+.inf-l{display:flex;flex-direction:column;gap:6px}
+.inf-ic{width:72px;height:72px;padding:6px;border:1px solid #b9b8b5;border-radius:12px;background:#fff;cursor:pointer;display:grid;place-items:center}
+.inf-ic svg{width:100%;height:100%;display:block}
+.inf-lock{display:flex;align-items:center;justify-content:center;gap:4px;height:26px;border:0;border-radius:7px;background:#2fb34a;color:#fff;font:inherit;font-size:11px;font-weight:700;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.inf-lock svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.6}
+.inf-lock.on{background:#d9a21c}
+.inf-r{min-width:0;display:flex;flex-direction:column;gap:8px}
+.inf-card{background:#fff;border:1px solid #b9b8b5;border-radius:12px;padding:8px 10px 8px;display:flex;flex-direction:column;min-height:160px}
+.inf-name{font-size:16px;font-weight:700;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.inf-ref{font-size:13px;color:#a8780e}
+.inf-tags{display:flex;align-items:center;flex-wrap:wrap;gap:3px;margin-top:2px;min-height:15px}
+.inf-stars{font-size:11px;letter-spacing:-.5px;line-height:1}
+.inf-pill{display:inline-block;padding:0 6px;border-radius:7px;background:#3a3f4a;color:#fff;font-size:9.5px;font-weight:700;line-height:14px;letter-spacing:.02em;white-space:nowrap}
+.inf-hint{font-size:10.5px;font-weight:600;color:#0a6fc2}
+.inf-req{display:flex;align-items:center;flex-wrap:wrap;gap:3px;margin-top:4px;font-size:11px;font-weight:600}
+.inf-req>span:first-child{margin-right:2px}
+.inf-hr{height:3px;margin:6px 0;border-radius:2px;background:linear-gradient(90deg,#b9b8b5,#d6d5d2 80%,#e9e8e5)}
+.inf-hr.end{margin-top:auto;margin-bottom:5px}
+.inf-desc{margin:2px 0 8px;font-size:12.5px;line-height:1.45;color:#1d2433}
+.inf-cmp-h{font-size:11px;font-style:italic;color:#d23a4a;line-height:1.3}
+.inf-cmp-n{font-size:11px;font-style:italic;color:#c08a5a;line-height:1.3;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inf-rows{display:flex;flex-direction:column}
+.inf-rows>div{display:grid;grid-template-columns:minmax(0,1fr) auto 44px;gap:6px;align-items:center;font-size:12.5px;line-height:17px}
+.inf-rows:not(.cmp)>div{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr) minmax(0,.5fr)}
+.inf-rows>div>span:first-child{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inf-rows:not(.cmp) b{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.inf-rows .o{color:#8a8f99;font-size:11.5px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.inf-rows.cmp b{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.inf-rows b.up{color:#1c9a52}.inf-rows b.down{color:#d23a4a}
+.inf-rows .ab>span:first-child{color:#6a44c8}
+.inf-set{font-size:10.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.inf-price{display:flex;justify-content:flex-end}
+.inf-price .inf-pill{font-size:11px;line-height:20px;padding:0 9px;border-radius:9px;font-weight:600}
+.inf-act{display:flex;align-items:center;gap:5px;min-height:30px}
+.inf-act .grow{flex:1}
+.inf-b{height:30px;padding:0 10px;border:0;border-radius:8px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;background:#fff;color:#1d2433;box-shadow:0 1px 0 rgba(0,0,0,.15)}
+.inf-b.blue{background:#0a6fc2;color:#fff}.inf-b.green{background:#2fb34a;color:#fff}
+.inf-b.sell{min-width:76px;background:#fde6e9;color:#c8364a;border:1px solid #f6c2ca;box-shadow:none}
+.inf-b.sell:not(:disabled):hover{background:#fbd3d9}
+.inf-b:disabled{opacity:.45;cursor:default}
+.inf-qty{display:flex;align-items:center;gap:4px}
+.inf-qty button{width:28px;height:28px;border:1px solid #c9c8c4;border-radius:7px;background:#fff;font:inherit;font-size:15px;font-weight:700;color:#1d2433;cursor:pointer}
+.inf-qty button.mx{width:auto;padding:0 4px;font-size:9.5px}
+.inf-qty b{min-width:20px;text-align:center;font-size:12px;font-weight:600}
+.win.lt .ii-lk{position:absolute;left:3px;top:3px;width:15px;height:15px;border-radius:5px;background:#d9a21c;display:grid;place-items:center;z-index:2}
+.win.lt .ii-lk svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2.8}
+.P #wins .win.lt[data-w=itemdet]{width:min(360px,calc(100vw - 16px));height:550px}
 /* phones */
 .P #wins .win.lt{padding:8px}
 .P .win.lt .win-h{font-size:21px}
@@ -2519,6 +2571,10 @@ D2.en.npcr_helper="ARCHETYPE";D2.th.npcr_helper="อาร์คีไทป์"
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
 /* v19.2 light windows (Character / Status / Inventory) */
+Object.assign(D.en,{w_itemdet:"Item Info",inf_req:"Requirement",inf_lock:"LOCK",inf_locked:"LOCKED",inf_cmp_on:"Compare ON",inf_cmp_off:"Compare OFF",inf_cmp_with:"Compared with equipped",inf_cmp_none:"Nothing equipped in this slot",
+ inf_dbl_use:"Double-click to use it.",inf_dtap_use:"Double-tap to use it.",inf_c_use:"Usable",inf_c_mat:"Other",inf_c_quest:"Quest",inf_c_cash:"Cash",inf_locked_t:"This item is locked.",inf_lock_t:"Locked: it can't be sold.",inf_unlock_t:"Unlocked."});
+Object.assign(D.th,{w_itemdet:"ข้อมูลไอเท็ม",inf_req:"ต้องการ",inf_lock:"ล็อก",inf_locked:"ล็อกอยู่",inf_cmp_on:"เทียบ เปิด",inf_cmp_off:"เทียบ ปิด",inf_cmp_with:"เทียบกับที่สวมอยู่",inf_cmp_none:"ช่องนี้ยังไม่ได้สวมอะไร",
+ inf_dbl_use:"ดับเบิลคลิกเพื่อใช้",inf_dtap_use:"แตะสองครั้งเพื่อใช้",inf_c_use:"ใช้ได้",inf_c_mat:"อื่น ๆ",inf_c_quest:"เควสต์",inf_c_cash:"แคช",inf_locked_t:"ไอเท็มนี้ถูกล็อกไว้",inf_lock_t:"ล็อกแล้ว: ขายไม่ได้",inf_unlock_t:"ปลดล็อกแล้ว"});
 Object.assign(D.en,{lt_basic:"Basic Equipment",lt_costume:"Costume Equipment",lt_cp:"COMBAT POINT (CP)",lt_notitle:"NO TITLE",lt_noguild:"NO GUILD",lt_guild_soon:"Guilds are coming soon.",
  lt_name:"Name",lt_lvjob:"Level | Job",lt_arch:"Archetype",lt_class:"Class",lt_job:"Job",lt_noclass:"No Class",lt_nojob:"No Job",lt_noarch:"No Archetype",lt_trial:"Archetype Trial",
  lt_basic_st:"Basic Status",lt_reset:"Reset Status",lt_auto:"Auto",lt_left:"Status Point Left",lt_add1:"Raise by 1",lt_add10:"Raise by up to 10",lt_cost:"Points needed for the next +1",
@@ -2620,7 +2676,8 @@ const IC={
  aim:'<circle cx="11" cy="13" r="7"/><circle cx="11" cy="13" r="3"/><path d="M15 9l5.5-5.5M17.5 3.5h3v3"/>',
  clover:'<circle cx="8" cy="8" r="3.4"/><circle cx="16" cy="8" r="3.4"/><circle cx="8" cy="16" r="3.4"/><circle cx="16" cy="16" r="3.4"/>',
  sparkle:'<path d="M12 3c.6 4.5 2.5 6.4 7 7-4.5.6-6.4 2.5-7 7-.6-4.5-2.5-6.4-7-7 4.5-.6 6.4-2.5 7-7z"/><path d="M19 15.5c.3 1.6.9 2.2 2.5 2.5-1.6.3-2.2.9-2.5 2.5-.3-1.6-.9-2.2-2.5-2.5 1.6-.3 2.2-.9 2.5-2.5z"/>',
- castle:'<path d="M4 21V9h3V6h2v3h6V6h2v3h3v12z"/><path d="M10 21v-5h4v5"/>'
+ castle:'<path d="M4 21V9h3V6h2v3h6V6h2v3h3v12z"/><path d="M10 21v-5h4v5"/>',
+ note:'<path d="M5 4h9l3 3v4M5 4v16h12v-3"/><path d="M8 9h5M8 12h4M8 15h3"/><path d="M19.5 10.5l1.8 1.8-6.8 6.8-2.6.8.8-2.6z"/>'
 };
 const svg=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]}</svg>`;
 
@@ -3692,7 +3749,7 @@ function equipUid(uid){
   const g=S.bag[i];if(!gReqs(g.id).every(x=>x.ok)){toast(t("eq_cannot"));return}
   const sl=equipSlotOf(g.id),old=S.equip[sl];
   S.bag.splice(i,1);if(old)S.bag.push(old);
-  S.equip[sl]={uid:g.uid,id:g.id,ref:g.ref||0,roll:g.roll||null};
+  S.equip[sl]={uid:g.uid,id:g.id,ref:g.ref||0,roll:g.roll||null};if(g.lock)S.equip[sl].lock=true;   // v19.4: the lock travels with the piece
   toast(fmt("eq_done",{n:gName(g.id)}));
   afterGearChange();
 }
@@ -3743,7 +3800,7 @@ function invSellMulti(){
   AUD.sfx("coin");
   let n=0,total=0,skipped=0;
   for(const k of [...invPick]){const e=invFind(k);invPick.delete(k);if(!e)continue;
-    if(e.cat==="quest"){skipped++;continue}
+    if(e.cat==="quest"||e.lock){skipped++;continue}
     const q=e.cat==="gear"?1:e.qty,price=itemPrice(e.id,e.ref);
     invRemove(e,q);total+=price*q;n++}
   S.sc+=total;invSel=null;invArm=null;
@@ -3756,23 +3813,23 @@ const INV_PAGE=30;   // v19.2: 5 x 6 cells per page, as in the reference
 const INV_TABS=[["use",["Usable","ใช้ได้"]],["gear",["Equipments","อุปกรณ์"]],["mat",["Other","อื่น ๆ"]],["quest",["Quest","เควสต์"]],["cash",["Cash","แคช"]]];   // Cash: items flagged cash:true in ITEMDB (none yet)
 let invSortMode=null;
 function invEntries(){
-  const L=[];for(const g of S.bag)L.push({k:"g:"+g.uid,id:g.id,qty:1,ref:g.ref||0,cat:"gear",uid:g.uid});
+  const L=[];for(const g of S.bag)L.push({k:"g:"+g.uid,id:g.id,qty:1,ref:g.ref||0,cat:"gear",uid:g.uid,lock:!!g.lock});
   for(const id in S.inv)if(S.inv[id]>0)L.push({k:"i:"+id,id,qty:S.inv[id],cat:itemCat(id)});
   return L.filter(e=>invTab==="all"||e.cat===invTab);
 }
 function invFind(k){
   if(!k)return null;const key=k.slice(2);
   if(k[0]==="i"){const q=S.inv[key];return q>0?{k,id:key,qty:q,cat:itemCat(key)}:null}
-  const g=S.bag.find(x=>x.uid===key);return g?{k,id:g.id,qty:1,ref:g.ref||0,cat:"gear",uid:key,roll:g.roll}:null;
+  const g=S.bag.find(x=>x.uid===key);return g?{k,id:g.id,qty:1,ref:g.ref||0,cat:"gear",uid:key,roll:g.roll,lock:!!g.lock}:null;
 }
 /* what the item-detail window shows: a piece that is worn (picked on the Character window) or something in the bag */
 function detEntry(){
-  if(eqSel){const it=S.equip[eqSel];return it?{k:"e:"+eqSel,id:it.id,qty:1,ref:it.ref||0,cat:"gear",uid:it.uid,roll:it.roll,equipped:true,slot:eqSel}:null}
+  if(eqSel){const it=S.equip[eqSel];return it?{k:"e:"+eqSel,id:it.id,qty:1,ref:it.ref||0,cat:"gear",uid:it.uid,roll:it.roll,lock:!!it.lock,equipped:true,slot:eqSel}:null}
   return invSel?invFind(invSel):null;
 }
 function invCell(e){
   const col=itemColor(e.id),sel=invSel===e.k?" sel":"",p=e.cat==="gear"?gParse(e.id):null;
-  return `<button class="ii${sel}${invPick.has(e.k)?" pick":""}" data-act="invsel" data-k="${e.k}" style="--rc:${col}" title="${itemName(e.id)}"><span class="ii-ic">${itemArt(e.id)}</span>${p?`<span class="ii-st" style="--sc:${RARN[p.r-1][2]}">${"★".repeat(p.r)}</span>`:""}${e.cat!=="gear"&&e.qty>1?`<b>${num(e.qty)}</b>`:""}${e.ref?`<span class="ii-rf">+${e.ref}</span>`:""}</button>`;
+  return `<button class="ii${sel}${invPick.has(e.k)?" pick":""}" data-act="invsel" data-k="${e.k}" style="--rc:${col}" title="${itemName(e.id)}"><span class="ii-ic">${itemArt(e.id)}</span>${p?`<span class="ii-st" style="--sc:${RARN[p.r-1][2]}">${"★".repeat(p.r)}</span>`:""}${e.cat!=="gear"&&e.qty>1?`<b>${num(e.qty)}</b>`:""}${e.ref?`<span class="ii-rf">+${e.ref}</span>`:""}${e.lock?`<span class="ii-lk">${svg("lock")}</span>`:""}</button>`;
 }
 function invWin(){
   const all=invEntries(),pages=Math.max(1,Math.ceil(Math.max(all.length,1)/INV_PAGE)),pg=Math.max(0,Math.min(invPage[invTab]|0,pages-1));invPage[invTab]=pg;
@@ -3802,41 +3859,81 @@ function sortInventory(mode){
   const keys=Object.keys(S.inv).sort((a,b)=>cmp({id:a,ref:0},{id:b,ref:0})),n={};for(const k of keys)n[k]=S.inv[k];S.inv=n;
   for(const k in invPage)invPage[k]=0;
 }
+/* v19.4: Item Info window (after the user's reference): icon + LOCK on the left, white info card on the right, action row under the card. Fixed 360 x 550, no scroll. */
+let detCmp=false;   // Compare ON / OFF, kept for the session
+const INF_STAT_K=["atk","matk","def","hp","sp","hit","flee","crit","hardDef"],INF_PCT_K=["atkPct","matkPct","defPct","hpPct","healPct"];
+const ucf=k=>k[0].toUpperCase()+k.slice(1);
+/* rows for the stat table: [{label,val}] or, compared, [{label,old,nw,diff,cls}] (unchanged lines are kept, with "-") */
+function infRows(it,old,cmp){
+  const a=gFull(it),b=cmp?(old?gFull(old):mkMods()):null,R=[];
+  const pf=(k,v)=>MOD_PCT.has(k)||k.endsWith("Pct")?`${(v*100).toFixed(1).replace(/\.0$/,"")}%`:k==="crit"?(Math.round(v*10)/10).toFixed(1):num(Math.round(v));
+  const df=(k,d)=>{const sg=d>0?"+":"";return MOD_PCT.has(k)||k.endsWith("Pct")?`${sg}${(d*100).toFixed(1).replace(/\.0$/,"")}%`:k==="crit"?`${sg}${(Math.round(d*10)/10).toFixed(1)}`:`${sg}${num(Math.round(d))}`};
+  const add=(label,k,av,bv)=>{
+    if(!cmp){if(av)R.push({label,val:pf(k,av)});return}
+    if(!av&&!bv)return;const d=av-bv,same=Math.abs(d)<1e-9;
+    R.push({label,old:bv?pf(k,bv):"—",nw:av?pf(k,av):"—",diff:same?"-":df(k,d),cls:same?"":d>0?"up":"down"})};
+  const L=k=>MODLBL[k]?(lang==="th"?MODLBL[k][1]:MODLBL[k][0]):k;
+  for(const k of INF_STAT_K)add(k==="hardDef"?"DEF%":L(k),k,a[k],b?b[k]:0);
+  for(const k of AFF_ATTR)add(ucf(k),k,a.attr[k],b?b.attr[k]:0);
+  for(const k of INF_PCT_K)add(L(k)+"%",k,a[k]||0,b?b[k]||0:0);
+  const ids=new Set([...Object.keys(a.ab),...(b?Object.keys(b.ab):[])]);
+  for(const id of ids){const ab=ABIL_BY_ID[id],av=a.ab[id]||0,bv=b?b.ab[id]||0:0,f=v=>ab.unit==="%"?`${v.toFixed(1)}%`:`${Math.round(v)}`,lb=lang==="th"?ab.th:ab.en;
+    if(!cmp){if(av)R.push({label:lb,val:f(av),ab:1});continue}
+    const d=av-bv,same=Math.abs(d)<1e-9;R.push({label:lb,old:bv?f(bv):"—",nw:av?f(av):"—",diff:same?"-":(d>0?"+":"")+(ab.unit==="%"?d.toFixed(1)+"%":Math.round(d)),cls:same?"":d>0?"up":"down",ab:1})}
+  return R;
+}
+const infPill=(txt,bg,cls)=>`<span class="inf-pill${cls?" "+cls:""}"${bg?` style="background:${bg}"`:""}>${txt}</span>`;
+const INF_CAT={use:"#0a6fc2",mat:"#3a3f4a",quest:"#a8780e",cash:"#7a3fc8"};
 function invDetail(e){
-  const isG=e.cat==="gear",col=itemColor(e.id);
-  let h=`<div class="det-top"><span class="det-art">${itemArt(e.id)}</span><div class="det-h" style="color:${col}">${itemName(e.id)}</div></div>`;
+  const isG=e.cat==="gear",col=itemColor(e.id),touch=matchMedia("(pointer:coarse)").matches;
+  let card="";
   if(isG){
-    const p=gParse(e.id),rar=RARN[p.r-1];
-    h+=`<div class="det-meta"><span class="stars" style="color:${col}">${"★".repeat(p.r)}</span> ${lang==="th"?rar[1]:rar[0]} · ${t("sl_"+equipSlotOf(e.id))} · ${t("ar_"+p.arch)}${e.ref?` · +${e.ref}`:""}</div>`;
-    h+=`<div class="det-stats">${gDescLines(e).map(x=>`<div class="${x.t==="ab"?"ab":""}">${x.s}</div>`).join("")}</div><div class="det-set"><b>${setName(e.id)}</b> · ${setDescLines(p).join(" · ")}</div>`;
-    if(!e.equipped)h+=`<div class="det-req">${gReqs(e.id).map(r=>`<div class="${r.ok?"ok":"no"}">${r.ok?"✓":"✗"} ${r.txt}</div>`).join("")}</div>`;
-  }else h+=`<div class="det-meta">${t("cat_"+e.cat)}</div><p class="det-desc">${itemDesc(e.id)}</p>`;
-  if(e.equipped){   // a worn piece: take it off or refine it
-    h+=`<div class="det-price">${t("price")}: <b>${num(itemPrice(e.id,e.ref))} Sc</b></div>`;
-    return h+`<div class="det-btns"><button class="btn" data-act="unequip" data-s="${e.slot}">${t("btn_unequip")}</button><button class="btn pri" data-act="eqrefine" data-s="${e.slot}">${t("btn_refine")} (${num(S.inv.refine_ore||0)})</button></div>`;
+    const p=gParse(e.id),rar=RARN[p.r-1],rc=p.r===1?"#5d6474":rar[2];
+    card+=`<div class="inf-name" style="color:${rc}">${esc(itemName(e.id))}${e.ref?` <span class="inf-ref">+${e.ref}</span>`:""}</div>`;
+    card+=`<div class="inf-tags"><span class="inf-stars" style="color:${rc}">${"★".repeat(p.r)}</span>${infPill((lang==="th"?rar[1]:rar[0]).toUpperCase(),rc)}${infPill(t("sl_"+equipSlotOf(e.id)).toUpperCase(),"#12a39a")}</div>`;
+    card+=`<div class="inf-req"><span>${t("inf_req")}</span>${gReqs(e.id).map((r,i)=>infPill(i===0?"LV"+p.L:i===1?t("ar_"+p.arch).toUpperCase():PRIMARY[p.arch].toUpperCase()+Math.round(p.L*.5+6),r.ok||e.equipped?"#2b303b":"#d23a4a")).join("")}</div>`;
+    card+=`<div class="inf-hr"></div>`;
+    const old=e.equipped?null:S.equip[equipSlotOf(e.id)],cmp=detCmp&&!e.equipped;
+    if(cmp)card+=`<div class="inf-cmp-h">${t("inf_cmp_with")}</div><div class="inf-cmp-n">${old?esc(itemName(old.id))+(old.ref?" +"+old.ref:""):t("inf_cmp_none")}</div>`;
+    const rows=infRows({id:e.id,ref:e.ref||0,roll:e.roll},old,cmp);
+    card+=`<div class="inf-rows${cmp?" cmp":""}">${rows.map(r=>cmp?`<div class="${r.ab?"ab":""}"><span>${r.label}</span><span class="o">${r.old}→${r.nw}</span><b class="${r.cls}">${r.diff}</b></div>`:`<div class="${r.ab?"ab":""}"><span>${r.label}</span><b>${r.val}</b><i></i></div>`).join("")||`<div class="muted">—</div>`}</div>`;
+    card+=`<div class="inf-hr"></div><div class="inf-set" style="color:${rc}">${infPill(esc(setName(e.id)).toUpperCase(),rc)} <span>${setDescLines(p).map(x=>x.replace(/^(\d):\s*/,"($1) ")).join(" | ")}</span></div>`;
+  }else{
+    const d=ITEMDB[e.id],cc=INF_CAT[e.cat]||"#3a3f4a";
+    card+=`<div class="inf-name" style="color:${e.cat==="use"?"#0a6fc2":"#1d2433"}">${esc(itemName(e.id))}</div>`;
+    card+=`<div class="inf-tags">${infPill(t("inf_c_"+e.cat).toUpperCase(),cc)}${e.cat==="use"?`<span class="inf-hint">${t(touch?"inf_dtap_use":"inf_dbl_use")}</span>`:""}</div><div class="inf-hr"></div>`;
+    card+=`<p class="inf-desc">${itemDesc(e.id)}</p>`;
   }
   const q=isG?1:Math.max(1,Math.min(invQ,e.qty)),price=itemPrice(e.id,e.ref);
-  h+=`<div class="det-price">${t("price")}: <b>${num(price)} Sc</b>${q>1?` · ${num(price*q)} Sc`:""}</div>`;
-  if(!isG)h+=`<div class="qty"><button data-act="invq" data-d="-1">−</button><b>${q}</b><button data-act="invq" data-d="1">+</button><button data-act="invq" data-d="max">${t("btn_max")}</button></div>`;
-  let b="";
-  if(e.cat==="use")b+=`<button class="btn pri" data-act="invuse" data-k="${e.k}">${t("btn_use")}</button>`;
-  if(isG){const ok=gReqs(e.id).every(x=>x.ok);
-    b+=`<button class="btn pri" data-act="inveq" data-k="${e.k}" ${ok?"":"disabled"}>${t("btn_equip")}</button>`;
-    b+=`<button class="btn" data-act="invrefine" data-k="${e.k}">${t("btn_refine")} (${num(S.inv.refine_ore||0)})</button>`}
-  b+=`<button class="btn" data-act="invsell" data-k="${e.k}" ${e.cat==="quest"?"disabled":""}>${t("btn_sell")}</button>`;
-  b+=`<button class="btn danger" data-act="invdisc" data-k="${e.k}" ${e.cat==="quest"?"disabled":""}>${t(invArm===e.k?"btn_disc_confirm":"btn_discard")}</button>`;
-  if(isG)h+=gCompareHtml(e);
-  return h+`<div class="det-btns">${b}</div>`+(e.cat==="quest"?`<p class="muted">${t("quest_nosell")}</p>`:"");
+  card+=`<div class="inf-hr end"></div><div class="inf-price">${infPill(e.cat==="quest"?"—":`${num(price*q)} Scandium`,"#a8780e")}</div>`;
+  const icon=`<button class="inf-ic" data-act="infdbl" data-k="${e.k}" title="${itemName(e.id)}">${itemArt(e.id)}</button>`;
+  const lock=isG?`<button class="inf-lock${e.lock?" on":""}" data-act="invlock">${svg("lock")}${t(e.lock?"inf_locked":"inf_lock")}</button>`:"";
+  let act;
+  if(e.equipped)act=`<button class="inf-b" data-act="unequip" data-s="${e.slot}">${t("btn_unequip")}</button><span class="grow"></span><button class="inf-b blue" data-act="eqrefine" data-s="${e.slot}">${t("btn_refine")} (${num(S.inv.refine_ore||0)})</button>`;
+  else{
+    const noSell=e.cat==="quest"||e.lock;
+    const sell=`<button class="inf-b sell" data-act="invsell" data-k="${e.k}" ${noSell?"disabled":""} title="${e.cat==="quest"?t("quest_nosell"):e.lock?t("inf_locked_t"):""}">${t("lt_sell")}</button>`;
+    act=isG?`<button class="inf-b ${detCmp?"green":"blue"}" data-act="detcmp">${t(detCmp?"inf_cmp_on":"inf_cmp_off")}</button><span class="grow"></span>${sell}`
+      :`<span class="grow"></span><div class="inf-qty"><button data-act="invq" data-d="-1">−</button><b>${q}</b><button data-act="invq" data-d="1">+</button><button class="mx" data-act="invq" data-d="max">${t("btn_max")}</button></div>${sell}`;
+  }
+  return `<div class="inf"><div class="inf-l">${icon}${lock}</div><div class="inf-r"><div class="inf-card">${card}</div><div class="inf-act">${act}</div></div></div>`;
 }
-
+/* double-click (double-tap) on a cell or on the Item Info icon: use a consumable, equip a piece */
+let _dblK=null,_dblT=0,_dblXY=null;
+function invDouble(k){const e=invFind(k);if(!e)return;
+  if(e.cat==="use"){invSel=k;invUse();return}
+  if(e.cat==="gear"){if(!gReqs(e.id).every(x=>x.ok)){AUD.sfx("err");toast(t("eq_cannot"));return}invSel=null;winDet=null;equipUid(e.uid);renderWin()}}
+function invToggleLock(){const e=detEntry();if(!e||e.cat!=="gear")return;
+  const o=e.equipped?S.equip[e.slot]:S.bag.find(g=>g.uid===e.uid);if(!o)return;
+  o.lock=!o.lock;if(!o.lock)delete o.lock;AUD.sfx("click");toast(t(o.lock?"inf_lock_t":"inf_unlock_t"));renderWin();save()}
 function invRemove(e,q){
   if(e.cat==="gear"){S.bag=S.bag.filter(x=>x.uid!==e.uid);return}
   S.inv[e.id]=Math.max(0,(S.inv[e.id]||0)-q);
 }
 function invUse(){const e=invFind(invSel);if(!e||e.cat!=="use")return;invRemove(e,1);useItem(e.id);renderWin();renderHotbar();save()}
 function invSell(){
+  const e=invFind(invSel);if(!e||e.cat==="quest"||e.lock)return;
   AUD.sfx("coin");
-  const e=invFind(invSel);if(!e||e.cat==="quest")return;
   const q=e.cat==="gear"?1:Math.max(1,Math.min(invQ,e.qty)),price=itemPrice(e.id,e.ref);
   invRemove(e,q);S.sc+=price*q;toast(fmt("sold_t",{n:num(price*q)}));
   invQ=1;invSel=(e.cat!=="gear"&&S.inv[e.id]>0)?invSel:null;renderWin();save();
@@ -5706,7 +5803,7 @@ function winSig(id){
     default:return "";
   }}catch(e){return ""}
 }
-const LIGHT_W=new Set(["char","status","inv","itemdet"]),W_IC={char:"person",status:"pillars",inv:"backpack"};
+const LIGHT_W=new Set(["char","status","inv","itemdet"]),W_IC={char:"person",status:"pillars",inv:"backpack",itemdet:"note"};
 function drawSlot(sl,id,portrait){
   const el=$("#"+sl.el),B=$("#"+sl.b);el.classList.remove("hidden");el.dataset.w=id;
   const key=id+"|"+(id==="char"?charView:id==="itemdet"?(eqSel||invSel||""):id==="mapinfo"?mapSel+"|"+mapTab:""),top=B.scrollTop;
@@ -5956,7 +6053,9 @@ document.addEventListener("change",e=>{   // hotbar setup (Skills window): pick 
   if(sel.dataset.part==="id")S.hot[i]=sel.value?{id:sel.value,lv:0}:null;else if(S.hot[i])S.hot[i].lv=+sel.value|0;
   S.hotArch=S.arch;buildSlots();renderWin();save();
 });
-function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;
+function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[data-act]");
+  /* v19.4 double-click: the second click of a double-click may land on whatever slid under the pointer (an empty cell, another window) when a window opened or moved */
+  if(_dblK&&!invMulti&&(!b||(b.dataset.act!=="invsel"&&b.dataset.act!=="infdbl"))&&performance.now()-_dblT<380&&_dblXY&&Math.hypot(e.clientX-_dblXY[0],e.clientY-_dblXY[1])<8){const k=_dblK;_dblT=0;if(k[0]!=="e"){invSel=k;eqSel=null;winDet="itemdet";invDouble(k)}return}if(!b)return;const a=b.dataset.act;
   if(a==="uimode"){S.uiMode=b.dataset.v;applyUiMode();renderWin();save()}
   else if(a==="nav")navTo(b.dataset.w);
   else if(a==="invpage"){invPage[invTab]=Math.max(0,(invPage[invTab]|0)+ +b.dataset.d);renderWin()}
@@ -5985,7 +6084,14 @@ function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[d
   else if(a==="accUpgrade"){onLeave();AUTH.goRegister()}
   else if(a==="accDelete"){if(!accArm){accArm=true;renderWin();return}resetDone=true;AUTH.deleteAccount()}
   else if(a==="invtab"){invTab=b.dataset.v;if(invSortMode==="rarity"&&invTab!=="gear")invSortMode="name";invSel=null;invArm=null;winDet=null;renderWin()}
-  else if(a==="invsel"){if(invMulti){invPick.has(b.dataset.k)?invPick.delete(b.dataset.k):invPick.add(b.dataset.k);renderWin()}else if(invSel===b.dataset.k&&winDet){invSel=null;winDet=null;renderWin()}else{invSel=b.dataset.k;eqSel=null;invQ=1;invArm=null;winDet="itemdet";renderWin()}}
+  else if(a==="invsel"){const now=performance.now(),near=_dblXY&&Math.hypot(e.clientX-_dblXY[0],e.clientY-_dblXY[1])<8,dbl=!invMulti&&_dblK&&now-_dblT<380&&near;   // same spot within 0.38 s: the window may have shifted under the pointer, so act on the first cell
+    const k=dbl?_dblK:b.dataset.k;_dblK=k;_dblT=dbl?0:now;_dblXY=[e.clientX,e.clientY];
+    if(invMulti){const e=invFind(k);if(e&&e.lock&&!invPick.has(k)){AUD.sfx("err");toast(t("inf_locked_t"));return}invPick.has(k)?invPick.delete(k):invPick.add(k);renderWin()}
+    else if(dbl){invSel=k;eqSel=null;winDet="itemdet";invDouble(k)}
+    else if(invSel===k&&winDet){invSel=null;winDet=null;renderWin()}else{invSel=k;eqSel=null;invQ=1;invArm=null;winDet="itemdet";renderWin()}}
+  else if(a==="infdbl"){const k=b.dataset.k,now=performance.now();if(k===_dblK&&now-_dblT<380){_dblT=0;if(k[0]!=="e")invDouble(k)}else{_dblK=k;_dblT=now;_dblXY=[e.clientX,e.clientY]}}
+  else if(a==="invlock")invToggleLock()
+  else if(a==="detcmp"){detCmp=!detCmp;renderWin()}
   else if(a==="invmulti"){invMulti=!invMulti;invPick.clear();invSel=null;renderWin()}
   else if(a==="invsellbtn"){if(invMulti&&invPickTotal().n){invSellMulti();invMulti=false;renderWin()}else{AUD.sfx("err");toast(t("lt_sell_hint"))}}
   else if(a==="invsellmulti")invSellMulti()
@@ -6030,7 +6136,7 @@ $("#wins").addEventListener("pointerdown",e=>{
   const k=c.dataset.k;_lpXY=[e.clientX,e.clientY];
   _lpT=setTimeout(()=>{_lpT=0;_lpEat=true;
     if(!invMulti){invMulti=true;invPick.clear();invSel=null;if(winDet==="itemdet")winDet=null}
-    invPick.add(k);AUD.sfx("click");if(navigator.vibrate)try{navigator.vibrate(18)}catch(_){}
+    {const e=invFind(k);if(e&&e.lock){AUD.sfx("err");toast(t("inf_locked_t"))}else invPick.add(k)}AUD.sfx("click");if(navigator.vibrate)try{navigator.vibrate(18)}catch(_){}
     renderWin()},450);
 });
 $("#wins").addEventListener("pointermove",e=>{if(_lpT&&_lpXY&&Math.hypot(e.clientX-_lpXY[0],e.clientY-_lpXY[1])>10)lpCancel()});

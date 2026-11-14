@@ -393,3 +393,39 @@ Applies to the **Character** equipment slots and the **Inventory** cells (both u
 - `Lv` tag stays top-left, refine `+N` top-right, stack count bottom-right; all drawn above the art.
 - **Phones:** the five Inventory tabs use 10.5 px text and less padding so "Equipments" is no longer cut to "Equipme…" (checked at 360 px width).
 - Code: one small CSS block inside the `v19.2 light windows` block, marked `v19.3`. No JavaScript changed.
+
+---
+
+## 19. Item Info window (v19.4, replaces Item Detail; after the user's reference image)
+
+The **Item Detail** window is renamed **Item Info** (Thai: ข้อมูลไอเท็ม) and redrawn. It opens from the Inventory (tap an item) and from the Character window (tap a worn piece).
+
+**Size:** fixed **360 × 550 px**, never scrolls (`overflow: hidden`). On phones the width shrinks to the screen (minus 16 px) and the height stays 550 px. Tested with a Legendary +7 weapon in compare mode (the longest case): the content fits with no overflow.
+
+**Title bar:** note-and-pencil icon + "Item Info", white close button (same light frame as §17).
+
+**Layout**
+- **Left column (72 px):** the item icon in a white rounded box. Equipment also gets a **LOCK** button under it (green; when locked it turns amber and reads **LOCKED**; tap again to unlock).
+- **Right: white info card**, top to bottom:
+  1. **Name**, bold, in the rarity colour (consumables blue, other items dark). Refine shows as gold `+N` after the name.
+  2. **Tags:** equipment: stars + rarity pill (e.g. `LEGENDARY`, rarity colour) + slot pill (e.g. `WEAPON`, teal). Consumable: blue `USABLE` pill + "Double-click to use it." (phones: "Double-tap to use it."). Other items: dark pill `OTHER` / `QUEST` / `CASH`.
+  3. **Requirement** (equipment): dark pills `LV50`, `FIGHTER`, `STR31`. A requirement you do not meet turns its pill red.
+  4. Double line, then **description** (items) or the **stat table** (equipment): name on the left, value right-aligned in the middle. Abilities (Crit damage, Lifesteal, …) are in violet.
+  5. Double line, then the **set line**: set name in a rarity-coloured pill and its bonuses, written `(3) … | (6) …`.
+  6. Double line, then the **price** in a gold pill at the bottom right, e.g. `10,296 Scandium`. For stacks it is price × the chosen quantity.
+- **Action row under the card:**
+  - Consumables and other items: `−  1  +  MAX` and a light-pink **Sell** button.
+  - Equipment in the bag: **Compare OFF** (blue) / **Compare ON** (green) on the left, **Sell** on the right.
+  - A worn piece (opened from Character): **Unequip** on the left, blue **Refine (ore count)** on the right.
+
+**Compare ON** (equipment in the bag): the table shows "Compared with equipped" (red, italic) and the worn piece's name (tan, italic), then for every stat either piece has: `old→new` in grey and the difference in green (gain) or red (loss), `-` when unchanged, `—` when a piece lacks that stat. With nothing worn in that slot: "Nothing equipped in this slot" and every stat counts as new. The ON/OFF choice is kept while the game is open.
+
+**Double-click / double-tap** (new): on an Inventory cell or on the Item Info icon. A consumable is **used**, an equipment piece is **equipped** (if the requirements fail you get the usual "cannot equip" toast). The two clicks must be within 0.38 s and within 8 px; the second click counts even if a window moved under the pointer when Item Info opened.
+
+**Lock** (new, equipment only): a locked piece cannot be sold (Sell is greyed out, with a tooltip), cannot be picked for bulk sell (a toast says it is locked), and bulk sell skips it if it was picked before. The Inventory cell shows a small amber lock badge in the top-left corner. The lock is stored on the piece (`lock:true`) and stays with it when it is equipped or taken off.
+
+**Removed from this window** (not in the reference): the **Use** and **Equip** buttons (now double-click), **Refine for pieces in the bag** (refine a piece after equipping it, from the Character window), **Discard** (Sell replaces it), and the requirement ✓/✗ list (now the pills).
+
+**Code:** `invDetail()` rewritten; new `infRows()`, `invDouble()`, `invToggleLock()`, `detCmp`; click handlers `invsel` (double-click), `infdbl`, `invlock`, `detcmp`; a check at the top of `winClick` for the second click of a double-click; `lock` carried through `invEntries`, `invFind`, `detEntry`, `equipUid`; `invSell` and `invSellMulti` skip locked pieces. CSS block `v19.4 Item Info`.
+
+**Tested** (desktop 1440 × 860): consumable, material, Legendary +7 weapon with Compare OFF and ON, locked weapon (Sell disabled, lock badge on the cell), worn piece from Character (Unequip / Refine), double-click to use a Red Potion (3 → 2) and to equip a weapon, window always 360 × 550 with no overflow, no script errors.
