@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rare Earth Online — Gadolinium</title>
-<meta name="reo-version" content="19.4">
+<meta name="reo-version" content="19.5">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1410,7 +1410,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .inf-rows.cmp b{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
 .inf-rows b.up{color:#1c9a52}.inf-rows b.down{color:#d23a4a}
 .inf-rows .ab>span:first-child{color:#6a44c8}
-.inf-set{font-size:10.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.inf-set{font-size:10.5px;font-weight:600;line-height:1.4}
+.inf-set .inf-pill{margin-bottom:2px}
+.inf-set>div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .inf-price{display:flex;justify-content:flex-end}
 .inf-price .inf-pill{font-size:11px;line-height:20px;padding:0 9px;border-radius:9px;font-weight:600}
 .inf-act{display:flex;align-items:center;gap:5px;min-height:30px}
@@ -2571,9 +2573,9 @@ D2.en.npcr_helper="ARCHETYPE";D2.th.npcr_helper="อาร์คีไทป์"
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
 /* v19.2 light windows (Character / Status / Inventory) */
-Object.assign(D.en,{w_itemdet:"Item Info",inf_req:"Requirement",inf_lock:"LOCK",inf_locked:"LOCKED",inf_cmp_on:"Compare ON",inf_cmp_off:"Compare OFF",inf_cmp_with:"Compared with equipped",inf_cmp_none:"Nothing equipped in this slot",
+Object.assign(D.en,{w_itemdet:"Item Info",inf_req:"REQ",inf_lock:"LOCK",inf_locked:"LOCKED",inf_cmp_on:"Compare ON",inf_cmp_off:"Compare OFF",inf_cmp_with:"Compared with equipped",inf_cmp_none:"Nothing equipped in this slot",
  inf_dbl_use:"Double-click to use it.",inf_dtap_use:"Double-tap to use it.",inf_c_use:"Usable",inf_c_mat:"Other",inf_c_quest:"Quest",inf_c_cash:"Cash",inf_locked_t:"This item is locked.",inf_lock_t:"Locked: it can't be sold.",inf_unlock_t:"Unlocked."});
-Object.assign(D.th,{w_itemdet:"ข้อมูลไอเท็ม",inf_req:"ต้องการ",inf_lock:"ล็อก",inf_locked:"ล็อกอยู่",inf_cmp_on:"เทียบ เปิด",inf_cmp_off:"เทียบ ปิด",inf_cmp_with:"เทียบกับที่สวมอยู่",inf_cmp_none:"ช่องนี้ยังไม่ได้สวมอะไร",
+Object.assign(D.th,{w_itemdet:"ข้อมูลไอเท็ม",inf_req:"เงื่อนไข",inf_lock:"ล็อก",inf_locked:"ล็อกอยู่",inf_cmp_on:"เทียบ เปิด",inf_cmp_off:"เทียบ ปิด",inf_cmp_with:"เทียบกับที่สวมอยู่",inf_cmp_none:"ช่องนี้ยังไม่ได้สวมอะไร",
  inf_dbl_use:"ดับเบิลคลิกเพื่อใช้",inf_dtap_use:"แตะสองครั้งเพื่อใช้",inf_c_use:"ใช้ได้",inf_c_mat:"อื่น ๆ",inf_c_quest:"เควสต์",inf_c_cash:"แคช",inf_locked_t:"ไอเท็มนี้ถูกล็อกไว้",inf_lock_t:"ล็อกแล้ว: ขายไม่ได้",inf_unlock_t:"ปลดล็อกแล้ว"});
 Object.assign(D.en,{lt_basic:"Basic Equipment",lt_costume:"Costume Equipment",lt_cp:"COMBAT POINT (CP)",lt_notitle:"NO TITLE",lt_noguild:"NO GUILD",lt_guild_soon:"Guilds are coming soon.",
  lt_name:"Name",lt_lvjob:"Level | Job",lt_arch:"Archetype",lt_class:"Class",lt_job:"Job",lt_noclass:"No Class",lt_nojob:"No Job",lt_noarch:"No Archetype",lt_trial:"Archetype Trial",
@@ -3897,7 +3899,7 @@ function invDetail(e){
     if(cmp)card+=`<div class="inf-cmp-h">${t("inf_cmp_with")}</div><div class="inf-cmp-n">${old?esc(itemName(old.id))+(old.ref?" +"+old.ref:""):t("inf_cmp_none")}</div>`;
     const rows=infRows({id:e.id,ref:e.ref||0,roll:e.roll},old,cmp);
     card+=`<div class="inf-rows${cmp?" cmp":""}">${rows.map(r=>cmp?`<div class="${r.ab?"ab":""}"><span>${r.label}</span><span class="o">${r.old}→${r.nw}</span><b class="${r.cls}">${r.diff}</b></div>`:`<div class="${r.ab?"ab":""}"><span>${r.label}</span><b>${r.val}</b><i></i></div>`).join("")||`<div class="muted">—</div>`}</div>`;
-    card+=`<div class="inf-hr"></div><div class="inf-set" style="color:${rc}">${infPill(esc(setName(e.id)).toUpperCase(),rc)} <span>${setDescLines(p).map(x=>x.replace(/^(\d):\s*/,"($1) ")).join(" | ")}</span></div>`;
+    card+=`<div class="inf-hr"></div><div class="inf-set" style="color:${rc}">${infPill(esc(setName(e.id)).toUpperCase(),rc)}${setDescLines(p).map(x=>{const v=x.replace(/^(\d):\s*/,"($1) ");return `<div title="${esc(v)}">${v}</div>`}).join("")}</div>`;   // v19.5: name, then (3) on one line and (6) on the next
   }else{
     const d=ITEMDB[e.id],cc=INF_CAT[e.cat]||"#3a3f4a";
     card+=`<div class="inf-name" style="color:${e.cat==="use"?"#0a6fc2":"#1d2433"}">${esc(itemName(e.id))}</div>`;
@@ -5820,7 +5822,23 @@ function renderWin(){
   wins.classList.remove("hidden");const portrait=stage.classList.contains("P");
   wins.classList.toggle("three",!!(winSide&&winDet));wins.classList.toggle("pair",!!winSide);
   for(const sl of WSLOT){const id=slotWin(sl.k);if(id)drawSlot(sl,id,portrait);else $("#"+sl.el).classList.add("hidden")}
+  placeDet();
 }
+/* v19.5: Item Info is taken out of the row of windows and placed beside them, so opening it never shifts the other windows
+   (they stay where they were, and a double-click lands on the same item). Right side first, then left, else over the right edge. */
+function placeDet(){
+  const wins=$("#wins");let det=null;const others=[];
+  for(const sl of WSLOT){const el=$("#"+sl.el);if(el.classList.contains("hidden"))continue;if(el.dataset.w==="itemdet")det=el;else others.push(el)}
+  for(const sl of WSLOT){const el=$("#"+sl.el);if(el!==det&&el.dataset.placed){el.dataset.placed="";el.style.cssText=""}}
+  if(!det)return;
+  if(stage.classList.contains("P")||!others.length){if(det.dataset.placed){det.dataset.placed="";det.style.cssText=""}return}
+  det.dataset.placed="1";det.style.position="absolute";det.style.right="auto";det.style.transform="none";det.style.margin="0";
+  const ww=wins.clientWidth,wh=wins.clientHeight,W=det.offsetWidth,H=det.offsetHeight;
+  let minL=1e9,maxR=-1e9;for(const el of others){minL=Math.min(minL,el.offsetLeft);maxR=Math.max(maxR,el.offsetLeft+el.offsetWidth)}
+  let x=maxR+12;if(x+W>ww-8){x=minL-12-W;if(x<8)x=ww-W-8}
+  det.style.left=Math.max(8,x)+"px";det.style.top=Math.max(8,(wh-H)/2)+"px";
+}
+addEventListener("resize",()=>{if(winDet)placeDet()});
 /* live updates: any open window redraws itself as soon as the data it shows changes (no closing and reopening) */
 function watchWins(dt){
   _wwT+=dt;if(_wwT<.25)return;_wwT=0;

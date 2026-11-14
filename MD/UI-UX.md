@@ -409,9 +409,9 @@ The **Item Detail** window is renamed **Item Info** (Thai: ข้อมูลไ
 - **Right: white info card**, top to bottom:
   1. **Name**, bold, in the rarity colour (consumables blue, other items dark). Refine shows as gold `+N` after the name.
   2. **Tags:** equipment: stars + rarity pill (e.g. `LEGENDARY`, rarity colour) + slot pill (e.g. `WEAPON`, teal). Consumable: blue `USABLE` pill + "Double-click to use it." (phones: "Double-tap to use it."). Other items: dark pill `OTHER` / `QUEST` / `CASH`.
-  3. **Requirement** (equipment): dark pills `LV50`, `FIGHTER`, `STR31`. A requirement you do not meet turns its pill red.
+  3. **REQ** (equipment; Thai **เงื่อนไข**; was "Requirement" before v19.5): dark pills `LV50`, `FIGHTER`, `STR31`. A requirement you do not meet turns its pill red.
   4. Double line, then **description** (items) or the **stat table** (equipment): name on the left, value right-aligned in the middle. Abilities (Crit damage, Lifesteal, …) are in violet.
-  5. Double line, then the **set line**: set name in a rarity-coloured pill and its bonuses, written `(3) … | (6) …`.
+  5. Double line, then the **set**: the set name in a rarity-coloured pill on its own line, then **one line for the 3-piece bonus** `(3) …` and **one line for the 6-piece bonus** `(6) …` (v19.5; before, all on one line as `(3) … | (6) …`). A line too long for the card ends with "…" and shows in full on hover.
   6. Double line, then the **price** in a gold pill at the bottom right, e.g. `10,296 Scandium`. For stacks it is price × the chosen quantity.
 - **Action row under the card:**
   - Consumables and other items: `−  1  +  MAX` and a light-pink **Sell** button.
@@ -420,7 +420,7 @@ The **Item Detail** window is renamed **Item Info** (Thai: ข้อมูลไ
 
 **Compare ON** (equipment in the bag): the table shows "Compared with equipped" (red, italic) and the worn piece's name (tan, italic), then for every stat either piece has: `old→new` in grey and the difference in green (gain) or red (loss), `-` when unchanged, `—` when a piece lacks that stat. With nothing worn in that slot: "Nothing equipped in this slot" and every stat counts as new. The ON/OFF choice is kept while the game is open.
 
-**Double-click / double-tap** (new): on an Inventory cell or on the Item Info icon. A consumable is **used**, an equipment piece is **equipped** (if the requirements fail you get the usual "cannot equip" toast). The two clicks must be within 0.38 s and within 8 px; the second click counts even if a window moved under the pointer when Item Info opened.
+**Double-click / double-tap** (new): on an Inventory cell or on the Item Info icon. A consumable is **used**, an equipment piece is **equipped** (if the requirements fail you get the usual "cannot equip" toast). The two clicks must be within 0.38 s and within 8 px. Since v19.5 the windows no longer move when Item Info opens (§20); the safety check that counts a second click landing on something else is kept.
 
 **Lock** (new, equipment only): a locked piece cannot be sold (Sell is greyed out, with a tooltip), cannot be picked for bulk sell (a toast says it is locked), and bulk sell skips it if it was picked before. The Inventory cell shows a small amber lock badge in the top-left corner. The lock is stored on the piece (`lock:true`) and stays with it when it is equipped or taken off.
 
@@ -429,3 +429,19 @@ The **Item Detail** window is renamed **Item Info** (Thai: ข้อมูลไ
 **Code:** `invDetail()` rewritten; new `infRows()`, `invDouble()`, `invToggleLock()`, `detCmp`; click handlers `invsel` (double-click), `infdbl`, `invlock`, `detcmp`; a check at the top of `winClick` for the second click of a double-click; `lock` carried through `invEntries`, `invFind`, `detEntry`, `equipUid`; `invSell` and `invSellMulti` skip locked pieces. CSS block `v19.4 Item Info`.
 
 **Tested** (desktop 1440 × 860): consumable, material, Legendary +7 weapon with Compare OFF and ON, locked weapon (Sell disabled, lock badge on the cell), worn piece from Character (Unequip / Refine), double-click to use a Red Potion (3 → 2) and to equip a weapon, window always 360 × 550 with no overflow, no script errors.
+
+---
+
+## 20. Item Info no longer pushes the windows (v19.5)
+
+**Problem:** the open windows sit in one centred row. Opening Item Info added a window to that row, so every other window slid sideways, and the second click of a double-click landed on a different item.
+
+**Fix (desktop and tablet landscape):** Item Info is taken out of the row (`position: absolute`) and placed **beside** the open windows, so the others stay exactly where they were (checked: Inventory left edge 500 px before and after, item cell moved 0 px).
+- Placement order: **right** of the open windows (12 px gap) → if that does not fit, **left** of them → if neither fits (narrow screens, e.g. 1100 px wide), over the right edge of the screen, 8 px in.
+- Vertically centred in the play area. It is placed again when the screen is resized.
+- **Phones (portrait):** unchanged, Item Info still opens as a centred pop-up over the windows.
+- Code: new `placeDet()`, called at the end of `renderWin()` and on `resize`.
+
+**Also in v19.5 (see §19):** the set name has its own line, followed by one line for the (3) bonus and one for the (6) bonus; the "Requirement" label is now **REQ** (Thai **เงื่อนไข**).
+
+**Tested:** 1440 × 860, 1920 × 1000 and 1100 × 760: the Inventory does not move when Item Info opens; double-click at normal speed equips the piece; Item Info stays 360 × 550 with no overflow; no script errors.
