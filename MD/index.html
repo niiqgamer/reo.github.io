@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rare Earth Online — Gadolinium</title>
-<meta name="reo-version" content="19.6">
+<meta name="reo-version" content="19.7">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1374,6 +1374,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .win.lt .eqs .cs,.win.lt .inv-fix .ii-st{position:absolute;left:0;right:0;top:auto;bottom:2px;transform:none;width:auto;height:auto;margin:0;display:block;text-align:center;font-size:11px;line-height:1;letter-spacing:-.4px;white-space:nowrap;z-index:2;pointer-events:none}
 .win.lt .eqs .lvt,.win.lt .eqs .rf,.win.lt .inv-fix .ii-rf,.win.lt .inv-fix .ii b{z-index:2}
 .win.lt .eqs .rf{position:absolute;right:4px;top:2px;left:auto;bottom:auto}
+/* v19.7: refine level is a blue island in the top-right corner, Lv a dark island top-left (after the user's mock) */
+.win.lt .eqs .rf,.win.lt .inv-fix .ii-rf{position:absolute;top:0;right:0;left:auto;bottom:auto;padding:2px 6px 3px 7px;border-radius:0 0 0 10px;
+ background:linear-gradient(180deg,#2b8ae6,#0a6fc2);color:#fff;font-size:13px;font-weight:800;line-height:1;letter-spacing:-.2px;
+ text-shadow:0 1px 0 rgba(0,40,90,.35);box-shadow:-1px 1px 3px rgba(0,0,0,.25);z-index:3}
+.win.lt .eqs .lvt{top:0;left:0;padding:3px 6px 3px 5px;border-radius:0 0 10px 0;background:rgba(29,36,51,.86);color:#fff;font-size:11px;font-weight:700;line-height:1;z-index:3}
+.P .win.lt .eqs .rf,.P .win.lt .inv-fix .ii-rf{font-size:11px;padding:2px 5px 2px 6px}
+.P .win.lt .eqs .lvt{font-size:9.5px}
+.inf-name .inf-ref{display:inline-block;vertical-align:2px;padding:1px 6px;border-radius:7px;background:#0a6fc2;color:#fff;font-size:11.5px;font-weight:800;line-height:1.3}
 .P .win.lt .eqs .cs,.P .win.lt .inv-fix .ii-st{font-size:9.5px}
 /* v19.4 Item Info (fixed 360 x 550, no scroll) */
 #wins .win.lt[data-w=itemdet]{--wiw:360px;--wih:550px;width:360px;height:550px;max-height:100%}
@@ -1408,7 +1416,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .inf-rows:not(.cmp) b{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
 .inf-rows .o{color:var(--w-ink2);font-size:11.5px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .inf-rows.cmp b{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
-.inf-rows b.up{color:#1c9a52}.inf-rows b.down{color:#d23a4a}
+.inf-rows b.up{color:var(--w-good)}.inf-rows b.down{color:var(--w-bad)}
 .inf-rows .ab>span:first-child{color:#6a44c8}
 .inf-set{font-size:10.5px;font-weight:600;line-height:1.4}
 .inf-set .inf-pill{margin-bottom:2px}
@@ -1460,7 +1468,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .win.lt{--good:var(--w-good);--bad:var(--w-bad);color-scheme:light}
 :root[data-theme="dark"] .win.lt{color-scheme:dark}
 @media (prefers-color-scheme:dark){:root:not([data-theme]) .win.lt{color-scheme:dark}}
-.win.lt .win-b,.win.lt .win-b b,.win.lt .win-b p{color:var(--w-ink)}
+.win.lt .win-b{color:var(--w-ink)}   /* v19.7: body only; b/p inherit it, so green/red diffs and white pill text keep their colour */
 .win.lt .muted,.win.lt small,.win.lt .row small,.win.lt .srow .sl small{color:var(--w-ink2)}
 .inf-b.sell{background:var(--w-sell-bg);border-color:var(--w-sell-line);color:var(--w-sell-ink)}
 .inf-b.sell:not(:disabled):hover{background:var(--w-sell-bg);filter:brightness(1.05)}

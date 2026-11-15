@@ -390,7 +390,7 @@ Applies to the **Character** equipment slots and the **Inventory** cells (both u
 
 - **Art fills the cell:** the item art is centred and stretched to the cell, with a 5% margin on the left, right and top and 13% at the bottom (room for the stars). Before, the art was a fixed 42 px (Character) or 70% (Inventory) and in Inventory it sat towards the top-left.
 - **Stars (rarity) bottom-centre** in both windows: 11 px (9.5 px on phones), drawn above the art. Before, Character had them at the bottom-left.
-- `Lv` tag stays top-left, refine `+N` top-right, stack count bottom-right; all drawn above the art.
+- `Lv` tag stays top-left, refine `+N` top-right, stack count bottom-right; all drawn above the art. **(v19.7: Lv and refine are now corner islands, see §22.)**
 - **Phones:** the five Inventory tabs use 10.5 px text and less padding so "Equipments" is no longer cut to "Equipme…" (checked at 360 px width).
 - Code: one small CSS block inside the `v19.2 light windows` block, marked `v19.3`. No JavaScript changed.
 
@@ -407,7 +407,7 @@ The **Item Detail** window is renamed **Item Info** (Thai: ข้อมูลไ
 **Layout**
 - **Left column (72 px):** the item icon in a white rounded box. Equipment also gets a **LOCK** button under it (green; when locked it turns amber and reads **LOCKED**; tap again to unlock).
 - **Right: white info card**, top to bottom:
-  1. **Name**, bold, in the rarity colour (consumables blue, other items dark). Refine shows as gold `+N` after the name.
+  1. **Name**, bold, in the rarity colour (consumables blue, other items dark). Refine shows as `+N` after the name (v19.7: a small blue pill, see §22).
   2. **Tags:** equipment: stars + rarity pill (e.g. `LEGENDARY`, rarity colour) + slot pill (e.g. `WEAPON`, teal). Consumable: blue `USABLE` pill + "Double-click to use it." (phones: "Double-tap to use it."). Other items: dark pill `OTHER` / `QUEST` / `CASH`.
   3. **REQ** (equipment; Thai **เงื่อนไข**; was "Requirement" before v19.5): dark pills `LV50`, `FIGHTER`, `STR31`. A requirement you do not meet turns its pill red.
   4. Double line, then **description** (items) or the **stat table** (equipment): name on the left, value right-aligned in the middle. Abilities (Crit damage, Lifesteal, …) are in violet.
@@ -418,7 +418,7 @@ The **Item Detail** window is renamed **Item Info** (Thai: ข้อมูลไ
   - Equipment in the bag: **Compare OFF** (blue) / **Compare ON** (green) on the left, **Sell** on the right.
   - A worn piece (opened from Character): **Unequip** on the left, blue **Refine (ore count)** on the right.
 
-**Compare ON** (equipment in the bag): the table shows "Compared with equipped" (red, italic) and the worn piece's name (tan, italic), then for every stat either piece has: `old→new` in grey and the difference in green (gain) or red (loss), `-` when unchanged, `—` when a piece lacks that stat. With nothing worn in that slot: "Nothing equipped in this slot" and every stat counts as new. The ON/OFF choice is kept while the game is open.
+**Compare ON** (equipment in the bag): the table shows "Compared with equipped" (red, italic) and the worn piece's name (tan, italic), then for every stat either piece has: `old→new` in grey and the difference in green (gain) or red (loss), `-` when unchanged, `—` when a piece lacks that stat. (v19.6 accidentally turned the green/red into plain text colour; fixed in v19.7, see §22.) With nothing worn in that slot: "Nothing equipped in this slot" and every stat counts as new. The ON/OFF choice is kept while the game is open.
 
 **Double-click / double-tap** (new): on an Inventory cell or on the Item Info icon. A consumable is **used**, an equipment piece is **equipped** (if the requirements fail you get the usual "cannot equip" toast). The two clicks must be within 0.38 s and within 8 px. Since v19.5 the windows no longer move when Item Info opens (§20); the safety check that counts a second click landing on something else is kept.
 
@@ -476,3 +476,22 @@ What stays the same in both: the blue title bars and accent (`#0a6fc2`, slightly
 **Not changed:** the HUD itself (player card, minimap, status islands, hotbar, 3 × 3 menu buttons) already followed System / Light / Dim and keeps its own look.
 
 **Tested:** all 16 windows in Light and in Dim at 1440 × 860 (Idle reward only in its empty state, as there were no offline rewards to show); System mode on a device set to dark (Map Info and World Map); Idle Summary with sample data; phone 390 × 844 switching to Dim with the real Settings button (Settings, Inventory, Quests); the whole game inside a sandboxed iframe. No script errors.
+
+---
+
+## 22. Compare colours and refine islands (v19.7)
+
+**1. Compare: better in green, worse in red (bug fix).** In Item Info with **Compare ON**, the difference column shows **green** when the new piece is better (`+…`) and **red** when it is worse (`−…`). The colours had stopped showing in v19.6: a general rule that set the text colour of every bold word in a window (`.win.lt .win-b b`) overrode them. That rule now sets the colour of the window body only, and bold text inherits it, so coloured text keeps its own colour again. The same fix brings back the white text in the green **Status Point Left** pill.
+- Light mode: green `#1c9a52`, red `#d23a4a`. Dim mode: brighter green `#6fe0a0`, red `#ff8d9b`, so they read well on the dark card.
+- The label column stays in the normal text colour and `old→new` stays grey, as in the user's mock.
+
+**2. Refine level as a blue island** (after the user's mock), on the **Character** slots and **Inventory** cells:
+- `+N` sits in a **blue island in the top-right corner** (blue gradient, white bold 13 px text, rounded bottom-left corner, small shadow), flush with the cell edge.
+- `Lv N` (Character slots) is the matching **dark island in the top-left corner**.
+- Phones: 11 px (Lv 9.5 px).
+- **Item Info:** the `+N` after the item name is a small blue pill too.
+- Same in Light and Dim.
+
+**Code:** CSS only. The body text rule in the `v19.6 window theme` block, the compare diff colours (now `var(--w-good)` / `var(--w-bad)`), and a `v19.7` CSS block for the islands and the name pill.
+
+**Tested** (Light and Dim, 1440 × 860): computed colours of the compare differences (green for gains, red for losses, in both modes); refine islands on Inventory cells (+2 to +10) and on worn pieces in Character (+10, +3); Status Point Left pill text white again; Skills, Quests, Shop, Settings, Idle Settings and Choose your Archetype checked unchanged; no script errors.
