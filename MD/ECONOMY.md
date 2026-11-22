@@ -54,6 +54,22 @@ All three are named after rare-earth elements.
 
 ---
 
+## 4. Party rewards (v20.3)
+
+Applies to monster kills (`killMon`). Idle and offline rewards are not changed yet.
+
+- **Size bonus** (EXP, Items and Scandium you receive): each extra member adds to the bonus. 2 people +5% · 3 +12% · 4 +21% · 5 +32% · 6 +47% (the step per member is +5, +7, +9, +11, +15, added together). The bonus applies even when nothing is shared. Table: `PT_BONUS` in `index.html`.
+- **Level gap**: a party needs `max level − min level ≤ 20`. The invite is refused if it would break this. If a level-up breaks it later, the bonus and sharing pause until it is back in range (the Party tab says so).
+- **EXP sharing** (leader setting):
+  - *Off*: you get `EXP × (1 + bonus)`.
+  - *Split equally*: the party pool is `EXP × (1 + bonus)`, split evenly, so you get `EXP × (1 + bonus) ÷ members`. Example, 2 people, 20 EXP: Off → 21 · Split → 10.5 each.
+- **Item & Scandium sharing** (leader setting; Scandium follows this setting):
+  - *Off*: you keep your own drops. In the simulation the simulated members deal no damage, so you always have the top damage and get the loot.
+  - *On*: drops rotate through `[you, members…]`, one item or Scandium pile at a time. Turns that belong to a member go to that member (shown in the Party chat).
+- **Item quantity bonus**: a stack `q` becomes `q × (1 + bonus)`, rounded stochastically so the average is exact. Gear gets one extra piece with chance = bonus.
+
+---
+
 ## Open questions
 
 1. How is Lanthanum obtained — real-money purchase only, or also from play?

@@ -2689,17 +2689,19 @@ Object.assign(D2.en,{m_social:"Social",soc_friends:"Friends",tab_wsp:"Whisper",s
  fr_online:"Online",fr_offline:"Offline",fr_none:"No friends yet. Right-click another player to add them.",fr_count:"Friends {n}/{m}",fr_del:"Remove",fr_delSure:"Sure?",
  wsp_ph:"Type a message…",wsp_empty:"Say hi to {n}. Only the two of you can see this chat.",wsp_new:"{n} whispered to you."});
 Object.assign(D2.en,{ctx_ptCreate:"Create a party",ctx_ptInvite:"Invite to party",ctx_gdInvite:"Invite to guild",pt_invPending:"Invite sent",pt_member:"Party member",
- pt_create:"Create a party",pt_createNote:"Name your party, then right-click other players to invite them. Up to {n} members.",pt_namePh:"{n}’s party",pt_createBtn:"Create",pt_nameShort:"The party name needs at least 2 letters.",
+ pt_create:"Create a party",pt_createNote:"Name your party, then right-click other players to invite them. Up to {n} members.",pt_namePh:"Party name (2–10 characters)",pt_createBtn:"Create",pt_nameShort:"The party name needs 2–10 characters.",
  pt_created:"Party “{n}” created.",pt_leader:"Leader",pt_count:"Members {n}/{m}",pt_kick:"Remove",pt_leave:"Leave",pt_disband:"Disband",pt_inviteNote:"Right-click another player and choose Invite to party.",pt_fullNote:"The party is full.",
  pt_hasParty:"{n} is already in a party.",pt_full:"Your party is full ({n} members).",pt_invSent:"Party invite sent to {n}.",pt_joined:"{n} joined the party.",pt_kicked:"{n} was removed from the party.",pt_left:"You left the party.",pt_disbanded:"The party was disbanded.",
  gd_none:"No guild yet",gd_noneNote:"Creating and joining guilds is coming soon.",gd_members:"{n} members",gd_rank_master:"Guild master",gd_rank_officer:"Officer",gd_rank_member:"Member",gd_inviteNote:"Right-click another player and choose Invite to guild.",gd_noPerm:"Only the guild master and officers can invite.",
  gd_hasGuild:"{n} is already in a guild.",gd_invSent:"Guild invite sent to {n}.",gd_joined:"{n} joined the guild."});
 Object.assign(D2.th,{ctx_ptCreate:"สร้างปาร์ตี้",ctx_ptInvite:"ชวนเข้าปาร์ตี้",ctx_gdInvite:"ชวนเข้ากิลด์",pt_invPending:"ส่งคำเชิญแล้ว",pt_member:"สมาชิกปาร์ตี้",
- pt_create:"สร้างปาร์ตี้",pt_createNote:"ตั้งชื่อปาร์ตี้ แล้วคลิกขวาที่ผู้เล่นคนอื่นเพื่อชวนเข้าปาร์ตี้ สมาชิกสูงสุด {n} คน",pt_namePh:"ปาร์ตี้ของ {n}",pt_createBtn:"สร้าง",pt_nameShort:"ชื่อปาร์ตี้ต้องมีอย่างน้อย 2 ตัวอักษร",
+ pt_create:"สร้างปาร์ตี้",pt_createNote:"ตั้งชื่อปาร์ตี้ แล้วคลิกขวาที่ผู้เล่นคนอื่นเพื่อชวนเข้าปาร์ตี้ สมาชิกสูงสุด {n} คน",pt_namePh:"ชื่อปาร์ตี้ (2–10 ตัวอักษร)",pt_createBtn:"สร้าง",pt_nameShort:"ชื่อปาร์ตี้ต้องมี 2–10 ตัวอักษร",
  pt_created:"สร้างปาร์ตี้ “{n}” แล้ว",pt_leader:"หัวหน้าปาร์ตี้",pt_count:"สมาชิก {n}/{m}",pt_kick:"เตะออก",pt_leave:"ออกจากปาร์ตี้",pt_disband:"ยุบปาร์ตี้",pt_inviteNote:"คลิกขวาที่ผู้เล่นคนอื่นแล้วเลือก ชวนเข้าปาร์ตี้",pt_fullNote:"ปาร์ตี้เต็มแล้ว",
  pt_hasParty:"{n} มีปาร์ตี้อยู่แล้ว",pt_full:"ปาร์ตี้เต็มแล้ว ({n} คน)",pt_invSent:"ส่งคำเชิญเข้าปาร์ตี้ถึง {n} แล้ว",pt_joined:"{n} เข้าร่วมปาร์ตี้แล้ว",pt_kicked:"เตะ {n} ออกจากปาร์ตี้แล้ว",pt_left:"ออกจากปาร์ตี้แล้ว",pt_disbanded:"ยุบปาร์ตี้แล้ว",
  gd_none:"ยังไม่มีกิลด์",gd_noneNote:"การสร้างและเข้าร่วมกิลด์ เร็ว ๆ นี้",gd_members:"สมาชิก {n} คน",gd_rank_master:"หัวหน้ากิลด์",gd_rank_officer:"ผู้ช่วยกิลด์",gd_rank_member:"สมาชิก",gd_inviteNote:"คลิกขวาที่ผู้เล่นคนอื่นแล้วเลือก ชวนเข้ากิลด์",gd_noPerm:"เฉพาะหัวหน้ากิลด์และผู้ช่วยกิลด์ที่ชวนสมาชิกได้",
  gd_hasGuild:"{n} มีกิลด์อยู่แล้ว",gd_invSent:"ส่งคำเชิญเข้ากิลด์ถึง {n} แล้ว",gd_joined:"{n} เข้าร่วมกิลด์แล้ว"});
+Object.assign(D2.en,{pt_defName:"Party",pt_title:"{n} ({p})",pt_rename:"Rename",pt_save:"Save",pt_renamed:"Party renamed to “{n}”.",pt_shareExp:"EXP sharing",pt_expOff:"Off · own EXP",pt_expOn:"Split equally",pt_shareItems:"Item & Scandium sharing",pt_itemOff:"Off · top damage gets it",pt_itemOn:"On · rotate",pt_bonus:"Party bonus +{p}% EXP, Items & Scandium ({n} members)",pt_soloNote:"Invite members to get the party bonus and sharing.",pt_lvRange:"Level gap in the party is {g} (max {m}). Bonus and sharing pause until it is back in range.",pt_lvBlock:"That would make the level gap {g} (max {m}).",pt_lootTo:"{n} gets {i}",pt_leaderOnly:"Only the leader can change the sharing settings."});
+Object.assign(D2.th,{pt_defName:"ปาร์ตี้",pt_title:"{n} ({p})",pt_rename:"เปลี่ยนชื่อ",pt_save:"บันทึก",pt_renamed:"เปลี่ยนชื่อปาร์ตี้เป็น “{n}” แล้ว",pt_shareExp:"การแชร์ EXP",pt_expOff:"ไม่แชร์ · ได้ EXP ของตัวเอง",pt_expOn:"หารเท่ากัน",pt_shareItems:"การแชร์ไอเท็มและ Scandium",pt_itemOff:"ไม่แชร์ · ดาเมจสูงสุดได้ของ",pt_itemOn:"แชร์ · วนให้ทุกคน",pt_bonus:"โบนัสปาร์ตี้ +{p}% EXP ไอเท็ม และ Scandium ({n} คน)",pt_soloNote:"ชวนสมาชิกเพื่อรับโบนัสปาร์ตี้และการแชร์",pt_lvRange:"ช่วงเลเวลในปาร์ตี้ห่าง {g} (สูงสุด {m}) โบนัสและการแชร์หยุดชั่วคราวจนกลับอยู่ในช่วง",pt_lvBlock:"ถ้าเชิญจะทำให้ช่วงเลเวลห่าง {g} (สูงสุด {m})",pt_lootTo:"{n} ได้ {i}",pt_leaderOnly:"เฉพาะหัวหน้าปาร์ตี้ที่ตั้งค่าการแชร์ได้"});
 Object.assign(D2.th,{m_social:"สังคม",soc_friends:"เพื่อน",tab_wsp:"กระซิบ",soon:"เร็ว ๆ นี้",ok:"ตกลง",cancel:"ยกเลิก",
  ctx_you:"ตัวคุณ",ctx_sit:"นั่งพักผ่อน",ctx_stand:"ยืนขึ้น",ctx_sitHint:"ฟื้น HP / SP เร็วขึ้น {n} เท่า",ctx_stSet:"ตั้งสถานะ",ctx_stClear:"ยกเลิกสถานะ",ctx_stall:"ตั้งแผงลอย",
  ctx_talk:"คุย",ctx_friend:"เพิ่มเป็นเพื่อน",ctx_unfriend:"ลบเพื่อน",ctx_whisper:"กระซิบ",ctx_trade:"แลกเปลี่ยน",
@@ -5168,26 +5170,51 @@ function askFriend(c){
 }
 
 /* ---- party (max 6) and guild invites. Other players are simulated: some are already in a party / guild ---- */
-const PARTY_MAX=6,PT_NAME_MAX=20,ptPending=new Set(),gdPending=new Set();let ptArm=null;
+const PARTY_MAX=6,PT_NAME_MAX=10,PT_LV_GAP=20,ptPending=new Set(),gdPending=new Set();let ptArm=null,ptRen=false;
+// PT_BONUS[n-1] = party bonus (%) for n members, cumulative: 2nd member +5, 3rd +7, 4th +9, 5th +11, 6th +15
+const PT_BONUS=[0,5,12,21,32,47];
 town.wanderers.forEach((w,i)=>{w.hasParty=i%4===1;w.hasGuild=i%3===0});
 const inMyParty=n=>!!(S.party&&S.party.members.some(m=>m.name===n));
 const guildCanInvite=()=>!!(S.guild&&(S.guild.rank==="master"||S.guild.rank==="officer"||S.guild.canInvite));
-function createParty(){
-  if(S.party)return;const i=document.getElementById("ptName");let v=graphemes(((i&&i.value)||"").replace(/\s+/g," ").trim()).slice(0,PT_NAME_MAX).join("");
-  if(!v)v=graphemes(fmt("pt_namePh",{n:player.name})).slice(0,PT_NAME_MAX).join("");
-  if(graphemes(v).length<2){AUD.sfx("err");toast(t("pt_nameShort"));return}
-  S.party={name:v,lead:true,members:[]};toast(fmt("pt_created",{n:v}),true);pushChat({ch:"party",raw:fmt("pt_created",{n:v})});renderWin();save();
+const ptClean=s=>graphemes(String(s||"").replace(/\s+/g," ").trim()).slice(0,PT_NAME_MAX).join("");
+const ptTitle=p=>fmt("pt_title",{n:player.name,p});   // "CharName (Party name)"
+function ptSize(P=S.party){return P?P.members.length+1:1}
+function ptLvGap(P=S.party,extra){const L=[S.lv,...(P?P.members.map(m=>m.lv):[])];if(extra!=null)L.push(extra);return Math.max(...L)-Math.min(...L)}
+function ptActive(P=S.party){return !!P&&ptSize(P)>1&&ptLvGap(P)<=PT_LV_GAP}   // bonus and sharing need >1 member and a level gap of at most 20
+function ptRewards(P=S.party){const on=ptActive(P),n=on?ptSize(P):1;return {on,n,mul:1+PT_BONUS[n-1]/100,shE:on&&!!P.share.exp,shI:on&&!!P.share.items}}
+// Item sharing rotates the loot through [you, ...members]. Without it you keep what you get
+// (the simulated members deal no damage, so the top-damage rule always gives the loot to you).
+function ptTake(shI,label){
+  const P=S.party;if(!shI||!P)return true;
+  const N=P.members.length+1,k=(P.rr||0)%N;P.rr=(P.rr||0)+1;
+  if(k===0)return true;
+  if(label)pushChat({ch:"party",raw:fmt("pt_lootTo",{n:P.members[k-1].name,i:label})});
+  return false;
 }
+function createParty(){
+  if(S.party)return;const i=document.getElementById("ptName");let v=ptClean(i&&i.value);
+  if(!v)v=ptClean(t("pt_defName"));
+  if(graphemes(v).length<2){AUD.sfx("err");toast(t("pt_nameShort"));return}
+  S.party={name:v,lead:true,members:[],share:{exp:false,items:false},rr:0};const msg=fmt("pt_created",{n:ptTitle(v)});toast(msg,true);pushChat({ch:"party",raw:msg});renderWin();save();
+}
+function renameParty(v){
+  const P=S.party;if(!P||!P.lead)return;const nm=ptClean(v);
+  if(graphemes(nm).length<2){AUD.sfx("err");toast(t("pt_nameShort"));return}
+  P.name=nm;ptRen=false;toast(fmt("pt_renamed",{n:ptTitle(nm)}),true);renderWin();save();
+}
+function setPtShare(k,on){const P=S.party;if(!P||!P.lead)return;P.share[k]=on;renderWin();save()}
 function partyInvite(c){
   const P=S.party,n=c.name;if(!P||!P.lead||inMyParty(n)||ptPending.has(n))return;
   if(c.hasParty){AUD.sfx("err");toast(fmt("pt_hasParty",{n}));return}
   if(P.members.length+1>=PARTY_MAX){AUD.sfx("err");toast(fmt("pt_full",{n:PARTY_MAX}));return}
+  if(ptLvGap(P,c.lv)>PT_LV_GAP){AUD.sfx("err");toast(fmt("pt_lvBlock",{g:ptLvGap(P,c.lv),m:PT_LV_GAP}));return}
   ptPending.add(n);toast(fmt("pt_invSent",{n}));
   setTimeout(()=>{ptPending.delete(n);const P=S.party;if(!P||inMyParty(n)||P.members.length+1>=PARTY_MAX||c.hasParty)return;
+    if(ptLvGap(P,c.lv)>PT_LV_GAP){AUD.sfx("err");toast(fmt("pt_lvBlock",{g:ptLvGap(P,c.lv),m:PT_LV_GAP}));return}
     P.members.push({name:n,lv:c.lv});c.hasParty=true;toast(fmt("pt_joined",{n}),true);pushChat({ch:"party",raw:fmt("pt_joined",{n})});save()},1200+Math.random()*1800);
 }
-document.addEventListener("keydown",e=>{if(e.target&&e.target.id==="ptName"&&e.key==="Enter")createParty()});
-function leaveParty(){const P=S.party;if(!P)return;for(const m of P.members){const w=findPlayer(m.name);if(w)w.hasParty=false}S.party=null;ptArm=null;toast(t(P.lead?"pt_disbanded":"pt_left"));pushChat({ch:"party",raw:t(P.lead?"pt_disbanded":"pt_left")});renderWin();save()}
+document.addEventListener("keydown",e=>{if(!e.target||e.key!=="Enter")return;if(e.target.id==="ptName")createParty();else if(e.target.id==="ptRename")renameParty(e.target.value)});
+function leaveParty(){const P=S.party;if(!P)return;for(const m of P.members){const w=findPlayer(m.name);if(w)w.hasParty=false}S.party=null;ptArm=null;ptRen=false;toast(t(P.lead?"pt_disbanded":"pt_left"));pushChat({ch:"party",raw:t(P.lead?"pt_disbanded":"pt_left")});renderWin();save()}
 function kickMember(n){const P=S.party;if(!P||!P.lead)return;P.members=P.members.filter(m=>m.name!==n);const w=findPlayer(n);if(w)w.hasParty=false;ptArm=null;toast(fmt("pt_kicked",{n}));pushChat({ch:"party",raw:fmt("pt_kicked",{n})});renderWin();save()}
 function guildInvite(c){
   const G=S.guild,n=c.name;if(!guildCanInvite()||G.members.includes(n)||gdPending.has(n))return;
@@ -5442,18 +5469,26 @@ function basicAttack(mo){
 }
 function killMon(mo){
   const d=MON[mo.type],E=mo.elite,B=mo.boss;AUD.sfx(B?"bossdown":"kill");mo.hp=0;mo.dieT=.45;mo.aggro=false;mo.path=[];mo.stun=0;if(player.target===mo)player.target=null;
-  const sc=Math.round((d.sc[0]+Math.floor(Math.random()*(d.sc[1]-d.sc[0]+1)))*(E?ELITE.sc:1)),be=d.exp[0]*(E?ELITE.exp:1),je=d.exp[1]*(E?ELITE.exp:1);
+  const sc0=Math.round((d.sc[0]+Math.floor(Math.random()*(d.sc[1]-d.sc[0]+1)))*(E?ELITE.sc:1)),be0=d.exp[0]*(E?ELITE.exp:1),je0=d.exp[1]*(E?ELITE.exp:1);
+  // party: the bonus multiplies what you receive; equal EXP sharing splits the EXP evenly; item sharing rotates the loot (ptTake)
+  const PR=ptRewards(),lvM=mLv(mo),kind=B?"boss":E?"elite":"normal";
+  const be=(PR.shE?be0/PR.n:be0)*PR.mul,je=(PR.shE?je0/PR.n:je0)*PR.mul;
+  const sc=ptTake(PR.shI)?Math.round(sc0*PR.mul):0;
   S.sc+=sc;gainBase(be);gainJob(je);S.kills++;
   if(pd().ab&&pd().ab.ksp)S.sp=Math.min(spMax(),S.sp+pd().ab.ksp);
-  const kind=B?"boss":E?"elite":"normal",dr=rollDrops(mo.type,kind,mLv(mo));
+  const dr=rollDrops(mo.type,kind,lvM),L={items:[],gear:[]};
+  if(PR.mul>1){   // bonus on drops: item quantities are rounded stochastically (average kept exact); an extra gear piece with chance = bonus
+    for(const it of dr.items){const x=it[1]*PR.mul,f=Math.floor(x);it[1]=f+(Math.random()<x-f?1:0)}
+    if(Math.random()<PR.mul-1)dr.gear.push(rollDropGear(tierOf(lvM),kind));
+  }
   let got=0;
-  for(const [id,q] of dr.items)if(gainItem(id,q)){got+=q;floatText(`+ ${itemName(id)}${q>1?" x"+q:""}`,itemColor(id))}
-  for(const g of dr.gear)if(gainGear(g)){got++;floatText(`+ ${gName(g.id)}`,itemColor(g.id))}
-  floatText(`+${num(be)} EXP`,"#ffd76a");floatText(`+${num(sc)} Sc`,"#e9d89a");
+  for(const [id,q] of dr.items){if(!ptTake(PR.shI,itemName(id)))continue;if(gainItem(id,q)){got+=q;L.items.push([id,q]);floatText(`+ ${itemName(id)}${q>1?" x"+q:""}`,itemColor(id))}}
+  for(const g of dr.gear){if(!ptTake(PR.shI,gName(g.id)))continue;if(gainGear(g)){got++;L.gear.push(g);floatText(`+ ${gName(g.id)}`,itemColor(g.id))}}
+  floatText(`+${num(be)} EXP`,"#ffd76a");if(sc)floatText(`+${num(sc)} Sc`,"#e9d89a");
   const P0=MPAL[mo.type];fx.push({k:"burst",x:mo.x,y:mo.y,t:0,d:.6,c:d.sprite==="lumite"?P0.mid:d.sprite==="crawlix"?P0.c[0]:P0.i1,n:E?28:16,z:d.h*.5});
   if(E)fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:.8,c:"#ffd76a",r:90});
   if(B){fx.push({k:"pillar",x:mo.x,y:mo.y,t:0,d:1.6,c:"#bfe8ff"});fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:1.1,c:"#ffffff",r:170});fx.push({k:"ring",x:mo.x,y:mo.y,t:-.2,d:1.1,c:"#9fd8ff",r:130});toast(t("boss_down"),true);pushChat({ch:"sys",k:"sys_boss"})}
-  if(S.idle){const s=S.sess;s.kills++;s.base+=be;s.job+=S.jlv<jcap()?je:0;s.sc+=sc;s.mats+=got;s.items=s.items||{};for(const [id,q] of dr.items)s.items[id]=(s.items[id]||0)+q;s.gear=(s.gear||0)+dr.gear.length}
+  if(S.idle){const s=S.sess;s.kills++;s.base+=be;s.job+=S.jlv<jcap()?je:0;s.sc+=sc;s.mats+=got;s.items=s.items||{};for(const [id,q] of L.items)s.items[id]=(s.items[id]||0)+q;s.gear=(s.gear||0)+L.gear.length}
   questEvent({t:"kill",mo});
 }
 function damagePlayer(dmg,tag){
@@ -6181,11 +6216,17 @@ const WIN={
   if(socTab==="party"){
     const P=S.party;
     if(!P)return tabs+`<div class="pt-new"><b>${t("pt_create")}</b><p class="muted" style="margin:4px 0 10px">${fmt("pt_createNote",{n:PARTY_MAX})}</p>
-      <div class="pt-row"><input id="ptName" maxlength="60" autocomplete="off" placeholder="${esc(fmt("pt_namePh",{n:player.name}))}"><button class="btn pri" data-act="pcreate">${t("pt_createBtn")}</button></div></div>`;
+      <div class="pt-row"><input id="ptName" maxlength="60" autocomplete="off" placeholder="${esc(t("pt_namePh"))}"><button class="btn pri" data-act="pcreate">${t("pt_createBtn")}</button></div></div>`;
     const me=`<div class="row"><span class="dot" style="--c:#6e58e8">${svg("crown")}</span><div class="grow"><b>${esc(player.name)}</b> <small style="display:inline">(${t("you")})</small><small>Lv ${S.lv} · ${t("pt_leader")}</small></div></div>`;
     const mem=P.members.map(m=>{const w=findPlayer(m.name);return `<div class="row"><span class="dot" style="--c:#2f6fc8">${svg("user")}</span><div class="grow"><b>${esc(m.name)}</b><small>${w?`<span class="fr-on"></span>${t("fr_online")} · `:""}Lv ${w?w.lv:m.lv}</small></div>${P.lead?`<button class="btn sm${ptArm==="k:"+m.name?" danger":""}" data-act="pkick" data-n="${esc(m.name)}">${t(ptArm==="k:"+m.name?"fr_delSure":"pt_kick")}</button>`:""}</div>`}).join("");
-    return tabs+`<div class="pt-head"><div class="grow"><b>${esc(P.name)}</b><small>${fmt("pt_count",{n:P.members.length+1,m:PARTY_MAX})}</small></div><button class="btn sm${ptArm==="leave"?" danger":""}" data-act="pleave">${t(ptArm==="leave"?"fr_delSure":P.lead?"pt_disband":"pt_leave")}</button></div>
-      <div class="rows">${me}${mem}</div><p class="muted">${t(P.members.length+1>=PARTY_MAX?"pt_fullNote":"pt_inviteNote")}</p>`}
+    const n=ptSize(P),on=ptActive(P),gap=ptLvGap(P),lead=P.lead;
+    const ren=lead&&ptRen?`<div class="pt-row pt-ren"><input id="ptRename" maxlength="60" autocomplete="off" value="${esc(P.name)}" placeholder="${esc(t("pt_namePh"))}"><button class="btn pri" data-act="ptrensave">${t("pt_save")}</button></div>`:"";
+    const sh=(k,lbl,offK,onK)=>`<div class="pt-share"><b>${t(lbl)}</b><div class="seg"><button class="${!P.share[k]?"on":""}"${lead?"":" disabled"} data-act="ptshare" data-k="${k}" data-v="0">${t(offK)}</button><button class="${P.share[k]?"on":""}"${lead?"":" disabled"} data-act="ptshare" data-k="${k}" data-v="1">${t(onK)}</button></div></div>`;
+    const info=n<2?t("pt_soloNote"):on?fmt("pt_bonus",{p:PT_BONUS[n-1],n}):fmt("pt_lvRange",{g:gap,m:PT_LV_GAP});
+    return tabs+`<div class="pt-head"><div class="grow"><b>${esc(ptTitle(P.name))}</b><small>${fmt("pt_count",{n,m:PARTY_MAX})}</small></div>${lead?`<button class="btn sm" data-act="ptren">${t("pt_rename")}</button>`:""}<button class="btn sm${ptArm==="leave"?" danger":""}" data-act="pleave">${t(ptArm==="leave"?"fr_delSure":P.lead?"pt_disband":"pt_leave")}</button></div>
+      ${ren}<div class="rows">${me}${mem}</div>
+      <div class="pt-set">${sh("exp","pt_shareExp","pt_expOff","pt_expOn")}${sh("items","pt_shareItems","pt_itemOff","pt_itemOn")}${lead?"":`<p class="muted">${t("pt_leaderOnly")}</p>`}</div>
+      <p class="muted">${info}</p><p class="muted">${t(n>=PARTY_MAX?"pt_fullNote":"pt_inviteNote")}</p>`}
   if(socTab==="guild"){
     const G=S.guild;
     if(!G)return tabs+`<div class="rows"><div class="row"><span class="dot" style="--c:#8a84a8">${svg("flag")}</span><div class="grow"><b>${t("gd_none")}</b><small>${t("gd_noneNote")}</small></div><span class="ctx-soon">${t("soon")}</span></div></div>`;
@@ -6229,7 +6270,7 @@ function winSig(id){
     case "inv":return invSig();
     case "skill":return S.arch+"|"+S.lv+"|"+S.jlv+"|"+JSON.stringify(S.skLv)+"|"+JSON.stringify(S.hot)+"|"+lang;
     case "quest":return JSON.stringify(S.q)+"|"+S.pins.join();
-    case "social":return socTab+"|"+(S.friends||[]).join()+"|"+frArm+"|"+ptArm+"|"+S.lv+"|"+JSON.stringify(S.party)+"|"+JSON.stringify(S.guild);
+    case "social":return socTab+"|"+(S.friends||[]).join()+"|"+frArm+"|"+ptArm+"|"+ptRen+"|"+S.lv+"|"+JSON.stringify(S.party)+"|"+JSON.stringify(S.guild);
     case "shop":return [S.sc,S.y,S.la,shopTab,S.invPacks,SHOP.map(([k])=>S.inv[k]).join()].join("|");
     case "set":return [S.sound,S.music,S.vip,S.autoIdle,S.gfx,lang,layoutMode,zIdx,S.gm,setTab,Math.floor(lastSave/30000)].join("|");
     case "itemdet":{const e=detEntry();return e?[e.id,e.ref,e.qty,S.inv.refine_ore,JSON.stringify(e.roll)].join("|"):"x"}
@@ -6515,6 +6556,9 @@ function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[d
   else if(a==="soctab"){socTab=b.dataset.v;frArm=null;ptArm=null;renderWin()}
   else if(a==="frwsp"){openWhisper(b.dataset.n)}
   else if(a==="pcreate")createParty();
+  else if(a==="ptren"){ptRen=!ptRen;renderWin();if(ptRen)setTimeout(()=>{const i=document.getElementById("ptRename");if(i){i.focus();i.select()}},60)}
+  else if(a==="ptrensave")renameParty((document.getElementById("ptRename")||{}).value);
+  else if(a==="ptshare")setPtShare(b.dataset.k,b.dataset.v==="1");
   else if(a==="pleave"){if(ptArm!=="leave"){ptArm="leave";renderWin();return}leaveParty()}
   else if(a==="pkick"){const n=b.dataset.n;if(ptArm!=="k:"+n){ptArm="k:"+n;renderWin();return}kickMember(n)}
   else if(a==="frdel"){const n=b.dataset.n;if(frArm!==n){frArm=n;renderWin();return}frArm=null;S.friends=(S.friends||[]).filter(x=>x!==n);toast(fmt("fr_removed",{n}));renderWin();save()}
@@ -6851,6 +6895,7 @@ try{if(saved){
 if(!S.equip)S.equip=starterEquip();
 if(!Array.isArray(S.friends))S.friends=[];
 if(S.party&&!(typeof S.party.name==="string"&&Array.isArray(S.party.members)))S.party=null;if(S.party===undefined)S.party=null;
+if(S.party){S.party.name=ptClean(S.party.name)||ptClean(t("pt_defName"));S.party.share=Object.assign({exp:false,items:false},S.party.share);S.party.rr=S.party.rr|0}
 if(S.party)for(const m of S.party.members){const w=findPlayer(m.name);if(w)w.hasParty=true}
 if(S.guild&&!(typeof S.guild.name==="string"&&Array.isArray(S.guild.members)))S.guild=null;if(S.guild===undefined)S.guild=null;
 sanitizeGear();
