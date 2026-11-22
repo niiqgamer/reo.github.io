@@ -19,7 +19,7 @@ REO is a **browser-based MMORPG with idle mechanics**. It plays like a classic q
 
 1. **Camera:** always locked on the player character at the center of the screen. No free camera panning.
 2. **Movement:** click/tap anywhere on the map to walk there. Use A* pathfinding (8 directions, no corner cutting) plus line-of-sight smoothing. Holding the pointer keeps re-targeting (~every 0.3 s).
-3. **Spawn:** new players spawn at the exact center of the starting map (Gadolinium tile 24, 24 → world 24.5, 24.5).
+3. **Spawn:** new players spawn in the plaza at the center of Gadolinium, just in front of the Gadolinium Crystal (world 54.5, 54.5; the crystal stands at the exact center, 49, 49).
 4. **Projection:** 2.5D isometric quarter view. Tile = 64 × 32 px. Depth-sort everything by `x + y`.
 5. **Language swap:** never hard-code user-facing text. Every string goes through `t(key)`. Switching language must instantly update HTML UI, canvas labels, chat, dialogs, open windows and toasts.
 6. **Layout swap:** support **Auto / Horizontal / Vertical**. Auto picks by aspect ratio. Switching must not reload or reset game state.
