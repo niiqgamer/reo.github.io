@@ -114,7 +114,7 @@ Stat points follow iRO (48 at creation, `floor(lv/5)+3` per level, raise cost `f
 Players can switch auto-assign off and spend points by hand in the Character window.
 
 ## Prototype-only behavior
-- **v5.1:** no more free switching. A Beginner picks **one** archetype, permanently, through the Archetype Trial (Job Lv 10 → 10 Elites → choose). See `JOBS.md` §4.
+- **v5.1:** no more free switching. A Beginner picks **one** archetype, permanently, through the Archetype Trial (Job Lv 10 → 1 Elite → choose). See `JOBS.md` §4.
 - Settings has two **test shortcuts** for checking the flow quickly: set Job Lv 10, and +10 Elite kills on the trial. Remove them before release.
 - Recommended CP: Field 01 **150**, Field 02 **450**.
 
