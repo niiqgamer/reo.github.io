@@ -49,9 +49,9 @@
 | Map banner | Subtitle, map name, coordinates, channel, online count |
 | Minimap | Whole map; dots: player (white/violet), NPC (gold), players (blue); click to walk |
 | Quest tracker | Title, objective, progress (e.g. “Job Lv 7 / 10”), **Go** button |
-| Chat | Tabs All / Party / Guild / System, Enter to focus, speech bubbles |
+| Chat | Tabs All / Party / Guild / System, Enter to focus, speech bubbles. Whispers show in All in pink |
 | Hotbar | 10 slots, keys 1–0, cooldown overlay, SP cost |
-| Menu | Character, Bag, Skills, Quests, Party, Guild, Shop, Settings (+ Dungeons later) |
+| Menu | Character, Status, Bag, Skills, Quests, Social, Shop, Settings (+ Dungeons later). Social holds the Friends, Party and Guild tabs |
 | Windows | Centered, draggable in horizontal, Esc closes |
 | Dialog | NPC portrait, name, text, Next / Close |
 | Toasts | Neutral and gold (level-up, quest complete, job change) |
@@ -192,7 +192,7 @@ Every earlier feature is still there; Status is where the old right-hand panel w
 - Up to three open at once: slot A (main), slot B (second), slot C (item detail). Each window has its own fixed size, so nothing bounces when the content changes. **Exception: Character** has no fixed height. Its height follows the content, so it never shows a scroll bar; the Equipment and Costume pages share one minimum height (`.chr-panel{min-height:447px}`), so the window does not jump when you switch tabs. A scroll bar appears only if the screen itself is shorter than the window.
 - **Character** opens **Equipment + Status** together (side by side; stacked on phones in one scrolling column). Equipment is 20% smaller, with only your face beside the name, a **Title (soon)** row where the potions were, and no item strip: tap a worn piece to open the **Item Detail** window (Unequip, Refine).
 - **Inventory**: 100 base slots, 50 per page, per type, Auto sort (type > name > stars > price), Select many, and a **+** to the Cash Shop. Item details open in their own window (scrolls if long).
-- **Navigation bar** at the bottom of Character, Status, Inventory, Skills, Quests, Party and Guild, using the same words as the menu. It never shows a button to a window that is already open.
+- **Navigation bar** at the bottom of Character, Status, Inventory, Skills, Quests and Social, using the same words as the menu. It never shows a button to a window that is already open.
 - **Live updates:** an open window redraws itself within a quarter of a second when the data it shows changes (items, quests, EXP, currencies, equipment). It never redraws while a button is pressed or a text box is focused.
 - On phones windows stop above the menu bar, so the menu is always reachable.
 - Esc closes the item detail first, then everything. **M** opens the World Map.
@@ -495,3 +495,21 @@ What stays the same in both: the blue title bars and accent (`#0a6fc2`, slightly
 **Code:** CSS only. The body text rule in the `v19.6 window theme` block, the compare diff colours (now `var(--w-good)` / `var(--w-bad)`), and a `v19.7` CSS block for the islands and the name pill.
 
 **Tested** (Light and Dim, 1440 × 860): computed colours of the compare differences (green for gains, red for losses, in both modes); refine islands on Inventory cells (+2 to +10) and on worn pieces in Character (+10, +3); Status Point Left pill text white again; Skills, Quests, Shop, Settings, Idle Settings and Choose your Archetype checked unchanged; no script errors.
+
+## 23. Right-click menu, Social window, sitting and whispers (v20.1)
+
+The browser menu ("Save image as…") never opens on the game. Right-click (phones: long-press about 0.55 s) on a character opens the game menu; right-click anywhere else does nothing. The menu closes on any other click, Escape, the mouse wheel or a map change.
+
+| Target | Menu items |
+|---|---|
+| Another player | Add friend (Remove friend if already a friend) · Whisper · Trade (*Soon*, disabled) |
+| Yourself | Sit and rest / Stand up · Set status / Clear status · Open a stall (*Soon*, disabled) |
+| NPC | Talk (desktop right-click only; on phones a tap already talks) |
+
+**Sit and rest.** HP and SP recover 3× faster (`SIT_REGEN`). You can sit anywhere except within 3 tiles of an NPC (`SIT_NPC_GAP`), while Idle is on, or while casting. You stand up by yourself when a monster hits you, when you walk, attack, cast, use quest auto-walk, start Idle, die or change map. The chibi sits cross-legged.
+
+**Status.** Only while sitting and only in town. A bar asks for up to 20 letters (`STATUS_MAX`; a Thai consonant with its vowel and tone marks counts as one letter). The status shows above your head in a mint plate shaped like the NPC plate. Standing up or leaving town clears it.
+
+**Friends.** Social → Friends lists up to 50 friends (`FRIEND_MAX`, saved in `S.friends`) with online state, Whisper and Remove (click twice to confirm). Until the server exists, the other player accepts a request after 1–3 s.
+
+**Whisper.** A small draggable 1:1 window (`#wsp`). Messages also go to the chat log (All tab, pink `[Whisper]`). Until the server exists, the other player answers with a short canned reply.

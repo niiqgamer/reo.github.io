@@ -24,6 +24,7 @@
 | Cast time | `base × (1 − DEX/150)` | iRO |
 | HP regen /s | `(MaxHP/200 + VIT/5) / 4` | iRO per tick, adapted |
 | SP regen /s | `(MaxSP/100 + INT/6 + 1) / 2` | iRO per tick, adapted |
+| Sitting | HP and SP regen × 3 while sitting (v20.1, see `UI-UX.md` §23) | |
 | Potion healing | Red: `120 × (1 + VIT×0.02)` · Blue: `60 × (1 + INT×0.01)` | iRO |
 
 Stat points: 48 at creation, `⌊lv/5⌋ + 3` per level (1,273 total at Lv 99). Raising `x → x+1` costs `⌊(x−1)/10⌋ + 2` (628 for 1 → 99).

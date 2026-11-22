@@ -825,7 +825,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .win[data-w=inv]{--wiw:640px;--wih:520px}
 .win[data-w=itemdet]{--wiw:320px;--wih:520px}
 .win[data-w=skill],.win[data-w=quest],.win[data-w=archpick]{--wiw:480px;--wih:560px}
-.win[data-w=party],.win[data-w=guild]{--wiw:440px;--wih:420px}
+.win[data-w=social]{--wiw:440px;--wih:440px}
 .win[data-w=shop]{--wiw:460px;--wih:480px}
 .win[data-w=set]{--wiw:520px;--wih:540px}
 .win[data-w=worldmap]{--wiw:640px;--wih:500px}
@@ -1090,7 +1090,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 
 /* menu: 3 x 3 */
 #menu{grid-template-columns:repeat(3,48px)}
-.P #menu{grid-template-columns:repeat(9,1fr)}
+.P #menu{grid-template-columns:repeat(8,1fr)}
 .P .mb span{font-size:8.6px}
 
 /* idle: the size of a hotbar slot, gold, with a passing glint; the gear is a small badge on its corner */
@@ -1138,7 +1138,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .win[data-w=inv]{--wih:520px}
 .win[data-w=itemdet]{--wih:480px}
 .win[data-w=skill],.win[data-w=quest],.win[data-w=archpick]{--wih:520px}
-.win[data-w=party],.win[data-w=guild]{--wih:380px}
+.win[data-w=social]{--wih:400px}
 .win[data-w=shop]{--wih:440px}
 .win[data-w=set]{--wih:500px}
 .win[data-w=worldmap]{--wih:470px}.win[data-w=mapinfo]{--wih:470px}
@@ -1513,6 +1513,36 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .win.lt{--w-well:#0a6fc2}
 :root[data-theme="dark"] .win.lt{--w-well:#17518d}
 @media (prefers-color-scheme:dark){:root:not([data-theme]) .win.lt{--w-well:#17518d}}
+
+/* v20.1: right-click menu, whisper window, status bar, Social window */
+#ctx{position:absolute;z-index:12;min-width:188px;max-width:240px;padding:6px;border-radius:14px;pointer-events:auto;animation:ctxIn .12s ease both}
+@keyframes ctxIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.ctx-h{padding:6px 10px 8px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.ctx-h b{display:block;font-size:14px;color:var(--ink)}.ctx-h small{font-size:11.5px;color:var(--ink2)}
+.ctx-i{display:flex;align-items:center;gap:9px;width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:13.5px;padding:7px 10px;border-radius:9px;cursor:pointer;text-align:left}
+.ctx-i svg{width:17px;height:17px;fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ctx-i:hover:not(:disabled){background:rgba(110,88,232,.12)}
+.ctx-i:disabled{color:var(--ink2);opacity:.6;cursor:default}.ctx-i:disabled svg{stroke:var(--ink2)}
+.ctx-i .ctx-t{flex:1;display:flex;flex-direction:column;line-height:1.2}.ctx-i .ctx-t small{font-size:11px;color:var(--ink2)}
+.ctx-soon{font-size:10px;font-weight:600;padding:1px 7px;border-radius:8px;background:rgba(154,110,24,.16);color:var(--gold)}
+#wsp{position:absolute;z-index:11;right:16px;top:30%;width:min(300px,calc(100% - 32px));height:300px;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;pointer-events:auto}
+.wsp-h{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 12px;border-bottom:1px solid var(--line);cursor:move;touch-action:none;font-weight:600;font-size:13.5px}
+.wsp-h .grow{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wsp-h small{font-weight:400;color:var(--ink2)}
+.wsp-h .win-x{position:static;width:28px;height:28px;font-size:20px;color:var(--ink2);background:none;box-shadow:none;border:0}
+.wsp-dot{width:8px;height:8px;border-radius:50%;background:#3fc68a;flex:none}
+#wspLog{flex:1;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.wsp-m{max-width:82%;padding:6px 10px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);align-self:flex-start;word-break:break-word}
+.wsp-m.me{align-self:flex-end;background:var(--accent);color:#fff;border-color:transparent}
+.wsp-empty{margin:auto;color:var(--ink2);font-size:12px;text-align:center}
+.wsp-in{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line)}.wsp-in input{flex:1;min-width:0;border:1px solid var(--line);border-radius:9px;padding:6px 10px;font:inherit;font-size:13px;background:#fff;color:var(--ink)}
+#stBar{position:absolute;z-index:12;left:50%;bottom:120px;transform:translateX(-50%);width:min(360px,calc(100% - 32px));padding:10px 12px;border-radius:14px;pointer-events:auto}
+#stBar label{display:block;font-size:12.5px;font-weight:600;margin-bottom:6px}
+#stBar .st-row{display:flex;gap:6px;align-items:center}#stBar input{flex:1;min-width:0;border:1px solid var(--line);border-radius:9px;padding:7px 10px;font:inherit;font-size:13.5px;background:#fff;color:var(--ink)}
+#stBar .st-n{font-size:11px;color:var(--ink2);min-width:34px;text-align:right}
+.m-wsp{color:#c0457e}
+.soc-tabs{margin-bottom:10px;align-self:flex-start;display:inline-flex}
+.fr-on{display:inline-block;width:8px;height:8px;border-radius:50%;background:#3fc68a;margin-right:5px}
+.win[data-w=social]{--wiw:440px;--wih:440px}
 </style>
 </head>
 <body>
@@ -1587,6 +1617,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
         </div>
       </div>
 
+      <div id="ctx" class="panel hidden" role="menu"></div>
+      <div id="wsp" class="panel hidden"><div class="wsp-h" id="wspH"><span class="wsp-dot"></span><span class="grow" id="wspT"></span><button class="win-x" id="wspX" aria-label="Close">×</button></div><div id="wspLog"></div><div class="wsp-in"><input id="wspIn" maxlength="80" autocomplete="off"><button class="btn pri" id="wspSend"></button></div></div>
+      <div id="stBar" class="panel hidden"><label for="stIn" id="stLbl"></label><div class="st-row"><input id="stIn" maxlength="60" autocomplete="off"><span class="st-n" id="stN"></span><button class="btn pri" id="stOk"></button><button class="btn" id="stNo"></button></div></div>
       <div id="wins" class="hidden">
         <section id="win" class="win panel hidden" data-w="">
           <div class="win-h" id="winH"><span id="winT"></span><button id="winX" class="win-x" aria-label="Close">×</button></div>
@@ -2641,6 +2674,22 @@ D2.en.npcr_lumi="GUIDE";D2.th.npcr_lumi="ไกด์";
 D2.en.npcr_bors="SHOP";D2.th.npcr_bors="ร้านค้า";
 D2.en.npcr_veyra="QUESTS";D2.th.npcr_veyra="เควสต์";
 D2.en.npcr_helper="ARCHETYPE";D2.th.npcr_helper="อาร์คีไทป์";
+Object.assign(D2.en,{m_social:"Social",soc_friends:"Friends",tab_wsp:"Whisper",soon:"Soon",ok:"OK",cancel:"Cancel",
+ ctx_you:"You",ctx_sit:"Sit and rest",ctx_stand:"Stand up",ctx_sitHint:"HP / SP recover {n}× faster",ctx_stSet:"Set status",ctx_stClear:"Clear status",ctx_stall:"Open a stall",
+ ctx_talk:"Talk",ctx_friend:"Add friend",ctx_unfriend:"Remove friend",ctx_whisper:"Whisper",ctx_trade:"Trade",
+ sit_on:"You sit down to rest. HP / SP recover {n}× faster.",sit_off:"You stand up.",sit_hit:"You were attacked and stood up!",sit_idle:"Stop Idle before you sit down.",sit_npc:"Too close to an NPC. Move more than {n} tiles away to sit.",sit_busy:"You can’t sit while casting.",
+ st_townOnly:"Only in town",st_sitFirst:"Sit down first",st_prompt:"Your status (up to {n} characters)",st_ph:"e.g. Looking for a party",st_set:"Status set.",st_cleared:"Status cleared.",
+ fr_sent:"Friend request sent to {n}.",fr_added:"{n} is now your friend.",fr_removed:"{n} was removed from your friends.",fr_pending:"Request sent",fr_full:"Your friend list is full ({n}).",fr_isFriend:"Friend",
+ fr_online:"Online",fr_offline:"Offline",fr_none:"No friends yet. Right-click another player to add them.",fr_count:"Friends {n}/{m}",fr_del:"Remove",fr_delSure:"Sure?",
+ wsp_ph:"Type a message…",wsp_empty:"Say hi to {n}. Only the two of you can see this chat.",wsp_new:"{n} whispered to you."});
+Object.assign(D2.th,{m_social:"สังคม",soc_friends:"เพื่อน",tab_wsp:"กระซิบ",soon:"เร็ว ๆ นี้",ok:"ตกลง",cancel:"ยกเลิก",
+ ctx_you:"ตัวคุณ",ctx_sit:"นั่งพักผ่อน",ctx_stand:"ยืนขึ้น",ctx_sitHint:"ฟื้น HP / SP เร็วขึ้น {n} เท่า",ctx_stSet:"ตั้งสถานะ",ctx_stClear:"ยกเลิกสถานะ",ctx_stall:"ตั้งแผงลอย",
+ ctx_talk:"คุย",ctx_friend:"เพิ่มเป็นเพื่อน",ctx_unfriend:"ลบเพื่อน",ctx_whisper:"กระซิบ",ctx_trade:"แลกเปลี่ยน",
+ sit_on:"นั่งพักผ่อน ฟื้น HP / SP เร็วขึ้น {n} เท่า",sit_off:"ลุกขึ้นยืนแล้ว",sit_hit:"ถูกโจมตี! ลุกขึ้นยืนอัตโนมัติ",sit_idle:"หยุด Idle ก่อนจึงจะนั่งได้",sit_npc:"อยู่ใกล้ NPC เกินไป ต้องห่างเกิน {n} ช่องจึงจะนั่งได้",sit_busy:"นั่งระหว่างร่ายสกิลไม่ได้",
+ st_townOnly:"ใช้ได้เฉพาะในเมือง",st_sitFirst:"ต้องนั่งก่อน",st_prompt:"สถานะของคุณ (ไม่เกิน {n} ตัวอักษร)",st_ph:"เช่น หาปาร์ตี้ไปทุ่ง 02",st_set:"ตั้งสถานะแล้ว",st_cleared:"ยกเลิกสถานะแล้ว",
+ fr_sent:"ส่งคำขอเป็นเพื่อนถึง {n} แล้ว",fr_added:"{n} เป็นเพื่อนกับคุณแล้ว",fr_removed:"ลบ {n} ออกจากเพื่อนแล้ว",fr_pending:"ส่งคำขอแล้ว",fr_full:"รายชื่อเพื่อนเต็มแล้ว ({n})",fr_isFriend:"เพื่อน",
+ fr_online:"ออนไลน์",fr_offline:"ออฟไลน์",fr_none:"ยังไม่มีเพื่อน คลิกขวาที่ผู้เล่นคนอื่นเพื่อเพิ่มเป็นเพื่อน",fr_count:"เพื่อน {n}/{m}",fr_del:"ลบ",fr_delSure:"ยืนยัน?",
+ wsp_ph:"พิมพ์ข้อความ…",wsp_empty:"ทักทาย {n} ได้เลย แชทนี้เห็นกันแค่สองคน",wsp_new:"{n} กระซิบถึงคุณ"});
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
 /* v19.2 light windows (Character / Status / Inventory) */
@@ -2674,6 +2723,13 @@ const dur=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?fmt("h
 const IC={
  sword:'<path d="M14.5 4H20v5.5L9 20.5 3.5 15z"/><path d="m6 13 5 5"/><path d="m3 21 2.5-2.5"/>',
  plus:'<path d="M12 4v16M4 12h16"/>',
+ chat:'<path d="M4 5h16v11H10l-5 4v-4H4z"/><path d="M8 9.5h8M8 12.5h5"/>',
+ uplus:'<circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5.5 6-5.5s5.4 1.9 6 5.5"/><path d="M18 8v6M15 11h6"/>',
+ uminus:'<circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5.5 6-5.5s5.4 1.9 6 5.5"/><path d="M15 11h6"/>',
+ swap:'<path d="M4 8h14l-3.5-3.5M20 16H6l3.5 3.5"/>',
+ sit:'<circle cx="12" cy="5.5" r="2.5"/><path d="M12 8.5v5.5M8 11h8M5 19c2-2.5 4-3.5 7-3.5s5 1 7 3.5"/>',
+ stand:'<circle cx="12" cy="4.5" r="2.5"/><path d="M12 7.5v7M8 10.5h8M12 14.5l-3 6M12 14.5l3 6"/>',
+ tag:'<path d="M4 5h11l5 7-5 7H4z"/><circle cx="9" cy="12" r="1.4"/>',
  flame:'<path d="M12 3c2.5 4 6 5.5 6 10a6 6 0 0 1-12 0c0-3 1.8-4.5 3-6.5 1 2 2 2.5 3 2.5-.3-2.2 0-4 0-6z"/>',
  snow:'<path d="M12 2v20M3.5 7l17 10M20.5 7l-17 10"/><path d="m9 4 3 2 3-2M9 20l3-2 3 2"/>',
  shield:'<path d="M12 3 4.5 6v6c0 4.8 3.3 7.8 7.5 9 4.2-1.2 7.5-4.2 7.5-9V6z"/>',
@@ -3220,6 +3276,14 @@ function placeTownNpcs(){
     if(best){n.x=best[0];n.y=best[1]}taken.push([n.x,n.y]);
   }
   for(const w of town.wanderers){let gd=0;while(town.npcs.some(n=>Math.hypot(n.x-w.x,n.y-w.y)<2.8)&&gd++<200){const [x,y]=townSpot();if(walkM(town,x,y)){w.x=x+.5;w.y=y+.5}}}
+}
+/* v20.1: a player's own status sign: shaped like the NPC plate, in mint instead of gold */
+function statusPlate(x,y,txt){
+  g.font=`600 12.5px ${FONT}`;g.textAlign="center";g.textBaseline="middle";const w=g.measureText(txt).width+26;
+  g.save();g.shadowColor="rgba(110,240,200,.55)";g.shadowBlur=12;rr(x-w/2,y-12,w,24,12);g.fillStyle="rgba(10,48,52,.94)";g.fill();g.restore();
+  rr(x-w/2,y-12,w,24,12);g.strokeStyle="#6ff0c8";g.lineWidth=1.8;g.stroke();
+  g.fillStyle="#e4fff6";g.fillText(txt,x,y+.5);
+  g.beginPath();g.moveTo(x-5,y+11);g.lineTo(x,y+18);g.lineTo(x+5,y+11);g.fillStyle="rgba(10,48,52,.94)";g.fill();
 }
 function npcPlate(x,y,name,role,col){
   g.font=`700 13px ${FONT}`;g.textAlign="center";g.textBaseline="middle";const w=g.measureText(name).width+26;
@@ -4496,18 +4560,22 @@ function drawCrystal(){
 /* ================= chibi ================= */
 const OL="rgba(42,26,40,.6)";
 function drawChibi(c,X,Y,sc=1){
-  const p=c.pal,d=c.dir||1,back=c.back,mv=c.moving,ph=c.phase;
+  const p=c.pal,d=c.dir||1,back=c.back,mv=c.moving,ph=c.phase,sit=!!c.sit&&!mv;
   g.save();g.translate(X,Y);g.scale(sc,sc);g.lineJoin="round";g.lineCap="round";
-  ell(0,0,13,5,"rgba(12,16,28,.3)");
-  const bob=mv?-Math.abs(Math.sin(ph))*2.2:Math.sin(T*2.4+c.seed)*.7;
+  ell(0,0,sit?15:13,5,"rgba(12,16,28,.3)");
+  const bob=mv?-Math.abs(Math.sin(ph))*2.2:Math.sin(T*(sit?1.6:2.4)+c.seed)*.7;
   const sw=mv?Math.sin(ph):0;
-  const ty=-12+bob,hy=-40+bob;
+  const ty=-12+bob+(sit?9:0),hy=-40+bob+(sit?9:0);
   const cape=()=>{if(!p.cape)return;const s=Math.sin(T*3+c.seed)*1.5+(mv?-d*2:0);
     const cg=g.createLinearGradient(0,ty-16,0,ty+6);cg.addColorStop(0,p.cape);cg.addColorStop(1,p.capeD);
     g.fillStyle=cg;g.beginPath();g.moveTo(-7,ty-15);g.lineTo(7,ty-15);g.quadraticCurveTo(12,ty-4,12+s,ty+5);
     g.lineTo(6+s,ty+3);g.lineTo(0+s,ty+6);g.lineTo(-6+s,ty+3);g.lineTo(-12+s,ty+5);g.quadraticCurveTo(-12,ty-4,-7,ty-15);g.closePath();g.fill();g.strokeStyle=OL;g.lineWidth=.9;g.stroke()};
   if(!back)cape();
-  for(const s of [-1,1]){
+  if(sit)for(const s of [-1,1]){   // cross-legged: thighs out to the side, boots tucked in front
+    g.fillStyle=p.pants;g.beginPath();g.ellipse(s*6,-3.5,8,4,s*.12,0,TAU);g.fill();g.strokeStyle=OL;g.lineWidth=.8;g.stroke();
+    g.fillStyle=p.boots;g.beginPath();g.ellipse(s*3.2,-1,4.2,2.8,0,0,TAU);g.fill();g.stroke();
+  }
+  else for(const s of [-1,1]){
     const lift=mv?Math.max(0,Math.sin(ph+(s>0?0:Math.PI)))*3:0,lx=s*4;
     g.fillStyle=p.pants;rr(lx-3.1,-13-lift+bob*.3,6.2,11,2.8);g.fill();g.strokeStyle=OL;g.lineWidth=.8;g.stroke();
     g.fillStyle=p.boots;rr(lx-3.6,-5.5-lift,7.2,5.8,2.6);g.fill();g.stroke();
@@ -4977,10 +5045,127 @@ function clickAt(sx,sy){
   if(cur===town&&Math.hypot(fx_+.5-CRY[0],fy_+.5-CRY[1])<CRY_R){touchCrystal();return}
   if(walkTo(player,fx_,fy_)){const q=nearestWalk(fx_,fy_,Math.floor(player.x),Math.floor(player.y));setMarker(q[0]+.5,q[1]+.5)}
 }
-cv.addEventListener("pointerdown",e=>{if(dlg)return;const p=localPt(cv,e);holding=true;lastHold=p;holdTimer=0;clickAt(p.x,p.y);hideHint();try{cv.setPointerCapture(e.pointerId)}catch(_){}});
-cv.addEventListener("pointermove",e=>{if(holding)lastHold=localPt(cv,e)});
-const endHold=()=>{holding=false};cv.addEventListener("pointerup",endHold);cv.addEventListener("pointercancel",endHold);
+cv.addEventListener("pointerdown",e=>{if(dlg)return;if(e.pointerType==="mouse"&&e.button!==0)return;const p=localPt(cv,e);closeCtx();
+  if(e.pointerType!=="mouse"){clearTimeout(lpCtx.t);lpCtx.p=p;lpCtx.t=setTimeout(()=>{if(!holding||!lpCtx.p)return;const c=charAtScreen(lpCtx.p.x,lpCtx.p.y);if(c&&!c.npc){holding=false;player.path=[];marker=null;openCtx(c,lpCtx.p.x,lpCtx.p.y)}},550)}
+  holding=true;lastHold=p;holdTimer=0;clickAt(p.x,p.y);hideHint();try{cv.setPointerCapture(e.pointerId)}catch(_){}});
+cv.addEventListener("pointermove",e=>{if(holding)lastHold=localPt(cv,e);if(lpCtx.p&&lastHold&&Math.hypot(lastHold.x-lpCtx.p.x,lastHold.y-lpCtx.p.y)>12){clearTimeout(lpCtx.t);lpCtx.p=null}});
+const endHold=()=>{holding=false;clearTimeout(lpCtx.t);lpCtx.p=null};cv.addEventListener("pointerup",endHold);cv.addEventListener("pointercancel",endHold);
 let wheelT=0;cv.addEventListener("wheel",e=>{e.preventDefault();const now=performance.now();if(now-wheelT<180)return;wheelT=now;setZoom(zIdx+(e.deltaY<0?1:-1))},{passive:false});
+
+/* ================= v20.1 social: right-click menu, sit / status, whisper, friends ================= */
+const FRIEND_MAX=50,SIT_REGEN=3,SIT_NPC_GAP=3,STATUS_MAX=20;
+const lpCtx={t:0,p:null};   // touch long-press (phones have no right click)
+let ctxT=null,wspWith=null;const WSP={},frPending=new Set();
+const findPlayer=n=>town.wanderers.find(w=>w.name===n)||null;   // other players (simulated until the server exists)
+/* the character drawn under a screen point: you, an NPC or another player */
+function charAtScreen(sx,sy){
+  const [wx,wy]=toWorld(sx,sy),list=[...cur.npcs,...cur.wanderers];if(!player.dead)list.push(player);
+  for(const c of list.sort((a,b)=>(b.x+b.y)-(a.x+a.y))){const [cx,cy]=P(c.x,c.y),top=c.sit?50:60;if(Math.abs(wx-cx)<16&&wy>cy-top&&wy<cy+8)return c}
+  return null;
+}
+function ctxItem(k,ic,label,o){o=o||{};return `<button class="ctx-i" role="menuitem" data-ctx="${k}"${o.dis?" disabled":""}>${svg(ic)}<span class="ctx-t">${label}${o.hint?`<small>${o.hint}</small>`:""}</span>${o.soon?`<span class="ctx-soon">${t("soon")}</span>`:""}</button>`}
+function openCtx(c,sx,sy){
+  if(!c||dlg)return;ctxT=c;let head,items="";
+  if(c.me){
+    head=`<b>${esc(player.name)}</b><small>Lv ${S.lv} · ${t("ctx_you")}</small>`;
+    items+=player.sit?ctxItem("stand","stand",t("ctx_stand")):ctxItem("sit","sit",t("ctx_sit"),{hint:fmt("ctx_sitHint",{n:SIT_REGEN})});
+    if(player.status)items+=ctxItem("stclr","tag",t("ctx_stClear"));
+    else{const ok=player.sit&&cur===town;items+=ctxItem("stset","tag",t("ctx_stSet"),{dis:!ok,hint:ok?"":t(cur!==town?"st_townOnly":"st_sitFirst")})}
+    items+=ctxItem("stall","store",t("ctx_stall"),{dis:true,soon:true});
+  }else if(c.npc){
+    head=`<b>${esc(t(c.nameK))}</b><small>${esc(t("npcr_"+c.id))}</small>`;
+    items+=ctxItem("talk","chat",t("ctx_talk"));
+  }else{
+    const fr=(S.friends||[]).includes(c.name),pend=frPending.has(c.name);
+    head=`<b>${esc(c.name)}</b><small>Lv ${c.lv}${fr?" · "+t("fr_isFriend"):""}</small>`;
+    items+=fr?ctxItem("unfriend","uminus",t("ctx_unfriend")):ctxItem("friend","uplus",t(pend?"fr_pending":"ctx_friend"),{dis:pend});
+    items+=ctxItem("whisper","chat",t("ctx_whisper"));
+    items+=ctxItem("trade","swap",t("ctx_trade"),{dis:true,soon:true});
+  }
+  const el=$("#ctx");el.innerHTML=`<div class="ctx-h">${head}</div>${items}`;el.classList.remove("hidden");
+  const ui=$("#ui"),W0=ui.clientWidth,H0=ui.clientHeight,w=el.offsetWidth,h=el.offsetHeight;
+  el.style.left=Math.max(8,Math.min(W0-w-8,sx+4))+"px";el.style.top=Math.max(8,Math.min(H0-h-8,sy+4))+"px";
+  AUD.sfx("open");
+}
+function closeCtx(){ctxT=null;const el=$("#ctx");if(el&&!el.classList.contains("hidden")){el.classList.add("hidden");el.innerHTML=""}}
+$("#ctx").addEventListener("click",e=>{const b=e.target.closest("[data-ctx]");if(!b||b.disabled)return;const k=b.dataset.ctx,c=ctxT;closeCtx();if(!c)return;
+  if(k==="sit")sitDown();else if(k==="stand")standUp(t("sit_off"));
+  else if(k==="stset")openStatusBar();else if(k==="stclr"){player.status=null;toast(t("st_cleared"))}
+  else if(k==="talk")talkTo(c);
+  else if(k==="friend")askFriend(c);else if(k==="unfriend"){S.friends=S.friends.filter(n=>n!==c.name);toast(fmt("fr_removed",{n:c.name}));save()}
+  else if(k==="whisper")openWhisper(c.name);
+});
+/* right click on the game: our menu on characters, nothing (and no browser menu) anywhere else */
+cv.addEventListener("contextmenu",e=>{e.preventDefault();if(player.dead||warping)return;const p=localPt(cv,e),c=charAtScreen(p.x,p.y);if(c)openCtx(c,p.x,p.y);else closeCtx()});
+$("#stage").addEventListener("contextmenu",e=>{if(!(e.target.closest&&e.target.closest("input,textarea")))e.preventDefault()});
+document.addEventListener("pointerdown",e=>{if(ctxT&&!(e.target.closest&&e.target.closest("#ctx"))&&e.target!==cv)closeCtx()},true);
+addEventListener("keydown",e=>{if(e.key==="Escape"){closeCtx();if(!$("#stBar").classList.contains("hidden"))closeStatusBar()}});
+cv.addEventListener("wheel",closeCtx,{passive:true});
+
+/* ---- sit / stand ---- */
+function sitDown(){
+  let why=null;
+  if(player.dead)return;
+  if(S.idle)why=t("sit_idle");
+  else if(cur.npcs.some(n=>Math.hypot(n.x-player.x,n.y-player.y)<=SIT_NPC_GAP))why=fmt("sit_npc",{n:SIT_NPC_GAP});
+  else if(player.casting)why=t("sit_busy");
+  if(why){AUD.sfx("err");toast(why);return}
+  player.path=[];player.target=null;player.nav=null;player.moving=false;player.onArrive=null;marker=null;player.sit=true;
+  toast(fmt("sit_on",{n:SIT_REGEN}));
+}
+function standUp(msg){if(!player.sit)return;player.sit=false;player.status=null;closeStatusBar();if(msg)toast(msg)}
+
+/* ---- status sign (town only, while sitting) ---- */
+function openStatusBar(){
+  if(!player.sit||cur!==town)return;const b=$("#stBar"),i=$("#stIn");$("#stLbl").textContent=fmt("st_prompt",{n:STATUS_MAX});
+  $("#stOk").textContent=t("ok");$("#stNo").textContent=t("cancel");i.value="";i.placeholder=t("st_ph");stCount();b.classList.remove("hidden");setTimeout(()=>i.focus(),30);
+}
+function closeStatusBar(){const b=$("#stBar");if(b)b.classList.add("hidden")}
+/* count letters the way people read them: a Thai consonant with its vowel and tone marks is one letter */
+const GSEG=(()=>{try{return new Intl.Segmenter(undefined,{granularity:"grapheme"})}catch(e){return null}})();
+const graphemes=s=>GSEG?[...GSEG.segment(s)].map(x=>x.segment):[...s];
+function stCount(){const i=$("#stIn"),gs=graphemes(i.value);if(gs.length>STATUS_MAX)i.value=gs.slice(0,STATUS_MAX).join("");$("#stN").textContent=Math.min(gs.length,STATUS_MAX)+"/"+STATUS_MAX}
+function commitStatus(){const v=graphemes($("#stIn").value.replace(/\s+/g," ").trim()).slice(0,STATUS_MAX).join("");closeStatusBar();
+  if(!v||!player.sit||cur!==town)return;player.status=v;toast(t("st_set"))}
+$("#stIn").addEventListener("input",stCount);
+$("#stIn").addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter")commitStatus();if(e.key==="Escape")closeStatusBar()});
+$("#stOk").addEventListener("click",commitStatus);$("#stNo").addEventListener("click",closeStatusBar);
+
+/* ---- friends (the other side accepts after a moment; real requests come with the server) ---- */
+function askFriend(c){
+  const n=c.name;if(S.friends.includes(n)||frPending.has(n))return;
+  if(S.friends.length>=FRIEND_MAX){AUD.sfx("err");toast(fmt("fr_full",{n:FRIEND_MAX}));return}
+  frPending.add(n);toast(fmt("fr_sent",{n}));
+  setTimeout(()=>{frPending.delete(n);if(S.friends.includes(n)||S.friends.length>=FRIEND_MAX)return;S.friends.push(n);toast(fmt("fr_added",{n}),true);pushChat({ch:"sys",raw:fmt("fr_added",{n})});save()},1200+Math.random()*1800);
+}
+
+/* ---- whisper: a small 1:1 chat window ---- */
+const WSP_REPLY=[
+ {en:"Hi! 👋",th:"หวัดดี! 👋"},{en:"Hey, what’s up?",th:"ว่าไง มีอะไรเหรอ"},{en:"Farming right now, talk later?",th:"ฟาร์มอยู่ เดี๋ยวคุยนะ"},
+ {en:"Sure, let’s party up sometime",th:"ได้เลย ไว้ตั้งปาร์ตี้กัน"},{en:"lol",th:"555"},{en:"Thanks!",th:"ขอบคุณนะ!"},{en:"I’m heading to Field 02",th:"กำลังจะไปทุ่ง 02"},{en:"brb",th:"เดี๋ยวมานะ"}
+];
+function openWhisper(n){
+  if(!n)return;wspWith=n;WSP[n]=WSP[n]||[];$("#wspSend").textContent=t("send");$("#wspIn").placeholder=t("wsp_ph");renderWhisper();$("#wsp").classList.remove("hidden");setTimeout(()=>$("#wspIn").focus(),30);
+}
+function renderWhisper(){
+  if(!wspWith)return;const w=findPlayer(wspWith);
+  $("#wspT").innerHTML=`${t("ctx_whisper")}: ${esc(wspWith)} <small>${w?"Lv "+w.lv:t("fr_offline")}</small>`;
+  const log=WSP[wspWith]||[];$("#wspLog").innerHTML=log.length?log.map(m=>`<div class="wsp-m${m.me?" me":""}">${esc(typeof m.txt==="string"?m.txt:(m.txt[lang]??m.txt.en))}</div>`).join(""):`<div class="wsp-empty">${fmt("wsp_empty",{n:esc(wspWith)})}</div>`;
+  $("#wspLog").scrollTop=1e9;
+}
+function sendWhisper(){
+  const i=$("#wspIn"),v=i.value.trim();if(!v||!wspWith)return;i.value="";const n=wspWith;
+  WSP[n].push({me:true,txt:v});pushChat({ch:"wsp",name:`${player.name} → ${n}`,raw:v,me:true});renderWhisper();
+  if(findPlayer(n))setTimeout(()=>{const r=WSP_REPLY[(Math.random()*WSP_REPLY.length)|0];WSP[n].push({me:false,txt:r});pushChat({ch:"wsp",name:n,en:r.en,th:r.th});
+    if(wspWith===n&&!$("#wsp").classList.contains("hidden"))renderWhisper();else toast(fmt("wsp_new",{n}))},1400+Math.random()*2200);
+}
+$("#wspSend").addEventListener("click",sendWhisper);
+$("#wspIn").addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter")sendWhisper();if(e.key==="Escape")$("#wspIn").blur()});
+$("#wspX").addEventListener("click",()=>{$("#wsp").classList.add("hidden");wspWith=null});
+{let drag=null;const h=$("#wspH"),el=$("#wsp");   // drag the whisper window by its header
+  h.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;const a=localPt(cv,e);drag={x:a.x-el.offsetLeft,y:a.y-el.offsetTop};try{h.setPointerCapture(e.pointerId)}catch(_){}});
+  h.addEventListener("pointermove",e=>{if(!drag)return;const a=localPt(cv,e),ui=$("#ui");el.style.right="auto";el.style.left=Math.max(0,Math.min(ui.clientWidth-el.offsetWidth,a.x-drag.x))+"px";el.style.top=Math.max(0,Math.min(ui.clientHeight-el.offsetHeight,a.y-drag.y))+"px"});
+  h.addEventListener("pointerup",()=>{drag=null});h.addEventListener("pointercancel",()=>{drag=null})}
 let hintTimer=0;
 function showHint(k){const coarse=matchMedia("(pointer:coarse)").matches;const el=$("#hint");el.dataset.k=k;el.textContent=t(k+(coarse?"Tap":""));el.classList.remove("gone");clearTimeout(hintTimer);hintTimer=setTimeout(hideHint,7000)}
 function hideHint(){$("#hint").classList.add("gone")}
@@ -5023,6 +5208,7 @@ function applyMap(id,ax,ay){
   if(S.idle){setIdle(false,true);toast(t("idleEnded"))}
   if(dlg){dlg=null;$("#dlg").classList.add("hidden");stage.classList.remove("dlg-open")}
   for(const m of Object.values(MAPS))if(m.id!==id&&m.id!==AHEAD[id])freeGround(m);   // v20 maps are big: every device keeps only the current map + the one ahead
+  standUp();closeCtx();
   setCur(MAPS[id]);S.visited[id]=1;netExpand();AUD.sfx("warp");AUD.setMap(id);buildMini(cur);
   player.x=ax;player.y=ay;player.path=[];player.target=null;player.onArrive=null;marker=null;fx=[];
   deaggroAll();setBanner();aggroGrace=3;
@@ -5217,6 +5403,7 @@ function damagePlayer(dmg,tag){
   AUD.sfx("hurt");
   { const rd=pd().ab&&pd().ab.red; if(rd)dmg=Math.round(dmg*(1-rd/100)); }
   if(BF.shield>0){const a=Math.min(BF.shield,dmg);BF.shield-=a;dmg-=a;if(a>0)fx.push({k:"dmg",x:player.x,y:player.y,t:0,d:.8,txt:"-"+num(a),c:"#ffe9a0",ox:-14,h:62})}
+  if(player.sit)standUp(t("sit_hit"));
   if(dmg<=0)return;
   S.hp-=dmg;fx.push({k:"dmg",x:player.x,y:player.y,t:0,d:.95,txt:(tag?tag+" ":"")+num(dmg),c:tag?"#ff9a5a":"#ff5a6a",big:!!tag,ox:(rnd()-.5)*24,h:52});
   if(S.hp<=0){S.hp=0;die()}
@@ -5716,10 +5903,10 @@ function render(){
       const ew=g.measureText(lbl).width;ell(o.sx-ew/2-7,ly,3.4,3.4,ELC[REOC.MONC[mo.type].elem]||"#ccc");g.strokeStyle="rgba(10,12,26,.85)";g.lineWidth=1;g.stroke()}
     else if(o.kind==="char"){const c=o.c;
       if(c.npc){npcPlate(o.sx,o.sy-100,t(c.nameK),t("npcr_"+c.id),"#ffd76a");if(talkNpc.has(c.id)||(c.id==="helper"&&S.arch==="beginner"&&S.jlv>=10&&!S.q.arch))questMark(o.sx,o.sy-132)}
-      else if(c.me){nameTag(o.sx,o.sy+14,c.name,"#ffffff",11.5);if(player.casting&&!c.dead){if(player.casting.id==="fire_bolt")fireRune(o.sx,o.sy);castBar(o.sx,o.sy-(S.idle?96:82))}
+      else if(c.me){nameTag(o.sx,o.sy+14,c.name,"#ffffff",11.5);if(c.status&&c.sit&&!c.dead)statusPlate(o.sx,o.sy-74,c.status);if(player.casting&&!c.dead){if(player.casting.id==="fire_bolt")fireRune(o.sx,o.sy);castBar(o.sx,o.sy-(S.idle?96:82))}
         if(S.idle&&!c.dead){g.font=`600 9px ${FONT}`;rr(o.sx-17,o.sy-78,34,14,7);g.fillStyle="rgba(63,198,168,.92)";g.fill();g.fillStyle="#04261d";g.textAlign="center";g.textBaseline="middle";g.fillText(t("auto"),o.sx,o.sy-70.5)}}
       else nameTag(o.sx,o.sy+14,c.name,"#bfe3ff");
-      if(c.bubble)bubble(o.sx,o.sy-(c.me&&S.idle?84:68),typeof c.bubble.txt==="string"?c.bubble.txt:(c.bubble.txt[lang]??c.bubble.txt.en));
+      if(c.bubble)bubble(o.sx,o.sy-(c.me&&S.idle?84:c.me&&c.status&&c.sit?104:68),typeof c.bubble.txt==="string"?c.bubble.txt:(c.bubble.txt[lang]??c.bubble.txt.en));
     }
   }
   g.setTransform(dpr,0,0,dpr,0,0);
@@ -5781,6 +5968,7 @@ function update(dt){
   T+=dt;gateT=Math.max(0,gateT-dt);aggroGrace=Math.max(0,aggroGrace-dt);if((T*2|0)!==(update.q|0)){update.q=T*2;AUD.setBoss(cur.id==="field3"&&cur.monsters.some(m=>m.boss&&m.aggro&&!m.dead&&m.dieT<=0))}watchWins(dt);updateMobBar(dt);updateAnn(dt);
   if(player.dead){deathT-=dt;if(deathT<=0)respawn()}
   if(holding&&lastHold&&!player.dead){holdTimer+=dt;if(holdTimer>.3){holdTimer=0;const [wx,wy]=toWorld(lastHold.x,lastHold.y),[tx,ty]=isoToTile(wx,wy),a=Math.floor(tx),b=Math.floor(ty);if(!player.target&&inb(a,b)&&walk(a,b)&&walkTo(player,a,b))setMarker(a+.5,b+.5)}}
+  if(player.sit&&(player.path.length||player.target||player.casting||player.nav||S.idle||player.dead||warping))standUp();
   if(!player.dead){updateCombat(dt);moveChar(player,dt)}
   if(!warping&&!player.dead)for(const p of cur.portals)if(Math.hypot(player.x-p.x-.5,player.y-p.y-.5)<.6){const gk=gateCheck(p.to);if(!gk.ok){blockGate(p,gk);break}const a=arriveAt(p.to,cur.id);goMap(p.to,a[0],a[1]);break}
   if(marker){marker.t+=dt*1.6;if(!player.path.length&&marker.t>1.2)marker=null}
@@ -5791,7 +5979,7 @@ function update(dt){
   }else for(const mo of cur.monsters)updateMon(mo,dt);
   for(const c of [player,...town.wanderers])if(c.bubble){c.bubble.t-=dt;if(c.bubble.t<=0)c.bubble=null}
   for(const s of SLOTS)if(s.left>0)s.left=Math.max(0,s.left-dt);
-  if(!player.dead){const d=pd();S.sp=Math.min(spMax(),S.sp+dt*Math.max(d.spRegen,1.5+S.lv*.2));if(BF.regen>0)S.hp=Math.min(hpMax(),S.hp+hpMax()*.015*dt);if(player.combatT>4)S.hp=Math.min(hpMax(),S.hp+(d.hpRegen+hpMax()*(cur===town?.08:.015))*dt)}
+  if(!player.dead){const d=pd(),rg=player.sit?SIT_REGEN:1;S.sp=Math.min(spMax(),S.sp+dt*rg*Math.max(d.spRegen,1.5+S.lv*.2));if(BF.regen>0)S.hp=Math.min(hpMax(),S.hp+hpMax()*.015*dt);if(player.combatT>4)S.hp=Math.min(hpMax(),S.hp+rg*(d.hpRegen+hpMax()*(cur===town?.08:.015))*dt)}
   updateStill(dt);
   updateIdle(dt);updateNav(dt);
   for(const f of fx)f.t+=dt;fx=fx.filter(f=>f.t<f.d);
@@ -5843,7 +6031,7 @@ $("#csend").addEventListener("click",sendChat);
 $("#cin").addEventListener("keydown",e=>{e.stopPropagation();if(e.key==="Enter")sendChat();if(e.key==="Escape")$("#cin").blur()});
 
 /* ================= menu + windows ================= */
-const MENU=[["char","user"],["status","bars"],["inv","bag"],["skill","star"],["quest","scroll"],["party","users"],["guild","flag"],["shop","store"],["set","gear"]];
+const MENU=[["char","user"],["status","bars"],["inv","bag"],["skill","star"],["quest","scroll"],["social","users"],["shop","store"],["set","gear"]];
 function renderMenu(){$("#menu").innerHTML=MENU.map(([k,ic])=>`<button class="mb" data-w="${k}" title="${t("m_"+k)}">${svg(ic)}<span>${t("m_"+k)}</span></button>`).join("")}
 $("#menu").addEventListener("click",e=>{const b=e.target.closest(".mb");if(!b)return;const k=b.dataset.w;if(winId===k)closeWin();else openWin(k)});
 const ITEMC={red:"#e8475f",blue:"#3d7fe0",wing:"#e8f2ff",apple:"#e63b3b",mat_gel:"#b98cff",mat_shell:"#5fd8e8",mat_lens:"#ff8a3a",mat_ore:"#d8d2ff",mat_gel2:"#6cc8ff",mat_amber:"#ffb84a",mat_frost:"#bff0ff",mat_core:"#ffd76a",mat_gel3:"#9fe0ff",mat_rime:"#c8dcf0",mat_mag:"#9aa8ff",mat_gheart:"#bff4ff",mat_fault:"#c9b08a",mat_seismic:"#e8a85a",mat_tide:"#6ab8f0",mat_glyph:"#9fe8ff",mat_strata:"#a89478",mat_press:"#7fb8ff",mat_cinder:"#d8683a",mat_embercore:"#ff8a2a",mat_magma:"#c8401a",mat_lavaglass:"#ffb040",mat_relic:"#8a7060",mat_infernoshard:"#ff5a1a"};
@@ -5930,14 +6118,21 @@ const WIN={
     return `<div class="w-sec">${t("q_active")} <span class="muted">· ${fmt("q_count",{n:S.pins.filter(id=>S.q[id]&&S.q[id].s==="active").length})}</span></div><div class="rows">${act.map(id=>row(id,true)).join("")||`<p class="muted">—</p>`}</div>
     <div class="w-sec">${t("q_avail")}</div>${groups||`<p class="muted">—</p>`}
     <p class="muted">${fmt("q_completed",{n:done})}</p>`},
- party:()=>`<div class="rows"><div class="row"><span class="dot" style="--c:#6e58e8">${svg("user")}</span><div class="grow">${player.name} (${t("you")})<small>Lv ${S.lv} · ${t("job")}</small></div></div></div><p class="muted">${t("party_none")}</p><button class="btn pri" data-act="mock">${t("party_inv")}</button>`,
- guild:()=>`<div class="rows"><div class="row"><span class="dot" style="--c:#6e58e8">${svg("flag")}</span><div class="grow"><b>${t("guild_name")}</b><small>${t("guild_desc")}</small></div></div></div><p class="muted">${t("mock")}</p>`
+ /* v20.1: Social = Friends + Party + Guild in one window */
+ social:()=>{
+  const tabs=`<div class="seg soc-tabs">${[["friends","soc_friends"],["party","m_party"],["guild","m_guild"]].map(([k,n])=>`<button class="${socTab===k?"on":""}" data-act="soctab" data-v="${k}">${t(n)}</button>`).join("")}</div>`;
+  if(socTab==="party")return tabs+`<div class="rows"><div class="row"><span class="dot" style="--c:#6e58e8">${svg("user")}</span><div class="grow">${player.name} (${t("you")})<small>Lv ${S.lv} · ${t("job")}</small></div></div></div><p class="muted">${t("party_none")}</p><button class="btn pri" data-act="mock">${t("party_inv")}</button>`;
+  if(socTab==="guild")return tabs+`<div class="rows"><div class="row"><span class="dot" style="--c:#6e58e8">${svg("flag")}</span><div class="grow"><b>${t("guild_name")}</b><small>${t("guild_desc")}</small></div></div></div><p class="muted">${t("mock")}</p>`;
+  const fr=S.friends||[];
+  const rows=fr.map(n=>{const w=findPlayer(n);return `<div class="row"><span class="dot" style="--c:#6e58e8">${svg("user")}</span><div class="grow"><b>${esc(n)}</b><small>${w?`<span class="fr-on"></span>${t("fr_online")} · ${t("mapName")} · Lv ${w.lv}`:t("fr_offline")}</small></div>
+    <button class="btn sm pri" data-act="frwsp" data-n="${esc(n)}">${t("ctx_whisper")}</button><button class="btn sm${frArm===n?" danger":""}" data-act="frdel" data-n="${esc(n)}">${t(frArm===n?"fr_delSure":"fr_del")}</button></div>`}).join("");
+  return tabs+`<p class="muted" style="margin:0 0 8px">${fmt("fr_count",{n:fr.length,m:FRIEND_MAX})}</p>${rows?`<div class="rows">${rows}</div>`:`<p class="muted">${t("fr_none")}</p>`}`}
 };
 /* ================= windows (v17): up to three open at once, each with its own fixed size ================= */
-const NAVSET=[["char","user"],["status","bars"],["inv","bag"],["skill","star"],["quest","scroll"],["party","users"],["guild","flag"]];
+const NAVSET=[["char","user"],["status","bars"],["inv","bag"],["skill","star"],["quest","scroll"],["social","users"]];
 const WSLOT=[{k:"A",el:"win",b:"winB",t:"winT",n:"winNav",h:"winH",x:"winX"},{k:"B",el:"winS",b:"winSB",t:"winST",n:"winSNav",h:"winSH",x:"winSX"},{k:"C",el:"winD",b:"winDB",t:"winDT",n:"winDNav",h:"winDH",x:"winDX"}];
 let winSide=null,winDet=null,_wkey={A:"",B:"",C:""},_wsig={},ptrDown=false,_wwT=0;
-let mapSel=null,mapTab="info",shopTab="sc",setTab="gfx";
+let mapSel=null,mapTab="info",shopTab="sc",setTab="gfx",socTab="friends",frArm=null;
 const slotWin=k=>k==="A"?winId:k==="B"?winSide:winDet;
 const WTITLES={itemdet:"w_itemdet",idlesum:"w_idlesum",idleset:"w_idleset",worldmap:"w_worldmap",mapinfo:"w_mapinfo"};
 const winTitle=id=>t(WTITLES[id]||"m_"+id);
@@ -5966,6 +6161,7 @@ function winSig(id){
     case "inv":return invSig();
     case "skill":return S.arch+"|"+S.lv+"|"+S.jlv+"|"+JSON.stringify(S.skLv)+"|"+JSON.stringify(S.hot)+"|"+lang;
     case "quest":return JSON.stringify(S.q)+"|"+S.pins.join();
+    case "social":return socTab+"|"+(S.friends||[]).join()+"|"+frArm+"|"+S.lv;
     case "shop":return [S.sc,S.y,S.la,shopTab,S.invPacks,SHOP.map(([k])=>S.inv[k]).join()].join("|");
     case "set":return [S.sound,S.music,S.vip,S.autoIdle,S.gfx,lang,layoutMode,zIdx,S.gm,setTab,Math.floor(lastSave/30000)].join("|");
     case "itemdet":{const e=detEntry();return e?[e.id,e.ref,e.qty,S.inv.refine_ore,JSON.stringify(e.roll)].join("|"):"x"}
@@ -6248,6 +6444,9 @@ function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[d
   else if(a==="invsort"){const order=invTab==="gear"?["name","rarity","price"]:["name","price"];const i=order.indexOf(invSortMode);invSortMode=order[(i+1)%order.length];sortInventory(invSortMode);renderWin();save()}
   else if(a==="invexp"){shopTab="cash";openWin("shop")}
   else if(a==="shoptab"){shopTab=b.dataset.v;renderWin()}
+  else if(a==="soctab"){socTab=b.dataset.v;frArm=null;renderWin()}
+  else if(a==="frwsp"){openWhisper(b.dataset.n)}
+  else if(a==="frdel"){const n=b.dataset.n;if(frArm!==n){frArm=n;renderWin();return}frArm=null;S.friends=(S.friends||[]).filter(x=>x!==n);toast(fmt("fr_removed",{n}));renderWin();save()}
   else if(a==="buyPack")buyPack(b.dataset.c)
   else if(a==="settab"){setTab=b.dataset.v;renderWin()}
   else if(a==="idleAgain"){closeWin();$("#idleBtn").click()}
@@ -6556,6 +6755,7 @@ try{if(saved){
   for(const k in S.inv)S.inv[k]=Math.max(0,Math.floor(+S.inv[k]||0));
   if(!S.sess||typeof S.sess!=="object")S.sess={t:0,kills:0,base:0,job:0,sc:0,mats:0,items:{},gear:0};
   if(!S.sess.items||typeof S.sess.items!=="object")S.sess.items={};if(!S.sess.gear)S.sess.gear=0;
+  if(!Array.isArray(S.friends))S.friends=[];S.friends=S.friends.filter(n=>typeof n==="string").slice(0,FRIEND_MAX);
   if(!["system","light","dim"].includes(S.uiMode))S.uiMode="system";S.invPacks=Math.max(0,Math.min(20,S.invPacks|0));if(typeof S.menuHide!=="boolean")S.menuHide=false;S.gm=false;   // GM test mode never survives a reload
   if(!S.visited||typeof S.visited!=="object"){   // older saves: work out which maps the character has already been to
     const v={town:1},mq=S.q&&S.q.main;
@@ -6577,6 +6777,7 @@ try{if(saved){
   lastSave=saved.savedAt;
 }}catch(e){saved=null;setCur(town);player.x=TOWN_SPAWN[0];player.y=TOWN_SPAWN[1];S.idle=false;S.pending=null;S.away=null;S.q={main:{s:"active",st:0,p:0,n:0}};S.pins=["main"]}
 if(!S.equip)S.equip=starterEquip();
+if(!Array.isArray(S.friends))S.friends=[];
 sanitizeGear();
 S.visited[cur.id]=1;AUD.setMap(cur.id);
 document.documentElement.lang=lang;
