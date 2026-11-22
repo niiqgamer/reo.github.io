@@ -62,21 +62,9 @@ REO is a **browser-based MMORPG with idle mechanics**. It plays like a classic q
 
 ## 4. Gadolinium — map spec
 
-Grid: each map has its own size (`m.N`). every map (Gadolinium and all fields) is **98 × 98** (old 49 × 49 design grid × `MAPK`).
+Grid: each map has its own size (`m.N`); every map (Gadolinium and all fields) is **98 × 98** (the old 49 × 49 design grid × `MAPK`).
 
-| Feature | Location (tiles) | Notes |
-|---|---|---|
-| Main roads | rows 23–25 and columns 23–25 | Cobblestone, run edge to edge |
-| Plaza | circle radius 7.3 around (24.5, 24.5) | Star inlay, rings, curb |
-| Gadolinium Crystal | footprint 19–21 × 19–21 | Floating crystal, orbit rings, interactable |
-| Adventurers’ Guild | x 13, y 13, 5 × 4 | Flag on roof |
-| Tool Dealer | x 29, y 15, 3 × 3 | Bors stands outside |
-| Silver Moon Inn | x 30, y 29, 4 × 4 | Two stories |
-| Ironhart Forge | x 15, y 29, 4 × 3 | Chimney smoke, barrels |
-| Houses | (36,19) (9,19) (27,7) (37,35) (8,34) (18,40), each 3 × 3 | Varied roof colors |
-| Pond | ellipse center (37, 12), radii 4.2 × 3 | Blocked, animated glints |
-| Market stalls | (28,21) (21,28) | Striped awnings |
-| Forest edge | outer 4 tiles | Dense trees, road gaps act as gates (east → Field 01, west → Path to the Geosyncline, south → Road to the Ruins) |
+Gadolinium is built around a round plaza (radius 11.5 around (49, 49)) with the Gadolinium Crystal monument in the middle, four main roads to the edges, a market ring, the Guild, Tool Dealer, Inn, Forge and 10 houses. Gates: east → Field 01, west → Path to the Geosyncline, south → Road to the Ruins. The full layout table with coordinates lives in `GADOLINIUM.md` §1.
 
 Every building door is connected to the main road with a cobblestone path.
 
@@ -147,7 +135,8 @@ The current target shows a bouncing gold **!** marker. The quest tracker’s **G
 | Quest tracker | Title, objective, Go button |
 | Chat | Tabs All / Party / Guild / System, input (Enter to focus), speech bubbles over heads |
 | Hotbar | 8 skills + 2 potions, keys 1–0, conic cooldown overlay, SP cost |
-| Menu | Character, Bag, Skills, Quests, Party, Guild, Shop, Settings |
+| Menu | Character, Status, Bag, Skills, Quests, Social (Friends / Party / Guild), Shop, Settings |
+| Right-click / long-press | Game menu on characters (friend, whisper, sit, status); see `UI-UX.md` §23 |
 | Windows | Centered, draggable in horizontal mode, Esc to close |
 | Dialog | NPC portrait, name, text, Next / Close |
 | Toasts | Neutral and gold (level-up, quest complete) |
