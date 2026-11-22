@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.2. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.3. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.2 (this update)
+## Changes in v20.3 (this update)
+- Party rewards: a size bonus on EXP, Items and Scandium (2 people +5%, 3 +12%, 4 +21%, 5 +32%, 6 +47%, cumulative). Two leader settings: EXP sharing (own / split equally) and Item & Scandium sharing (own / rotate). A party needs a level gap of at most 20; the invite is refused otherwise. The leader can rename the party (2–10 characters); the title shows as "Character (Party)". See `ECONOMY.md` §4 and `UI-UX.md` §23.
+
+## Changes in v20.2
 - Parties: create a party from the right-click menu on yourself (name it in Social → Party), invite other players from their right-click menu (leader only, max 6, warning if they already have a party), remove members, disband. Guild invite appears only with invite rights. See `UI-UX.md` §23.
 
 ## Changes in v20.1
