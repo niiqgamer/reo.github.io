@@ -9,24 +9,24 @@ Every new character starts here as a **Beginner (C0)**, in front of the Gadolini
 
 ## 1. Map spec
 
-Grid **147 × 147** tiles (3× the old 49 × 49 town). Center **(73.5, 73.5)**; spawn at **(79.5, 79.5)**, just in front of the monument.
+Grid **98 × 98** tiles (2× the old 49 × 49 town). Center **(49, 49)**; spawn at **(54.5, 54.5)**, just in front of the monument.
 
 | Feature | Location (tiles) | Notes |
 |---|---|---|
-| Main roads | 5 tiles wide, centered on row/column 73 | Cobblestone, edge to edge |
-| Plaza | circle radius 15.5 around (73.5, 73.5) | Mosaic rays, compass star, gold rings, curb, 16 lamps on the rim |
-| Gadolinium Crystal monument | center (73.5, 73.5), blocked radius 4.4 | About 2× the old crystal: 3-tier round dais with rune bands, 4 crystal pylons feeding light arcs, large floating crystal, rune rings, orbiting shards, light beam, pulse ring. Interactable |
-| Market ring | 8 stalls at radius 18.5 between the roads | Striped awnings |
-| Adventurers’ Guild | x 39, y 39, 5 × 4 | Flag on roof |
-| Tool Dealer | x 87, y 45, 3 × 3 | Scandium shop |
-| Silver Moon Inn | x 90, y 87, 4 × 4 | Two stories |
-| Ironhart Forge | x 45, y 87, 4 × 3 | Chimney smoke |
-| Houses | 13 houses, 3 × 3 each (see `HOUSES` in `buildTown`) | Varied roofs |
-| Ponds | (111, 36) radii 8.4 × 6 and (30, 120) radii 5.6 × 4 | Blocked |
+| Main roads | 4 tiles wide (rows/columns 47–50) | Cobblestone, edge to edge |
+| Plaza | circle radius 11.5 around (49, 49) | Mosaic rays, compass star, gold rings, curb, 12 lamps on the rim |
+| Gadolinium Crystal monument | center (49, 49), blocked radius 4.4 | About 2× the old crystal: 3-tier round dais with rune bands, 4 crystal pylons feeding light arcs, the original four-face crystal scaled 2.8× and floating, rune rings, orbiting shards, light beam, pulse ring. Interactable |
+| Market ring | 8 stalls at radius 14.5 between the roads | Striped awnings |
+| Adventurers’ Guild | x 26, y 26, 5 × 4 | Flag on roof |
+| Tool Dealer | x 58, y 30, 3 × 3 | Scandium shop |
+| Silver Moon Inn | x 60, y 58, 4 × 4 | Two stories |
+| Ironhart Forge | x 30, y 58, 4 × 3 | Chimney smoke |
+| Houses | 10 houses, 3 × 3 each (see `HOUSES` in `buildTown`) | Varied roofs |
+| Ponds | (74, 24) radii 6.7 × 4.8 and (20, 82) radii 4 × 3 | Blocked |
 | Forest edge | outer 4 tiles | Road gaps act as gates |
-| East gate | (144, 73) | → Field 01 |
-| West gate | (2, 73) | → Path to the Geosyncline. Warning sign at (4, 69). Needs Lv 25+ and CP 2,000+ |
-| South gate | (73, 144) | → Road to the Ruins. Warning sign at (69, 142). Needs Lv 30+ and CP 3,000+ |
+| East gate | (95, 49) | → Field 01 |
+| West gate | (2, 49) | → Path to the Geosyncline. Warning sign at (4, 45). Needs Lv 25+ and CP 2,000+ |
+| South gate | (49, 95) | → Road to the Ruins. Warning sign at (45, 93). Needs Lv 30+ and CP 3,000+ |
 
 Every building door connects to the main road with a cobblestone path.
 
@@ -38,10 +38,10 @@ The ground texture is drawn in chunks of up to 2048 px (`groundGen` / `groundChu
 
 | ID | Name (EN / TH) | Anchor tile | Role |
 |---|---|---|---|
-| `lumi` | Guide Lumi / ผู้นำทาง ลูมิ | (80, 68), beside the monument | Starter quest giver |
-| `bors` | Bors the Merchant / พ่อค้าบอร์ส | (90, 51), Tool Dealer path | Potions, Scandium shop |
-| `veyra` | Captain Veyra / กัปตันเวย์รา | (52, 91), Forge path | Combat and idle tips |
-| `helper` | Archetype Helper Sera / ผู้แนะแนวอาร์คีไทป์ เซร่า | (86, 92), Inn path | Teaches the 4 archetypes; gives the Archetype Trial at Job Lv 10 |
+| `lumi` | Guide Lumi / ผู้นำทาง ลูมิ | (55, 43), beside the monument | Starter quest giver |
+| `bors` | Bors the Merchant / พ่อค้าบอร์ส | (61, 36), Tool Dealer path | Potions, Scandium shop |
+| `veyra` | Captain Veyra / กัปตันเวย์รา | (37, 62), Forge path | Combat and idle tips |
+| `helper` | Archetype Helper Sera / ผู้แนะแนวอาร์คีไทป์ เซร่า | (57, 63), Inn path | Teaches the 4 archetypes; gives the Archetype Trial at Job Lv 10 |
 
 `placeTownNpcs` snaps each NPC to the nearest free road or plaza tile.
 
