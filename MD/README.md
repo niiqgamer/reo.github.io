@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.1. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.2. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.1 (this update)
+## Changes in v20.2 (this update)
+- Parties: create a party from the right-click menu on yourself (name it in Social → Party), invite other players from their right-click menu (leader only, max 6, warning if they already have a party), remove members, disband. Guild invite appears only with invite rights. See `UI-UX.md` §23.
+
+## Changes in v20.1
 - Right-click (phones: long-press) menu on characters: add friend, whisper, sit and rest (3× HP / SP regen), status sign in town. Trade and stalls are listed as *Soon*.
 - Menu: Party and Guild merged into **Social** (Friends / Party / Guild tabs). See `UI-UX.md` §23.
 

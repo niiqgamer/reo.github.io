@@ -502,8 +502,8 @@ The browser menu ("Save image as…") never opens on the game. Right-click (phon
 
 | Target | Menu items |
 |---|---|
-| Another player | Add friend (Remove friend if already a friend) · Whisper · Trade (*Soon*, disabled) |
-| Yourself | Sit and rest / Stand up · Set status / Clear status · Open a stall (*Soon*, disabled) |
+| Another player | Add friend (Remove friend if already a friend) · Whisper · Invite to party (only for a party leader; hidden for your own members) · Invite to guild (only with invite rights: guild master or officer; hidden without a guild) · Trade (*Soon*, disabled) |
+| Yourself | Sit and rest / Stand up · Set status / Clear status · Create a party (only when you have no party) · Open a stall (*Soon*, disabled) |
 | NPC | Talk (desktop right-click only; on phones a tap already talks) |
 
 **Sit and rest.** HP and SP recover 3× faster (`SIT_REGEN`). You can sit anywhere except within 3 tiles of an NPC (`SIT_NPC_GAP`), while Idle is on, or while casting. You stand up by yourself when a monster hits you, when you walk, attack, cast, use quest auto-walk, start Idle, die or change map. The chibi sits cross-legged.
@@ -513,3 +513,11 @@ The browser menu ("Save image as…") never opens on the game. Right-click (phon
 **Friends.** Social → Friends lists up to 50 friends (`FRIEND_MAX`, saved in `S.friends`) with online state, Whisper and Remove (click twice to confirm). Until the server exists, the other player accepts a request after 1–3 s.
 
 **Whisper.** A small draggable 1:1 window (`#wsp`). Messages also go to the chat log (All tab, pink `[Whisper]`). Until the server exists, the other player answers with a short canned reply.
+
+### Party and guild (v20.2)
+
+**Party** (`S.party = {name, lead, members:[{name, lv}]}`, saved). Right-click yourself → *Create a party* opens Social → Party, where you type a name (2–20 letters; empty uses "{name}’s party") and press Create or Enter. A party holds up to 6 people including you (`PARTY_MAX`). The leader can invite: if the other player is already in a party the toast says so; if the party is full the toast says so; otherwise the player joins after 1–3 s (simulated). The Party tab lists the leader (crown) and members with *Remove* (click twice), and *Disband* / *Leave* (click twice). Party members' name tags use the party colour, and joins and leaves are posted in the Party chat tab.
+
+**Guild** (`S.guild = {name, rank: "master" | "officer" | "member", members, canInvite?}`, saved). Guild creation is not built yet, so a new character has no guild and the invite item never shows. *Invite to guild* appears only for a guild master or officer (or `canInvite`). Players already in a guild get a warning toast. The Guild tab shows "No guild yet · Soon" when you have none; the Character window shows the guild name instead of "NO GUILD".
+
+Simulated players: about a quarter already have a party and a third already have a guild (`hasParty` / `hasGuild`).
