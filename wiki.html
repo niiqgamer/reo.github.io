@@ -333,7 +333,7 @@ const GROUPS={home:"START",archetype:"ตัวละคร",map:"โลก",ite
 
 const MAPS=[
  {id:"town",n:"Gadolinium",th:"แกโดลิเนียม",sub:"Town of Beginnings",subTh:"เมืองแห่งการเริ่มต้น",cp:null,lv:"—",
-  desc:"เมืองเริ่มต้นของผู้เล่นทุกคน ผังเมือง 49 × 49 ช่อง มีจัตุรัสกลางเมืองที่ลอยด้วยคริสตัล Gadolinium และอาคารสไตล์ครึ่งไม้ครึ่งปูน ตัวละครใหม่เกิดที่กลางจัตุรัสพอดี",
+  desc:"เมืองเริ่มต้นของผู้เล่นทุกคน ผังเมือง 147 × 147 ช่อง มีจัตุรัสกลางเมืองที่ลอยด้วยคริสตัล Gadolinium และอาคารสไตล์ครึ่งไม้ครึ่งปูน ตัวละครใหม่เกิดที่กลางจัตุรัสพอดี",
   look:"ถนนหินปูทางข้ามเมือง มีโคมไฟ แผงขายของ บ่อน้ำ และแนวป่าสีม่วงล้อมขอบเมือง ประตูทางตะวันออกคือทางออกไป Field 01 ส่วนประตูทางตะวันตกและทางใต้มีป้ายเตือน \"Monster Lv.25+\" และ \"Monster Lv.30+\" นำไปสู่แมพอันตราย",
   portals:[["ประตูตะวันออก (46, 24)","Field 01"],["ประตูตะวันตก (2, 24) · ต้อง Lv 25+ และ CP 2,000+","Path to the Geosyncline"],["ประตูใต้ (24, 46) · ต้อง Lv 30+ และ CP 3,000+","Road to the Ruins"]],monsters:[]},
  {id:"field1",n:"Field 01",th:"ทุ่งแกโดลิเนียม 01",sub:"Outskirts of Gadolinium",subTh:"ชานเมืองแกโดลิเนียม",cp:150,lv:"Lv 1–6",
@@ -633,7 +633,7 @@ P.map=()=>{
   <div class="mapsel">${MAPS.map(x=>`<button class="ms ${x.id===mapSel?"on":""}" data-map="${x.id}" type="button"><div class="bg" style="background-image:url('${IMG["scene_"+x.id]}')"></div><div><b>${x.n}</b><span>${x.cp?"CP "+x.cp:"เมืองเริ่มต้น"}</span></div></button>`).join("")}</div>
   <div class="mapview"><div class="scene"><img src="${IMG["scene_"+m.id]}" alt="${m.n}"><div class="ov"><div class="chip" style="background:rgba(255,255,255,.16);color:#fff;border-color:rgba(255,255,255,.3)">${m.cp?"CP แนะนำ "+m.cp:"Safe zone"}</div><h2 style="margin-top:6px">${m.n} <span class="th" style="color:#c7ccf3;font-weight:400">· ${m.th}</span></h2><div style="color:var(--gold)">${m.sub} / ${m.subTh}</div></div></div>
     <div style="display:grid;gap:14px;align-content:start"><div class="mini"><img src="${IMG["mini_"+m.id]}" alt="แผนที่ภาพรวม ${m.n}"></div>
-      <div class="card"><dl class="kv"><dt>ระดับมอนสเตอร์</dt><dd>${m.lv}</dd><dt>CP แนะนำ</dt><dd>${m.cp||"—"}</dd><dt>ขนาดแมพ</dt><dd>49 × 49 ช่อง</dd>${m.id==="field3"?"<dt>บอส</dt><dd>Gadolith Lv 20</dd>":""}</dl></div></div></div>
+      <div class="card"><dl class="kv"><dt>ระดับมอนสเตอร์</dt><dd>${m.lv}</dd><dt>CP แนะนำ</dt><dd>${m.cp||"—"}</dd><dt>ขนาดแมพ</dt><dd>98 × 98 ช่อง</dd>${m.id==="field3"?"<dt>บอส</dt><dd>Gadolith Lv 20</dd>":""}</dl></div></div></div>
   <div class="grid g2" style="margin-top:16px"><div class="card"><h3 style="font-size:18px;margin-bottom:8px">รายละเอียด</h3><p style="margin:0 0 8px">${m.desc}</p><p class="muted" style="margin:0">${m.look}</p></div>
     <div class="card"><h3 style="font-size:18px;margin-bottom:8px">พอร์ทัลและเส้นทาง</h3><ul class="dots">${m.portals.map(p=>`<li>${p[0]} → <b>${p[1]}</b></li>`).join("")}</ul><p class="muted" style="font-size:13px;margin:8px 0 0">เมื่อข้ามแมพ ตัวละครจะไปโผล่ใกล้พอร์ทัลที่นำกลับไปทางเดิมเสมอ</p></div></div>
   ${town?`<section class="sec"><h2>NPC และสถานที่</h2><div class="grid g2"><div class="card"><h4 style="margin-bottom:8px">NPC</h4><div class="tw"><table><tbody>

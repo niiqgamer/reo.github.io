@@ -62,7 +62,7 @@ REO is a **browser-based MMORPG with idle mechanics**. It plays like a classic q
 
 ## 4. Gadolinium — map spec
 
-Grid: **49 × 49** tiles. Center tile **(24, 24)**.
+Grid: each map has its own size (`m.N`). Gadolinium is **147 × 147**, every field is **98 × 98** (old 49 × 49 design grid × `MAPK`).
 
 | Feature | Location (tiles) | Notes |
 |---|---|---|
