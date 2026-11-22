@@ -2893,68 +2893,83 @@ const AUD=(()=>{
 })();
 
 /* ================= world basics ================= */
-const TW=64,TH=32,HW=32,HH=16,N=49;
+const TW=64,TH=32,HW=32,HH=16,N0=49;
+/* v20: every map has its own grid size. Fields are 2× the old 49×49 (98×98); Gadolinium is 3× (147×147).
+   N always holds the size of the CURRENT map; code that works on another map uses m.N. */
+const MAPK={town:3,field1:2,field2:2,field3:2,geo:2,ruins:2};
+let N=N0*MAPK.town;
 /* Lite mode: phones and low-memory devices get a smaller ground texture and keep only one map in memory */
 const LITE=(()=>{try{const sm=Math.min(screen.width||9999,screen.height||9999)<=820;return matchMedia("(pointer:coarse)").matches||sm||(navigator.deviceMemory&&navigator.deviceMemory<=4)}catch(e){return true}})();
 const GS=LITE?1:1.25;
+/* ground texture scale per map: big maps drop a little resolution so the texture stays inside a memory budget */
+const GROUND_BUDGET=LITE?24e6:40e6;
+function groundScale(m){const a=(m.N*TW)*(m.N*TH+48);return Math.min(GS,Math.sqrt(GROUND_BUDGET/a))}
 const T_G=0,T_R=1,T_P=2,T_W=3,T_D=4,T_F=5,T_C=6;   // T_C = chasm (blocked fault crack)
 const I=(x,y)=>y*N+x, inb=(x,y)=>x>=0&&y>=0&&x<N&&y<N;
 function hash(x,y){let h=(x*374761393+y*668265263)|0;h=Math.imul(h^(h>>>13),1274126177);h^=h>>>16;return (h>>>0)/4294967296}
 function P(x,y,z=0){return [(x-y)*HW,(x+y)*HH-z]}
-const isRoadBand=(x,y)=>(x>=23&&x<=25)||(y>=23&&y<=25);
+/* Gadolinium layout (147×147): center, main road half-width, plaza radius, crystal monument */
+const TC=73.5,ROAD_HW=2.6,PLAZA_R=15.5,CRY=[73.5,73.5],CRY_R=4.4,TOWN_SPAWN=[79.5,79.5];
+const isRoadBand=(x,y)=>Math.abs(x+.5-TC)<ROAD_HW||Math.abs(y+.5-TC)<ROAD_HW;
 function shade(hex,f){const n=parseInt(hex.slice(1),16);let r=n>>16,gg=n>>8&255,b=n&255;if(f<0){r*=1+f;gg*=1+f;b*=1+f}else{r+=(255-r)*f;gg+=(255-gg)*f;b+=(255-b)*f}return `rgb(${r|0},${gg|0},${b|0})`}
-function newMap(id){return {id,map:new Uint8Array(N*N),blk:new Uint8Array(N*N),statics:[],B:[],portals:[],pools:[],npcs:[],wanderers:[],monsters:[]}}
+function newMap(id){const K=MAPK[id]||1,n=N0*K;return {id,K,N:n,map:new Uint8Array(n*n),blk:new Uint8Array(n*n),statics:[],B:[],portals:[],pools:[],npcs:[],wanderers:[],monsters:[]}}
 function addS(m,o){const p=P(o.cx,o.cy);o.sx=p[0];o.sy=p[1];m.statics.push(o);return o}
 const inEll=(x,y,e)=>((x-e[0])/e[2])**2+((y-e[1])/e[3])**2<=1;
 
 /* ================= town ================= */
 const HOUSE_ROOFS=["#d0409a","#2aa8c8","#8ad030","#8a50e0","#20c0a0","#e08a30"];
-const TOWN_GATES=[[46,24],[2,24],[24,46]];   // east (Field 01), west (Path to the Geosyncline), south (Road to the Ruins)
+const TOWN_GATES=[[144,73],[2,73],[73,144]];   // east (Field 01), west (Path to the Geosyncline), south (Road to the Ruins)
 function buildTown(){
   const m=newMap("town");Object.assign(m,{nameK:"mapName",subK:"mapSub",bg:["#1a1040","#070418"]});
-  const {map,blk}=m;m.pools=[[37,12,4.2,3]];
+  const {map,blk}=m,N=m.N,I=(x,y)=>y*N+x,inb=(x,y)=>x>=0&&y>=0&&x<N&&y<N;m.pools=[[111,36,8.4,6],[30,120,5.6,4]];
   for(let y=0;y<N;y++)for(let x=0;x<N;x++){
     let tp=T_G;
     if(hash(x>>2,(y>>2)+17)<.2&&hash(x,y)<.55)tp=T_F;
     if(isRoadBand(x,y))tp=T_R;
-    if(Math.hypot(x+.5-24.5,y+.5-24.5)<=7.3)tp=T_P;
-    if(inEll(x+.5,y+.5,m.pools[0])){tp=T_W;blk[I(x,y)]=1}
+    if(Math.hypot(x+.5-TC,y+.5-TC)<=PLAZA_R)tp=T_P;
+    for(const e of m.pools)if(inEll(x+.5,y+.5,e)){tp=T_W;blk[I(x,y)]=1}
     map[I(x,y)]=tp;
     if(x===0||y===0||x===N-1||y===N-1)blk[I(x,y)]=1;
   }
+  const HOUSES=[[108,57],[27,57],[81,21],[111,105],[24,102],[54,120],[126,51],[54,24],[15,78],[129,96],[96,126],[123,120],[60,102]];
   m.B=[
-   {id:"guild",x:13,y:13,w:5,h:4,H:76,wall:"#cdc6ee",trim:"#2c2250",roof:"#5a3fc0",label:"b_guild",flag:true},
-   {id:"tool",x:29,y:15,w:3,h:3,H:52,wall:"#c8f0e8",trim:"#1c4a58",roof:"#18a8b0",label:"b_tool"},
-   {id:"inn",x:30,y:29,w:4,h:4,H:68,wall:"#eed0f2",trim:"#44225a",roof:"#c03ad0",label:"b_inn"},
-   {id:"smith",x:15,y:29,w:4,h:3,H:54,wall:"#b8b0d0",trim:"#2a2048",roof:"#e0508a",label:"b_smith",chimney:true},
-   ...[[36,19],[9,19],[27,7],[37,35],[8,34],[18,40]].map(([x,y],i)=>({id:"h"+i,x,y,w:3,h:3,H:46,wall:["#e4dcf6","#d8f2ee","#f0e0f4"][i%3],trim:"#34224f",roof:HOUSE_ROOFS[i]}))
+   {id:"guild",x:39,y:39,w:5,h:4,H:76,wall:"#cdc6ee",trim:"#2c2250",roof:"#5a3fc0",label:"b_guild",flag:true},
+   {id:"tool",x:87,y:45,w:3,h:3,H:52,wall:"#c8f0e8",trim:"#1c4a58",roof:"#18a8b0",label:"b_tool"},
+   {id:"inn",x:90,y:87,w:4,h:4,H:68,wall:"#eed0f2",trim:"#44225a",roof:"#c03ad0",label:"b_inn"},
+   {id:"smith",x:45,y:87,w:4,h:3,H:54,wall:"#b8b0d0",trim:"#2a2048",roof:"#e0508a",label:"b_smith",chimney:true},
+   ...HOUSES.map(([x,y],i)=>({id:"h"+i,x,y,w:3,h:3,H:46,wall:["#e4dcf6","#d8f2ee","#f0e0f4"][i%3],trim:"#34224f",roof:HOUSE_ROOFS[i%HOUSE_ROOFS.length]}))
   ];
   for(const b of m.B){
     for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)blk[I(x,y)]=1;
-    const dx=b.x+Math.floor(b.w/2),dy=b.y+b.h;const vert=b.y+b.h/2<24.5;let x=dx,y=dy,guard=0;
-    while(inb(x,y)&&map[I(x,y)]!==T_R&&map[I(x,y)]!==T_P&&guard++<60){map[I(x,y)]=T_R;if(vert)y++;else x+=(x<24?1:-1)}
+    const dx=b.x+Math.floor(b.w/2),dy=b.y+b.h;const vert=b.y+b.h/2<TC;let x=dx,y=dy,guard=0;
+    while(inb(x,y)&&map[I(x,y)]!==T_R&&map[I(x,y)]!==T_P&&!blk[I(x,y)]&&guard++<200){map[I(x,y)]=T_R;if(vert)y++;else x+=(x<TC?1:-1)}
     addS(m,{kind:"bld",b,cx:b.x+b.w/2,cy:b.y+b.h/2,k:b.x+b.y+(b.w+b.h)/2});
   }
-  for(let y=19;y<22;y++)for(let x=19;x<22;x++)blk[I(x,y)]=1;
-  addS(m,{kind:"crystal",cx:20.5,cy:20.5,k:41.5});
-  for(const [k,x,y] of [["barrel",19,30],["barrel",19,31],["crate",32,17],["crate",32,16],["barrel",34,31],["stall",28,21],["stall",21,28]]){blk[I(x,y)]=1;addS(m,{kind:k,x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x,y)})}
-  for(let i=3;i<N-3;i+=5)for(const [x,y] of [[i,22],[i,26],[22,i],[26,i]]){
-    if(!inb(x,y)||blk[I(x,y)])continue;const tp=map[I(x,y)];if(tp!==T_G&&tp!==T_F)continue;
-    blk[I(x,y)]=1;addS(m,{kind:"lamp",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x,y)});
+  /* the crystal monument sits in the middle of the plaza; its round dais blocks walking */
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(Math.hypot(x+.5-CRY[0],y+.5-CRY[1])<CRY_R)blk[I(x,y)]=1;
+  addS(m,{kind:"crystal",cx:CRY[0],cy:CRY[1],k:CRY[0]+CRY[1]+.5,cull:520});
+  const prop=(k,x,y)=>{if(!inb(x,y)||blk[I(x,y)])return;blk[I(x,y)]=1;addS(m,{kind:k,x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x,y)})};
+  for(const [k,x,y] of [["barrel",49,88],["barrel",49,89],["crate",90,47],["crate",90,46],["barrel",94,89],["crate",44,43],["barrel",113,108],["crate",30,60]])prop(k,x,y);
+  /* market ring: stalls around the plaza, between the four roads */
+  for(let i=0;i<8;i++){const a=(i+.5)*Math.PI/4;prop("stall",Math.floor(TC+Math.cos(a)*18.5),Math.floor(TC+Math.sin(a)*18.5))}
+  const lampOK=(x,y)=>{if(!inb(x,y)||blk[I(x,y)])return false;const tp=map[I(x,y)];return tp===T_G||tp===T_F};
+  for(let i=4;i<N-4;i+=6)for(const [x,y] of [[i,70],[i,76],[70,i],[76,i]]){
+    if(!lampOK(x,y))continue;blk[I(x,y)]=1;addS(m,{kind:"lamp",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x,y)});
   }
+  for(let i=0;i<16;i++){const a=(i+.5)*Math.PI/8,x=Math.floor(TC+Math.cos(a)*(PLAZA_R+1.2)),y=Math.floor(TC+Math.sin(a)*(PLAZA_R+1.2));
+    if(lampOK(x,y)&&!isRoadBand(x,y)){blk[I(x,y)]=1;addS(m,{kind:"lamp",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x,y)})}}
   {const used=[],near=(x,y,d)=>used.some(q=>Math.hypot(q[0]-x,q[1]-y)<d);
-    const okT=(x,y)=>{const tp=map[I(x,y)];return inb(x,y)&&(tp===T_G||tp===T_F)&&!blk[I(x,y)]&&Math.hypot(x+.5-24.5,y+.5-24.5)>9.5&&TOWN_GATES.every(q=>Math.hypot(x-q[0],y-q[1])>5)&&x>2&&y>2&&x<N-3&&y<N-3};
+    const okT=(x,y)=>{const tp=map[I(x,y)];return inb(x,y)&&(tp===T_G||tp===T_F)&&!blk[I(x,y)]&&Math.hypot(x+.5-TC,y+.5-TC)>PLAZA_R+5&&TOWN_GATES.every(q=>Math.hypot(x-q[0],y-q[1])>5)&&x>2&&y>2&&x<N-3&&y<N-3};
     const put=(kind,x,y,s)=>{blk[I(x,y)]=1;used.push([x,y]);addS(m,{kind,x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x*3,y*7),s});};
-    for(let i=0;i<6;i++){const a=i*Math.PI/3+.4;let x=Math.round(24.5+Math.cos(a)*12.5),y=Math.round(24.5+Math.sin(a)*12.5);if(okT(x,y)&&!near(x,y,3))put("mono",x,y,1.05)}
+    for(let i=0;i<8;i++){const a=i*Math.PI/4+.4;let x=Math.round(TC+Math.cos(a)*23),y=Math.round(TC+Math.sin(a)*23);if(okT(x,y)&&!near(x,y,3))put("mono",x,y,1.05)}
     const kinds=[["eye",.0042,1.05],["pod",.0075,1],["tent",.0055,1],["float",.0042,1.05]];
     for(let y=3;y<N-3;y++)for(let x=3;x<N-3;x++){if(!okT(x,y))continue;const r=hash(x*13+5,y*17+3);let acc=0;for(const [k,p,s] of kinds){acc+=p;if(r<acc){if(!near(x,y,3.2))put(k,x,y,s*(.9+hash(x,y)*.25));break}}}}
-  const pt={x:46,y:24,to:"field1",labelK:"field1_name"};m.portals.push(pt);addS(m,{kind:"portal",p:pt,cx:46.5,cy:24.5,k:71});
+  const pt={x:144,y:73,to:"field1",labelK:"field1_name"};m.portals.push(pt);addS(m,{kind:"portal",p:pt,cx:144.5,cy:73.5,k:218});
   /* v19: west gate -> Path to the Geosyncline (Lv 25+, CP 2,000+), south gate -> Road to the Ruins (Lv 30+, CP 3,000+); each has a warning sign */
-  const pw={x:2,y:24,to:"geo",labelK:"geo_name"},ps={x:24,y:46,to:"ruins",labelK:"ruins_name"};
-  m.portals.push(pw);addS(m,{kind:"portal",p:pw,cx:2.5,cy:24.5,k:27});
-  m.portals.push(ps);addS(m,{kind:"portal",p:ps,cx:24.5,cy:46.5,k:71});
-  for(const [x,y,lv] of [[4,21,25],[21,44,30]])if(!blk[I(x,y)]){blk[I(x,y)]=1;addS(m,{kind:"warnsign",x,y,cx:x+.5,cy:y+.5,k:x+y+1,lv})}
-  for(const [x,y] of [[26,21],[31,18],[19,26],[28,27]])blk[I(x,y)]=1;
+  const pw={x:2,y:73,to:"geo",labelK:"geo_name"},ps={x:73,y:144,to:"ruins",labelK:"ruins_name"};
+  m.portals.push(pw);addS(m,{kind:"portal",p:pw,cx:2.5,cy:73.5,k:76});
+  m.portals.push(ps);addS(m,{kind:"portal",p:ps,cx:73.5,cy:144.5,k:218});
+  for(const [x,y,lv] of [[4,69,25],[69,142,30]])if(!blk[I(x,y)]){blk[I(x,y)]=1;addS(m,{kind:"warnsign",x,y,cx:x+.5,cy:y+.5,k:x+y+1,lv})}
   plantTrees(m,(x,y,border,r)=>{
     if(TOWN_GATES.some(q=>Math.hypot(x-q[0],y-q[1])<4))return null;
     if(r<(border?.62:.05)){const hv=hash(y*7,x*11);return hv<.14?{kind:"shroom",v:hash(x,y*5),alt:hv<.07?2:0}:{kind:"tree",v:hv<.45?4:hv<.78?5:hv<.92?3:0}}
@@ -2963,7 +2978,7 @@ function buildTown(){
   return m;
 }
 function plantTrees(m,pick){
-  const {map,blk}=m;
+  const {map,blk}=m,N=m.N,I=(x,y)=>y*N+x,inb=(x,y)=>x>=0&&y>=0&&x<N&&y<N;
   for(let y=1;y<N-1;y++)for(let x=1;x<N-1;x++){
     if(blk[I(x,y)])continue;const tp=map[I(x,y)];if(tp!==T_G&&tp!==T_F)continue;
     const border=x<4||y<4||x>N-5||y>N-5;let ok=true;
@@ -3012,29 +3027,32 @@ const FCFG={
     chasm:geoChasm,
     portals:[{x:46,y:geoPathY(46),to:"town",labelK:"mapName"}],trees:[9,9],alt:3,
     pick:(x,y,border,r)=>{if(border)return r<.4?{kind:"tree",v:9}:null;if(r<.012)return {kind:"stele",v:hash(x*5,y)};if(r<.034)return {kind:"crys",v:hash(x,y*7),alt:3};if(r<.05)return {kind:"rock",v:hash(x*3,y*3)};if(r<.06)return {kind:"shroom",v:hash(x*7,y),alt:3};if(r<.07)return {kind:"tree",v:9};return null},
-    after:m=>{const py=geoPathY(46);for(const [x,y] of [[44,py-2],[44,py+3]])if(inb(x,y)&&!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:"stele",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:.5})}}},
+    after:(m,S)=>{const py=geoPathY(46),I=(x,y)=>y*m.N+x;for(const [x,y] of [[S(44),S(py-2)],[S(44),S(py+3)],[S(42),S(py-2)],[S(42),S(py+3)]])if(!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:"stele",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:.5})}}},
   ruins:{nameK:"ruins_name",subK:"ruins_sub",bg:["#2a0e0a","#0c0404"],rec:3000,pools:[[9,13,3,2.2],[39,15,3.4,2.4],[11,38,3.4,2.2],[39,39,3,2],[35,30,2.4,1.6]],
     paths:(x,y)=>{if(y>=2){const px=ruinPathX(y);if(x===px||x===px+1)return true}if(x>=3&&x<=45){const py=ruinPathY(x);if(y===py||y===py+1)return true}return false},
     portals:[{x:ruinPathX(2),y:2,to:"town",labelK:"mapName"}],trees:[10,10],alt:4,
     pick:(x,y,border,r)=>{if(border)return r<.35?{kind:"tree",v:10}:null;if(r<.012)return {kind:"pillar",v:hash(x*5,y*3)};if(r<.02)return {kind:"brazier",v:hash(x,y*9)};if(r<.04)return {kind:"crys",v:hash(x,y*7),alt:4};if(r<.056)return {kind:"rock",v:hash(x*3,y*3)};if(r<.066)return {kind:"tree",v:10};return null},
-    after:m=>{let i=0;for(let y=7;y<=44;y+=5,i++)for(const sx of [-2,3]){const x=ruinPathX(y)+sx;if(inb(x,y)&&!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:(i+(sx>0?1:0))%2?"brazier":"pillar",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x*5,y*3)})}}}}
+    after:(m,S)=>{const K=m.K,I=(x,y)=>y*m.N+x;let i=0;for(let y=7*K;y<=44*K;y+=5,i++)for(const sx of [-3,2*K+2]){const x=ruinPathX(Math.floor(y/K))*K+sx;if(x>0&&x<m.N-1&&!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:(i+(sx>0?1:0))%2?"brazier":"pillar",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x*5,y*3)})}}}}
 };
+/* v20: a field is laid out on the old 49×49 design grid and scaled up by K (2): paths, pools, cracks, the arena,
+   portals and monster zones all grow, while trees, rocks and props keep their size (so there are K² times as many) */
 function buildField(id){
-  const c=FCFG[id],m=newMap(id);Object.assign(m,{nameK:c.nameK,subK:c.subK,bg:c.bg,rec:c.rec,pal:FPAL[id],pools:c.pools,arena:c.arena||null});
-  const {map,blk}=m;
+  const c=FCFG[id],m=newMap(id),K=m.K,N=m.N,I=(x,y)=>y*N+x,S=v=>v*K+(K>>1);
+  Object.assign(m,{nameK:c.nameK,subK:c.subK,bg:c.bg,rec:c.rec,pal:FPAL[id],pools:c.pools.map(e=>[e[0]*K,e[1]*K,e[2]*K,e[3]*K]),arena:c.arena?c.arena.map(v=>v*K):null});
+  const {map,blk}=m,p0=c.portals[0];
   for(let y=0;y<N;y++)for(let x=0;x<N;x++){
-    let tp=T_G;
+    const dx=Math.floor(x/K),dy=Math.floor(y/K);let tp=T_G;
     if(hash((x>>2)+40,(y>>2)+3)<.22&&hash(x+9,y)<.5)tp=T_F;
-    if(c.paths(x,y))tp=T_D;
+    if(c.paths(dx,dy))tp=T_D;
     for(const e of m.pools)if(inEll(x+.5,y+.5,e)){tp=T_W;blk[I(x,y)]=1}
-    if(c.chasm&&tp!==T_W&&c.chasm(x,y)&&![-1,0,1].some(j=>[-1,0,1].some(i=>c.paths(x+i,y+j)))&&Math.hypot(x-c.portals[0].x,y-c.portals[0].y)>6){tp=T_C;blk[I(x,y)]=1}
+    if(c.chasm&&tp!==T_W&&c.chasm(dx,dy)&&![-1,0,1].some(j=>[-1,0,1].some(i=>c.paths(dx+i,dy+j)))&&Math.hypot(dx-p0.x,dy-p0.y)>6){tp=T_C;blk[I(x,y)]=1}
     map[I(x,y)]=tp;
     if(x===0||y===0||x===N-1||y===N-1)blk[I(x,y)]=1;
   }
-  for(const p of c.portals){map[I(p.x,p.y)]=T_D;blk[I(p.x,p.y)]=0;m.portals.push(p);addS(m,{kind:"portal",p,cx:p.x+.5,cy:p.y+.5,k:p.x+p.y+1})}
+  for(const q of c.portals){const p=Object.assign({},q,{x:S(q.x),y:S(q.y)});map[I(p.x,p.y)]=T_D;blk[I(p.x,p.y)]=0;m.portals.push(p);addS(m,{kind:"portal",p,cx:p.x+.5,cy:p.y+.5,k:p.x+p.y+1})}
   plantTrees(m,(x,y,border,r)=>{
-    if(c.portals.some(p=>Math.hypot(x-p.x,y-p.y)<5))return null;
-    if(c.arena&&Math.hypot(x+.5-c.arena[0],y+.5-c.arena[1])<c.arena[2]+2)return null;
+    if(m.portals.some(p=>Math.hypot(x-p.x,y-p.y)<6))return null;
+    if(m.arena&&Math.hypot(x+.5-m.arena[0],y+.5-m.arena[1])<m.arena[2]+2)return null;
     if(c.pick){const q=c.pick(x,y,border,r);if(q!==undefined)return q}
     if(border)return r<.6?{kind:"tree",v:hash(x,y*3)<.55?c.trees[0]:c.trees[1]}:null;
     if(r<.028)return {kind:"shroom",v:hash(x*7,y),alt:c.alt};
@@ -3043,14 +3061,15 @@ function buildField(id){
     if(r<.08)return {kind:"tree",v:c.trees[0]};
     return null;
   });
-  if(c.after)c.after(m);
+  if(c.after)c.after(m,S);
   return m;
 }
 const town=buildTown(),field1=buildField("field1"),field2=buildField("field2"),field3=buildField("field3"),geo=buildField("geo"),ruins=buildField("ruins");
 const MAPS={town,field1,field2,field3,geo,ruins};
 const FIELDS=[field1,field2,field3,geo,ruins];
 let cur=town;
-const walkM=(m,x,y)=>inb(x,y)&&!m.blk[I(x,y)];
+function setCur(m){cur=m;N=m.N}
+const walkM=(m,x,y)=>x>=0&&y>=0&&x<m.N&&y<m.N&&!m.blk[y*m.N+x];
 const walk=(x,y)=>walkM(cur,x,y);
 
 /* ================= pathfinding ================= */
@@ -3093,16 +3112,17 @@ const PAL={
  veyra:{hair:"#2d3150",hairD:"#12152a",eye:"#e05a5a",skin:"#fbdcc8",skinL:"#fff0e6",outfit:"#a8b3c4",outfitD:"#5f6b80",pants:"#2a3042",boots:"#2a2a34",accent:"#e6c06a",cape:"#2f5fa8",capeD:"#173a72",tail:true}
 };
 function mk(o){return Object.assign({x:0,y:0,path:[],speed:3,moving:false,phase:0,dir:1,back:false,seed:Math.random()*9,bubble:null,onArrive:null,wait:0},o)}
-const player=mk({x:24.5,y:24.5,name:(AUTH.session&&AUTH.session.charName)||"Arin",pal:PAL.player,speed:3.6,me:true,target:null,atkCd:0,chaseT:0,lunge:0,combatT:99,manualT:0,dead:false,guardT:0});
+const player=mk({x:TOWN_SPAWN[0],y:TOWN_SPAWN[1],name:(AUTH.session&&AUTH.session.charName)||"Arin",pal:PAL.player,speed:3.6,me:true,target:null,atkCd:0,chaseT:0,lunge:0,combatT:99,manualT:0,dead:false,guardT:0});
 town.npcs=[
- mk({id:"lumi",x:26.5,y:21.5,nameK:"n_lumi",pal:PAL.lumi,dir:-1,npc:true}),
- mk({id:"bors",x:31.5,y:18.5,nameK:"n_bors",pal:PAL.bors,dir:-1,npc:true}),
- mk({id:"veyra",x:19.5,y:26.5,nameK:"n_veyra",pal:PAL.veyra,dir:1,npc:true}),
- mk({id:"helper",x:28.5,y:27.5,nameK:"n_helper",pal:PAL.helper,dir:-1,npc:true})
+ mk({id:"lumi",x:80.5,y:68.5,nameK:"n_lumi",pal:PAL.lumi,dir:-1,npc:true}),
+ mk({id:"bors",x:90.5,y:51.5,nameK:"n_bors",pal:PAL.bors,dir:-1,npc:true}),
+ mk({id:"veyra",x:52.5,y:91.5,nameK:"n_veyra",pal:PAL.veyra,dir:1,npc:true}),
+ mk({id:"helper",x:86.5,y:92.5,nameK:"n_helper",pal:PAL.helper,dir:-1,npc:true})
 ];
 const WH=["#f4d27a","#3a2a2a","#7ab8ff","#ff8a5b","#c9a0ff","#9fe0c8","#e8e8e8"],WO=["#c74a5a","#3e7d5a","#5a5ab8","#d08a2a","#2f6f8f","#8a4ab0","#4a4a5a"];
-town.wanderers=["Mintra","Kaito","Pim_Ch","Rowan","สายลม","Nova","ข้าวหอม"].map((n,i)=>{
-  const hc=WH[i%7],oc=WO[(i*3)%7];let x,y,gd=0;do{x=17+Math.floor(Math.random()*16);y=17+Math.floor(Math.random()*16)}while(!walkM(town,x,y)&&gd++<200);
+const townSpot=()=>[Math.floor(TC-22+Math.random()*44),Math.floor(TC-22+Math.random()*44)];   // somewhere around the plaza
+town.wanderers=["Mintra","Kaito","Pim_Ch","Rowan","สายลม","Nova","ข้าวหอม","Lyra","ฟ้าใส","Bram","Zed_X","มะปราง"].map((n,i)=>{
+  const hc=WH[i%7],oc=WO[(i*3)%7];let x,y,gd=0;do{[x,y]=townSpot()}while(!walkM(town,x,y)&&gd++<200);
   return mk({x:x+.5,y:y+.5,name:n,lv:3+Math.floor(Math.random()*40),speed:2.4+Math.random()*.8,wait:Math.random()*4,
    pal:{hair:hc,hairD:shade(hc,-.45),eye:["#3a7bd5","#c0392b","#27ae60","#8e44ad"][i%4],skin:i%3?"#ffe1cf":"#f1c9a8",skinL:"#fff2ea",outfit:oc,outfitD:shade(oc,-.4),pants:"#33313f",boots:"#4a3428",accent:"#e8d29a",cape:i%2?shade(oc,-.15):null,capeD:shade(oc,-.5),tail:i%3===1,ribbon:i%4===2?"#ff6fa3":null,ahoge:i%3===0}});
 });
@@ -3174,7 +3194,7 @@ function staticBox(o){
   if(o.kind==="bld"){const b=o.b,Z=b.H+20+Math.min(b.w,b.h)*7.5+(b.flag?50:14);return [(b.x-(b.y+b.h))*HW-6,(b.x+b.y)*HH-Z,(b.x+b.w-b.y)*HW+6,(b.x+b.w+b.y+b.h)*HH+8]}
   const [sx,sy]=P(o.cx,o.cy),s=o.s||1;
   switch(o.kind){case "tree":return [sx-30*s,sy-92*s,sx+30*s,sy+4];case "lamp":return [sx-9,sy-70,sx+9,sy+2];case "stall":return [sx-38,sy-52,sx+38,sy+14];
-    case "barrel":case "crate":return [sx-17,sy-32,sx+17,sy+6];case "crystal":return [sx-64,sy-160,sx+64,sy+30];case "eye":return [sx-20,sy-74,sx+20,sy+4];
+    case "barrel":case "crate":return [sx-17,sy-32,sx+17,sy+6];case "crystal":return [sx-200,sy-420,sx+200,sy+100];case "eye":return [sx-20,sy-74,sx+20,sy+4];
     case "pod":return [sx-16,sy-56,sx+16,sy+4];case "tent":return [sx-26,sy-62,sx+26,sy+4];case "mono":return [sx-24,sy-84,sx+24,sy+8];case "float":return [sx-34,sy-96,sx+34,sy+8];case "shroom":return [sx-30,sy-70,sx+30,sy+6]}
   return null;
 }
@@ -3189,16 +3209,16 @@ function placeTownNpcs(){
     const ax=n.x,ay=n.y;let best=null,bs=1e9;
     for(let dy=-9;dy<=9;dy++)for(let dx=-9;dx<=9;dx++){
       const ix=Math.floor(ax)+dx,iy=Math.floor(ay)+dy,x=ix+.5,y=iy+.5;
-      if(!inb(ix,iy)||!walkM(town,ix,iy))continue;const tp=town.map[I(ix,iy)];if(tp!==T_R&&tp!==T_P)continue;
-      if(Math.hypot(x-24.5,y-24.5)<4.6||Math.hypot(x-46,y-24)<6)continue;
+      if(!walkM(town,ix,iy))continue;const tp=town.map[iy*town.N+ix];if(tp!==T_R&&tp!==T_P)continue;
+      if(Math.hypot(x-CRY[0],y-CRY[1])<CRY_R+1.6||Math.hypot(x-144,y-73)<6)continue;
       if(taken.some(q=>Math.hypot(q[0]-x,q[1]-y)<4.5))continue;
       if(npcBlocked(x,y))continue;
-      let nb=0;for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++)if(inb(ix+i,iy+j)&&town.blk[I(ix+i,iy+j)])nb++;
+      let nb=0;for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++)if(!walkM(town,ix+i,iy+j))nb++;
       const sc=Math.hypot(x-ax,y-ay)+nb*.35;if(sc<bs){bs=sc;best=[x,y]}
     }
     if(best){n.x=best[0];n.y=best[1]}taken.push([n.x,n.y]);
   }
-  for(const w of town.wanderers){let gd=0;while(town.npcs.some(n=>Math.hypot(n.x-w.x,n.y-w.y)<2.8)&&gd++<200){const x=17+Math.floor(Math.random()*16),y=17+Math.floor(Math.random()*16);if(walkM(town,x,y)){w.x=x+.5;w.y=y+.5}}}
+  for(const w of town.wanderers){let gd=0;while(town.npcs.some(n=>Math.hypot(n.x-w.x,n.y-w.y)<2.8)&&gd++<200){const [x,y]=townSpot();if(walkM(town,x,y)){w.x=x+.5;w.y=y+.5}}}
 }
 function npcPlate(x,y,name,role,col){
   g.font=`700 13px ${FONT}`;g.textAlign="center";g.textBaseline="middle";const w=g.measureText(name).width+26;
@@ -3248,12 +3268,14 @@ const MON={
   gadolith:{sprite:"gadolith",map:"field3",nameK:"mon_gadolith",boss:true,lv:20,hp:8000,atk:58,def:12,aspd:2.6,speed:1.0,exp:[2600,1700],sc:[1000,1600],drop:["mat_gheart",1],h:100,size:2.2,zone:[22,27,12,17],count:0}
 };
 const ELITE={hp:5,atk:1.6,def:3,exp:5,sc:4,size:1.3};
-function spawnPos(m,type){const z=MON[type].zone;for(let k=0;k<400;k++){const x=z[0]+Math.floor(Math.random()*(z[1]-z[0])),y=z[2]+Math.floor(Math.random()*(z[3]-z[2]));
-  if(walkM(m,x,y)&&!m.portals.some(p=>Math.hypot(x-p.x,y-p.y)<7)&&(MON[type].boss||!m.arena||Math.hypot(x+.5-m.arena[0],y+.5-m.arena[1])>m.arena[2]+1))return [x+.5,y+.5]}return [24.5,24.5]}
+function spawnPos(m,type){const K=m.K||1,z=MON[type].zone.map(v=>v*K);for(let k=0;k<400;k++){const x=z[0]+Math.floor(Math.random()*(z[1]-z[0])),y=z[2]+Math.floor(Math.random()*(z[3]-z[2]));
+  if(walkM(m,x,y)&&!m.portals.some(p=>Math.hypot(x-p.x,y-p.y)<8)&&(MON[type].boss||!m.arena||Math.hypot(x+.5-m.arena[0],y+.5-m.arena[1])>m.arena[2]+1))return [x+.5,y+.5]}return [m.N/2,m.N/2]}
+/* v20: fields are 4× the area, so each keeps 3× the monsters and 2 Elites per kind */
+const MON_MULT=3,ELITE_PER=2;
 function newMon(type,elite){const d=MON[type],m=MAPS[d.map],[x,y]=spawnPos(m,type),hp=d.hp*(elite?ELITE.hp:1);
   return mk({mon:true,type,boss:!!d.boss,slamT:6+Math.random()*3,tele:null,skCd:null,elite:!!elite,x,y,home:[x,y],hp,maxHp:hp,speed:d.speed,wait:Math.random()*3,aggro:false,atkCd:0,hitT:0,dieT:0,dead:false,respawn:0,repath:0,phase:Math.random()*9})}
 for(const k in MON){const m=MAPS[MON[k].map];if(MON[k].boss){m.monsters.push(newMon(k,false));continue}
-  for(let i=0;i<MON[k].count;i++)m.monsters.push(newMon(k,false));m.monsters.push(newMon(k,true))}
+  for(let i=0;i<MON[k].count*MON_MULT;i++)m.monsters.push(newMon(k,false));for(let i=0;i<ELITE_PER;i++)m.monsters.push(newMon(k,true))}
 function respawnMon(mo){Object.assign(mo,newMon(mo.type,mo.elite))}
 const mAtk=mo=>MON[mo.type].atk*(mo.elite?ELITE.atk:1),mDef=mo=>MON[mo.type].def+(mo.elite?ELITE.def:0),mLv=mo=>MON[mo.type].lv+(mo.elite?2:0),mSize=mo=>MON[mo.type].size*(mo.elite?ELITE.size:1);
 
@@ -4069,7 +4091,7 @@ let stillT=0,autoIdleBlock=false;
 let lastSave=0,layoutMode="auto",zIdx=2,chatMode="min",mmOpen=true,qOpen=true;
 function snapshot(){
   const inField=cur!==town&&!player.dead;
-  return {v:2,savedAt:Date.now(),map:inField?cur.id:"town",x:inField?player.x:(player.dead?24.5:player.x),y:inField?player.y:(player.dead?24.5:player.y),lang,layoutMode,zIdx,chatMode,mmOpen,qOpen,
+  return {v:2,savedAt:Date.now(),map:inField?cur.id:"town",mv:2,x:inField?player.x:(player.dead?TOWN_SPAWN[0]:player.x),y:inField?player.y:(player.dead?TOWN_SPAWN[1]:player.y),lang,layoutMode,zIdx,chatMode,mmOpen,qOpen,
     gameState:JSON.parse(JSON.stringify(S))};
 }
 function save(){try{SLS.setItem(SAVE_KEY,JSON.stringify(snapshot()));lastSave=Date.now()}catch(e){}}
@@ -4147,10 +4169,23 @@ function updateLoader(dt){
   tipT-=dt;if(tipT<=0){tipT=3.2;tipI=(tipI+1)%TIPS}
   $("#ldTip").textContent=t("tip"+tipI);
 }
+/* v20: the ground is drawn into chunks (≤2048 px) so big maps never hit the browser's canvas size limit.
+   Chunks overlap by 2 px so no seams show between them. */
+const GCH=2048;
+function freeGround(m){if(!m.ground)return;for(const c of m.ground.chunks)c.c.width=c.c.height=0;m.ground=null}
 function* groundGen(m){
-  if(m.ground)return;m._gp=0;const ext=48;
-  const cvs=document.createElement("canvas");cvs.width=Math.ceil(N*TW*GS);cvs.height=Math.ceil((N*TH+ext)*GS);
-  g=cvs.getContext("2d");const gctx=g;g.setTransform(GS,0,0,GS,N*HW*GS,0);
+  if(m.ground)return;m._gp=0;
+  const N=m.N,gs=groundScale(m),ext=48,Wp=Math.ceil(N*TW*gs),Hp=Math.ceil((N*TH+ext)*gs),chunks=[];
+  for(let y0=0;y0<Hp;y0+=GCH)for(let x0=0;x0<Wp;x0+=GCH){const c=document.createElement("canvas");c.width=Math.min(GCH+2,Wp-x0);c.height=Math.min(GCH+2,Hp-y0);
+    chunks.push({c,x0,y0,wx0:x0/gs-N*HW,wy0:y0/gs,wx1:(x0+c.width)/gs-N*HW,wy1:(y0+c.height)/gs})}
+  for(let i=0;i<chunks.length;i++){const ch=chunks[i];
+    for(const p of groundChunk(m,ch,gs)){m._gp=(i+p)/chunks.length;yield}}
+  m._gp=1;m.ground={gs,chunks};
+}
+function* groundChunk(m,ch,gs){
+  const N=m.N,K=m.K||1,ext=48,I=(x,y)=>y*N+x;
+  g=ch.c.getContext("2d");const gctx=g;g.setTransform(gs,0,0,gs,N*HW*gs-ch.x0,-ch.y0);
+  const vis=(x0,y0,x1,y1)=>x1>=ch.wx0&&x0<=ch.wx1&&y1>=ch.wy0&&y0<=ch.wy1;
   const fieldMap=m.id!=="town",fp=m.pal;
   const L=P(0,N),Sx=P(N,N),R=P(N,0);
   let gr=g.createLinearGradient(0,L[1],0,Sx[1]+ext);gr.addColorStop(0,fieldMap?fp.side[0]:"#3a2a6a");gr.addColorStop(1,fieldMap?fp.side[1]:"#150c38");
@@ -4159,36 +4194,44 @@ function* groundGen(m){
   fillPoly([Sx,R,[R[0],R[1]+ext],[Sx[0],Sx[1]+ext]],gr);
   g.strokeStyle="rgba(0,0,0,.18)";g.lineWidth=1.5;
   for(const k of [14,26,38]){g.beginPath();g.moveTo(L[0],L[1]+k);g.lineTo(Sx[0],Sx[1]+k);g.lineTo(R[0],R[1]+k);g.stroke()}
-  if(fieldMap){g.strokeStyle=fp.drip;g.lineWidth=2;for(let i=0;i<40;i++){const u=hash(i,77),a=lerp(L,Sx,u);line([a[0],a[1]+18+hash(i,3)*20],[a[0]+3,a[1]+24+hash(i,3)*20])}}
-  for(let y=0;y<N;y++){g=gctx;for(let x=0;x<N;x++)tile(m,x,y);m._gp=(y+1)/N*.5;yield}g=gctx;
+  if(fieldMap){g.strokeStyle=fp.drip;g.lineWidth=2;for(let i=0;i<40*K;i++){const u=hash(i,77),a=lerp(L,Sx,u);line([a[0],a[1]+18+hash(i,3)*20],[a[0]+3,a[1]+24+hash(i,3)*20])}}
+  for(let y=0;y<N;y++){g=gctx;let any=false;
+    for(let x=0;x<N;x++){const sx=(x-y)*HW,sy=(x+y)*HH;if(!vis(sx-HW-6,sy-14,sx+HW+6,sy+TH+8))continue;tile(m,x,y);any=true}
+    if(any&&y%3===0)yield (y+1)/N*.5}
+  g=gctx;
   g.strokeStyle=fieldMap?fp.rim:"#38e0c8";g.lineWidth=4;g.beginPath();g.moveTo(L[0],L[1]+2);g.lineTo(Sx[0],Sx[1]+2);g.lineTo(R[0],R[1]+2);g.stroke();
-  for(let i=0;i<420;i++){
+  for(let i=0;i<420*K*K;i++){
     const x=hash(i,7)*N,y=hash(3,i)*N;if(!fieldMap&&isRoadBand(Math.floor(x),Math.floor(y)))continue;
-    const [sx,sy]=P(x,y),r=30+hash(i,i)*60,lt=hash(i*3,1)<.5;
+    const [sx,sy]=P(x,y),r=30+hash(i,i)*60,lt=hash(i*3,1)<.5;if(!vis(sx-r,sy-r,sx+r,sy+r))continue;
     const rg=g.createRadialGradient(sx,sy,0,sx,sy,r);
     rg.addColorStop(0,fieldMap?(lt?fp.blob[0]:fp.blob[1]):(lt?"rgba(120,255,230,.10)":"rgba(190,70,255,.13)"));rg.addColorStop(1,"rgba(0,0,0,0)");
     g.fillStyle=rg;g.beginPath();g.ellipse(sx,sy,r,r*.5,0,0,TAU);g.fill();
   }
   if(!fieldMap){
-    const C=P(24.5,24.5);
-    isoPath(()=>g.ellipse(24.5,24.5,7.35,7.35,0,0,TAU));g.save();
-    const pg=g.createRadialGradient(C[0],C[1]-20,10,C[0],C[1],340);pg.addColorStop(0,"#f1ece2");pg.addColorStop(1,"#d2c9b7");g.fillStyle=pg;g.fill();g.clip();
+    const C=P(TC,TC),R0=PLAZA_R+.05,a0=Math.floor(TC-PLAZA_R),a1=Math.ceil(TC+PLAZA_R);
+    isoPath(()=>g.ellipse(TC,TC,R0,R0,0,0,TAU));g.save();
+    const pg=g.createRadialGradient(C[0],C[1]-20,10,C[0],C[1],PLAZA_R*46);pg.addColorStop(0,"#f1ece2");pg.addColorStop(1,"#d2c9b7");g.fillStyle=pg;g.fill();g.clip();
     g.strokeStyle="rgba(120,104,78,.22)";g.lineWidth=1;
-    for(let i=16;i<=33;i++){line(P(i,16),P(i,33));line(P(16,i),P(33,i))}
-    for(let y=17;y<33;y++)for(let x=17;x<33;x++){const h=hash(x*9,y*4);if(h<.25)fillPoly([P(x,y),P(x+1,y),P(x+1,y+1),P(x,y+1)],h<.12?"rgba(255,255,255,.12)":"rgba(90,70,40,.06)")}
+    for(let i=a0;i<=a1;i++){line(P(i,a0),P(i,a1));line(P(a0,i),P(a1,i))}
+    for(let y=a0+1;y<a1;y++)for(let x=a0+1;x<a1;x++){const h=hash(x*9,y*4);if(h<.25)fillPoly([P(x,y),P(x+1,y),P(x+1,y+1),P(x,y+1)],h<.12?"rgba(255,255,255,.12)":"rgba(90,70,40,.06)")}
+    /* mosaic rays fanning out from the monument */
+    for(let i=0;i<16;i++){const a=i/16*TAU+Math.PI/16,r1=CRY_R+1,r2=PLAZA_R-1.2,w=i%2?.35:.7;
+      fillPoly([P(TC+Math.cos(a-w/r1)*r1,TC+Math.sin(a-w/r1)*r1),P(TC+Math.cos(a)*r2,TC+Math.sin(a)*r2),P(TC+Math.cos(a+w/r1)*r1,TC+Math.sin(a+w/r1)*r1)],i%2?"rgba(110,88,232,.10)":"rgba(176,146,90,.16)")}
     g.restore();
-    for(const [r,c,w] of [[1.9,"rgba(176,146,90,.6)",2],[3.3,"rgba(176,146,90,.55)",2],[3.55,"rgba(176,146,90,.35)",1]]){isoPath(()=>g.ellipse(24.5,24.5,r,r,0,0,TAU));g.strokeStyle=c;g.lineWidth=w;g.stroke()}
-    const st=[];for(let i=0;i<16;i++){const a=i/16*TAU-Math.PI/4,r=i%2?.55:1.6;st.push(P(24.5+Math.cos(a)*r,24.5+Math.sin(a)*r))}
-    fillPoly(st,"rgba(110,88,232,.2)","rgba(176,146,90,.75)",1.5);
-    isoPath(()=>g.ellipse(24.5,24.5,7.35,7.35,0,0,TAU));g.strokeStyle="#a99f8b";g.lineWidth=6;g.stroke();
-    isoPath(()=>g.ellipse(24.5,24.5,7.2,7.2,0,0,TAU));g.strokeStyle="rgba(255,255,255,.6)";g.lineWidth=1.5;g.stroke();
+    for(const [r,c,w] of [[CRY_R+1.1,"rgba(176,146,90,.6)",2.5],[CRY_R+3.4,"rgba(176,146,90,.55)",2],[CRY_R+3.7,"rgba(176,146,90,.35)",1],[PLAZA_R-1.6,"rgba(176,146,90,.45)",2]]){isoPath(()=>g.ellipse(TC,TC,r,r,0,0,TAU));g.strokeStyle=c;g.lineWidth=w;g.stroke()}
+    {const st=[];for(let i=0;i<16;i++){const a=i/16*TAU-Math.PI/4,r=i%2?CRY_R+1.6:CRY_R+4.6;st.push(P(TC+Math.cos(a)*r,TC+Math.sin(a)*r))}
+      fillPoly(st,"rgba(110,88,232,.14)","rgba(176,146,90,.7)",1.5)}
+    for(let i=0;i<24;i++){const a=i/24*TAU,[gx,gy]=P(TC+Math.cos(a)*(CRY_R+2.25),TC+Math.sin(a)*(CRY_R+2.25));ell(gx,gy,4,2,i%3?"rgba(150,130,255,.35)":"rgba(230,192,106,.5)")}
+    isoPath(()=>g.ellipse(TC,TC,PLAZA_R+.05,PLAZA_R+.05,0,0,TAU));g.strokeStyle="#a99f8b";g.lineWidth=6;g.stroke();
+    isoPath(()=>g.ellipse(TC,TC,PLAZA_R-.1,PLAZA_R-.1,0,0,TAU));g.strokeStyle="rgba(255,255,255,.6)";g.lineWidth=1.5;g.stroke();
     for(const b of m.B){
       const x0=b.x,y0=b.y,x1=b.x+b.w,y1=b.y+b.h,Ls=1.3+b.H/60;
       fillPoly([P(x0-.15,y0-.15),P(x1+.15,y0-.15),P(x1+.15,y1+.15),P(x0-.15,y1+.15)],"rgba(20,30,20,.2)");
       fillPoly([P(x1,y0),P(x1+Ls,y0+.3),P(x1+Ls,y1+.3),P(x0+Ls*.4,y1+.3),P(x0,y1)],"rgba(20,30,40,.16)");
     }
-    fillPoly([P(19,22),P(22,22),P(22,19),P(23.6,19.4),P(23.6,22.4),P(20,22.4)],"rgba(20,30,40,.14)");
-    const cg=P(20.5,20.5);const rgc=g.createRadialGradient(cg[0],cg[1],0,cg[0],cg[1],110);rgc.addColorStop(0,"rgba(150,130,255,.35)");rgc.addColorStop(1,"rgba(150,130,255,0)");g.fillStyle=rgc;g.beginPath();g.ellipse(cg[0],cg[1],110,55,0,0,TAU);g.fill();
+    /* the monument's long shadow and the violet light it pours onto the stones */
+    {const [cx,cy]=P(CRY[0],CRY[1]);g.save();g.translate(cx+70,cy+26);g.rotate(.18);const sg=g.createRadialGradient(0,0,0,0,0,230);sg.addColorStop(0,"rgba(20,24,50,.22)");sg.addColorStop(1,"rgba(20,24,50,0)");g.fillStyle=sg;g.beginPath();g.ellipse(0,0,230,70,0,0,TAU);g.fill();g.restore();
+      const rgc=g.createRadialGradient(cx,cy,0,cx,cy,PLAZA_R*40);rgc.addColorStop(0,"rgba(150,130,255,.38)");rgc.addColorStop(.5,"rgba(150,130,255,.12)");rgc.addColorStop(1,"rgba(150,130,255,0)");g.fillStyle=rgc;g.beginPath();g.ellipse(cx,cy,PLAZA_R*40,PLAZA_R*20,0,0,TAU);g.fill()}
   }
   if(m.arena){g=gctx;const [ax,ay,ar]=m.arena;
     const ring=(r,col,w,dash)=>{isoPath(()=>g.ellipse(ax,ay,r,r,0,0,TAU));g.strokeStyle=col;g.lineWidth=w;g.setLineDash(dash||[]);g.stroke();g.setLineDash([])};
@@ -4196,22 +4239,22 @@ function* groundGen(m){
     ring(ar,"rgba(200,240,255,.85)",3);ring(ar-.5,"rgba(160,200,255,.5)",1.5);ring(ar*.72,"rgba(210,190,255,.7)",2,[10,7]);ring(ar*.3,"rgba(200,240,255,.7)",2);
     const tri=(rot,rr)=>{const pp=[];for(let i=0;i<3;i++){const a=rot+i*TAU/3;pp.push(P(ax+Math.cos(a)*rr,ay+Math.sin(a)*rr))}fillPoly(pp,null,"rgba(190,235,255,.8)",2)};
     tri(-Math.PI/2,ar*.7);tri(Math.PI/2,ar*.7);
-    for(let i=0;i<12;i++){const a=i/12*TAU,p1=P(ax+Math.cos(a)*(ar-.1),ay+Math.sin(a)*(ar-.1)),p2=P(ax+Math.cos(a)*(ar-.6),ay+Math.sin(a)*(ar-.6));g.strokeStyle="rgba(200,240,255,.8)";g.lineWidth=2;line(p1,p2)}
+    for(let i=0;i<12*K;i++){const a=i/(12*K)*TAU,p1=P(ax+Math.cos(a)*(ar-.1),ay+Math.sin(a)*(ar-.1)),p2=P(ax+Math.cos(a)*(ar-.6),ay+Math.sin(a)*(ar-.6));g.strokeStyle="rgba(200,240,255,.8)";g.lineWidth=2;line(p1,p2)}
   }
-  g=gctx;yield;g=gctx;
+  g=gctx;yield .75;g=gctx;
   for(const e of m.pools){
     const [cx,cy,rx,ry]=e;
     isoPath(()=>g.ellipse(cx,cy,rx+.25,ry+.25,0,0,TAU));g.fillStyle=fieldMap?fp.shore:"#d8c999";g.fill();
     isoPath(()=>g.ellipse(cx,cy,rx,ry,0,0,TAU));
-    const pc=P(cx,cy);const wg=g.createLinearGradient(0,pc[1]-60,0,pc[1]+60);
+    const pc=P(cx,cy);const wg=g.createLinearGradient(0,pc[1]-60*K,0,pc[1]+60*K);
     wg.addColorStop(0,fieldMap?fp.pool[0]:"#7cc7ee");wg.addColorStop(1,fieldMap?fp.pool[1]:"#2c74ad");g.fillStyle=wg;g.fill();
     isoPath(()=>g.ellipse(cx,cy,rx-.35,ry-.35,0,0,TAU));g.strokeStyle="rgba(255,255,255,.35)";g.lineWidth=1.5;g.stroke();
-    for(let k=0;k<4;k++){const a=hash(k,cx)*TAU,r=.55*Math.sqrt(hash(cy,k));const [sx,sy]=P(cx+Math.cos(a)*rx*r,cy+Math.sin(a)*ry*r);
+    for(let k=0;k<4*K;k++){const a=hash(k,cx)*TAU,r=.55*Math.sqrt(hash(cy,k));const [sx,sy]=P(cx+Math.cos(a)*rx*r,cy+Math.sin(a)*ry*r);
       g.fillStyle=fieldMap?fp.pad[0]:"#4f9a52";g.beginPath();g.ellipse(sx,sy,7,3.4,0,.3,TAU-.3);g.lineTo(sx,sy);g.fill();ell(sx+2,sy-1,1.4,1,fieldMap?fp.pad[1]:"#ffc0d8")}
   }
-  if(fieldMap)for(let i=0;i<60;i++){const x=1+hash(i,91)*(N-2),y=1+hash(91,i)*(N-2);const [sx,sy]=P(x,y);const c=fp.glow[i%2];
+  if(fieldMap)for(let i=0;i<60*K*K;i++){const x=1+hash(i,91)*(N-2),y=1+hash(91,i)*(N-2);const [sx,sy]=P(x,y);if(!vis(sx-26,sy-13,sx+26,sy+13))continue;const c=fp.glow[i%2];
     g.save();g.globalCompositeOperation="lighter";const rg=g.createRadialGradient(sx,sy,0,sx,sy,26);rg.addColorStop(0,c);rg.addColorStop(1,"rgba(0,0,0,0)");g.fillStyle=rg;g.beginPath();g.ellipse(sx,sy,26,13,0,0,TAU);g.fill();g.restore()}
-  g=gctx;m._gp=1;m.ground=cvs;
+  g=gctx;
 }
 function drawChasmTile(pts,x,y){
   const h=hash(x*3,y*5),c=P(x+.5,y+.5);
@@ -4225,6 +4268,7 @@ function drawChasmTile(pts,x,y){
   g.strokeStyle="rgba(30,18,10,.85)";g.lineWidth=2;path(pts);g.stroke();
 }
 function tile(m,x,y){
+  const N=m.N,I=(x,y)=>y*N+x,inb=(x,y)=>x>=0&&y>=0&&x<N&&y<N;
   const fieldMap=m.id!=="town",fp=m.pal;let tp=m.map[I(x,y)];
   if(tp===T_P)tp=isRoadBand(x,y)?T_R:T_G;
   if(tp===T_W)tp=T_G;
@@ -4379,32 +4423,80 @@ function drawRoof(b){
   }
   g.strokeStyle="rgba(20,15,25,.55)";g.lineWidth=2;line(E(ex0,ey1),E(ex1,ey1));line(E(ex1,ey1),E(ex1,ey0));
 }
+/* v20: the Gadolinium Crystal monument, about twice the old size: a three-tier round dais with glowing rune bands,
+   four crystal pylons that feed arcs of light into a large floating crystal, rune rings, orbiting shards, a light beam
+   and rising sparks. Center CRY, footprint radius CRY_R. */
 function drawCrystal(){
-  isoBox(19.05,19.05,21.95,21.95,0,7,"#e6e1d6","#c3bcae","#a29a8b","rgba(80,70,60,.4)");
-  isoBox(19.45,19.45,21.55,21.55,7,14,"#d9d3c6","#b8b0a1","#958d7f","rgba(80,70,60,.4)");
-  isoBox(19.9,19.9,21.1,21.1,14,26,"#4a4470","#5e578c","#433d68","rgba(20,15,40,.5)");
-  const pulse=.55+Math.sin(T*2)*.35;
-  g.strokeStyle=`rgba(190,175,255,${pulse})`;g.lineWidth=1.4;
-  for(let i=0;i<3;i++){const a=P(19.9+.25+i*.32,21.1,17),b2=P(19.9+.25+i*.32,21.1,23);line(a,b2)}
-  for(let i=0;i<3;i++){const a=P(21.1,21.1-.25-i*.32,17),b2=P(21.1,21.1-.25-i*.32,22);line(a,b2)}
-  const [x,y0]=P(20.5,20.5,26);const y=y0-52+Math.sin(T*1.6)*5;
-  g.save();g.globalCompositeOperation="lighter";
-  let rg=g.createRadialGradient(x,y,0,x,y,80);rg.addColorStop(0,"rgba(170,150,255,.45)");rg.addColorStop(1,"rgba(170,150,255,0)");g.fillStyle=rg;g.fillRect(x-80,y-80,160,160);
-  g.restore();
-  const ring=(back)=>{g.save();g.lineWidth=1.6;g.setLineDash([6,5]);g.lineDashOffset=-T*24;g.strokeStyle="rgba(215,205,255,.75)";g.beginPath();g.ellipse(x,y+6,36,10,0,back?Math.PI:0,back?TAU:Math.PI);g.stroke();
-    g.lineDashOffset=T*18;g.strokeStyle="rgba(255,226,150,.6)";g.beginPath();g.ellipse(x,y-4,26,7,-.25,back?Math.PI:0,back?TAU:Math.PI);g.stroke();g.restore()};
-  ring(true);
-  const top=[x,y-36],rt=[x+16,y-4],bt=[x,y+28],lt=[x-16,y-4],fr=[x+3,y-1];
-  let gr=g.createLinearGradient(x-16,y-36,x+4,y);gr.addColorStop(0,"#ffffff");gr.addColorStop(1,"#bfb0ff");fillPoly([top,lt,fr],gr);
-  fillPoly([top,fr,rt],"#9884ee");fillPoly([lt,bt,fr],"#7c64dc");fillPoly([fr,bt,rt],"#5640b4");
-  fillPoly([top,rt,bt,lt],null,"rgba(255,255,255,.7)",1.2);
-  g.strokeStyle="rgba(255,255,255,.75)";g.lineWidth=1;line([x-6,y-20],[x-2,y-8]);
-  ring(false);
-  for(let i=0;i<3;i++){const a=T*1.2+i*TAU/3,sx=x+Math.cos(a)*30,sy=y+8+Math.sin(a)*9;const s=Math.sin(a)>0?1:.7;
-    fillPoly([[sx,sy-6*s],[sx+3*s,sy],[sx,sy+6*s],[sx-3*s,sy]],"#d8ceff","rgba(255,255,255,.8)",.8)}
-  g.save();g.globalCompositeOperation="lighter";
-  for(let i=0;i<12;i++){const ph=(T*.22+i/12)%1;ell(x+Math.sin(i*7.3+T*.8)*24,y+24-ph*100,1.6,1.6,`rgba(220,210,255,${(1-ph)*.85})`)}
-  g.restore();
+  const [cx,cy]=P(CRY[0],CRY[1]),R2=Math.SQRT2,ER=r=>[r*HW*R2,r*HH*R2];
+  const pulse=.55+Math.sin(T*2)*.35,beat=(Math.sin(T*1.3)+1)/2;
+  const L=(f)=>{g.save();g.globalCompositeOperation="lighter";f();g.restore()};
+  /* a round tier: side band then top face */
+  const tier=(r,z0,z1,top,sL,sR,trim,rune)=>{const [rx,ry]=ER(r),yt=cy-z1,yb=cy-z0;
+    const sg=g.createLinearGradient(cx-rx,0,cx+rx,0);sg.addColorStop(0,sL);sg.addColorStop(.55,shade(sL,-.12));sg.addColorStop(1,sR);
+    g.beginPath();g.ellipse(cx,yb,rx,ry,0,0,Math.PI);g.lineTo(cx-rx,yt);g.ellipse(cx,yt,rx,ry,0,Math.PI,0,true);g.closePath();g.fillStyle=sg;g.fill();
+    g.strokeStyle="rgba(40,30,60,.45)";g.lineWidth=1.2;g.stroke();
+    if(rune){L(()=>{for(let i=0;i<18;i++){const a=i/18*Math.PI+.09,ph=(Math.sin(T*2.4-i*.7)+1)/2,px=cx+Math.cos(a)*rx,py=(yb+yt)/2+Math.sin(a)*ry;
+      g.fillStyle=`rgba(${i%3?"170,150,255":"120,255,230"},${.25+ph*.6})`;g.fillRect(px-1.6,py-(z1-z0)*.28,3.2,(z1-z0)*.56)}})}
+    const tg=g.createRadialGradient(cx-rx*.3,yt-ry*.4,4,cx,yt,rx);tg.addColorStop(0,shade(top,.25));tg.addColorStop(1,top);
+    g.beginPath();g.ellipse(cx,yt,rx,ry,0,0,TAU);g.fillStyle=tg;g.fill();
+    g.strokeStyle=trim;g.lineWidth=2;g.beginPath();g.ellipse(cx,yt,rx-2,ry-1,0,0,TAU);g.stroke();
+    g.strokeStyle="rgba(255,255,255,.5)";g.lineWidth=1;g.beginPath();g.ellipse(cx,yt,rx,ry,0,Math.PI*1.05,Math.PI*1.95);g.stroke()};
+  /* pylons stand on the bottom tier at four corners; arcs of light run from their tips to the crystal */
+  const PY=[0,1,2,3].map(i=>{const a=i*Math.PI/2+T*0,[px,py]=P(CRY[0]+Math.cos(a)*3.6,CRY[1]+Math.sin(a)*3.6);return {px,py:py-18,i,front:Math.cos(a)+Math.sin(a)>0}});
+  const pylon=p=>{const {px,py,i}=p,h=104+(i%2)*14;
+    fillPoly([[px-9,py],[px,py+5],[px+9,py],[px+9,py-12],[px,py-7],[px-9,py-12]],"#b8b0a1","rgba(60,50,40,.5)",1);fillPoly([[px-9,py-12],[px,py-17],[px+9,py-12],[px,py-7]],"#e6e1d6");
+    const sg=g.createLinearGradient(px-7,0,px+7,0);sg.addColorStop(0,"#efeaff");sg.addColorStop(.5,"#a796f4");sg.addColorStop(1,"#5a44c4");
+    fillPoly([[px-7,py-14],[px,py-h],[px+7,py-14],[px,py-9]],sg,"rgba(255,255,255,.65)",1);
+    g.strokeStyle="rgba(255,255,255,.6)";g.lineWidth=1;line([px-2,py-20],[px-1,py-h+16]);
+    const ty=py-h-14+Math.sin(T*2+i)*4;L(()=>glow(px,ty,18+beat*6,`rgba(170,150,255,${.22+beat*.18})`));
+    fillPoly([[px,ty-9],[px+5,ty],[px,ty+9],[px-5,ty]],"#f2eeff","rgba(255,255,255,.9)",1);p.tip=[px,ty]};
+  const [r1x,r1y]=ER(CRY_R+.25);
+  /* pulse ring that rolls out over the plaza every few seconds */
+  {const ph=(T*.35)%1;g.strokeStyle=`rgba(190,175,255,${.55*(1-ph)})`;g.lineWidth=3*(1-ph)+.5;g.beginPath();g.ellipse(cx,cy,r1x*(1+ph*1.9),r1y*(1+ph*1.9),0,0,TAU);g.stroke()}
+  L(()=>{const rg=g.createRadialGradient(cx,cy,0,cx,cy,r1x*1.5);rg.addColorStop(0,`rgba(160,140,255,${.28+pulse*.12})`);rg.addColorStop(1,"rgba(160,140,255,0)");g.fillStyle=rg;g.beginPath();g.ellipse(cx,cy,r1x*1.5,r1y*1.5,0,0,TAU);g.fill()});
+  tier(CRY_R+.1,0,18,"#d9d2c4","#d4cdbf","#8a8273","#c9a85c",false);
+  for(const p of PY)if(!p.front)pylon(p);
+  tier(3.15,18,44,"#544b88","#5e578c","#2a2448","#e6c06a",true);
+  tier(2.05,44,66,"#d6cfc0","#d9d3c6","#948c7c","#c9a85c",false);
+  {const [rx,ry]=ER(1.45);const yt=cy-66,dg=g.createRadialGradient(cx,yt,2,cx,yt,rx);dg.addColorStop(0,`rgba(230,220,255,${.7+beat*.3})`);dg.addColorStop(.6,"rgba(124,100,220,.75)");dg.addColorStop(1,"rgba(60,40,140,.85)");
+    g.beginPath();g.ellipse(cx,yt,rx,ry,0,0,TAU);g.fillStyle=dg;g.fill();g.strokeStyle="#e6c06a";g.lineWidth=2;g.stroke();
+    for(let i=0;i<12;i++){const a=i/12*TAU+T*.4;ell(cx+Math.cos(a)*rx*.78,yt+Math.sin(a)*ry*.78,2,1.1,"rgba(255,240,190,.85)")}}
+  /* crystal cluster growing out of the top tier */
+  const cl=(dx,dy,h,w,c1,c2)=>{const [x,y]=P(CRY[0]+dx,CRY[1]+dy,66);
+    const gr=g.createLinearGradient(x-w,y-h,x+w,y);gr.addColorStop(0,c1);gr.addColorStop(1,c2);fillPoly([[x-w,y],[x-w*.5,y-h*.78],[x,y-h],[x+w*.6,y-h*.7],[x+w,y]],gr,"rgba(255,255,255,.6)",1);
+    g.strokeStyle="rgba(255,255,255,.5)";line([x-w*.2,y-h*.85],[x-w*.1,y-4])};
+  const CL=[[-1.3,-.5,54,12],[.9,-1.2,46,11],[-1.55,.55,34,9],[1.45,.35,40,10],[.3,1.4,28,9],[-.3,-1.6,38,9],[1.1,1.05,24,8],[-1,1.2,22,7]].sort((a,b)=>(a[0]+a[1])-(b[0]+b[1]));
+  for(const c of CL)if(c[0]+c[1]<0)cl(c[0],c[1],c[2],c[3],"#f4f0ff","#7c64dc");
+  /* main crystal */
+  const bob=Math.sin(T*1.6)*8,X=cx,Y=cy-66-150+bob,HT=158,HB=100,WD=54;
+  L(()=>{const bg=g.createLinearGradient(0,Y-HT-260,0,Y);bg.addColorStop(0,"rgba(180,160,255,0)");bg.addColorStop(.7,`rgba(180,160,255,${.12+beat*.1})`);bg.addColorStop(1,`rgba(220,210,255,${.28+beat*.12})`);
+    g.fillStyle=bg;g.beginPath();g.moveTo(X-26,Y);g.lineTo(X-10,Y-HT-260);g.lineTo(X+10,Y-HT-260);g.lineTo(X+26,Y);g.closePath();g.fill();
+    let rg=g.createRadialGradient(X,Y,0,X,Y,190);rg.addColorStop(0,`rgba(170,150,255,${.42+pulse*.15})`);rg.addColorStop(1,"rgba(170,150,255,0)");g.fillStyle=rg;g.fillRect(X-190,Y-190,380,380)});
+  const ring=(back,rx,ry,dy,rot,col,dash,spd)=>{g.save();g.lineWidth=2;g.setLineDash(dash);g.lineDashOffset=-T*spd;g.strokeStyle=col;g.beginPath();g.ellipse(X,Y+dy,rx,ry,rot,back?Math.PI:0,back?TAU:Math.PI);g.stroke();g.restore()};
+  const rings=back=>{ring(back,100,26,18,0,"rgba(215,205,255,.8)",[12,8],30);ring(back,76,18,-16,-.22,"rgba(255,226,150,.75)",[5,7],-24);ring(back,124,33,52,.08,"rgba(120,255,230,.45)",[2,11],16)};
+  rings(true);
+  const shardO=front=>{for(let i=0;i<6;i++){const a=T*.9+i*TAU/6,sn=Math.sin(a);if((sn>0)!==front)continue;const sx=X+Math.cos(a)*112,sy=Y+22+sn*30+Math.sin(T*2+i)*5,s=.85+(sn+1)*.3;
+    fillPoly([[sx,sy-13*s],[sx+6*s,sy],[sx,sy+13*s],[sx-6*s,sy]],i%2?"#d8ceff":"#bff4ff","rgba(255,255,255,.85)",.8)}};
+  shardO(false);
+  const top=[X,Y-HT],bot=[X,Y+HB],l1=[X-WD,Y-18],l2=[X-WD*.55,Y+10],m1=[X-6,Y-14],m2=[X+4,Y+12],r1=[X+WD,Y-16],r2=[X+WD*.6,Y+12];
+  let gr=g.createLinearGradient(X-WD,Y-HT,X,Y);gr.addColorStop(0,"#ffffff");gr.addColorStop(1,"#c4b6ff");fillPoly([top,l1,m1],gr);
+  gr=g.createLinearGradient(X,Y-HT,X+WD,Y);gr.addColorStop(0,"#b6a6ff");gr.addColorStop(1,"#7a64e0");fillPoly([top,m1,r1],gr);
+  fillPoly([l1,l2,m2,m1],"#9884ee");fillPoly([m1,m2,r2,r1],"#5f48c4");
+  gr=g.createLinearGradient(0,Y,0,Y+HB);gr.addColorStop(0,"#7c64dc");gr.addColorStop(1,"#3e2a96");fillPoly([l2,bot,m2],gr);fillPoly([m2,bot,r2],"#33228a");
+  fillPoly([top,l1,l2,bot,r2,r1],null,"rgba(255,255,255,.8)",1.6);
+  g.strokeStyle="rgba(255,255,255,.55)";g.lineWidth=1.1;line(top,m1);line(m1,m2);line(m2,bot);line(l1,m1);line(m1,r1);line(l2,m2);line(m2,r2);
+  L(()=>{const cg=g.createRadialGradient(X-4,Y-8,0,X-4,Y-8,44+beat*12);cg.addColorStop(0,`rgba(255,255,255,${.7+beat*.2})`);cg.addColorStop(.4,"rgba(200,180,255,.5)");cg.addColorStop(1,"rgba(120,90,255,0)");g.fillStyle=cg;g.fillRect(X-60,Y-70,112,120);
+    const sp=(T*.5)%1;g.fillStyle=`rgba(255,255,255,${.7*Math.sin(sp*Math.PI)})`;g.beginPath();g.moveTo(X-WD*.7+sp*WD*.9,Y-30-sp*50);g.lineTo(X-WD*.6+sp*WD*.9,Y-38-sp*50);g.lineTo(X-WD*.45+sp*WD*.9,Y-8-sp*50);g.lineTo(X-WD*.55+sp*WD*.9,Y-2-sp*50);g.fill()});
+  g.strokeStyle="rgba(255,255,255,.85)";g.lineWidth=1.6;line([X-19,Y-94],[X-8,Y-46]);
+  rings(false);shardO(true);
+  for(const c of CL)if(c[0]+c[1]>=0)cl(c[0],c[1],c[2],c[3],"#f4f0ff","#6a52d0");
+  for(const p of PY)if(p.front)pylon(p);
+  /* arcs of light from each pylon tip into the crystal */
+  L(()=>{for(const p of PY){if(!p.tip)continue;const [ax,ay]=p.tip,fl=(Math.sin(T*7+p.i*2)+1)/2,mx=(ax+X)/2+Math.sin(T*3+p.i)*10,my=Math.min(ay,Y)-40-fl*14;
+    g.strokeStyle=`rgba(200,185,255,${.25+fl*.45})`;g.lineWidth=2.2;g.beginPath();g.moveTo(ax,ay);g.quadraticCurveTo(mx,my,X,Y-6);g.stroke();
+    g.strokeStyle=`rgba(255,255,255,${.2+fl*.4})`;g.lineWidth=.9;g.stroke();
+    const u=(T*.8+p.i*.25)%1,qx=(1-u)*(1-u)*ax+2*(1-u)*u*mx+u*u*X,qy=(1-u)*(1-u)*ay+2*(1-u)*u*my+u*u*(Y-6);ell(qx,qy,3,3,"rgba(255,255,255,.9)")}});
+  L(()=>{for(let i=0;i<26;i++){const ph=(T*.2+i/26)%1,a=i*2.4+T*.3,rr=30+hash(i,5)*150;ell(cx+Math.cos(a)*rr*(1-ph*.5),cy-10-ph*380+Math.sin(a)*rr*.35,1.8,1.8,`rgba(${i%3?"220,210,255":"150,255,230"},${(1-ph)*.85})`)}});
 }
 
 /* ================= chibi ================= */
@@ -4837,7 +4929,7 @@ function localPt(el,e){const r=el.getBoundingClientRect();if(rotated)return {x:e
 
 /* ================= minimap ================= */
 function buildMini(m){
-  if(m.mini)return;const c=document.createElement("canvas");c.width=N*8;c.height=N*4+2;
+  if(m.mini)return;const N=m.N,I=(x,y)=>y*N+x,c=document.createElement("canvas");c.width=N*8;c.height=N*4+2;
   const q=c.getContext("2d");q.translate(N*4,0);const F=m.id!=="town",mp=F?m.pal.mini:null;
   const Q=(x,y)=>[(x-y)*4,(x+y)*2];
   const dia=(x,y,col)=>{const a=Q(x,y),b=Q(x+1,y),cc=Q(x+1,y+1),d=Q(x,y+1);q.beginPath();q.moveTo(...a);q.lineTo(...b);q.lineTo(...cc);q.lineTo(...d);q.closePath();q.fillStyle=col;q.fill();q.strokeStyle=col;q.lineWidth=.6;q.stroke()};
@@ -4846,7 +4938,7 @@ function buildMini(m){
     if(o.kind==="tree")dia(o.x,o.y,o.v===3?"#c97a9e":o.v===2?"#b86a2e":o.v===4?"#123f48":o.v===5?"#4a2058":o.v===6?"#7a4a1e":o.v===7?"#5a88b0":o.v===8?"#b8c8dc":o.v===9?"#7a7260":o.v===10?"#2a1812":"#2b5a33");
     else if(o.kind==="shroom")dia(o.x,o.y,o.alt===3?"#5ac0e0":o.alt===4?"#ff7a2a":o.alt===2?"#8ac0f0":o.alt?"#ff9a5a":o.v<.5?"#3fd0c4":"#9a6cf0");else if(o.kind==="crys")dia(o.x,o.y,o.alt===3?"#7fe0ff":o.alt===4?"#ff9a50":o.alt===2?"#e8f6ff":o.alt?"#ffd890":"#b7f4ff");else if(o.kind==="rock")dia(o.x,o.y,"#6a6e7c");else if(o.kind==="stele"||o.kind==="pillar")dia(o.x,o.y,"#8a8a98");else if(o.kind==="brazier")dia(o.x,o.y,"#ff9a3a");else if(o.kind==="warnsign")dia(o.x,o.y,"#ff4a5a");
     else if(o.kind==="bld"){const b=o.b;for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)dia(x,y,b.roof)}}
-  if(!F)for(let y=19;y<22;y++)for(let x=19;x<22;x++)dia(x,y,"#8a78ff");
+  if(!F)for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(Math.hypot(x+.5-CRY[0],y+.5-CRY[1])<CRY_R)dia(x,y,Math.hypot(x+.5-CRY[0],y+.5-CRY[1])<1.6?"#d8ceff":"#8a78ff");
   m.mini=c;
 }
 function drawMini(){
@@ -4885,10 +4977,10 @@ function clickAt(sx,sy){
   for(const c of [...cur.npcs,...cur.wanderers].sort((a,b)=>(b.x+b.y)-(a.x+a.y))){const [cx,cy]=P(c.x,c.y);if(Math.abs(wx-cx)<15&&wy>cy-60&&wy<cy+6){
     player.target=null;if(c.npc){talkTo(c);return}toast(`${c.name} · Lv ${c.lv}`);walkTo(player,Math.floor(c.x),Math.floor(c.y));setMarker(c.x,c.y);return}}
   for(const p of cur.portals){const [px,py]=P(p.x+.5,p.y+.5);if(Math.abs(wx-px)<30&&wy>py-72&&wy<py+14){player.target=null;walkTo(player,p.x,p.y);setMarker(p.x+.5,p.y+.5);return}}
-  if(cur===town){const [kx,ky]=P(20.5,20.5,26);if(Math.abs(wx-kx)<40&&wy>ky-110&&wy<ky+30){player.target=null;touchCrystal();return}}
+  if(cur===town){const [kx,ky]=P(CRY[0],CRY[1]);if(((wx-kx)/200)**2+((wy-ky)/100)**2<1||(Math.abs(wx-kx)<80&&wy>ky-400&&wy<ky)){player.target=null;touchCrystal();return}}
   const [tx,ty]=isoToTile(wx,wy);const fx_=Math.floor(tx),fy_=Math.floor(ty);if(!inb(fx_,fy_))return;
   player.target=null;
-  if(cur===town&&fx_>=19&&fx_<22&&fy_>=19&&fy_<22){touchCrystal();return}
+  if(cur===town&&Math.hypot(fx_+.5-CRY[0],fy_+.5-CRY[1])<CRY_R){touchCrystal();return}
   if(walkTo(player,fx_,fy_)){const q=nearestWalk(fx_,fy_,Math.floor(player.x),Math.floor(player.y));setMarker(q[0]+.5,q[1]+.5)}
 }
 cv.addEventListener("pointerdown",e=>{if(dlg)return;const p=localPt(cv,e);holding=true;lastHold=p;holdTimer=0;clickAt(p.x,p.y);hideHint();try{cv.setPointerCapture(e.pointerId)}catch(_){}});
@@ -4906,15 +4998,15 @@ function walkableNear(m,x,y){
     let best=null,bd=1e9;
     for(let yy=y-r;yy<=y+r;yy++)for(let xx=x-r;xx<=x+r;xx++){
       if(Math.max(Math.abs(xx-x),Math.abs(yy-y))!==r||!walkM(m,xx,yy))continue;
-      const d=Math.hypot(xx-24.5,yy-24.5);if(d<bd){bd=d;best=[xx+.5,yy+.5]}   // within that ring, face the map center
+      const d=Math.hypot(xx-m.N/2,yy-m.N/2);if(d<bd){bd=d;best=[xx+.5,yy+.5]}   // within that ring, face the map center
     }
     if(best)return best;
   }
-  return [24.5,24.5];
+  return m===town?TOWN_SPAWN.slice():[m.N/2,m.N/2];
 }
 function arriveAt(to,from){
   const m=MAPS[to],p=m&&m.portals.find(q=>q.to===from);
-  return p?walkableNear(m,p.x,p.y):[24.5,24.5];
+  return p?walkableNear(m,p.x,p.y):(to==="town"?TOWN_SPAWN.slice():[m.N/2,m.N/2]);
 }
 function setBanner(){$("#bName").textContent=t(cur.nameK);$("#bSub").textContent=t(cur.subK);$("#mmName").textContent=t(cur.nameK);
   $("#bRec").textContent=cur.rec?fmt("rec",{n:num(cur.rec)}):"";
@@ -4936,18 +5028,18 @@ function applyMap(id,ax,ay){
   volleys.length=0;balls.length=0;
   if(S.idle){setIdle(false,true);toast(t("idleEnded"))}
   if(dlg){dlg=null;$("#dlg").classList.add("hidden");stage.classList.remove("dlg-open")}
-  if(LITE)for(const m of Object.values(MAPS))if(m.id!==id&&m.id!==AHEAD[id]&&m.ground){m.ground.width=m.ground.height=0;m.ground=null}
-  cur=MAPS[id];S.visited[id]=1;netExpand();AUD.sfx("warp");AUD.setMap(id);buildMini(cur);
+  for(const m of Object.values(MAPS))if(m.id!==id&&m.id!==AHEAD[id])freeGround(m);   // v20 maps are big: every device keeps only the current map + the one ahead
+  setCur(MAPS[id]);S.visited[id]=1;netExpand();AUD.sfx("warp");AUD.setMap(id);buildMini(cur);
   player.x=ax;player.y=ay;player.path=[];player.target=null;player.onArrive=null;marker=null;fx=[];
   deaggroAll();setBanner();aggroGrace=3;
   questEvent({t:"reach",map:id});renderQuest();renderIdle();renderMM();save();
-  for(const n of (LITE?[AHEAD[id]]:NEIGH[id]||[]))queueBuild(MAPS[n],false);
+  queueBuild(MAPS[AHEAD[id]],false);
   $("#fade").classList.remove("on");warping=false;
   if(wantIdle){wantIdle=false;setIdle(true)}
   showHint(isField()?"hintField":"hint");
 }
 function warpTown(){if(player.dead||warping)return;if(cur===town){toast(t("inTown"));return}player.nav=null;fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:.5,c:"#cfc4ff"});
-  setTimeout(()=>{goMap("town",24.5,24.5);setTimeout(()=>toast(t("warpTown")),420)},250)}
+  setTimeout(()=>{goMap("town",TOWN_SPAWN[0],TOWN_SPAWN[1]);setTimeout(()=>toast(t("warpTown")),420)},250)}
 /* next portal toward a destination map */
 const ROUTE={town:{field1:0,field2:0,field3:0,geo:1,ruins:2},field1:{town:0,field2:1,field3:1,geo:0,ruins:0},field2:{town:0,field1:0,field3:1,geo:0,ruins:0},field3:{town:0,field1:0,field2:0,geo:0,ruins:0},geo:{town:0,field1:0,field2:0,field3:0,ruins:0},ruins:{town:0,field1:0,field2:0,field3:0,geo:0}};
 function routeTo(dest){const i=(ROUTE[cur.id]||{})[dest];if(i==null)return;const p=cur.portals[i];
@@ -4985,8 +5077,10 @@ function chooseArchetype(a){
   openDlg("n_helper",[{raw:fmt("helper_chosen",{a:t("ar_"+a)})}],PAL.helper,null);
 }
 function touchCrystal(){
-  walkTo(player,20,20,()=>{
-    if(Math.hypot(player.x-20.5,player.y-20.5)>2.8)return;faceToward(player,20.5,20.5);
+  const [tx,ty]=nearestWalk(Math.floor(CRY[0]),Math.floor(CRY[1]+CRY_R+.6),Math.floor(player.x),Math.floor(player.y))||[Math.floor(CRY[0]),Math.floor(CRY[1]+CRY_R+1)];
+  const near=Math.hypot(player.x-CRY[0],player.y-CRY[1])<CRY_R+2.4;
+  walkTo(player,near?Math.floor(player.x):tx,near?Math.floor(player.y):ty,()=>{
+    if(Math.hypot(player.x-CRY[0],player.y-CRY[1])>CRY_R+2.6)return;faceToward(player,CRY[0],CRY[1]);
     const qid=activeIds().find(id=>{const o=curObj(id);return o&&o.t==="crystal"});
     if(qid)cutscene([field1],()=>openDlg("crystal",curObj(qid).lines,null,()=>{fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:1.6,c:"#b9a8ff"});completeStage(qid)}));
     else openDlg("crystal",["crys2"],null,null);
@@ -5145,7 +5239,7 @@ function die(){
   player.nav=null;if(S.idle)setIdle(false,true);deaggroAll();resetCombatState();
   $("#deathOv").classList.remove("hidden");pushChat({ch:"sys",k:"sys_dead"});
 }
-function respawn(){player.dead=false;S.hp=hpMax();S.sp=spMax();$("#deathOv").classList.add("hidden");goMap("town",24.5,24.5)}
+function respawn(){player.dead=false;S.hp=hpMax();S.sp=spMax();$("#deathOv").classList.add("hidden");goMap("town",TOWN_SPAWN[0],TOWN_SPAWN[1])}
 function resetCombatState(){volleys.length=0;balls.length=0;player.gd=0;BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=0;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
 function addMomentum(n){BF.momentum=Math.min(5,BF.momentum+n);BF.momT=5}
 /* ---- Fire Bolt volley (v20): fireballs are released one at a time (0.3 s apart, 0.2 s from Lv 6). If the target dies, the ones not yet released never come out.
@@ -5312,7 +5406,7 @@ function useItem(id){
    case "herb_frost":BF.herbDef=60;floatText(t("buff_def"),"#9fe0ff");break;
    case "herb_sage":BF.sage=60;floatText(t("buff_sp"),"#c9b8ff");break;
    case "wing":{fx.push({k:"ring",x,y,t:0,d:.5,c:"#fff",r:50});let tx,ty,gd=0;
-     do{tx=cur===town?17+Math.floor(Math.random()*16):5+Math.floor(Math.random()*40);ty=cur===town?17+Math.floor(Math.random()*16):5+Math.floor(Math.random()*40)}while((!walk(tx,ty)||cur.portals.some(p=>Math.hypot(tx-p.x,ty-p.y)<4))&&gd++<300);
+     do{if(cur===town)[tx,ty]=townSpot();else{tx=5+Math.floor(Math.random()*(N-10));ty=5+Math.floor(Math.random()*(N-10))}}while((!walk(tx,ty)||cur.portals.some(p=>Math.hypot(tx-p.x,ty-p.y)<4))&&gd++<300);
      player.x=tx+.5;player.y=ty+.5;player.path=[];player.target=null;player.casting=null;volleys.length=0;balls.length=0;deaggroAll();
      fx.push({k:"ring",x:player.x,y:player.y,t:0,d:.6,c:"#fff",r:60});toast(t("tele"));break}
   }
@@ -5589,8 +5683,9 @@ function render(){
   const shx=shakeT>0?(Math.random()-.5)*shakeT*24:0,shy=shakeT>0?(Math.random()-.5)*shakeT*14:0;
   g.setTransform(dpr*zoom,0,0,dpr*zoom,dpr*(ox+shx),dpr*(oy+shy));
   const vx0=-ox/zoom,vx1=(W-ox)/zoom,vy0=-oy/zoom,vy1=(H-oy)/zoom,gd=cur.ground;
-  if(gd){const sx0=Math.max(0,(vx0+N*HW)*GS),sy0=Math.max(0,vy0*GS),sx1=Math.min(gd.width,(vx1+N*HW)*GS),sy1=Math.min(gd.height,vy1*GS);
-    if(sx1>sx0&&sy1>sy0)g.drawImage(gd,sx0,sy0,sx1-sx0,sy1-sy0,sx0/GS-N*HW,sy0/GS,(sx1-sx0)/GS,(sy1-sy0)/GS)}
+  if(gd){const s=gd.gs;for(const ch of gd.chunks){if(ch.wx1<vx0||ch.wx0>vx1||ch.wy1<vy0||ch.wy0>vy1)continue;const c=ch.c;
+    const sx0=Math.max(0,(vx0-ch.wx0)*s),sy0=Math.max(0,(vy0-ch.wy0)*s),sx1=Math.min(c.width,(vx1-ch.wx0)*s),sy1=Math.min(c.height,(vy1-ch.wy0)*s);
+    if(sx1>sx0&&sy1>sy0)g.drawImage(c,sx0,sy0,sx1-sx0,sy1-sy0,ch.wx0+sx0/s,ch.wy0+sy0/s,(sx1-sx0)/s,(sy1-sy0)/s)}}
   g.strokeStyle="rgba(255,255,255,.55)";g.lineWidth=1.2;
   for(const e of cur.pools)for(let i=0;i<10;i++){const ph=(T*.3+hash(i,e[0]))%1,a=hash(i,8)*TAU,r=Math.sqrt(hash(i,2))*.8;const [sx,sy]=P(e[0]+Math.cos(a)*e[2]*r,e[1]+Math.sin(a)*e[3]*r);g.globalAlpha=Math.sin(ph*Math.PI)*.8;line([sx-4,sy],[sx+4,sy])}
   g.globalAlpha=1;
@@ -5599,7 +5694,7 @@ function render(){
     g.fillStyle="rgba(255,230,140,.9)";const b=Math.abs(Math.sin(T*6))*4;g.beginPath();g.moveTo(mx-5,my-14-b);g.lineTo(mx+5,my-14-b);g.lineTo(mx,my-7-b);g.closePath();g.fill()}
   for(const mo of cur.monsters)if(mo.tele&&!mo.dead)drawTele(mo);
   const list=[];
-  for(const o of cur.statics)if(o.sx>vx0-200&&o.sx<vx1+200&&o.sy>vy0-40&&o.sy<vy1+260)list.push(o);
+  for(const o of cur.statics)if(o.sx>vx0-200-(o.cull||0)*.4&&o.sx<vx1+200+(o.cull||0)*.4&&o.sy>vy0-40-(o.cull?120:0)&&o.sy<vy1+(o.cull||260))list.push(o);
   for(const c of chars()){const [sx,sy]=P(c.x,c.y);if(sx>vx0-40&&sx<vx1+40&&sy>vy0-20&&sy<vy1+90)list.push({kind:"char",c,k:c.x+c.y,sx,sy})}
   for(const mo of cur.monsters){if(mo.dead)continue;const [sx,sy]=P(mo.x,mo.y);if(sx>vx0-120&&sx<vx1+120&&sy>vy0-20&&sy<vy1+240)list.push({kind:"mon",c:mo,k:mo.x+mo.y,sx,sy})}
   list.sort((a,b)=>a.k-b.k);
@@ -5619,7 +5714,7 @@ function render(){
   const talkNpc=new Set(),crysQ=activeIds().some(id=>{const o=curObj(id);return o&&o.t==="crystal"});for(const id of activeIds()){const o=curObj(id);if(o&&o.t==="talk")talkNpc.add(o.npc)}
   for(const o of list){
     if(o.kind==="bld"&&o.b.label){const b=o.b;const [x,y]=P(b.x+b.w/2,b.y+b.h/2,b.H+28+Math.min(b.w,b.h)*7.5+(b.flag?30:0));plate(x,y,t(b.label))}
-    else if(o.kind==="crystal"){const [x,y]=P(20.5,20.5,26);plate(x,y-112,t("crystal"));if(crysQ)questMark(x,y-134)}
+    else if(o.kind==="crystal"){const [x,y]=P(CRY[0],CRY[1]);plate(x,y-410,t("crystal"));if(crysQ)questMark(x,y-434)}
     else if(o.kind==="portal"){plate(o.sx,o.sy-84,"➜ "+t(o.p.labelK),true)}
     else if(o.kind==="mon"){const mo=o.c,d=MON[mo.type];if(mo.dieT>0)continue;const top=o.sy-d.h*mSize(mo)-12,lv=mLv(mo);
       if(mo.hp<mo.maxHp||player.target===mo||mo.boss){const bw=mo.boss?70:36,bh=mo.boss?8:4;rr(o.sx-bw/2-1,top-bh/2-2,bw+2,bh+2,3);g.fillStyle="rgba(10,10,20,.75)";g.fill();rr(o.sx-bw/2,top-bh/2-1,bw*Math.max(0,mo.hp/mo.maxHp),bh,2);g.fillStyle=mo.boss?"#ff5a8a":mo.aggro?"#ff4a5a":"#ff8a6a";g.fill()}
@@ -5697,7 +5792,7 @@ function update(dt){
   if(marker){marker.t+=dt*1.6;if(!player.path.length&&marker.t>1.2)marker=null}
   if(cur===town){
     for(const w of town.wanderers){if(w.path.length&&town.npcs.some(n=>Math.hypot(n.x-w.x,n.y-w.y)<2)){w.path=[];w.wait=.4}moveChar(w,dt);w.wait-=dt;
-      if(!w.path.length&&w.wait<=0){let tx,ty,gd=0;do{tx=Math.floor(w.x)+Math.floor(Math.random()*15)-7;ty=Math.floor(w.y)+Math.floor(Math.random()*15)-7}while((!walk(tx,ty)||Math.hypot(tx-24,ty-24)>14||town.npcs.some(n=>Math.hypot(n.x-tx-.5,n.y-ty-.5)<2.6))&&gd++<40);if(gd<40)walkTo(w,tx,ty);w.wait=2+Math.random()*6}}
+      if(!w.path.length&&w.wait<=0){let tx,ty,gd=0;do{tx=Math.floor(w.x)+Math.floor(Math.random()*15)-7;ty=Math.floor(w.y)+Math.floor(Math.random()*15)-7}while((!walk(tx,ty)||Math.hypot(tx+.5-TC,ty+.5-TC)>28||town.npcs.some(n=>Math.hypot(n.x-tx-.5,n.y-ty-.5)<2.6))&&gd++<40);if(gd<40)walkTo(w,tx,ty);w.wait=2+Math.random()*6}}
     for(const n of town.npcs)if(Math.hypot(n.x-player.x,n.y-player.y)<3.5){faceToward(n,player.x,player.y);n.back=false}
   }else for(const mo of cur.monsters)updateMon(mo,dt);
   for(const c of [player,...town.wanderers])if(c.bubble){c.bubble.t-=dt;if(c.bubble.t<=0)c.bubble=null}
@@ -5944,10 +6039,10 @@ const elChip=e=>e?`<span class="el" style="--ec:${ELC[e]||"#ccc"}">● ${t("el_"
 const MCOL={faultcrawler:"#c9b08a",tidewraith:"#6ab8f0",stratagolem:"#a89478",cinderling:"#ff7a2a",magmaback:"#d8401a",ashsentinel:"#ff9a4a"};
 function monCol(k){if(MCOL[k])return MCOL[k];const d=MON[k],P0=MPAL[k];return d.sprite==="lumite"?P0.mid:d.sprite==="crawlix"?P0.c[0]:d.sprite==="gadolith"?P0.f2:P0.i1}
 function tpArrive(id){   // arrive at the entrance that leads back toward town
-  if(id==="town")return [24.5,24.5];
+  if(id==="town")return TOWN_SPAWN.slice();
   let first=null;const q=[[id]],seen=new Set([id]);
   while(q.length&&!first){const p=q.shift(),m=p[p.length-1];for(const n of NEIGH[m]||[]){if(seen.has(n))continue;seen.add(n);const np=[...p,n];if(n==="town"){first=np[1];break}q.push(np)}}
-  return first?arriveAt(id,first):[24.5,24.5];
+  return first?arriveAt(id,first):[MAPS[id].N/2,MAPS[id].N/2];
 }
 function doTeleport(id){
   if(player.dead||warping||!S.visited[id]||id===cur.id||S.sc<tpCost(id))AUD.sfx("err");
@@ -6278,7 +6373,7 @@ $("#idleBtn").addEventListener("click",()=>{
   if(player.dead)return;
   if(S.idle){stopIdle();return}
   if(wantIdle){wantIdle=false;renderIdle();return}
-  if(!isField()){player.nav=null;wantIdle=true;routeTo("field1");setMarker(46.5,24.5);toast(t("idleWalk"));renderIdle();return}
+  if(!isField()){player.nav=null;wantIdle=true;routeTo("field1");setMarker(town.portals[0].x+.5,town.portals[0].y+.5);toast(t("idleWalk"));renderIdle();return}
   setIdle(true);
 });
 $("#idleCfg").addEventListener("click",()=>{if(winId==="idleset")closeWin();else openWin("idleset")});
@@ -6476,9 +6571,10 @@ try{if(saved){
     if(mq&&(mq.s==="done"||mq.st>=7))v.field3=1;
     S.visited=v;
   }
-  if(!(saved.x>0&&saved.y>0)){saved.x=24.5;saved.y=24.5;saved.map="town"}
+  if(!(saved.x>0&&saved.y>0)){saved.x=TOWN_SPAWN[0];saved.y=TOWN_SPAWN[1];saved.map="town"}
+  else if(saved.mv!==2&&MAPS[saved.map]){const k=MAPS[saved.map].K||1;saved.x*=k;saved.y*=k}   // v20: saves from the old 49×49 maps scale up with the map
   lang=saved.lang||lang;layoutMode=saved.layoutMode||"auto";zIdx=Math.max(0,Math.min(4,(saved.zIdx??2)|0));chatMode=saved.chatMode||"min";mmOpen=saved.mmOpen!==false;qOpen=saved.qOpen!==false;
-  cur=MAPS[saved.map]||town;player.x=saved.x;player.y=saved.y;if(!walk(Math.floor(player.x),Math.floor(player.y))){player.x=24.5;player.y=24.5;cur=town}
+  setCur(MAPS[saved.map]||town);player.x=saved.x;player.y=saved.y;if(!walk(Math.floor(player.x),Math.floor(player.y))){player.x=TOWN_SPAWN[0];player.y=TOWN_SPAWN[1];setCur(town)}
   S.hp=Math.max(1,Math.min(S.hp,hpMax()));S.sp=Math.min(S.sp,spMax());
   /* idle while the game was closed */
   const wasIdle=!!S.idle;S.idle=false;
@@ -6486,7 +6582,7 @@ try{if(saved){
   if(away&&MAPS[away.map]&&away.map!=="town"){const secs=(Date.now()-away.t)/1000;
     if(secs>=60)processAway(away.map,away.vip,secs);else if(wasIdle&&isField())S.idle=true}
   lastSave=saved.savedAt;
-}}catch(e){saved=null;cur=town;player.x=24.5;player.y=24.5;S.idle=false;S.pending=null;S.away=null;S.q={main:{s:"active",st:0,p:0,n:0}};S.pins=["main"]}
+}}catch(e){saved=null;setCur(town);player.x=TOWN_SPAWN[0];player.y=TOWN_SPAWN[1];S.idle=false;S.pending=null;S.away=null;S.q={main:{s:"active",st:0,p:0,n:0}};S.pins=["main"]}
 if(!S.equip)S.equip=starterEquip();
 sanitizeGear();
 S.visited[cur.id]=1;AUD.setMap(cur.id);
@@ -6498,8 +6594,7 @@ buildSlots();setChat(chatMode);layout();applyI18n();drawAvatar();setBanner();
 applyMenuState();renderIdle();applyUiMode();
 showHint(isField()?"hintField":"hint");
 whenReady([cur],()=>{},"ld_boot");
-for(const n of (LITE?[AHEAD[cur.id]]:NEIGH[cur.id]||[]))queueBuild(MAPS[n],false);
-if(!LITE)for(const m of Object.values(MAPS))queueBuild(m,false);
+queueBuild(MAPS[AHEAD[cur.id]],false);
 if(S.pending)setTimeout(()=>{if(!winId&&S.pending)openWin("idlerew")},1600);
 if(document.fonts)document.fonts.ready.then(drawAvatar);
 new ResizeObserver(()=>layout()).observe(app);
