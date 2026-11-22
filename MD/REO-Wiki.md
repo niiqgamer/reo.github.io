@@ -26,7 +26,7 @@ REO คือเกม MMORPG ผสมระบบ Idle บนเบราว�
 1. เข้าเกมแบบ Guest หรือสมัครบัญชี
 2. คุยกับ Guide Lumi → พบ Bors → แตะคริสตัล Gadolinium
 3. ออกประตูตะวันออกไป Field 01 ปราบมอนสเตอร์ 10 ตัว หรือกด Idle
-4. เมื่อ Job Lv 10 ไปหา Archetype Helper Sera ทำ Archetype Trial (ปราบ Elite 10 ตัว)
+4. เมื่อ Job Lv 10 ไปหา Archetype Helper Sera ทำ Archetype Trial (ปราบ Elite 1 ตัว)
 5. ไปเก็บเลเวลที่ Field 02 และ Field 03 พร้อมอัปเกรดอุปกรณ์
 6. ท้าบอส Gadolith ที่ Field 03
 
@@ -134,7 +134,7 @@ Archetype คือกลุ่มบทบาทหลักของตัว�
 ### Archetype Trial
 1. ตัวละครใหม่เป็น Beginner (Job Lv สูงสุด 10)
 2. คุยกับ **Archetype Helper Sera** ที่จัตุรัสแกโดลิเนียม
-3. เมื่อ Job Lv 10 รับเควสต์ปราบ Elite 10 ตัวในสนามใดก็ได้
+3. เมื่อ Job Lv 10 รับเควสต์ปราบ Elite 1 ตัวในสนามใดก็ได้
 4. กลับไปหา Sera เลือก 1 Archetype ถาวร · รับ 500 Base EXP และ 30 Y · Job Lv รีเป็น 1 (สูงสุด 50)
 
 ---
@@ -178,7 +178,7 @@ Archetype คือกลุ่มบทบาทหลักของตัว�
 ### วิธีเปลี่ยนอาชีพ
 | ขั้น | เงื่อนไข | ผลลัพธ์ |
 |---|---|---|
-| C0 → C1 | Job Lv 10 + Archetype Trial (ปราบ Elite 10 ตัว) | เลือก Archetype ถาวร · Job Lv รีเป็น 1 สูงสุด 50 |
+| C0 → C1 | Job Lv 10 + Archetype Trial (ปราบ Elite 1 ตัว) | เลือก Archetype ถาวร · Job Lv รีเป็น 1 สูงสุด 50 |
 | C1 → C2 | Base Lv 50+ และ Job Lv 50 + เควสต์เปลี่ยนอาชีพขั้นสูง | *Coming Soon* |
 
 เพดานเลเวล: Base Lv 99 · Job Lv: Beginner 10, Archetype 50
@@ -443,14 +443,15 @@ Lv 20 · Earth · HP 8,000 · ATK 58 · Hard DEF 25% · MDEF 20% · โจมต
 | 1 | คุยกับ Guide Lumi | 40 / 20 | — |
 | 2 | พบ Bors ที่ Tool Dealer | 60 / 30 | Red Potion ×5 |
 | 3 | แตะคริสตัล Gadolinium | 180 / 80 | 20 Y |
-| 4 | ปราบมอนสเตอร์ใน Field 01 ครบ 10 ตัว | 200 / 100 | 30 Y |
+| 4 | ปราบมอนสเตอร์ใน Field 01 ครบ 3 ตัว | 200 / 100 | 30 Y |
 | 5 | ไปให้ถึง Field 02 | 150 / 80 | — |
-| 6 | ปราบ Elite 1 ตัว | 400 / 200 | 50 Y |
+| 6 | ปราบมอนสเตอร์ใน Field 02 ครบ 3 ตัว | 400 / 200 | 50 Y |
 | 7 | ไปให้ถึง Field 03 | 500 / 260 | — |
-| 8 | ปราบ Gadolith | 3,000 / 1,800 | 100 Y |
+| 8 | ปราบมอนสเตอร์ใน Field 03 ครบ 3 ตัว | 800 / 450 | — |
+| 9 | กลับไปหา Guide Lumi | 3,000 / 1,800 | 100 Y |
 
 ### Job: Archetype Trial
-ให้โดย Archetype Helper Sera ที่ Job Lv 10 · ปราบ Elite 10 ตัว → เลือก 1 Archetype · 500 Base EXP + 30 Y
+ให้โดย Archetype Helper Sera ที่ Job Lv 10 · ปราบ Elite 1 ตัว → เลือก 1 Archetype · 500 Base EXP + 30 Y
 
 ### Side
 | เควสต์ | แมพ | เป้าหมาย | EXP | รางวัล |
@@ -459,7 +460,7 @@ Lv 20 · Earth · HP 8,000 · ATK 58 · Hard DEF 25% · MDEF 20% · โจมต
 | **Crawler Control** (กำจัดเจ้าตัวคลาน) | Field 01 | ปราบ Crawlix 12 ตัว แล้วรายงานต่อ Captain Veyra | 260 / 150 | 15 Y |
 | **Eyes in the Dusk** (ดวงตาในยามสนธยา) | Field 02 | ปราบ Cryoculus 6 ตัว แล้วรายงานต่อ Captain Veyra | 600 / 300 | 25 Y |
 
-### Normal: ล่ามอนสเตอร์ (ทำซ้ำได้)
+### Normal: ล่ามอนสเตอร์ (รายวัน ทำได้วันละครั้ง)
 | เควสต์ | แมพ | เป้าหมาย | Base EXP | Job EXP | Scandium |
 |---|---|---|---|---|---|
 | Hunt: Lumite | Field 01 | 15 ตัว | 270 | 189 | 120 |
@@ -471,13 +472,13 @@ Lv 20 · Earth · HP 8,000 · ATK 58 · Hard DEF 25% · MDEF 20% · โจมต
 | Hunt: Glacilite | Field 03 | 15 ตัว | 3,105 | 2,025 | 1,176 |
 | Hunt: Rimeback | Field 03 | 15 ตัว | 4,455 | 2,903 | 1,608 |
 | Hunt: Magnoculus | Field 03 | 15 ตัว | 6,345 | 4,050 | 2,400 |
-| Elite Hunt | Field 01 | Elite 3 ตัว | 900 | 500 | 700 (+5 Y) |
-| Elite Hunt | Field 02 | Elite 3 ตัว | 2,400 | 1,400 | 1,500 (+8 Y) |
-| Elite Hunt | Field 03 | Elite 3 ตัว | 5,200 | 3,000 | 3,000 (+12 Y) |
+| Elite Hunt | Field 01 | Elite 3 ตัว | — | — | 1 Y |
+| Elite Hunt | Field 02 | Elite 3 ตัว | — | — | 1 Y |
+| Elite Hunt | Field 03 | Elite 3 ตัว | — | — | 1 Y |
 | Boss Hunt: Gadolith | Field 03 | บอส 1 ตัว | 2,500 | 1,500 | 2,500 (+20 Y) |
 | Ore Delivery | ทั่วไป | Gadolinium Ore 3 ชิ้น | 200 | 100 | 500 |
 
-ลิมิตทำซ้ำรายวัน และเควสต์ C2/รายวัน: *Coming Soon*
+เควสต์ Normal ทุกอันทำได้วันละครั้ง (นับตามวันที่ในเครื่องผู้เล่น) · Elite Hunt ทุกแมพให้ 1 Y อย่างเดียว · เควสต์ C2: *Coming Soon*
 
 ---
 

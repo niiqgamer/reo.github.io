@@ -2089,7 +2089,7 @@ en:{fctCrit:"CRITICAL!",field1_name:"Gadolinium Field 01",field1_sub:"Outskirts 
  set_vip:"VIP (test)",sim_off:"Test: simulate 1 hour offline (VIP)",sim_need:"Turn on VIP and start idle in a field first.",
  mmHome:"Return to town",mmToggle:"Show or hide map",zoomIn:"Zoom in",zoomOut:"Zoom out",z0:"Very far",z1:"Far",z2:"Standard",z3:"Near",z4:"Very near",warpTown:"Returned to Gadolinium",inTown:"You’re already in town",
  qt_main:"Main",qt_side:"Side",qt_normal:"Normal",q_active:"In progress",q_avail:"Available",q_accept:"Accept",q_abandon:"Abandon",q_pinMax:"You can track up to 5 quests.",
- q_none:"No tracked quests. Open Quests to pick some.",q_accepted:"Quest accepted: {q}",q_doneT:"Quest complete: {q}",q_navStart:"Auto-quest: {q}",q_completed:"Completed: {n}",q_track:"Track",q_tracked:"Tracking",q_repeat:"Repeatable",q_count:"{n}/5 tracked",
+ q_none:"No tracked quests. Open Quests to pick some.",q_accepted:"Quest accepted: {q}",q_doneT:"Quest complete: {q}",q_navStart:"Auto-quest: {q}",q_completed:"Completed: {n}",q_track:"Track",q_tracked:"Tracking",q_repeat:"Daily",q_count:"{n}/5 tracked",
  o_talk:"Talk to {n}",o_crystal:"Touch the Gadolinium Crystal",o_kill:"Defeat {m} in {p} ({c}/{n})",o_killAny:"monsters",o_elite:"Defeat an Elite monster ({c}/{n})",o_collect:"Collect {i} ({c}/{n})",o_reach:"Travel to {p}",
  qs_gel:"Glowing Lamp Oil",qs_crawl:"Crawler Control",qs_eye:"Eyes in the Dusk",qn_lumite:"Hunt: Lumite",qn_nebulite:"Hunt: Nebulite",qn_shard:"Hunt: Shardback",qn_ore:"Ore Delivery",
  qs_gel_b:"Beautiful! The whole shop will glow tonight. Here’s your pay.",qs_crawl_b:"Good work. The crawlers will think twice before nesting near the road.",qs_eye_b:"Those icy eyes watched the road for days. Thank you, adventurer.",
@@ -2102,7 +2102,7 @@ th:{fctCrit:"คริติคอล!",field1_name:"ทุ่งแกโดล
  set_vip:"VIP (ทดสอบ)",sim_off:"ทดสอบ: จำลองออฟไลน์ 1 ชั่วโมง (VIP)",sim_need:"เปิด VIP และเริ่ม Idle ในทุ่งก่อน",
  mmHome:"วาปกลับเมือง",mmToggle:"เปิด/ปิดแผนที่",zoomIn:"ซูมเข้า",zoomOut:"ซูมออก",z0:"ไกลมาก",z1:"ไกล",z2:"มาตรฐาน",z3:"ใกล้",z4:"ใกล้มาก",warpTown:"วาปกลับแกโดลิเนียมแล้ว",inTown:"อยู่ในเมืองแล้ว",
  qt_main:"หลัก",qt_side:"รอง",qt_normal:"ทั่วไป",q_active:"กำลังทำ",q_avail:"รับได้",q_accept:"รับเควสต์",q_abandon:"ยกเลิก",q_pinMax:"แสดงได้สูงสุด 5 เควสต์",
- q_none:"ยังไม่มีเควสต์ที่แสดง เปิดเมนูเควสต์เพื่อเลือก",q_accepted:"รับเควสต์: {q}",q_doneT:"สำเร็จ: {q}",q_navStart:"เควสต์ออโต้: {q}",q_completed:"สำเร็จแล้ว: {n}",q_track:"แสดง",q_tracked:"กำลังแสดง",q_repeat:"ทำซ้ำได้",q_count:"แสดง {n}/5",
+ q_none:"ยังไม่มีเควสต์ที่แสดง เปิดเมนูเควสต์เพื่อเลือก",q_accepted:"รับเควสต์: {q}",q_doneT:"สำเร็จ: {q}",q_navStart:"เควสต์ออโต้: {q}",q_completed:"สำเร็จแล้ว: {n}",q_track:"แสดง",q_tracked:"กำลังแสดง",q_repeat:"รายวัน",q_count:"แสดง {n}/5",
  o_talk:"คุยกับ {n}",o_crystal:"แตะคริสตัลแกโดลิเนียม",o_kill:"ปราบ {m} ที่ {p} ({c}/{n})",o_killAny:"มอนสเตอร์",o_elite:"ปราบมอนสเตอร์ Elite ({c}/{n})",o_collect:"เก็บ {i} ({c}/{n})",o_reach:"เดินทางไป {p}",
  qs_gel:"น้ำมันตะเกียงเรืองแสง",qs_crawl:"กำจัดเจ้าตัวคลาน",qs_eye:"ดวงตาในยามสนธยา",qn_lumite:"ล่า: ลูไมต์",qn_nebulite:"ล่า: เนบิไลต์",qn_shard:"ล่า: ชาร์ดแบ็ค",qn_ore:"ส่งแร่แกโดลิเนียม",
  qs_gel_b:"สวยมาก! คืนนี้ทั้งร้านจะเรืองแสงเลย เอ้า ค่าจ้างของเจ้า",qs_crawl_b:"ทำได้ดี พวกตัวคลานจะไม่กล้ามาทำรังใกล้ถนนอีก",qs_eye_b:"ดวงตาน้ำแข็งพวกนั้นจ้องถนนมาหลายวันแล้ว ขอบใจนะนักผจญภัย",
@@ -2267,11 +2267,15 @@ D2.en.helper_i2="Rangers strike from up to 12 tiles. The farther the target, the
 D2.en.helper_i3="Spellcasters cast from 7 tiles. Spells never miss, and striking a monster's elemental weakness deals far more damage.";D2.th.helper_i3="Spellcaster ร่ายเวทจากระยะ 7 ช่อง เวทไม่มีวันพลาด และโจมตีธาตุที่ศัตรูแพ้จะแรงกว่ามาก";
 D2.en.helper_i4="Supporters heal and bless across 15 tiles. They hit softly, but almost never fall — and overhealing becomes a shield.";D2.th.helper_i4="Supporter ฮีลและบัฟได้ไกล 15 ช่อง ตีเบาแต่แทบไม่ล้ม และฮีลที่เกินจะกลายเป็นโล่";
 D2.en.helper_notyet="You can only choose once, so learn your craft first. Come back when you reach Job Lv 10 (you're Job Lv {j}).";D2.th.helper_notyet="เลือกได้ครั้งเดียวเท่านั้น ฝึกฝนให้ดีก่อน กลับมาเมื่อถึง Job Lv 10 นะ (ตอนนี้ Job Lv {j})";
-D2.en.helper_offer="You've reached Job Lv 10. Prove your strength: defeat 10 Elite monsters in the fields, then return and choose your Archetype.";D2.th.helper_offer="เจ้าถึง Job Lv 10 แล้ว พิสูจน์ฝีมือก่อน ไปปราบมอนสเตอร์ Elite ในทุ่ง 10 ตัว แล้วกลับมาเลือกอาร์คีไทป์ของเจ้า";
+D2.en.helper_offer="You've reached Job Lv 10. Prove your strength: defeat 1 Elite monster in any field, then return and choose your Archetype.";D2.th.helper_offer="เจ้าถึง Job Lv 10 แล้ว พิสูจน์ฝีมือก่อน ไปปราบมอนสเตอร์ Elite ในทุ่งไหนก็ได้ 1 ตัว แล้วกลับมาเลือกอาร์คีไทป์ของเจ้า";
 D2.en.helper_prog="The trial continues: {c}/{n} Elite monsters defeated. Elites wear a golden circle at their feet.";D2.th.helper_prog="การทดสอบยังไม่จบ: ปราบ Elite แล้ว {c}/{n} ตัว Elite จะมีวงเวทสีทองที่เท้า";
 D2.en.helper_turnin="Ten Elites… impressive. Now choose. This decision is permanent, so pick the path that feels like you.";D2.th.helper_turnin="Elite สิบตัว… น่าประทับใจ ถึงเวลาเลือกแล้ว การเลือกนี้เปลี่ยนไม่ได้ เลือกเส้นทางที่เป็นตัวเจ้าที่สุด";
 D2.en.helper_chosen="From today you walk the path of the {a}. Your Job Lv starts again at 1, and can now grow to 50.";D2.th.helper_chosen="นับจากวันนี้ เจ้าคือ {a} Job Lv จะเริ่มใหม่ที่ 1 และเพิ่มได้ถึง 50";
 D2.en.helper_done="Walk your path well, {a}. Your next step comes at Job Lv 50.";D2.th.helper_done="เดินบนเส้นทางของเจ้าให้ดีนะ {a} ก้าวต่อไปจะมาถึงที่ Job Lv 50";
+D2.en.q_today="Done today";D2.th.q_today="ทำแล้ววันนี้";
+D2.en.q_todayMsg="Already done today. Come back tomorrow.";D2.th.q_todayMsg="วันนี้ทำเควสต์นี้ไปแล้ว กลับมาใหม่พรุ่งนี้นะ";
+D2.en.lumi_end0="You made it all the way through Field 03 and back. I knew you had it in you.";D2.th.lumi_end0="เจ้าฝ่าไปจนถึงทุ่ง 03 แล้วกลับมาได้ ข้ารู้อยู่แล้วว่าเจ้าทำได้";
+D2.en.lumi_end1="Gadolinium is a little safer thanks to you. Take this, you have earned it.";D2.th.lumi_end1="แกโดลิเนียมปลอดภัยขึ้นเพราะเจ้า รับนี่ไปเถอะ เจ้าสมควรได้รับมัน";
 D2.en.qa_title="Archetype Trial";D2.th.qa_title="บททดสอบอาร์คีไทป์";
 D2.en.qt_job="Job";D2.th.qt_job="อาชีพ";
 D2.en.jobMaxC1="Job Lv 50 reached.";D2.th.jobMaxC1="Job Lv ถึง 50 แล้ว";
@@ -3255,16 +3259,17 @@ const mAtk=mo=>MON[mo.type].atk*(mo.elite?ELITE.atk:1),mDef=mo=>MON[mo.type].def
 
 /* ================= quests ================= */
 const QD={
- arch:{type:"job",giver:"helper",titleK:"qa_title",stages:[{t:"kill",elite:true,n:10},{t:"talk",npc:"helper",lines:["helper_turnin"],choose:true}],r:{b:500,y:30}},
+ arch:{type:"job",giver:"helper",titleK:"qa_title",stages:[{t:"kill",elite:true,n:1},{t:"talk",npc:"helper",lines:["helper_turnin"],choose:true}],r:{b:500,y:30}},
  main:{type:"main",titleK:"q_title",stages:[
    {t:"talk",npc:"lumi",lines:["lumi0","lumi1"],r:{b:40,j:20}},
    {t:"talk",npc:"bors",lines:["bors0","bors1"],give:{red:5},r:{b:60,j:30}},
    {t:"crystal",lines:["crys0","crys1","lumi3"],r:{b:180,j:80,y:20}},
-   {t:"kill",map:"field1",n:10,r:{b:200,j:100,y:30}},
+   {t:"kill",map:"field1",n:3,r:{b:200,j:100,y:30}},
    {t:"reach",map:"field2",r:{b:150,j:80}},
-   {t:"kill",elite:true,n:1,r:{b:400,j:200,y:50}},
+   {t:"kill",map:"field2",n:3,r:{b:400,j:200,y:50}},
    {t:"reach",map:"field3",r:{b:500,j:260}},
-   {t:"kill",mon:"gadolith",map:"field3",n:1,r:{b:3000,j:1800,y:100}}]},
+   {t:"kill",map:"field3",n:3,r:{b:800,j:450}},
+   {t:"talk",npc:"lumi",lines:["lumi_end0","lumi_end1"],r:{b:3000,j:1800,y:100}}]},
  qs_gel:{type:"side",titleK:"qs_gel",stages:[{t:"collect",item:"mat_gel",n:8,map:"field1",mon:"lumite",consume:true},{t:"talk",npc:"bors",lines:["qs_gel_b"]}],r:{b:150,j:90,sc:300}},
  qs_crawl:{type:"side",titleK:"qs_crawl",stages:[{t:"kill",mon:"crawlix",map:"field1",n:12},{t:"talk",npc:"veyra",lines:["qs_crawl_b"]}],r:{b:260,j:150,y:15}},
  qs_eye:{type:"side",titleK:"qs_eye",stages:[{t:"kill",mon:"cryoculus",map:"field2",n:6},{t:"talk",npc:"veyra",lines:["qs_eye_b"]}],r:{b:600,j:300,y:25}},
@@ -3273,6 +3278,9 @@ const QD={
  qn_shard:{type:"normal",rep:true,titleK:"qn_shard",stages:[{t:"kill",mon:"shardback",map:"field2",n:10}],r:{b:520,j:280,sc:380}},
  qn_ore:{type:"normal",rep:true,titleK:"qn_ore",stages:[{t:"collect",item:"mat_ore",n:3,map:"field1",consume:true}],r:{b:200,j:100,sc:500}}
 };
+/* repeatable quests can be finished once per day (local date) */
+const todayKey=()=>{const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()};
+const doneToday=id=>!!(QD[id]&&QD[id].rep&&S.q[id]&&S.q[id].day===todayKey());
 const QCOL={main:"#e9c46a",job:"#b98cff",side:"#5aa9ff",normal:"#3fc6a8"};
 /* qmap = group shown in the Quests window */
 QD.qs_gel.qmap="field1";QD.qs_crawl.qmap="field1";QD.qs_eye.qmap="field2";QD.qn_lumite.qmap="field1";QD.qn_nebulite.qmap="field2";QD.qn_shard.qmap="field2";QD.qn_ore.qmap="gen";
@@ -3282,8 +3290,8 @@ for(const k in MON){const d=MON[k];if(d.boss)continue;const id=k==="shardback"?"
   if(QD[id]){QD[id].r=huntReward(d,QD[id].stages[0].n);continue}   // older hand-written hunts use the same formula
   QD[id]={type:"normal",rep:true,qmap:d.map,titleK:"qn_"+k,stages:[{t:"kill",mon:k,map:d.map,n:15}],r:huntReward(d,15)}}
 /* Elite hunt per map + boss hunt */
-const ELQ={field1:{n:3,b:900,j:500,sc:700,y:5},field2:{n:3,b:2400,j:1400,sc:1500,y:8},field3:{n:3,b:5200,j:3000,sc:3000,y:12},geo:{n:3,b:9000,j:5600,sc:4800,y:16},ruins:{n:3,b:16000,j:10000,sc:8000,y:22}};
-for(const m in ELQ){const e=ELQ[m];QD["qe_"+m]={type:"normal",rep:true,qmap:m,titleK:"qe_"+m,stages:[{t:"kill",elite:true,map:m,n:e.n}],r:{b:e.b,j:e.j,sc:e.sc,y:e.y}}}
+const ELQ={field1:{n:3},field2:{n:3},field3:{n:3},geo:{n:3},ruins:{n:3}};   // every Elite hunt pays 1 Yttrium only
+for(const m in ELQ){const e=ELQ[m];QD["qe_"+m]={type:"normal",rep:true,qmap:m,titleK:"qe_"+m,stages:[{t:"kill",elite:true,map:m,n:e.n}],r:{y:1}}}
 QD.qb_gadolith={type:"normal",rep:true,qmap:"field3",titleK:"qb_gadolith",stages:[{t:"kill",mon:"gadolith",map:"field3",n:1}],r:{b:2500,j:1500,sc:2500,y:20}};
 
 /* ===== Item artwork (48x48 SVG). Every stackable item has its own drawing.
@@ -5008,7 +5016,7 @@ function completeStage(id){
   if(o.give)for(const k in o.give)S.inv[k]+=o.give[k];
   giveReward(o.r);q.st++;q.p=0;
   if(q.st>=d.stages.length){
-    giveReward(d.r);q.n=(q.n||0)+1;q.s=d.rep?"avail":"done";S.pins=S.pins.filter(x=>x!==id);
+    giveReward(d.r);q.n=(q.n||0)+1;q.s=d.rep?"avail":"done";if(d.rep)q.day=todayKey();S.pins=S.pins.filter(x=>x!==id);
     if(player.nav===id)player.nav=null;toast(fmt("q_doneT",{q:t(d.titleK)}),true);
   }else toast(t("questDone"),true);
   renderHotbar();renderQuest();if(winId==="quest")renderWin();save();
@@ -5026,9 +5034,9 @@ function questEvent(e){
   checkInstant();
   if(progressed)refreshQuestUI();
 }
-function acceptQuest(id){AUD.sfx("quest");const d=QD[id];S.q[id]={s:"active",st:0,p:0,n:(S.q[id]&&S.q[id].n)||0};
+function acceptQuest(id){if(doneToday(id)){toast(t("q_todayMsg"));return}AUD.sfx("quest");const d=QD[id];S.q[id]={s:"active",st:0,p:0,n:(S.q[id]&&S.q[id].n)||0,day:S.q[id]&&S.q[id].day};
   if(S.pins.length<5&&!S.pins.includes(id))S.pins.push(id);toast(fmt("q_accepted",{q:t(d.titleK)}));checkInstant();renderQuest();save()}
-function abandonQuest(id){if(id==="main")return;const n=(S.q[id]&&S.q[id].n)||0;S.q[id]={s:"avail",st:0,p:0,n};S.pins=S.pins.filter(x=>x!==id);if(player.nav===id)player.nav=null;renderQuest();save()}
+function abandonQuest(id){if(id==="main")return;const n=(S.q[id]&&S.q[id].n)||0;S.q[id]={s:"avail",st:0,p:0,n,day:S.q[id]&&S.q[id].day};S.pins=S.pins.filter(x=>x!==id);if(player.nav===id)player.nav=null;renderQuest();save()}
 function togglePin(id){if(S.pins.includes(id))S.pins=S.pins.filter(x=>x!==id);else{if(S.pins.length>=5){toast(t("q_pinMax"));return}S.pins.push(id)}renderQuest();save()}
 function startNav(id){if(player.dead||!curObj(id))return;player.nav=id;player.target=null;player.path=[];navT=0;hideHint();toast(fmt("q_navStart",{q:t(QD[id].titleK)}));renderQuest()}
 const monMatch=(mo,o)=>!mo.dead&&mo.dieT<=0&&(!o.mon||mo.type===o.mon)&&(!o.elite||mo.elite);
@@ -5827,7 +5835,7 @@ const WIN={
     const done=ids.reduce((a,id)=>a+((S.q[id]&&S.q[id].n)||0),0);
     const row=(id,on)=>{const d=QD[id],pin=S.pins.includes(id),lv=(d.type==="main"||d.type==="job")?0:qlv(id);
       return `<div class="row qrow" style="--qc:${QCOL[d.type]}"><span class="qbar"></span><div class="grow"><b>${t(d.titleK)}</b> <small style="display:inline;color:${QCOL[d.type]}">${t("qt_"+d.type)}${d.rep?" · "+t("q_repeat"):""}${lv?" · Lv "+lv:""}</small><small>${on?objText(id):fmtObjPreview(id)}</small></div>
-      ${on?`<button class="btn sm ${pin?"pri":""}" data-act="pin" data-q="${id}">${t(pin?"q_tracked":"q_track")}</button><button class="btn sm" data-act="auto" data-q="${id}">${t("q_auto")}</button>${id!=="main"?`<button class="btn sm" data-act="abandon" data-q="${id}">×</button>`:""}`:`<button class="btn sm pri" data-act="accept" data-q="${id}">${t("q_accept")}</button>`}</div>`};
+      ${on?`<button class="btn sm ${pin?"pri":""}" data-act="pin" data-q="${id}">${t(pin?"q_tracked":"q_track")}</button><button class="btn sm" data-act="auto" data-q="${id}">${t("q_auto")}</button>${id!=="main"?`<button class="btn sm" data-act="abandon" data-q="${id}">×</button>`:""}`:doneToday(id)?`<span class="qs done">${t("q_today")}</span>`:`<button class="btn sm pri" data-act="accept" data-q="${id}">${t("q_accept")}</button>`}</div>`};
     const grp={};for(const id of av){const k=QD[id].qmap||"gen";(grp[k]=grp[k]||[]).push(id)}
     const groups=["field1","field2","field3","geo","ruins","gen"].filter(k=>grp[k]).map(k=>`<div class="w-sec sub">${k==="gen"?t("q_general"):t(MAPS[k].nameK)}${k!=="gen"&&MAPS[k].rec?` <span class="muted">· ${fmt("rec",{n:num(MAPS[k].rec)})}</span>`:""}</div><div class="rows">${grp[k].sort((a,b)=>qlv(a)-qlv(b)).map(id=>row(id,false)).join("")}</div>`).join("");
     return `<div class="w-sec">${t("q_active")} <span class="muted">· ${fmt("q_count",{n:S.pins.filter(id=>S.q[id]&&S.q[id].s==="active").length})}</span></div><div class="rows">${act.map(id=>row(id,true)).join("")||`<p class="muted">—</p>`}</div>
@@ -5995,8 +6003,8 @@ WIN.mapinfo=()=>{
   }else{
     const ids=Object.keys(QD).filter(q=>QD[q].qmap===id||(id==="town"&&QD[q].type==="main"));
     body=ids.length?`<div class="rows">${ids.map(q=>{const d=QD[q],st=S.q[q];
-      const act=st&&st.s==="active",done=st&&st.s==="done";
-      return `<div class="row qrow" style="--qc:${QCOL[d.type]}"><span class="qbar"></span><div class="grow"><b>${t(d.titleK)}</b> <small style="display:inline;color:${QCOL[d.type]}">${t("qt_"+d.type)}${d.rep?" · "+t("q_repeat"):""}</small><small>${act?objText(q):done?t("mi_q_done"):fmtObjPreview(q)}</small></div>${act||done?`<span class="qs ${done?"done":"act"}">${t(done?"mi_q_done":"mi_q_act")}</span>`:`<button class="btn sm pri" data-act="accept" data-q="${q}">${t("q_accept")}</button>`}</div>`}).join("")}</div>`:`<p class="muted">${t("mi_none_q")}</p>`;
+      const act=st&&st.s==="active",done=st&&st.s==="done"||doneToday(q);
+      return `<div class="row qrow" style="--qc:${QCOL[d.type]}"><span class="qbar"></span><div class="grow"><b>${t(d.titleK)}</b> <small style="display:inline;color:${QCOL[d.type]}">${t("qt_"+d.type)}${d.rep?" · "+t("q_repeat"):""}</small><small>${act?objText(q):done?t(d.rep?"q_today":"mi_q_done"):fmtObjPreview(q)}</small></div>${act||done?`<span class="qs ${done?"done":"act"}">${t(done?(d.rep?"q_today":"mi_q_done"):"mi_q_act")}</span>`:`<button class="btn sm pri" data-act="accept" data-q="${q}">${t("q_accept")}</button>`}</div>`}).join("")}</div>`:`<p class="muted">${t("mi_none_q")}</p>`;
   }
   return head+tabs+`<div class="mi-body">${body}</div>`+foot;
 };
@@ -6444,7 +6452,8 @@ try{if(saved){
   S.inv=Object.assign({red:0,blue:0,wing:0,apple:0,mat_gel:0,mat_shell:0,mat_lens:0,mat_ore:0,mat_gel2:0,mat_amber:0,mat_frost:0,mat_core:0,mat_gel3:0,mat_rime:0,mat_mag:0,mat_gheart:0},gs.inv);
   if(!S.q||typeof S.q!=="object"||!S.q.main)S.q={main:{s:"active",st:0,p:0,n:0}};
   for(const id of Object.keys(S.q)){const q=S.q[id],d=QD[id];if(!d||!q||typeof q!=="object"){delete S.q[id];continue}
-    q.st=Math.max(0,q.st|0);q.p=Math.max(0,q.p|0);q.n=Math.max(0,q.n|0);if(q.s==="active"&&q.st>=d.stages.length)q.s=d.rep?"avail":"done"}
+    q.st=Math.max(0,q.st|0);q.p=Math.max(0,q.p|0);q.n=Math.max(0,q.n|0);if(q.s==="active"&&q.st>=d.stages.length)q.s=d.rep?"avail":"done";
+    {const o=q.s==="active"&&d.stages[q.st];if(o&&o.t==="kill"&&q.p>=o.n)q.p=o.n-1}}
   S.pins=(Array.isArray(S.pins)?S.pins:["main"]).filter(id=>QD[id]&&S.q[id]).slice(0,5);
   if(S.q.main.s==="done"&&S.q.main.st<QD.main.stages.length){S.q.main.s="active";if(!S.pins.includes("main")&&S.pins.length<5)S.pins.unshift("main")}
   if(!REOC.ARCH[S.arch])S.arch="beginner";

@@ -92,7 +92,7 @@ supporter: tbd_4_1 … tbd_4_4
 |---|---|
 | 1 | Every new character is a **Beginner (C0)**, Job Lv cap 10. |
 | 2 | Talk to **Archetype Helper Sera** in Gadolinium plaza (tile 28, 27). She explains the 4 archetypes. Before Job Lv 10 she only teaches and says to come back. |
-| 3 | At **Job Lv 10** she offers the quest **Archetype Trial**: defeat **10 Elite monsters** in any field. The quest is only given by her (it never appears in the Quests window list). |
+| 3 | At **Job Lv 10** she offers the quest **Archetype Trial**: defeat **1 Elite monster** in any field. The quest is only given by her (it never appears in the Quests window list). |
 | 4 | Return to her. A choice window shows the 4 archetypes; the player picks **exactly one** (Choose → Confirm). |
 | 5 | The character becomes that archetype (**C1**). **Job Lv resets to 1** with a new cap of **50**. Reward: 500 Base EXP, 30 Yttrium. |
 | 6 | The choice is **permanent**. Talking to her again only gives encouragement. |
