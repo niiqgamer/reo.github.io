@@ -18,7 +18,7 @@ First hunting map, reached through the **east gate portal** of Gadolinium.
 
 ## 2. Map
 
-98 × 98 tiles (the original 49 × 49 layout scaled 2×; props keep their size, 3× monsters, 2 Elites per kind), alien meadow (teal grass, glowing flowers), winding dirt paths, two glowing pools, giant mushrooms, crystal clusters, mossy rocks, teal-canopy forest edge.
+98 × 98 tiles (the original 49 × 49 layout scaled 2×; props keep their size, 3× monsters, 2 Elites per kind; portals sit 2 tiles from the map edge), alien meadow (teal grass, glowing flowers), winding dirt paths, two glowing pools, giant mushrooms, crystal clusters, mossy rocks, teal-canopy forest edge.
 
 ## 3. Monsters (passive — they never attack first)
 

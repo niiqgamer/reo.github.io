@@ -2894,9 +2894,9 @@ const AUD=(()=>{
 
 /* ================= world basics ================= */
 const TW=64,TH=32,HW=32,HH=16,N0=49;
-/* v20: every map has its own grid size. Fields are 2× the old 49×49 (98×98); Gadolinium is 3× (147×147).
+/* v20: every map has its own grid size. Every map, Gadolinium included, is 2× the old 49×49 (98×98).
    N always holds the size of the CURRENT map; code that works on another map uses m.N. */
-const MAPK={town:3,field1:2,field2:2,field3:2,geo:2,ruins:2};
+const MAPK={town:2,field1:2,field2:2,field3:2,geo:2,ruins:2};
 let N=N0*MAPK.town;
 /* Lite mode: phones and low-memory devices get a smaller ground texture and keep only one map in memory */
 const LITE=(()=>{try{const sm=Math.min(screen.width||9999,screen.height||9999)<=820;return matchMedia("(pointer:coarse)").matches||sm||(navigator.deviceMemory&&navigator.deviceMemory<=4)}catch(e){return true}})();
@@ -2908,8 +2908,8 @@ const T_G=0,T_R=1,T_P=2,T_W=3,T_D=4,T_F=5,T_C=6;   // T_C = chasm (blocked fault
 const I=(x,y)=>y*N+x, inb=(x,y)=>x>=0&&y>=0&&x<N&&y<N;
 function hash(x,y){let h=(x*374761393+y*668265263)|0;h=Math.imul(h^(h>>>13),1274126177);h^=h>>>16;return (h>>>0)/4294967296}
 function P(x,y,z=0){return [(x-y)*HW,(x+y)*HH-z]}
-/* Gadolinium layout (147×147): center, main road half-width, plaza radius, crystal monument */
-const TC=73.5,ROAD_HW=2.6,PLAZA_R=15.5,CRY=[73.5,73.5],CRY_R=4.4,TOWN_SPAWN=[79.5,79.5];
+/* Gadolinium layout (98×98): center, main road half-width, plaza radius, crystal monument */
+const TC=49,ROAD_HW=2.1,PLAZA_R=11.5,CRY=[49,49],CRY_R=4.4,TOWN_SPAWN=[54.5,54.5];
 const isRoadBand=(x,y)=>Math.abs(x+.5-TC)<ROAD_HW||Math.abs(y+.5-TC)<ROAD_HW;
 function shade(hex,f){const n=parseInt(hex.slice(1),16);let r=n>>16,gg=n>>8&255,b=n&255;if(f<0){r*=1+f;gg*=1+f;b*=1+f}else{r+=(255-r)*f;gg+=(255-gg)*f;b+=(255-b)*f}return `rgb(${r|0},${gg|0},${b|0})`}
 function newMap(id){const K=MAPK[id]||1,n=N0*K;return {id,K,N:n,map:new Uint8Array(n*n),blk:new Uint8Array(n*n),statics:[],B:[],portals:[],pools:[],npcs:[],wanderers:[],monsters:[]}}
@@ -2918,10 +2918,10 @@ const inEll=(x,y,e)=>((x-e[0])/e[2])**2+((y-e[1])/e[3])**2<=1;
 
 /* ================= town ================= */
 const HOUSE_ROOFS=["#d0409a","#2aa8c8","#8ad030","#8a50e0","#20c0a0","#e08a30"];
-const TOWN_GATES=[[144,73],[2,73],[73,144]];   // east (Field 01), west (Path to the Geosyncline), south (Road to the Ruins)
+const TOWN_GATES=[[95,49],[2,49],[49,95]];   // east (Field 01), west (Path to the Geosyncline), south (Road to the Ruins)
 function buildTown(){
   const m=newMap("town");Object.assign(m,{nameK:"mapName",subK:"mapSub",bg:["#1a1040","#070418"]});
-  const {map,blk}=m,N=m.N,I=(x,y)=>y*N+x,inb=(x,y)=>x>=0&&y>=0&&x<N&&y<N;m.pools=[[111,36,8.4,6],[30,120,5.6,4]];
+  const {map,blk}=m,N=m.N,I=(x,y)=>y*N+x,inb=(x,y)=>x>=0&&y>=0&&x<N&&y<N;m.pools=[[74,24,6.7,4.8],[20,82,4,3]];
   for(let y=0;y<N;y++)for(let x=0;x<N;x++){
     let tp=T_G;
     if(hash(x>>2,(y>>2)+17)<.2&&hash(x,y)<.55)tp=T_F;
@@ -2931,12 +2931,12 @@ function buildTown(){
     map[I(x,y)]=tp;
     if(x===0||y===0||x===N-1||y===N-1)blk[I(x,y)]=1;
   }
-  const HOUSES=[[108,57],[27,57],[81,21],[111,105],[24,102],[54,120],[126,51],[54,24],[15,78],[129,96],[96,126],[123,120],[60,102]];
+  const HOUSES=[[72,38],[18,38],[54,14],[74,70],[16,68],[36,80],[36,16],[86,64],[62,84],[12,52]];
   m.B=[
-   {id:"guild",x:39,y:39,w:5,h:4,H:76,wall:"#cdc6ee",trim:"#2c2250",roof:"#5a3fc0",label:"b_guild",flag:true},
-   {id:"tool",x:87,y:45,w:3,h:3,H:52,wall:"#c8f0e8",trim:"#1c4a58",roof:"#18a8b0",label:"b_tool"},
-   {id:"inn",x:90,y:87,w:4,h:4,H:68,wall:"#eed0f2",trim:"#44225a",roof:"#c03ad0",label:"b_inn"},
-   {id:"smith",x:45,y:87,w:4,h:3,H:54,wall:"#b8b0d0",trim:"#2a2048",roof:"#e0508a",label:"b_smith",chimney:true},
+   {id:"guild",x:26,y:26,w:5,h:4,H:76,wall:"#cdc6ee",trim:"#2c2250",roof:"#5a3fc0",label:"b_guild",flag:true},
+   {id:"tool",x:58,y:30,w:3,h:3,H:52,wall:"#c8f0e8",trim:"#1c4a58",roof:"#18a8b0",label:"b_tool"},
+   {id:"inn",x:60,y:58,w:4,h:4,H:68,wall:"#eed0f2",trim:"#44225a",roof:"#c03ad0",label:"b_inn"},
+   {id:"smith",x:30,y:58,w:4,h:3,H:54,wall:"#b8b0d0",trim:"#2a2048",roof:"#e0508a",label:"b_smith",chimney:true},
    ...HOUSES.map(([x,y],i)=>({id:"h"+i,x,y,w:3,h:3,H:46,wall:["#e4dcf6","#d8f2ee","#f0e0f4"][i%3],trim:"#34224f",roof:HOUSE_ROOFS[i%HOUSE_ROOFS.length]}))
   ];
   for(const b of m.B){
@@ -2949,27 +2949,27 @@ function buildTown(){
   for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(Math.hypot(x+.5-CRY[0],y+.5-CRY[1])<CRY_R)blk[I(x,y)]=1;
   addS(m,{kind:"crystal",cx:CRY[0],cy:CRY[1],k:CRY[0]+CRY[1]+.5,cull:520});
   const prop=(k,x,y)=>{if(!inb(x,y)||blk[I(x,y)])return;blk[I(x,y)]=1;addS(m,{kind:k,x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x,y)})};
-  for(const [k,x,y] of [["barrel",49,88],["barrel",49,89],["crate",90,47],["crate",90,46],["barrel",94,89],["crate",44,43],["barrel",113,108],["crate",30,60]])prop(k,x,y);
+  for(const [k,x,y] of [["barrel",34,58],["barrel",34,59],["crate",61,31],["crate",61,32],["barrel",64,60],["crate",31,30],["barrel",77,73],["crate",21,42]])prop(k,x,y);
   /* market ring: stalls around the plaza, between the four roads */
-  for(let i=0;i<8;i++){const a=(i+.5)*Math.PI/4;prop("stall",Math.floor(TC+Math.cos(a)*18.5),Math.floor(TC+Math.sin(a)*18.5))}
+  for(let i=0;i<8;i++){const a=(i+.5)*Math.PI/4;prop("stall",Math.floor(TC+Math.cos(a)*14.5),Math.floor(TC+Math.sin(a)*14.5))}
   const lampOK=(x,y)=>{if(!inb(x,y)||blk[I(x,y)])return false;const tp=map[I(x,y)];return tp===T_G||tp===T_F};
-  for(let i=4;i<N-4;i+=6)for(const [x,y] of [[i,70],[i,76],[70,i],[76,i]]){
+  for(let i=4;i<N-4;i+=5)for(const [x,y] of [[i,46],[i,51],[46,i],[51,i]]){
     if(!lampOK(x,y))continue;blk[I(x,y)]=1;addS(m,{kind:"lamp",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x,y)});
   }
-  for(let i=0;i<16;i++){const a=(i+.5)*Math.PI/8,x=Math.floor(TC+Math.cos(a)*(PLAZA_R+1.2)),y=Math.floor(TC+Math.sin(a)*(PLAZA_R+1.2));
+  for(let i=0;i<12;i++){const a=(i+.5)*Math.PI/6,x=Math.floor(TC+Math.cos(a)*(PLAZA_R+1.2)),y=Math.floor(TC+Math.sin(a)*(PLAZA_R+1.2));
     if(lampOK(x,y)&&!isRoadBand(x,y)){blk[I(x,y)]=1;addS(m,{kind:"lamp",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x,y)})}}
   {const used=[],near=(x,y,d)=>used.some(q=>Math.hypot(q[0]-x,q[1]-y)<d);
-    const okT=(x,y)=>{const tp=map[I(x,y)];return inb(x,y)&&(tp===T_G||tp===T_F)&&!blk[I(x,y)]&&Math.hypot(x+.5-TC,y+.5-TC)>PLAZA_R+5&&TOWN_GATES.every(q=>Math.hypot(x-q[0],y-q[1])>5)&&x>2&&y>2&&x<N-3&&y<N-3};
+    const okT=(x,y)=>{const tp=map[I(x,y)];return inb(x,y)&&(tp===T_G||tp===T_F)&&!blk[I(x,y)]&&Math.hypot(x+.5-TC,y+.5-TC)>PLAZA_R+4&&TOWN_GATES.every(q=>Math.hypot(x-q[0],y-q[1])>5)&&x>2&&y>2&&x<N-3&&y<N-3};
     const put=(kind,x,y,s)=>{blk[I(x,y)]=1;used.push([x,y]);addS(m,{kind,x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x*3,y*7),s});};
-    for(let i=0;i<8;i++){const a=i*Math.PI/4+.4;let x=Math.round(TC+Math.cos(a)*23),y=Math.round(TC+Math.sin(a)*23);if(okT(x,y)&&!near(x,y,3))put("mono",x,y,1.05)}
+    for(let i=0;i<8;i++){const a=i*Math.PI/4+.4;let x=Math.round(TC+Math.cos(a)*18),y=Math.round(TC+Math.sin(a)*18);if(okT(x,y)&&!near(x,y,3))put("mono",x,y,1.05)}
     const kinds=[["eye",.0042,1.05],["pod",.0075,1],["tent",.0055,1],["float",.0042,1.05]];
     for(let y=3;y<N-3;y++)for(let x=3;x<N-3;x++){if(!okT(x,y))continue;const r=hash(x*13+5,y*17+3);let acc=0;for(const [k,p,s] of kinds){acc+=p;if(r<acc){if(!near(x,y,3.2))put(k,x,y,s*(.9+hash(x,y)*.25));break}}}}
-  const pt={x:144,y:73,to:"field1",labelK:"field1_name"};m.portals.push(pt);addS(m,{kind:"portal",p:pt,cx:144.5,cy:73.5,k:218});
+  const pt={x:95,y:49,to:"field1",labelK:"field1_name"};m.portals.push(pt);addS(m,{kind:"portal",p:pt,cx:95.5,cy:49.5,k:145});
   /* v19: west gate -> Path to the Geosyncline (Lv 25+, CP 2,000+), south gate -> Road to the Ruins (Lv 30+, CP 3,000+); each has a warning sign */
-  const pw={x:2,y:73,to:"geo",labelK:"geo_name"},ps={x:73,y:144,to:"ruins",labelK:"ruins_name"};
-  m.portals.push(pw);addS(m,{kind:"portal",p:pw,cx:2.5,cy:73.5,k:76});
-  m.portals.push(ps);addS(m,{kind:"portal",p:ps,cx:73.5,cy:144.5,k:218});
-  for(const [x,y,lv] of [[4,69,25],[69,142,30]])if(!blk[I(x,y)]){blk[I(x,y)]=1;addS(m,{kind:"warnsign",x,y,cx:x+.5,cy:y+.5,k:x+y+1,lv})}
+  const pw={x:2,y:49,to:"geo",labelK:"geo_name"},ps={x:49,y:95,to:"ruins",labelK:"ruins_name"};
+  m.portals.push(pw);addS(m,{kind:"portal",p:pw,cx:2.5,cy:49.5,k:52});
+  m.portals.push(ps);addS(m,{kind:"portal",p:ps,cx:49.5,cy:95.5,k:145});
+  for(const [x,y,lv] of [[4,45,25],[45,93,30]])if(!blk[I(x,y)]){blk[I(x,y)]=1;addS(m,{kind:"warnsign",x,y,cx:x+.5,cy:y+.5,k:x+y+1,lv})}
   plantTrees(m,(x,y,border,r)=>{
     if(TOWN_GATES.some(q=>Math.hypot(x-q[0],y-q[1])<4))return null;
     if(r<(border?.62:.05)){const hv=hash(y*7,x*11);return hv<.14?{kind:"shroom",v:hash(x,y*5),alt:hv<.07?2:0}:{kind:"tree",v:hv<.45?4:hv<.78?5:hv<.92?3:0}}
@@ -3049,7 +3049,12 @@ function buildField(id){
     map[I(x,y)]=tp;
     if(x===0||y===0||x===N-1||y===N-1)blk[I(x,y)]=1;
   }
-  for(const q of c.portals){const p=Object.assign({},q,{x:S(q.x),y:S(q.y)});map[I(p.x,p.y)]=T_D;blk[I(p.x,p.y)]=0;m.portals.push(p);addS(m,{kind:"portal",p,cx:p.x+.5,cy:p.y+.5,k:p.x+p.y+1})}
+  /* portals sit 2 tiles from the map edge (like the town gates); the path is carved out to reach them */
+  const E=v=>v<=2?2:v>=N0-3?N-3:S(v);
+  for(const q of c.portals){const p=Object.assign({},q,{x:E(q.x),y:E(q.y)});
+    const ix=p.x===2?1:p.x===N-3?-1:0,iy=p.y===2?1:p.y===N-3?-1:0;
+    for(let k=0,x=p.x,y=p.y;k<2*K+4;k++,x+=ix,y+=iy){if(k>0&&map[I(x,y)]===T_D)break;for(const o of [0,1])if(ix?y+o<N-1:x+o<N-1){const xx=ix?x:x+o,yy=ix?y+o:y;map[I(xx,yy)]=T_D;blk[I(xx,yy)]=0}}
+    m.portals.push(p);addS(m,{kind:"portal",p,cx:p.x+.5,cy:p.y+.5,k:p.x+p.y+1})}
   plantTrees(m,(x,y,border,r)=>{
     if(m.portals.some(p=>Math.hypot(x-p.x,y-p.y)<6))return null;
     if(m.arena&&Math.hypot(x+.5-m.arena[0],y+.5-m.arena[1])<m.arena[2]+2)return null;
@@ -3114,13 +3119,13 @@ const PAL={
 function mk(o){return Object.assign({x:0,y:0,path:[],speed:3,moving:false,phase:0,dir:1,back:false,seed:Math.random()*9,bubble:null,onArrive:null,wait:0},o)}
 const player=mk({x:TOWN_SPAWN[0],y:TOWN_SPAWN[1],name:(AUTH.session&&AUTH.session.charName)||"Arin",pal:PAL.player,speed:3.6,me:true,target:null,atkCd:0,chaseT:0,lunge:0,combatT:99,manualT:0,dead:false,guardT:0});
 town.npcs=[
- mk({id:"lumi",x:80.5,y:68.5,nameK:"n_lumi",pal:PAL.lumi,dir:-1,npc:true}),
- mk({id:"bors",x:90.5,y:51.5,nameK:"n_bors",pal:PAL.bors,dir:-1,npc:true}),
- mk({id:"veyra",x:52.5,y:91.5,nameK:"n_veyra",pal:PAL.veyra,dir:1,npc:true}),
- mk({id:"helper",x:86.5,y:92.5,nameK:"n_helper",pal:PAL.helper,dir:-1,npc:true})
+ mk({id:"lumi",x:55.5,y:43.5,nameK:"n_lumi",pal:PAL.lumi,dir:-1,npc:true}),
+ mk({id:"bors",x:61.5,y:36.5,nameK:"n_bors",pal:PAL.bors,dir:-1,npc:true}),
+ mk({id:"veyra",x:37.5,y:62.5,nameK:"n_veyra",pal:PAL.veyra,dir:1,npc:true}),
+ mk({id:"helper",x:57.5,y:63.5,nameK:"n_helper",pal:PAL.helper,dir:-1,npc:true})
 ];
 const WH=["#f4d27a","#3a2a2a","#7ab8ff","#ff8a5b","#c9a0ff","#9fe0c8","#e8e8e8"],WO=["#c74a5a","#3e7d5a","#5a5ab8","#d08a2a","#2f6f8f","#8a4ab0","#4a4a5a"];
-const townSpot=()=>[Math.floor(TC-22+Math.random()*44),Math.floor(TC-22+Math.random()*44)];   // somewhere around the plaza
+const townSpot=()=>[Math.floor(TC-16+Math.random()*32),Math.floor(TC-16+Math.random()*32)];   // somewhere around the plaza
 town.wanderers=["Mintra","Kaito","Pim_Ch","Rowan","สายลม","Nova","ข้าวหอม","Lyra","ฟ้าใส","Bram","Zed_X","มะปราง"].map((n,i)=>{
   const hc=WH[i%7],oc=WO[(i*3)%7];let x,y,gd=0;do{[x,y]=townSpot()}while(!walkM(town,x,y)&&gd++<200);
   return mk({x:x+.5,y:y+.5,name:n,lv:3+Math.floor(Math.random()*40),speed:2.4+Math.random()*.8,wait:Math.random()*4,
@@ -3194,7 +3199,7 @@ function staticBox(o){
   if(o.kind==="bld"){const b=o.b,Z=b.H+20+Math.min(b.w,b.h)*7.5+(b.flag?50:14);return [(b.x-(b.y+b.h))*HW-6,(b.x+b.y)*HH-Z,(b.x+b.w-b.y)*HW+6,(b.x+b.w+b.y+b.h)*HH+8]}
   const [sx,sy]=P(o.cx,o.cy),s=o.s||1;
   switch(o.kind){case "tree":return [sx-30*s,sy-92*s,sx+30*s,sy+4];case "lamp":return [sx-9,sy-70,sx+9,sy+2];case "stall":return [sx-38,sy-52,sx+38,sy+14];
-    case "barrel":case "crate":return [sx-17,sy-32,sx+17,sy+6];case "crystal":return [sx-200,sy-420,sx+200,sy+100];case "eye":return [sx-20,sy-74,sx+20,sy+4];
+    case "barrel":case "crate":return [sx-17,sy-32,sx+17,sy+6];case "crystal":return [sx-200,sy-340,sx+200,sy+100];case "eye":return [sx-20,sy-74,sx+20,sy+4];
     case "pod":return [sx-16,sy-56,sx+16,sy+4];case "tent":return [sx-26,sy-62,sx+26,sy+4];case "mono":return [sx-24,sy-84,sx+24,sy+8];case "float":return [sx-34,sy-96,sx+34,sy+8];case "shroom":return [sx-30,sy-70,sx+30,sy+6]}
   return null;
 }
@@ -3210,7 +3215,7 @@ function placeTownNpcs(){
     for(let dy=-9;dy<=9;dy++)for(let dx=-9;dx<=9;dx++){
       const ix=Math.floor(ax)+dx,iy=Math.floor(ay)+dy,x=ix+.5,y=iy+.5;
       if(!walkM(town,ix,iy))continue;const tp=town.map[iy*town.N+ix];if(tp!==T_R&&tp!==T_P)continue;
-      if(Math.hypot(x-CRY[0],y-CRY[1])<CRY_R+1.6||Math.hypot(x-144,y-73)<6)continue;
+      if(Math.hypot(x-CRY[0],y-CRY[1])<CRY_R+1.6||Math.hypot(x-TOWN_GATES[0][0],y-TOWN_GATES[0][1])<6)continue;
       if(taken.some(q=>Math.hypot(q[0]-x,q[1]-y)<4.5))continue;
       if(npcBlocked(x,y))continue;
       let nb=0;for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++)if(!walkM(town,ix+i,iy+j))nb++;
@@ -4468,7 +4473,7 @@ function drawCrystal(){
   const CL=[[-1.3,-.5,54,12],[.9,-1.2,46,11],[-1.55,.55,34,9],[1.45,.35,40,10],[.3,1.4,28,9],[-.3,-1.6,38,9],[1.1,1.05,24,8],[-1,1.2,22,7]].sort((a,b)=>(a[0]+a[1])-(b[0]+b[1]));
   for(const c of CL)if(c[0]+c[1]<0)cl(c[0],c[1],c[2],c[3],"#f4f0ff","#7c64dc");
   /* main crystal */
-  const bob=Math.sin(T*1.6)*8,X=cx,Y=cy-66-150+bob,HT=158,HB=100,WD=54;
+  const bob=Math.sin(T*1.6)*8,X=cx,Y=cy-66-110+bob,HT=101;
   L(()=>{const bg=g.createLinearGradient(0,Y-HT-260,0,Y);bg.addColorStop(0,"rgba(180,160,255,0)");bg.addColorStop(.7,`rgba(180,160,255,${.12+beat*.1})`);bg.addColorStop(1,`rgba(220,210,255,${.28+beat*.12})`);
     g.fillStyle=bg;g.beginPath();g.moveTo(X-26,Y);g.lineTo(X-10,Y-HT-260);g.lineTo(X+10,Y-HT-260);g.lineTo(X+26,Y);g.closePath();g.fill();
     let rg=g.createRadialGradient(X,Y,0,X,Y,190);rg.addColorStop(0,`rgba(170,150,255,${.42+pulse*.15})`);rg.addColorStop(1,"rgba(170,150,255,0)");g.fillStyle=rg;g.fillRect(X-190,Y-190,380,380)});
@@ -4478,16 +4483,13 @@ function drawCrystal(){
   const shardO=front=>{for(let i=0;i<6;i++){const a=T*.9+i*TAU/6,sn=Math.sin(a);if((sn>0)!==front)continue;const sx=X+Math.cos(a)*112,sy=Y+22+sn*30+Math.sin(T*2+i)*5,s=.85+(sn+1)*.3;
     fillPoly([[sx,sy-13*s],[sx+6*s,sy],[sx,sy+13*s],[sx-6*s,sy]],i%2?"#d8ceff":"#bff4ff","rgba(255,255,255,.85)",.8)}};
   shardO(false);
-  const top=[X,Y-HT],bot=[X,Y+HB],l1=[X-WD,Y-18],l2=[X-WD*.55,Y+10],m1=[X-6,Y-14],m2=[X+4,Y+12],r1=[X+WD,Y-16],r2=[X+WD*.6,Y+12];
-  let gr=g.createLinearGradient(X-WD,Y-HT,X,Y);gr.addColorStop(0,"#ffffff");gr.addColorStop(1,"#c4b6ff");fillPoly([top,l1,m1],gr);
-  gr=g.createLinearGradient(X,Y-HT,X+WD,Y);gr.addColorStop(0,"#b6a6ff");gr.addColorStop(1,"#7a64e0");fillPoly([top,m1,r1],gr);
-  fillPoly([l1,l2,m2,m1],"#9884ee");fillPoly([m1,m2,r2,r1],"#5f48c4");
-  gr=g.createLinearGradient(0,Y,0,Y+HB);gr.addColorStop(0,"#7c64dc");gr.addColorStop(1,"#3e2a96");fillPoly([l2,bot,m2],gr);fillPoly([m2,bot,r2],"#33228a");
-  fillPoly([top,l1,l2,bot,r2,r1],null,"rgba(255,255,255,.8)",1.6);
-  g.strokeStyle="rgba(255,255,255,.55)";g.lineWidth=1.1;line(top,m1);line(m1,m2);line(m2,bot);line(l1,m1);line(m1,r1);line(l2,m2);line(m2,r2);
-  L(()=>{const cg=g.createRadialGradient(X-4,Y-8,0,X-4,Y-8,44+beat*12);cg.addColorStop(0,`rgba(255,255,255,${.7+beat*.2})`);cg.addColorStop(.4,"rgba(200,180,255,.5)");cg.addColorStop(1,"rgba(120,90,255,0)");g.fillStyle=cg;g.fillRect(X-60,Y-70,112,120);
-    const sp=(T*.5)%1;g.fillStyle=`rgba(255,255,255,${.7*Math.sin(sp*Math.PI)})`;g.beginPath();g.moveTo(X-WD*.7+sp*WD*.9,Y-30-sp*50);g.lineTo(X-WD*.6+sp*WD*.9,Y-38-sp*50);g.lineTo(X-WD*.45+sp*WD*.9,Y-8-sp*50);g.lineTo(X-WD*.55+sp*WD*.9,Y-2-sp*50);g.fill()});
-  g.strokeStyle="rgba(255,255,255,.85)";g.lineWidth=1.6;line([X-19,Y-94],[X-8,Y-46]);
+  /* the original Gadolinium Crystal shape (smooth four-face gem), scaled up */
+  const Q=2.8,top=[X,Y-36*Q],rt=[X+16*Q,Y-4*Q],bt=[X,Y+28*Q],lt=[X-16*Q,Y-4*Q],fr=[X+3*Q,Y-1*Q];
+  let gr=g.createLinearGradient(X-16*Q,Y-36*Q,X+4*Q,Y);gr.addColorStop(0,"#ffffff");gr.addColorStop(1,"#bfb0ff");fillPoly([top,lt,fr],gr);
+  fillPoly([top,fr,rt],"#9884ee");fillPoly([lt,bt,fr],"#7c64dc");fillPoly([fr,bt,rt],"#5640b4");
+  fillPoly([top,rt,bt,lt],null,"rgba(255,255,255,.7)",2);
+  L(()=>{const cg=g.createRadialGradient(X,Y-4,0,X,Y-4,40+beat*12);cg.addColorStop(0,`rgba(255,255,255,${.35+beat*.2})`);cg.addColorStop(1,"rgba(150,120,255,0)");g.fillStyle=cg;g.fillRect(X-56,Y-60,112,112)});
+  g.strokeStyle="rgba(255,255,255,.75)";g.lineWidth=2;line([X-6*Q,Y-20*Q],[X-2*Q,Y-8*Q]);
   rings(false);shardO(true);
   for(const c of CL)if(c[0]+c[1]>=0)cl(c[0],c[1],c[2],c[3],"#f4f0ff","#6a52d0");
   for(const p of PY)if(p.front)pylon(p);
@@ -4977,7 +4979,7 @@ function clickAt(sx,sy){
   for(const c of [...cur.npcs,...cur.wanderers].sort((a,b)=>(b.x+b.y)-(a.x+a.y))){const [cx,cy]=P(c.x,c.y);if(Math.abs(wx-cx)<15&&wy>cy-60&&wy<cy+6){
     player.target=null;if(c.npc){talkTo(c);return}toast(`${c.name} · Lv ${c.lv}`);walkTo(player,Math.floor(c.x),Math.floor(c.y));setMarker(c.x,c.y);return}}
   for(const p of cur.portals){const [px,py]=P(p.x+.5,p.y+.5);if(Math.abs(wx-px)<30&&wy>py-72&&wy<py+14){player.target=null;walkTo(player,p.x,p.y);setMarker(p.x+.5,p.y+.5);return}}
-  if(cur===town){const [kx,ky]=P(CRY[0],CRY[1]);if(((wx-kx)/200)**2+((wy-ky)/100)**2<1||(Math.abs(wx-kx)<80&&wy>ky-400&&wy<ky)){player.target=null;touchCrystal();return}}
+  if(cur===town){const [kx,ky]=P(CRY[0],CRY[1]);if(((wx-kx)/200)**2+((wy-ky)/100)**2<1||(Math.abs(wx-kx)<70&&wy>ky-320&&wy<ky)){player.target=null;touchCrystal();return}}
   const [tx,ty]=isoToTile(wx,wy);const fx_=Math.floor(tx),fy_=Math.floor(ty);if(!inb(fx_,fy_))return;
   player.target=null;
   if(cur===town&&Math.hypot(fx_+.5-CRY[0],fy_+.5-CRY[1])<CRY_R){touchCrystal();return}
@@ -5714,7 +5716,7 @@ function render(){
   const talkNpc=new Set(),crysQ=activeIds().some(id=>{const o=curObj(id);return o&&o.t==="crystal"});for(const id of activeIds()){const o=curObj(id);if(o&&o.t==="talk")talkNpc.add(o.npc)}
   for(const o of list){
     if(o.kind==="bld"&&o.b.label){const b=o.b;const [x,y]=P(b.x+b.w/2,b.y+b.h/2,b.H+28+Math.min(b.w,b.h)*7.5+(b.flag?30:0));plate(x,y,t(b.label))}
-    else if(o.kind==="crystal"){const [x,y]=P(CRY[0],CRY[1]);plate(x,y-410,t("crystal"));if(crysQ)questMark(x,y-434)}
+    else if(o.kind==="crystal"){const [x,y]=P(CRY[0],CRY[1]);plate(x,y-330,t("crystal"));if(crysQ)questMark(x,y-354)}
     else if(o.kind==="portal"){plate(o.sx,o.sy-84,"➜ "+t(o.p.labelK),true)}
     else if(o.kind==="mon"){const mo=o.c,d=MON[mo.type];if(mo.dieT>0)continue;const top=o.sy-d.h*mSize(mo)-12,lv=mLv(mo);
       if(mo.hp<mo.maxHp||player.target===mo||mo.boss){const bw=mo.boss?70:36,bh=mo.boss?8:4;rr(o.sx-bw/2-1,top-bh/2-2,bw+2,bh+2,3);g.fillStyle="rgba(10,10,20,.75)";g.fill();rr(o.sx-bw/2,top-bh/2-1,bw*Math.max(0,mo.hp/mo.maxHp),bh,2);g.fillStyle=mo.boss?"#ff5a8a":mo.aggro?"#ff4a5a":"#ff8a6a";g.fill()}
@@ -5792,7 +5794,7 @@ function update(dt){
   if(marker){marker.t+=dt*1.6;if(!player.path.length&&marker.t>1.2)marker=null}
   if(cur===town){
     for(const w of town.wanderers){if(w.path.length&&town.npcs.some(n=>Math.hypot(n.x-w.x,n.y-w.y)<2)){w.path=[];w.wait=.4}moveChar(w,dt);w.wait-=dt;
-      if(!w.path.length&&w.wait<=0){let tx,ty,gd=0;do{tx=Math.floor(w.x)+Math.floor(Math.random()*15)-7;ty=Math.floor(w.y)+Math.floor(Math.random()*15)-7}while((!walk(tx,ty)||Math.hypot(tx+.5-TC,ty+.5-TC)>28||town.npcs.some(n=>Math.hypot(n.x-tx-.5,n.y-ty-.5)<2.6))&&gd++<40);if(gd<40)walkTo(w,tx,ty);w.wait=2+Math.random()*6}}
+      if(!w.path.length&&w.wait<=0){let tx,ty,gd=0;do{tx=Math.floor(w.x)+Math.floor(Math.random()*15)-7;ty=Math.floor(w.y)+Math.floor(Math.random()*15)-7}while((!walk(tx,ty)||Math.hypot(tx+.5-TC,ty+.5-TC)>20||town.npcs.some(n=>Math.hypot(n.x-tx-.5,n.y-ty-.5)<2.6))&&gd++<40);if(gd<40)walkTo(w,tx,ty);w.wait=2+Math.random()*6}}
     for(const n of town.npcs)if(Math.hypot(n.x-player.x,n.y-player.y)<3.5){faceToward(n,player.x,player.y);n.back=false}
   }else for(const mo of cur.monsters)updateMon(mo,dt);
   for(const c of [player,...town.wanderers])if(c.bubble){c.bubble.t-=dt;if(c.bubble.t<=0)c.bubble=null}

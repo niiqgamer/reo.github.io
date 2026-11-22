@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v19.1. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,13 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v19.1 (this update)
+## Changes in v20 (this update)
+- All maps are now 98 × 98 tiles (the old 49 × 49 layouts scaled 2×). Fields keep prop sizes, have 3× monsters and 2 Elites per kind; field portals sit 2 tiles from the edge. See `GADOLINIUM.md`, `FIELD-*.md`.
+- Gadolinium re-laid out around a bigger plaza with a market ring; the Gadolinium Crystal is now a monument (3-tier dais, 4 pylons, the original crystal shape at 2.8×).
+- Ground textures are drawn in chunks under a memory budget; only the current map and the one ahead stay loaded. Saves carry `mv` and old positions are scaled up.
+- New `CLAUDE.md` at the repo root: rules for keeping `MD/` and the `MD/index.html` copy in sync.
+
+## Changes in v19.1
 - HUD: Idle button moved inside the hotbar panel (same plane as the slots), new circling-arrows idling motion, portrait monster panel centred with the hotbar, portrait announcement moved to the bottom. See `UI-UX.md` §16.
 
 ## Changes in v19.0

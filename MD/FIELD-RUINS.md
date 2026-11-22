@@ -21,7 +21,7 @@
 Arrival follows the portal rule in `FIELD-01.md` (nearest walkable tile beside the matching portal). No monster spawns within 7 tiles of the portal, and monsters ignore the player for 3 s after any map change.
 
 ## 3. Look
-98 × 98 tiles (the original 49 × 49 layout scaled 2×; 3× monsters, 2 Elites per kind). Scorched black-red ground with rust-brick roads, charred trees with ember tips, **5 lava pools** (blocked), ember crystals. **Broken columns and burning braziers** line the north–south road in pairs every 5 tiles, plus random ones. Roads: north–south (`x = 24 + round(sin(0.16y+0.8)·4)`) and east–west (`y = 26 + round(sin(0.19x)·3)`). Orange embers float in the air. Music: `ruins` (104 BPM, double harmonic, driving drums, pulsing bass).
+98 × 98 tiles (the original 49 × 49 layout scaled 2×; 3× monsters, 2 Elites per kind; portals sit 2 tiles from the map edge). Scorched black-red ground with rust-brick roads, charred trees with ember tips, **5 lava pools** (blocked), ember crystals. **Broken columns and burning braziers** line the north–south road in pairs every 5 tiles, plus random ones. Roads: north–south (`x = 24 + round(sin(0.16y+0.8)·4)`) and east–west (`y = 26 + round(sin(0.19x)·3)`). Orange embers float in the air. Music: `ruins` (104 BPM, double harmonic, driving drums, pulsing bass).
 
 ## 4. Monsters (**aggressive**, with skills)
 Aggressive means a monster that sees the player inside its **aggro range** (Elites +1 tile) starts chasing at ×1.6 speed and attacks first, with a red "!" above its head. It gives up beyond 16 tiles. Respawn 8–15 s (Elite 45–60 s). Every type also has 1 Elite (rules in `FIELD-02.md`).
