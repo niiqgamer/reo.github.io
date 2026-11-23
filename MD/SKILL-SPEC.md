@@ -99,6 +99,69 @@ With 5 pieces, staff × 1 puts the Spellcaster level with the Ranger, so the rul
 
 **3. Overload value** (Lv 30, full tier-30 ★3 gear, CRIT ≈ 11, vs LUK 11–13 monsters, Fire Bolt Lv 5): about +1% damage at overMul 0.5 and ×1.3; +1.4% at overMul 1; +1.9% at overMul 2 with ×2.0 (earlier run of the same setup). With no gear CRIT, the chance is 0. In the game with CRIT 30.7 (LUK 99), an Overload hit did about 1.5 times the damage of a normal hit.
 
+## 3b. Mana Flow (v20.6, from NIIQ)
+
+| | |
+|---|---|
+| MAX Lv | 10 |
+| ประเภท | Passive |
+| รายละเอียด | ฝึกการไหลเวียน SP ทั่วทั้งร่างกาย ให้มีประสิทธิภาพสูงสุด |
+
+| Lv | Max SP | SP regen | SP cost |
+|---|---|---|---|
+| 1 | +1% | +10% | −1% |
+| 2 | +2% | +12% | −2% |
+| 3 | +3% | +14% | −3% |
+| 4 | +4% | +16% | −4% |
+| 5 | +5% | +18% | −5% |
+| 6 | +6% | +20% | −6% |
+| 7 | +7% | +22% | −7% |
+| 8 | +8% | +24% | −8% |
+| 9 | +9% | +26% | −9% |
+| 10 | **+12%** | **+30%** | **−12%** |
+
+Pattern Lv 1–9: Max SP +Lv%, regen +(8 + 2 × Lv)%, cost −Lv%; Lv 10 is a jump. In code (`manaFlow()`): Max SP % multiplies the base Max SP (after INT, before flat gear SP); regen % multiplies natural SP regen; cost % lowers every skill's SP cost (rounded up). The old prototype (one level: regen +60%, cost −10%) is gone.
+
+## 3c. Elemental Attunement (v20.6, from NIIQ)
+
+| | |
+|---|---|
+| MAX Lv | 5 |
+| ประเภท | Passive |
+| รายละเอียด | เรียนรู้จุดอ่อนเกี่ยวกับธาตุหลักในจักรวาล |
+| Per level | ตีจุดอ่อนธาตุแรงเพิ่มขึ้นอีก +5% |
+
+⚠ Read as **cumulative**: the weakness multiplier is 1.5 + 0.05 × Lv (Lv 1 = 155%, Lv 5 = 175%, the same as the old one-level passive). Applies to the basic attack and every spell that hits a weakness.
+
+## 3d. Overload Energy (v20.6, from NIIQ)
+
+| | |
+|---|---|
+| MAX Lv | 5 |
+| ประเภท | Buff |
+| เป้าหมาย | ตัวเอง และสมาชิกใน Party ทั้งหมดในระยะ 12 × 12 ช่องรอบตัวเอง (6 tiles each way, a square) |
+| คูลดาวน์ | 60 s at every level |
+| Global Delay | 1 s at every level |
+| SP | ⚠ **30 at every level** (not given by NIIQ; placeholder) |
+| รายละเอียด | ตั้งสมาธิอันแน่วแน่ที่จะดึงทุกพลังของจักรวาล มาเพิ่มอัตราเกินพิกัดให้ตัวเองและเพื่อน |
+
+| Lv | Overload Rate | Duration | Cast |
+|---|---|---|---|
+| 1 | +1% | 20 s | 1.0 s |
+| 2 | +2% | 40 s | 1.2 s |
+| 3 | +3% | 60 s | 1.4 s |
+| 4 | +4% | 80 s | 1.6 s |
+| 5 | +5% | 120 s | 2.0 s |
+
+How it is built:
+- The bonus is added to the base Overload Rate before the target's LUK and the skill's overMul: `max(0, CRIT + bonus − targetLUK/5) × overMul` (`COMBAT-FORMULAS.md` §3b). It does not raise physical CRIT.
+- ⚠ The spec says both “Instant Cast” and a cast time per level. The game uses the cast times in the table (shortened by DEX like every spell) and the buff takes effect the moment the cast ends.
+- Party members are simulated players (no combat stats yet), so the buff only works on the caster; party members in town within the 12 × 12 area get the visual effect. It will apply to them when party combat exists.
+- Recasting refreshes the duration and replaces the bonus with the new level's.
+- Idle casts it when the target is in range and the buff is not up. The simulator (CP, offline estimate) does the same at Lv 5.
+
+Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spellcaster kills −2 to −4% compared with v20.5 (Lv 10: 50 → 48.3; Lv 20: 46.7 → 45; Lv 30: 45.3 → 43.7; Lv 20 packs of 3: 80 → 78), no deaths either way, CP at Lv 30 1,006 → 1,017. The loss comes from the buff's cast + Global Delay and the weaker max Mana Flow regen (+30% instead of +60%).
+
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**
 - Skill points come from **Job Lv**: 1 Job Lv = 1 skill point. At Job Lv 1 a character has none; **Job Lv 2 gives the first point**.
@@ -107,6 +170,7 @@ With 5 pieces, staff × 1 puts the Spellcaster level with the Ranger, so the rul
 
 **In the game now:** every skill starts at Lv 0 (not learned) and costs 1 point per level. A skill at Lv 0 cannot be used (a toast says so; Idle skips it; its hotbar slot is greyed). A C1 class (Job Lv cap 50) gets 49 points in total; Beginner (cap 10) gets 9.
 - **Fire Bolt** has Lv 1–10 (§3).
+- **Overload Energy** has Lv 1–5 (§3d); **Mana Flow** Lv 1–10 and **Elemental Attunement** Lv 1–5 (§3b, §3c): the first passives with levels.
 - **Every other skill has one level** (1 point to learn it, the prototype numbers) until its levels are designed. ⚠ NIIQ has not given per-level effects for them yet.
 - **Passives** are learned the same way (1 point each) and only work once learned.
 - **Beginner (v20.4):** a Beginner spends points only on **Basic Skill** (Lv 1 given, Lv 2–10 cost 1 point each). First Aid and Heavy Strike come from Basic Skill Lv 3 and Lv 4 and stay learned after the Archetype choice (`JOBS.md` §1b).
@@ -130,7 +194,8 @@ Cause: every gear slot adds `m × 0.35` to the primary stat, and MATK has an `�
 New side effect of stopping fireballs when the target dies: CP counts damage dealt, and the old simulator counted overkill. With 2 common pieces the Spellcaster’s CP falls from 3,126 (old prototype) to about 2,140 with Fire Bolt Lv 5 and the staff × 1 (3,515 vs 6,698 with 5 pieces). Note that the CP simulation (and the Idle offline estimate) uses Fire Bolt Lv 5 and counts every skill and passive as learned. Nothing was changed for this.
 
 ## 7. ⚠ Open items
-1. Max level and per-level effects of every skill except Fire Bolt (now one level each).
+1. Max level and per-level effects of every skill except Fire Bolt, Overload Energy, Mana Flow and Elemental Attunement (now one level each).
+1b. Overload Energy: SP cost, “Instant Cast” vs the cast times, party members without combat stats (§3d).
 2. Potion and wing slots (§5).
 3. Respec (reset skill points).
 4. Global Delay for the other skills, and whether it really starts when the cast ends (it does in the game).

@@ -73,8 +73,9 @@ Overload is the magic counterpart of a physical critical hit. Spec from NIIQ; it
 
 ```
 over_dmg = ⌊(statusMATK + weaponMATK + mastery) × skill% × element × bonus × 1.3 × (1 − targetMDEF%) − targetSoftMDEF⌋   // Overload Damage (ดาเมจเกินพิกัด)
-over%    = max(0, CRIT − targetLUK/5) × overMul                                                                          // Overload Chance (อัตราเกินพิกัด), capped at 100
+over%    = max(0, CRIT + overBonus − targetLUK/5) × overMul                                                              // Overload Chance (อัตราเกินพิกัด), capped at 100
 ```
+- `overBonus` (v20.6) is the flat +% from **Overload Energy** (+1% per skill level, `SKILL-SPEC.md` §3d). It raises the Overload Rate only, not physical CRIT. The Status window's Overload Rate shows `CRIT + overBonus`.
 - `overMul` (Overload Multiple, ตัวคูณอัตราเกินพิกัด) is set per skill. **A skill that does not state it has overMul 0: it cannot Overload.** (Physical crit works the same way: only the basic attack and Piercing Shot can crit.)
 - Rolled **per hit** for True multi-hit skills (hit types are in `SKILL-SPEC.md`). Fire Bolt Lv 10 rolls Overload 10 times per cast.
 - **Magic does not ignore MDEF.** Overload still takes `(1 − targetMDEF%)` and `− targetSoftMDEF`.
@@ -101,7 +102,7 @@ Example: Lv 20, INT 40, Heal Lv 5 → ⌊60/8⌋ × 44 = **308** (369 with Divin
 | Wind | 1.0 | **1.5** | 0.75 | 0.75 |
 | Earth | 0.75 | 1.0 | **1.5** | 0.75 |
 
-Neutral and Holy deal 1.0 to these elements. Elemental Attunement raises 1.5 → 1.75. **REO:** classic weak multipliers go lower than 0.75.
+Neutral and Holy deal 1.0 to these elements. Elemental Attunement adds +0.05 per level (Lv 1–5): 1.5 → 1.75 at Lv 5. **REO:** classic weak multipliers go lower than 0.75.
 
 | Monster | Lv | Element | HP | ATK | Hard DEF | Soft DEF | MDEF | HIT | FLEE |
 |---|---|---|---|---|---|---|---|---|---|
