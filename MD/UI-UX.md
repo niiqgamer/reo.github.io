@@ -569,7 +569,7 @@ While a drag is over the bar, the slot under the pointer shows a **gold** ring w
 
 Replaces the old Skills list (§24). Window `skill`, title **Skills Tree / ผังสกิล / スキルツリー** with a sparkle icon, **440 px wide, height fits the content** (the same frame as Status and Bag).
 
-**Tabs, one per class line.** C0 **Beginner** is always there. After the Archetype choice the character's own C1 tab is added and opens first. C2 and C3 have no tab until those classes exist. Each line has one colour (`ARC_COL` / `SKG` in the code), used for its tab, tiles, level pills and the skill icons everywhere (hotkey bar, drag ghost):
+**One tab: the character's current class line.** A Beginner sees only the C0 **Beginner** tab. After the Archetype choice the Beginner tab is gone and only the C1 archetype tab shows, because the archetype tree already holds the Beginner skills in column 1. C2 and C3 get their tabs when those classes exist. Each line has one colour (`ARC_COL` / `SKG` in the code), used for its tab, tiles, level pills and the skill icons everywhere (hotkey bar, drag ghost):
 
 | Line | Colour |
 |---|---|
@@ -595,14 +595,14 @@ The pill shows the learned level. A learned active with levels (Fire Bolt, Overl
 
 **Level for the hotkey bar.** On a learned skill with levels (Fire Bolt, Overload Energy), ◀ ▶ below the learned level pick the level a drag puts on the hotkey bar (`data-dnd="s:id:lv"`; the slot keeps that level, `SKILL-SPEC.md` §5). Example: Fire Bolt learned at Lv 5, ◀ ◀ shows 3, drag → the slot casts Lv 3.
 
-**Skill Info window** (`skinfo`, title Skill Info / ข้อมูลสกิล / スキル情報, note icon). A left click on a tile opens it in the Item Info slot, with the Item Info size and placement (beside the tree; on a phone it floats in the middle over a dimmed screen). Escape or × closes it; switching tabs closes it too. Content, in a white card:
+**Skill Info window** (`skinfo`, title Skill Info / ข้อมูลสกิล / スキル情報, note icon). A left click on a tile opens it in the Item Info slot, with the Item Info size and placement (beside the tree; on a phone it floats in the middle over a dimmed screen). Escape or × closes it; switching tabs (when a line has more than one) closes it too. Content, in a white card:
 - the 76 px tile and "**Name Lv.learned/max**" in the line colour; chips: archetype, then Passive, or the targeting (**Self Cast** / **Target Cast**) and the kind (Physical, Magic · element, Heal, Buff, Zone, Movement);
 - the description;
 - **Level 1 … Level max**: what each level gives (Fire Bolt: fireballs, total % MATK, SP; Overload Energy: Overload Rate, duration, SP; Mana Flow / Elemental Attunement: the passive effect; Basic Skill: what the level teaches; a one-level active: SP and range). The learned level is bold, higher levels are faded. One-level passives have no level list;
-- **In details** (actives only): a table Lv | VCT (Variable Cast, before DEX/INT and gear) | FCT (Fixed Cast; 0 shows as –) | CD | Delay (Global Delay), base values from the skill data (`vct`, `fct`, `cd`, `gd`, `COMBAT-FORMULAS.md` §2b), the learned row tinted. This replaces the old Skills list line "Cast x s (VCT a + FCT b)" from v20.9.
+- **In details** (actives only): a table Lv | VCT (Variable Cast, before DEX/INT and gear) | FCT (Fixed Cast; 0 shows as –) | CD | Delay (Global Delay), base values from the skill data (`vct`, `fct`, `cd`, `gd`, `COMBAT-FORMULAS.md` §2b), the learned row tinted. No line under the header row. This replaces the old Skills list line "Cast x s (VCT a + FCT b)" from v20.9.
 SP shown is the real cost (after Mana Flow).
 
-**Footer.** "Skill Points : spent / pool" (pool = every point the class can earn: Beginner 9, C1 49), the draft cost while there is one ("Learn uses N"), then **Learn** (blue) and **Reset** (grey). The old Hotbar setup drop-downs are gone (§25).
+**Footer.** "Skill Points : N" = the points **not spent yet**; while there is a draft it already counts the draft (it drops as levels are planned) and the box gets a gold ring. Then **Learn** (blue) and **Reset** (grey). The footer never grows wider than the window (no horizontal scroll). The old Hotbar setup drop-downs are gone (§25).
 
 **Skill icons (v20.10).** Every skill has its own duotone icon (`SKI`, 32 × 32 grid, lines in `currentColor`, class `a` = soft fill). Tiles colour them (white on actives, line colour on passives); the hotkey bar and drag ghost show them white on the line gradient. The element no longer changes the icon colour.
 
