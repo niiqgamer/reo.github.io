@@ -67,6 +67,8 @@
 
 ## 3. Prototype hotbar (placeholder skills)
 
+> *Historical (v3).* Superseded: Bash is now **Heavy Strike** (SP 5, cooldown 5 s, range 1.6 tiles, Basic Skill Lv 4). Current skills: `JOBS.md` §1b and `ARCHETYPES.md`.
+
 | Key | Skill (EN / TH) | SP | Cooldown | Effect |
 |---|---|---|---|---|
 | 1 | Bash / ฟันกระแทก | 8 | 1.2 s | Slash arc |
