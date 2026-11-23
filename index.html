@@ -142,6 +142,17 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent2);outlin
 .slot::after{content:"";position:absolute;inset:0;background:conic-gradient(rgba(8,8,22,.62) calc(var(--cd,0)*1turn),transparent 0);pointer-events:none}
 .slot:active{transform:scale(.93)}
 .slot.flash .ic{filter:brightness(1.45)}
+/* v20.5 drag and drop: an item or skill is dragged onto a hotkey slot; a bag or worn item can be picked up, the hotkey bar refuses it */
+.slot[data-dnd],.ii[data-dnd],.row[data-dnd],.eqs[data-dnd]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.slot[data-dnd]{cursor:grab}
+.slot.dnd-ok{outline:2px solid #ffd76a;outline-offset:1px}
+.slot.dnd-no{outline:2px solid #e8475f;outline-offset:1px}
+body.dnd-on,body.dnd-on *{cursor:grabbing !important}
+.dnd-ghost{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:12px;display:grid;place-items:center;background:rgba(20,24,49,.8);border:2px solid #ffd76a;box-shadow:0 6px 18px rgba(0,0,0,.45);opacity:.94}
+.dnd-ghost .ic{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:var(--c)}
+.dnd-ghost .ic svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dnd-ghost .ii-ic{display:block;width:34px;height:34px}
+.dnd-ghost .ii-ic svg{width:34px;height:34px}
 
 /* menu */
 #botR{right:12px;bottom:12px}
@@ -2275,7 +2286,7 @@ D2.en.fbLbl="Fireballs";D2.th.fbLbl="ลูกไฟ";
 D2.en.hotCfg="Hotbar setup";D2.th.hotCfg="ตั้งค่า Hotbar";
 D2.en.hotNone="Empty";D2.th.hotNone="ว่าง";
 D2.en.hotMax="Highest learned";D2.th.hotMax="สูงสุดที่เรียน";
-D2.en.hotNote="Choose which skill, and which level of it, each slot uses. The potion slots (8–0) stay as they are.";D2.th.hotNote="เลือกสกิลและเลเวลที่ใช้ในแต่ละช่อง ส่วนช่องยา (8–0) คงที่";
+D2.en.hotNote="Drag a skill or a usable item onto a slot, or pick one here. Drag a slot off the bar to clear it. Keys 1\u20130 use the slots.";D2.th.hotNote="\u0e25\u0e32\u0e01\u0e2a\u0e01\u0e34\u0e25\u0e2b\u0e23\u0e37\u0e2d\u0e44\u0e2d\u0e40\u0e17\u0e47\u0e21\u0e43\u0e0a\u0e49\u0e07\u0e32\u0e19\u0e44\u0e1b\u0e27\u0e32\u0e07\u0e43\u0e19\u0e0a\u0e48\u0e2d\u0e07 \u0e2b\u0e23\u0e37\u0e2d\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e08\u0e32\u0e01\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e19\u0e35\u0e49 \u0e25\u0e32\u0e01\u0e0a\u0e48\u0e2d\u0e07\u0e2d\u0e2d\u0e01\u0e19\u0e2d\u0e01\u0e41\u0e16\u0e1a\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e25\u0e49\u0e32\u0e07\u0e0a\u0e48\u0e2d\u0e07 \u0e01\u0e14\u0e1b\u0e38\u0e48\u0e21 1\u20130 \u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e43\u0e0a\u0e49\u0e0a\u0e48\u0e2d\u0e07\u0e19\u0e31\u0e49\u0e19";D2.en.dnd_item_no="This item can't be placed here.";D2.th.dnd_item_no="\u0e44\u0e2d\u0e40\u0e17\u0e47\u0e21\u0e19\u0e35\u0e49\u0e44\u0e21\u0e48\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e27\u0e32\u0e07\u0e17\u0e35\u0e48\u0e19\u0e35\u0e48\u0e44\u0e14\u0e49";D2.en.dnd_skill_no="Passive skills can't go on the hotkey bar.";D2.th.dnd_skill_no="\u0e2a\u0e01\u0e34\u0e25\u0e41\u0e1a\u0e1a Passive \u0e43\u0e2a\u0e48\u0e1a\u0e19\u0e41\u0e16\u0e1a hotkey \u0e44\u0e21\u0e48\u0e44\u0e14\u0e49";D2.en.hotGrpSk="Skills";D2.th.hotGrpSk="สกิล";D2.en.hotGrpIt="Items";D2.th.hotGrpIt="ไอเท็ม";
 D2.en.fctOver="OVERLOAD!";D2.th.fctOver="เกินพิกัด!";
 D2.en.skNone="Not learned";D2.th.skNone="ยังไม่ได้เรียน";
 D2.en.skNotLearned="Skill not learned yet. Spend a skill point in the Skills window.";D2.th.skNotLearned="ยังไม่ได้เรียนสกิลนี้ ใช้แต้มสกิลในหน้าสกิล";
@@ -3980,7 +3991,7 @@ function stoMove(k){
 }
 function storageWin(){
   const side=stoTab,all=stoEntries(side),pages=Math.max(1,Math.ceil(Math.max(all.length,1)/INV_PAGE)),pg=Math.max(0,Math.min(stoPage[side]|0,pages-1));stoPage[side]=pg;
-  const cells=all.slice(pg*INV_PAGE,pg*INV_PAGE+INV_PAGE).map(e=>invCell(e).replace('data-act="invsel"','data-act="stomv"').replace(" sel","").replace(" pick",""));while(cells.length<INV_PAGE)cells.push(`<div class="ii empty"></div>`);
+  const cells=all.slice(pg*INV_PAGE,pg*INV_PAGE+INV_PAGE).map(e=>invCell(e).replace('data-act="invsel"','data-act="stomv"').replace(" sel","").replace(" pick","").replace(/ data-dnd="[^"]*"/,""));while(cells.length<INV_PAGE)cells.push(`<div class="ii empty"></div>`);
   const tabs=[["bag","sto_bag"],["store","sto_store"]].map(([k,n])=>`<button class="${side===k?"on":""}" data-act="stotab" data-v="${k}">${t(n)}</button>`).join("");
   return `<div class="inv-fix sto"><p class="muted" style="margin:0 0 8px">${t(side==="bag"?"sto_hintIn":"sto_hintOut")}</p><div class="lt-tabs">${tabs}</div>
    <div class="inv-well"><div class="inv-grid">${cells.join("")}</div></div>
@@ -4109,7 +4120,7 @@ function detEntry(){
 }
 function invCell(e){
   const col=itemColor(e.id),sel=invSel===e.k?" sel":"",p=e.cat==="gear"?gParse(e.id):null;
-  return `<button class="ii${sel}${invPick.has(e.k)?" pick":""}" data-act="invsel" data-k="${e.k}" style="--rc:${col}" title="${itemName(e.id)}"><span class="ii-ic">${itemArt(e.id)}</span>${p?`<span class="ii-st" style="--sc:${RARN[p.r-1][2]}">${"★".repeat(p.r)}</span>`:""}${e.cat!=="gear"&&e.qty>1?`<b>${num(e.qty)}</b>`:""}${e.ref?`<span class="ii-rf">+${e.ref}</span>`:""}${e.lock?`<span class="ii-lk">${svg("lock")}</span>`:""}</button>`;
+  return `<button class="ii${sel}${invPick.has(e.k)?" pick":""}" data-act="invsel" data-k="${e.k}" data-dnd="${e.k}" style="--rc:${col}" title="${itemName(e.id)}"><span class="ii-ic">${itemArt(e.id)}</span>${p?`<span class="ii-st" style="--sc:${RARN[p.r-1][2]}">${"★".repeat(p.r)}</span>`:""}${e.cat!=="gear"&&e.qty>1?`<b>${num(e.qty)}</b>`:""}${e.ref?`<span class="ii-rf">+${e.ref}</span>`:""}${e.lock?`<span class="ii-lk">${svg("lock")}</span>`:""}</button>`;
 }
 function invWin(){
   const all=invEntries(),pages=Math.max(1,Math.ceil(Math.max(all.length,1)/INV_PAGE)),pg=Math.max(0,Math.min(invPage[invTab]|0,pages-1));invPage[invTab]=pg;
@@ -5766,19 +5777,38 @@ function skRaise(id){if(!skMine().includes(id)||skLvOf(id)>=skMaxOf(id)||skAvail
 const slotLv=sl=>sl&&sl.id&&REOC.SKLV[sl.id]?(sl.lv>0?Math.min(sl.lv,skLvOf(sl.id)):skLvOf(sl.id)):0;   // lv 0 on a slot = the highest level learned
 function lvFor(id){   // level Idle uses: the level set on the first hotbar slot that holds the skill, else the highest learned
   if(!REOC.SKLV[id])return 0;const sl=SLOTS.find(x=>x.id===id&&!x.item);return sl?slotLv(sl):skLvOf(id)}
-const hotDefault=()=>{const ids=actList();return Array.from({length:7},(_,i)=>ids[i]?{id:ids[i],lv:0}:null)};
+const HOT_N=10,HOT_ITEMS=["wing","red","blue"];   // 10 free slots, keys 1–0. Default: skills on 1–7, Fly Wing on 8, Red Potion on 9, Blue Potion on 0
+const hotDefault=()=>Array.from({length:HOT_N},(_,i)=>i<7?null:{item:HOT_ITEMS[i-7]});
+const hotUsable=id=>!!ITEMDB[id]&&itemCat(id)==="use";
+const hotItemDef=id=>ITEMS[id]||{item:id,ic:"drop",c:`linear-gradient(135deg,${ITEMDB[id].c},#2a2f5c)`,cd:1};
+function hotFix(){   // keep S.hot = HOT_N free slots; a skill {id,lv} must be in this archetype's list, an item {item} must be a usable item
+  if(!Array.isArray(S.hot))S.hot=hotDefault();
+  if(S.hot.length===7)S.hot=[...S.hot,...HOT_ITEMS.map(k=>({item:k}))];   // v20.4 saves: 7 skill slots, then Fly Wing, Red Potion, Blue Potion
+  const ids=actList();
+  S.hot=Array.from({length:HOT_N},(_,i)=>{const h=S.hot[i];if(!h)return null;if(h.item)return hotUsable(h.item)?{item:h.item}:null;return h.id&&ids.includes(h.id)?{id:h.id,lv:h.lv|0}:null});
+  if(S.hotArch!==S.arch){   // a new archetype fills the empty skill slots with the skills not yet on the bar; items stay where they are
+    const on=new Set(S.hot.filter(h=>h&&h.id).map(h=>h.id)),fill=ids.filter(id=>!on.has(id));
+    for(let i=0;i<7;i++)if(!S.hot[i]&&fill.length)S.hot[i]={id:fill.shift(),lv:0};
+    S.hotArch=S.arch;
+  }
+}
 function buildSlots(){
-  const A=REOC.ARCH[S.arch];
-  if(!Array.isArray(S.hot)||S.hot.length!==7||S.hotArch!==S.arch||S.hot.some(h=>h&&!actList().includes(h.id))){S.hot=hotDefault();S.hotArch=S.arch}
-  SLOTS=S.hot.map(h=>h?{id:h.id,lv:h.lv|0}:{id:null});
-  for(const k of ["wing","red","blue"])SLOTS.push(Object.assign({id:k,left:0},ITEMS[k]));
+  hotFix();
+  const old=SLOTS;   // an item keeps its cooldown when the bar is rebuilt
+  SLOTS=S.hot.map((h,i)=>{
+    if(!h)return {id:null};
+    if(h.item)return Object.assign({id:h.item,item:h.item,left:old[i]&&old[i].item===h.item?old[i].left:0},hotItemDef(h.item));
+    return {id:h.id,lv:h.lv|0};
+  });
   renderHotbar();
 }
+const hotItemAt=id=>SLOTS.findIndex(s=>s.item===id);   // the first slot that holds this potion (auto-potion), -1 if none
 function renderHotbar(){
   $("#hotbar").innerHTML=SLOTS.map((s,i)=>{
-    if(!s.id)return `<button class="slot empty" data-i="${i}" aria-label="--"><span class="k">${(i+1)%10}</span></button>`;
-    const lv=s.item?0:slotLv(s),name=(s.item?t(s.item):t("sk_"+s.id))+(lv?" Lv "+lv:""),ic=s.item?s.ic:REOC.SK[s.id].ic,c=s.item?s.c:skGrad(s.id);
-    return `<button class="slot" data-i="${i}" title="${name}" aria-label="${name}"><span class="k">${(i+1)%10}</span><span class="ic" style="--c:${c}">${s.item?itemArt(s.item):svg(IC[ic]?ic:"star")}</span>${s.item?`<span class="n">${S.inv[s.item]}</span>`:lv?`<span class="n lvb">Lv${lv}</span>`:""}</button>`}).join("");
+    const dr=` data-drop="hot" data-i="${i}"`;   // every slot is a drop zone
+    if(!s.id)return `<button class="slot empty"${dr} aria-label="--"><span class="k">${(i+1)%10}</span></button>`;
+    const lv=s.item?0:slotLv(s),name=(s.item?itemName(s.item):t("sk_"+s.id))+(lv?" Lv "+lv:""),ic=s.item?s.ic:REOC.SK[s.id].ic,c=s.item?s.c:skGrad(s.id);
+    return `<button class="slot" data-dnd="h:${i}"${dr} title="${name}" aria-label="${name}"><span class="k">${(i+1)%10}</span><span class="ic" style="--c:${c}">${s.item?itemArt(s.item):svg(IC[ic]?ic:"star")}</span>${s.item?`<span class="n">${S.inv[s.item]||0}</span>`:lv?`<span class="n lvb">Lv${lv}</span>`:""}</button>`}).join("");
 }
 $("#hotbar").addEventListener("click",e=>{const b=e.target.closest(".slot");if(b)useSlot(+b.dataset.i)});
 function flashSlot(i){const b=$(`.slot[data-i="${i}"]`);if(b){b.classList.add("flash");setTimeout(()=>b.classList.remove("flash"),160)}}
@@ -5901,14 +5931,14 @@ function autoSkill(){
   if(id)useSkill(id,true,lvFor(id));
 }
 function becomeArch(a){
-  S.arch=a;S.jlv=1;S.jexp=0;S.skLv={};S.hot=null;skFix();resetCombatState();player.casting=null;reconcileGear();
+  S.arch=a;S.jlv=1;S.jexp=0;S.skLv={};skFix();resetCombatState();player.casting=null;reconcileGear();
   if(S.autoStat)S.stats=REOC.autoStats(a,S.lv);
   S.hp=hpMax();S.sp=spMax();buildSlots();renderWin();
   toast(fmt("archSet",{a:t("ar_"+a)}),true);fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:1.6,c:"#cfc4ff",follow:true});save();
 }
 function setArch(a){
   if(!REOC.ARCH[a]||a===S.arch)return;
-  S.arch=a;S.hot=null;skFix();resetCombatState();player.casting=null;reconcileGear();
+  S.arch=a;skFix();resetCombatState();player.casting=null;reconcileGear();
   if(S.autoStat)S.stats=REOC.autoStats(a,S.lv);
   S.hp=Math.min(Math.max(S.hp,1),hpMax());S.sp=Math.min(S.sp,spMax());
   buildSlots();renderWin();toast(fmt("archSet",{a:t("ar_"+a)}),true);
@@ -6180,8 +6210,8 @@ function updateIdle(dt){
   if(!S.idle||player.dead||warping||dlg)return;
   if(!isField()){setIdle(false,true);return}
   S.sess.t+=dt;
-  if(S.hp<hpMax()*.35&&S.inv.red>0)useSlot(8,true);
-  if(S.sp<spMax()*.15&&S.inv.blue>0)useSlot(9,true);
+  if(S.hp<hpMax()*.35&&S.inv.red>0)useSlot(hotItemAt("red"),true);
+  if(S.sp<spMax()*.15&&S.inv.blue>0)useSlot(hotItemAt("blue"),true);
   player.manualT=Math.max(0,player.manualT-dt);
   if(!player.nav&&!player.target&&player.manualT<=0){const m=nearestMon(40,true);if(m){player.target=m;player.chaseT=0}}
   autoSkill();
@@ -6228,7 +6258,7 @@ function updateUI(){
   SLOTS.forEach((sl,i)=>{const b=document.querySelector(`.slot[data-i="${i}"]`);if(!b)return;let v=0;
     if(sl.item)v=sl.left>0?sl.left/sl.cd:0;else if(sl.id){const kc=REOC.SK[sl.id].cd;if(CD[sl.id]>0&&kc>0)v=CD[sl.id]/kc;if((player.gd||0)>0&&player.gdMax>0)v=Math.max(v,player.gd/player.gdMax)}b.style.setProperty("--cd",v.toFixed(3));
     if(sl.id&&!sl.item){const lv=slotLv(sl)||1,k=REOC.SKLV[sl.id]?REOC.skAt(sl.id,lv):REOC.SK[sl.id];b.classList.toggle("nosp",S.sp<Math.ceil(k.sp*pd().spCost));b.classList.toggle("unl",skLvOf(sl.id)<1)}});
-  document.querySelectorAll(".slot .n").forEach(n=>{const sl=SLOTS[+n.parentElement.dataset.i];if(sl&&sl.item)n.textContent=S.inv[sl.item]});
+  document.querySelectorAll(".slot .n").forEach(n=>{const sl=SLOTS[+n.parentElement.dataset.i];if(sl&&sl.item)n.textContent=S.inv[sl.item]||0});
   $("#pcJob").textContent=t("ar_"+S.arch);$("#pcTier").textContent=S.arch==="beginner"?"C0":"C1";
 }
 
@@ -6287,7 +6317,7 @@ function eqSlot(sl,col,row){
   const it=S.equip&&S.equip[sl],sel=eqSel===sl?" sel":"",pos=`grid-column:${col};grid-row:${row}`;
   if(!it)return `<button class="eqs empty${sel}" style="${pos}" data-act="eqsel" data-s="${sl}" title="${t("sl_"+sl)}"><span class="eq-ic">${svg(SLOT_EIC[sl]||"plus")}</span><span class="eql">${t("sl_"+sl)}</span></button>`;
   const p=gParse(it.id),c=RARN[p.r-1][2];
-  return `<button class="eqs${sel}" style="${pos};--rc:${c};--rb:${RARBG_N[p.r-1]}" data-act="eqsel" data-s="${sl}" title="${itemName(it.id)}"><span class="eqi art">${itemArt(it.id)}</span><span class="lvt">Lv ${p.L}</span>${it.ref?`<span class="rf">+${it.ref}</span>`:""}<span class="cs" style="--sc:${c}">${"★".repeat(p.r)}</span></button>`;
+  return `<button class="eqs${sel}" style="${pos};--rc:${c};--rb:${RARBG_N[p.r-1]}" data-dnd="e:${sl}" data-act="eqsel" data-s="${sl}" title="${itemName(it.id)}"><span class="eqi art">${itemArt(it.id)}</span><span class="lvt">Lv ${p.L}</span>${it.ref?`<span class="rf">+${it.ref}</span>`:""}<span class="cs" style="--sc:${c}">${"★".repeat(p.r)}</span></button>`;
 }
 function costumeView(){
   return `<div class="cos"><div class="eq-doll"><canvas id="dollCv" width="260" height="340"></canvas></div><div class="cos-soon">${svg("lock")}<b>${t("cos_soon_t")}</b><span>${t("cos_soon_d")}</span></div></div>`;
@@ -6329,12 +6359,14 @@ const WIN={
   const act=actList().map(id=>{const k0=REOC.SK[id],L=skLvOf(id),k=lvd[id]?REOC.skAt(id,L||1):k0,
       cast=k.cast?` · ${t("castLbl")} ${(k.cast*d.castMul).toFixed(1)}s`:"",rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"",
       gd=k.gd?` · ${t("gdLbl")} ${k.gd}s`:"",fb=lvd[id]?` · ${t("fbLbl")} ${k.hits}`:"";
-    return `<div class="row"${L?"":' style="opacity:.62"'}><span class="dot" style="--c:${skGrad(id)}">${svg(IC[k0.ic]?k0.ic:"star")}</span><div class="grow"><b>${t("sk_"+id)}</b>${k0.elem?` <small style="display:inline;color:${k0.elem==="holy"?"#b8861e":ELC[k0.elem]}">· ${t("el_"+k0.elem)}</small>`:""}<small>${t("skd_"+id)}</small><small>SP ${Math.ceil(k.sp*d.spCost)} · ${t("cd")} ${k.cd}s${gd}${cast}${rg}${fb}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`}).join("");
-  const pas=A.passives.map(id=>`<div class="row"${skLvOf(id)?"":' style="opacity:.62"'}><span class="dot" style="--c:linear-gradient(135deg,#d8d4e8,#6f6a8f)">${svg("gear")}</span><div class="grow"><b>${t("sk_"+id)}</b><small>${t("skd_"+id)}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`).join("");
+    return `<div class="row" data-dnd="s:${id}"${L?"":' style="opacity:.62"'}><span class="dot" style="--c:${skGrad(id)}">${svg(IC[k0.ic]?k0.ic:"star")}</span><div class="grow"><b>${t("sk_"+id)}</b>${k0.elem?` <small style="display:inline;color:${k0.elem==="holy"?"#b8861e":ELC[k0.elem]}">· ${t("el_"+k0.elem)}</small>`:""}<small>${t("skd_"+id)}</small><small>SP ${Math.ceil(k.sp*d.spCost)} · ${t("cd")} ${k.cd}s${gd}${cast}${rg}${fb}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`}).join("");
+  const pas=A.passives.map(id=>`<div class="row" data-dnd="s:${id}"${skLvOf(id)?"":' style="opacity:.62"'}><span class="dot" style="--c:linear-gradient(135deg,#d8d4e8,#6f6a8f)">${svg("gear")}</span><div class="grow"><b>${t("sk_"+id)}</b><small>${t("skd_"+id)}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`).join("");
   const pts=`<p class="muted" style="margin:0 0 6px"><b>${fmt("skpLine",{n:skAvail()})}</b></p>`;
-  const hot=`<div class="w-sec">${t("hotCfg")}</div><div class="rows">${SLOTS.slice(0,7).map((sl,i)=>{
-      const opts=`<option value="">${t("hotNone")}</option>`+actList().map(id=>`<option value="${id}"${sl.id===id?" selected":""}>${t("sk_"+id)}</option>`).join("");
-      let lvSel="";if(sl.id&&lvd[sl.id]){const learned=skLvOf(sl.id);lvSel=`<select class="sk-sel" data-hot="${i}" data-part="lv"><option value="0"${!sl.lv?" selected":""}>${t("hotMax")}</option>${Array.from({length:learned},(_,j)=>`<option value="${j+1}"${sl.lv===j+1?" selected":""}>Lv ${j+1}</option>`).join("")}</select>`}
+  const itIds=Object.keys(ITEMDB).filter(hotUsable);
+  const hot=`<div class="w-sec">${t("hotCfg")}</div><div class="rows">${SLOTS.map((sl,i)=>{
+      const cur=sl.id?(sl.item?"i:":"s:")+sl.id:"";
+      const opts=`<option value="">${t("hotNone")}</option><optgroup label="${t("hotGrpSk")}">${actList().map(id=>`<option value="s:${id}"${cur==="s:"+id?" selected":""}>${t("sk_"+id)}</option>`).join("")}</optgroup><optgroup label="${t("hotGrpIt")}">${itIds.map(id=>`<option value="i:${id}"${cur==="i:"+id?" selected":""}>${itemName(id)}</option>`).join("")}</optgroup>`;
+      let lvSel="";if(sl.id&&!sl.item&&lvd[sl.id]){const learned=skLvOf(sl.id);lvSel=`<select class="sk-sel" data-hot="${i}" data-part="lv"><option value="0"${!sl.lv?" selected":""}>${t("hotMax")}</option>${Array.from({length:learned},(_,j)=>`<option value="${j+1}"${sl.lv===j+1?" selected":""}>Lv ${j+1}</option>`).join("")}</select>`}
       return `<div class="row"><b>${(i+1)%10}</b><select class="sk-sel" data-hot="${i}" data-part="id">${opts}</select>${lvSel}</div>`}).join("")}</div><p class="muted">${t("hotNote")}</p>`;
   return `<p class="muted" style="margin:0 0 8px">${t("mech_"+S.arch)}</p>${pts}${beg?basic:""}<div class="w-sec">${t("actives")}</div><div class="rows">${act}</div>${pas?`<div class="w-sec">${t("passives")}</div><div class="rows">${pas}</div>`:""}${beg?"":basic}${hot}`},
  quest:()=>{
@@ -6684,8 +6716,9 @@ WIN.set=()=>{
 document.addEventListener("change",e=>{   // hotbar setup (Skills window): pick the skill and the level of each slot
   const sel=e.target&&e.target.closest?e.target.closest("select[data-hot]"):null;if(!sel)return;
   const i=+sel.dataset.hot;
-  if(sel.dataset.part==="id")S.hot[i]=sel.value?{id:sel.value,lv:0}:null;else if(S.hot[i])S.hot[i].lv=+sel.value|0;
-  S.hotArch=S.arch;buildSlots();renderWin();save();
+  if(sel.dataset.part==="id"){const v=sel.value;S.hot[i]=!v?null:v[0]==="i"?{item:v.slice(2)}:{id:v.slice(2),lv:0}}
+  else if(S.hot[i]&&S.hot[i].id)S.hot[i].lv=+sel.value|0;
+  buildSlots();renderWin();save();
 });
 function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[data-act]");
   /* v19.4 double-click: the second click of a double-click may land on whatever slid under the pointer (an empty cell, another window) when a window opened or moved */
@@ -6788,6 +6821,86 @@ $("#wins").addEventListener("pointerdown",e=>{
 });
 $("#wins").addEventListener("pointermove",e=>{if(_lpT&&_lpXY&&Math.hypot(e.clientX-_lpXY[0],e.clientY-_lpXY[1])>10)lpCancel()});
 addEventListener("pointerup",lpCancel,true);addEventListener("pointercancel",lpCancel,true);
+/* ================= drag and drop (v20.5) =================
+   An item or skill is dragged from the bag, the Skills window or a worn slot and dropped on a hotkey slot. A hotkey slot can be moved (drop on another slot) or cleared (drop outside any zone); the bag, the Skills list and the worn piece are never changed by a drop that is refused. Drop zones carry data-drop; a future trade or sell zone adds its entry to DROP_ZONES. */
+const DROP_ZONES={hot:{check:src=>hotCheck(src),drop:(src,el)=>hotDrop(src,+el.dataset.i)}};
+const DND={p:null,pid:0,sx:0,sy:0,x:0,y:0,on:false,moved:false,hold:false,ghost:null,zone:null,timer:0,endT:-1e9};
+const skIcon=id=>{const k=REOC.SK[id];return `<span class="ic" style="--c:${k?skGrad(id):"linear-gradient(135deg,#d8d4e8,#6f6a8f)"}">${svg(k&&IC[k.ic]?k.ic:"gear")}</span>`};   // passives have no SK entry: a grey gear
+function dndSource(k){   // what a drag carries: "i:"/"g:" bag entry, "e:" worn slot, "s:" skill, "h:" hotkey slot
+  const p=k.slice(2);
+  if(k[0]==="i"||k[0]==="g"){const e=invFind(k);return e?{k,cat:e.cat,id:e.id,html:`<span class="ii-ic">${itemArt(e.id)}</span>`}:null}
+  if(k[0]==="e"){const it=S.equip[p];return it?{k,cat:"gear",id:it.id,html:`<span class="ii-ic">${itemArt(it.id)}</span>`}:null}
+  if(k[0]==="s")return {k,cat:"skill",id:p,html:skIcon(p)};   // a passive too: hotCheck refuses it, so the player is told why
+  if(k[0]==="h"){const sl=SLOTS[+p];if(!sl||!sl.id)return null;return sl.item?{k,cat:"use",id:sl.item,html:`<span class="ic" style="--c:${sl.c}">${itemArt(sl.item)}</span>`}:{k,cat:"skill",id:sl.id,html:skIcon(sl.id)}}
+  return null;
+}
+function hotCheck(src){   // can this drag go on a hotkey slot? {ok} or {ok:false,msg}
+  if(src[0]==="h")return {ok:true};
+  const s=dndSource(src);
+  if(!s)return {ok:false,msg:t("dnd_item_no")};
+  if(s.cat==="skill")return actList().includes(s.id)?{ok:true}:{ok:false,msg:t("dnd_skill_no")};
+  return s.cat==="use"?{ok:true}:{ok:false,msg:t("dnd_item_no")};   // gear, worn pieces, materials, quest and cash items
+}
+function hotDrop(src,i){
+  const c=hotCheck(src);if(!c.ok){AUD.sfx("err");toast(c.msg);return false}
+  if(src[0]==="h"){const from=+src.slice(2);if(from!==i){const a=S.hot[from];S.hot[from]=S.hot[i];S.hot[i]=a}}   // move, or swap with what is there
+  else{const s=dndSource(src);S.hot[i]=s.cat==="skill"?{id:s.id,lv:0}:{item:s.id}}
+  AUD.sfx("click");buildSlots();renderWin();save();return true;
+}
+function hotClear(i){if(!S.hot[i])return;S.hot[i]=null;buildSlots();renderWin();save()}
+function dndDrop(src,x,y){
+  const z=document.elementFromPoint(x,y),el=z&&z.closest?z.closest("[data-drop]"):null,zone=el&&DROP_ZONES[el.dataset.drop];
+  if(zone)return zone.drop(src,el);
+  if(src[0]==="h"){hotClear(+src.slice(2));return true}   // dropped outside: only the hotkey slot is cleared, the item or skill is kept
+  return false;   // dropped outside: nothing happens, the item stays where it was
+}
+function dndBegin(){
+  if(!DND.p||DND.on)return;
+  const s=dndSource(DND.p);if(!s){dndReset();return}
+  DND.on=true;lpCancel();
+  const g=document.createElement("div");g.className="dnd-ghost";g.innerHTML=s.html;g.style.left=DND.x+"px";g.style.top=DND.y+"px";
+  document.body.appendChild(g);DND.ghost=g;document.body.classList.add("dnd-on");
+}
+function dndMove(x,y){
+  DND.x=x;DND.y=y;
+  if(Math.hypot(x-DND.sx,y-DND.sy)>6)DND.moved=true;
+  DND.ghost.style.left=x+"px";DND.ghost.style.top=y+"px";
+  const z=document.elementFromPoint(x,y),el=z&&z.closest?z.closest("[data-drop]"):null;
+  if(DND.zone&&DND.zone!==el)DND.zone.classList.remove("dnd-ok","dnd-no");
+  DND.zone=el;
+  const zone=el&&DROP_ZONES[el.dataset.drop];
+  if(zone){const ok=zone.check(DND.p).ok;el.classList.toggle("dnd-ok",ok);el.classList.toggle("dnd-no",!ok)}
+}
+function dndReset(){
+  clearTimeout(DND.timer);if(DND.ghost)DND.ghost.remove();
+  if(DND.zone)DND.zone.classList.remove("dnd-ok","dnd-no");
+  document.body.classList.remove("dnd-on");
+  Object.assign(DND,{p:null,on:false,moved:false,hold:false,ghost:null,zone:null,timer:0});
+}
+function dndStart(e,el){   // pointerdown on a draggable. Mouse and pen: a drag starts after 6 px. Touch on a Skills row: after a 230 ms hold, so the list still scrolls
+  if(e.button>0||DND.on)return;dndReset();
+  if(el.classList.contains("row")&&e.target.closest("button,select,input"))return;   // the + button and the selects are not drag handles
+  DND.p=el.dataset.dnd;DND.pid=e.pointerId;DND.sx=DND.x=e.clientX;DND.sy=DND.y=e.clientY;
+  DND.hold=el.classList.contains("row")&&e.pointerType==="touch";
+  if(DND.hold)DND.timer=setTimeout(()=>{DND.timer=0;dndBegin()},230);
+}
+addEventListener("pointermove",e=>{
+  if(!DND.p||e.pointerId!==DND.pid)return;
+  if(DND.on){dndMove(e.clientX,e.clientY);return}
+  const d=Math.hypot(e.clientX-DND.sx,e.clientY-DND.sy);
+  if(DND.hold){if(d>10)dndReset();return}   // moving before the hold ends means scrolling
+  if(d>6){dndBegin();if(DND.on)dndMove(e.clientX,e.clientY)}
+});
+addEventListener("pointerup",e=>{
+  if(!DND.p||e.pointerId!==DND.pid)return;
+  if(DND.on&&DND.moved){const src=DND.p,x=e.clientX,y=e.clientY;DND.endT=performance.now();dndReset();dndDrop(src,x,y);return}
+  dndReset();   // a plain tap or press: the click goes through as before
+});
+addEventListener("pointercancel",e=>{if(DND.p&&e.pointerId===DND.pid)dndReset()});
+addEventListener("touchmove",e=>{if(DND.on&&e.cancelable)e.preventDefault()},{passive:false});   // no page scroll while a drag is on
+document.addEventListener("click",e=>{if(performance.now()-DND.endT<400){e.stopPropagation();e.preventDefault()}},true);   // the click that ends a drag does nothing
+$("#hotbar").addEventListener("pointerdown",e=>{const el=e.target.closest(".slot[data-dnd]");if(el)dndStart(e,el)});
+$("#wins").addEventListener("pointerdown",e=>{const el=e.target.closest&&e.target.closest("[data-dnd]");if(el)dndStart(e,el)});
 $("#wins").addEventListener("contextmenu",e=>{if(e.target.closest&&e.target.closest(".inv-grid"))e.preventDefault()});
 let resetDone=false;
 (()=>{let d=null;

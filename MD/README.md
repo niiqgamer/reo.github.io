@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.4. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.5. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.4 (this update)
+## Changes in v20.5 (this update)
+- **Drag and drop on the hotkey bar.** Drag a usable item from the bag or a skill from the Skills window onto any of the 10 hotkey slots. The bar is no longer locked: a slot holds a skill or a usable item (potion, Fly Wing, apple), and a slot can be moved (drop it on another slot to swap) or cleared (drop it outside the bar; the item or skill is kept). Bag gear, materials, quest and cash items, worn pieces and passive skills are refused on the bar with a notice. A bag item dropped outside any zone does nothing. Worn pieces and bag items can be picked up for future trade and sell zones. Auto-potion uses whichever slot holds Red or Blue Potion. Saves with the old layout (7 skill slots, then Fly Wing, Red Potion, Blue Potion) migrate on load. See `UI-UX.md` §25, `SKILL-SPEC.md` §5 and `REO-INSTRUCTIONS.md` §5.
+
+## Changes in v20.4
 - **Basic Skill**, the Beginner skill tree: one skill, Lv 1–10 (Lv 1 given, 1 skill point per level, 9 points at Job Lv 10). Each level unlocks one ability: sit / status (2), First Aid 50 HP · SP 10 · CD 5 s (3), Heavy Strike 200% ATK · SP 5 · CD 5 s · range 1.6 tiles, same as the basic attack (4), Pocket Dimension (5), friends (6), party (7), trade (8), guild (9), Archetype Trial (10). Kept for good after the Archetype choice. See `JOBS.md` §1b.
 - New NPC **Narvis** (Gadolinium, west edge of the plaza) opens the **Pocket Dimension**, a 300-slot personal storage. See `ITEMS.md` §7, `GADOLINIUM.md`, `UI-UX.md` §24.
 

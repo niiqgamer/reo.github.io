@@ -50,7 +50,7 @@
 | Minimap | Whole map; dots: player (white/violet), NPC (gold), players (blue); click to walk |
 | Quest tracker | Title, objective, progress (e.g. “Job Lv 7 / 10”), **Go** button |
 | Chat | Tabs All / Party / Guild / System, Enter to focus, speech bubbles. Whispers show in All in pink |
-| Hotbar | 10 slots, keys 1–0, cooldown overlay, SP cost |
+| Hotbar | 10 free slots, keys 1–0, cooldown overlay, SP cost; drag and drop (§25) |
 | Menu | Character, Status, Bag, Skills, Quests, Social, Shop, Settings (+ Dungeons later). Social holds the Friends, Party and Guild tabs |
 | Windows | Centered, draggable in horizontal, Esc closes |
 | Dialog | NPC portrait, name, text, Next / Close |
@@ -531,3 +531,35 @@ Simulated players: about a quarter already have a party and a third already have
 **Skills window.** For a Beginner it starts with the **Basic Skill** section: one row (icon, short text, "Lv N/10", **+** while points are left), then a numbered list of the 10 levels. Reached levels are lit with a green ✓, the next one has a dashed purple border, later ones are faded with a lock. First Aid and Heavy Strike show a "Basic Lv 3 / 4" tag instead of a **+**. After the Archetype choice the Basic Skill section moves below the archetype skills (no **+**, text "kept for good"), and First Aid and Heavy Strike stay in the hotbar drop-downs.
 
 **Pocket Dimension window** (`storage`, 640 × 380, icon: cube). Hint line, two tabs (Bag · Dimension), a 10 × 3 grid in the light-window cell style, then both capacities ("Bag slots 12/100 · Dimension slots 4/300") and the page arrows. Click a cell to move it to the other side. Rules: `ITEMS.md` §7.
+
+## 25. Drag and drop on the hotkey bar (v20.5)
+
+**Drag sources.** Mouse: the drag starts once the pointer has moved 6 px. Touch: a bag cell or a worn piece starts when the finger moves; a Skills row starts after a 230 ms hold, so the list still scrolls.
+- **Bag cells** (every tab: Usable, Gear, Other, Quest, Cash): every item can be picked up. Pocket Dimension (storage) cells cannot.
+- **Skills window:** every row, active or passive. The **+** button and the drop-downs are not drag handles.
+- **Character window:** a worn piece can be picked up.
+- **Hotkey slots:** a filled slot can be dragged.
+
+**Drop zones.** A drop zone is an element with `data-drop`. Today the hotkey bar is the only one (all 10 slots). A future trade or sell window adds its own entry to `DROP_ZONES`.
+
+**What the hotkey bar accepts**
+
+| Dragged | Result |
+|---|---|
+| Usable item from the bag | Goes on the slot. The bag count does not change. |
+| Active skill of this archetype (or a Basic Skill active) | Goes on the slot at the highest learned level. |
+| Another hotkey slot | Moves there. If the target has something, the two swap. |
+| Gear, materials, quest or cash items, worn pieces | Refused. Notice: "This item can't be placed here." (ไอเท็มนี้ไม่สามารถวางที่นี่ได้) |
+| Passive skill | Refused. Notice: "Passive skills can't go on the hotkey bar." (สกิลแบบ Passive ใส่บนแถบ hotkey ไม่ได้) |
+
+While a drag is over the bar, the slot under the pointer shows a **gold** ring when it accepts the drag and a **red** ring when it refuses it.
+
+**Dropped outside any zone**
+- From the bag, the Skills window or a worn slot: **nothing happens.** The item or skill is not discarded, moved or changed.
+- From a hotkey slot: **only that slot is cleared.** The item or skill stays in the bag or in the Skills window.
+
+**Clicks.** A plain click or tap works as before (use the slot, open the bag cell). The click that ends a real drag does nothing.
+
+**Free slots.** A slot is not tied to one skill or item. The same item can sit on more than one slot. On a class change, skills that the new archetype does not have are removed from the bar, the empty skill slots are filled with the new skills (the four archetype skills first, then First Aid and Heavy Strike), and items stay where they are.
+
+**Hotkey setup (Skills window).** One drop-down per slot (10 rows). The list shows the archetype's skills, then the usable items. The level drop-down stays for skills.

@@ -34,7 +34,7 @@ Every Beginner has one skill, **Basic Skill**, with **10 levels**. Lv 1 is given
 | 9 | Guild | Social → Guild and guild invites are locked until Lv 9 |
 | 10 | Archetype | The Archetype Trial **starts automatically** once Basic Skill Lv 10 and Job Lv 10 are both reached (§4) |
 
-- **Kept for good.** Choosing an Archetype never removes Basic Skill or anything it taught. First Aid and Heavy Strike stay in the Skills window and can go on any hotbar slot (new archetype hotbars put them after the 4 archetype skills). An Archetype's own points start from 0 as before; Basic Skill does not use them.
+- **Kept for good.** Choosing an Archetype never removes Basic Skill or anything it taught. First Aid and Heavy Strike stay in the Skills window and can go on any hotbar slot (on a new archetype's hotbar they fill the empty skill slots after its 4 archetype skills). An Archetype's own points start from 0 as before; Basic Skill does not use them.
 - First Aid and Heavy Strike have no + button of their own: their level comes from Basic Skill (Lv 3 / Lv 4). A locked one says "Requires Basic Skill Lv N" when used.
 - Code: `S.basicLv` (1–10), `BASIC_UNLOCK`, `hasBasic(k)`, `basicRaise()`. Older saves: a Beginner starts at Basic Skill Lv 1 and gets back the points spent on Bash / First Aid; an Archetype gets Lv 10.
 
