@@ -4,7 +4,7 @@
 
 ## 1. What a player sees
 
-The first screen is a login page (Thai or English, with a switch; the default follows the browser language) with three tabs:
+The first screen is a login page (Thai, English or Japanese, with a switch; the default follows the browser language) with three tabs:
 
 | Tab | Fields | What it does |
 |---|---|---|

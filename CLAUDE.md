@@ -13,7 +13,7 @@ Talk to the user in Thai. Code, comments and commit messages stay in English.
 2. **Update the docs in the same commit as the code.** Find the doc for the area you changed in the `MD/README.md` index (towns → `GADOLINIUM.md` / `TOWN-ALIEN.md`, fields → `FIELD-*.md`, items → `ITEMS.md`, quests → `QUESTS.md`, combat → `COMBAT-FORMULAS.md`, UI → `UI-UX.md`, and so on). Fix every number, coordinate and rule that changed. If player-facing info changed, update `wiki.html` (and `MD/REO-Wiki.md`) too.
 3. **If a request conflicts with `MD/REO-INSTRUCTIONS.md`,** follow the request, then update that file so it stays accurate.
 4. **Log the change** in a short "Changes in …" entry at the top of the changes list in `MD/README.md`.
-5. **Every user-facing string goes through `t(key)`,** with both `en` and `th` text. Never hard-code UI text.
+5. **Every user-facing string goes through `t(key)`,** with `en`, `th` and `jp` text (`D.en` / `D.th` / `D.jp`; the auth screen uses `I.en` / `I.th` / `I.jp`). Pair data (`[en, th]` arrays, `{en, th}` objects) gets its Japanese in the `JPX` table, keyed by the English text, and is read with `LP` / `LO` / `PT`. Never hard-code UI text.
 
 ## Code facts that are easy to get wrong
 - Maps: every map is 98 × 98 tiles. The old 49 × 49 design grid is scaled by `MAPK` (all 2). `N` is the size of the **current** map; code that works on another map must use `m.N` (or local `I` / `inb` helpers built from it). Change the current map with `setCur(m)`, never `cur=` directly.
