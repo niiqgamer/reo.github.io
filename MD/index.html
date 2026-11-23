@@ -1749,7 +1749,7 @@ const SK={
  frost_nova:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.6,sp:20,cd:5,cast:.6,aoe:2.5,at:"self",freeze:.4,freezeDur:2,ic:"snow"},
  lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:3.8,sp:22,cd:3,cast:1.6,range:7,ic:"bolt"},
  stone_spike:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:2.6,sp:16,cd:2,cast:1.0,range:7,stunChance:.2,stun:1,ic:"spike"},
- overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:120,sp:30,cd:60,gd:1,cast:2,area:6,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 30 is an ASSUMPTION (SKILL-SPEC.md)
+ overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:120,sp:110,cd:60,gd:1,cast:2,area:6,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 50/65/80/95/110
  // supporter — Sustain: Heal (classic formula) + overheal turns into a Grace shield; buffs reach 15 tiles
  heal:{arch:"supporter",kind:"heal",lvl:5,sp:13,cd:1,range:15,ic:"plus"},
  holy_light:{arch:"supporter",kind:"magic",elem:"holy",ratio:2.0,sp:15,cd:1.5,cast:.8,range:9,ic:"sun"},
@@ -1899,13 +1899,13 @@ function autoStats(arch,lv,base){
    Skills listed in SKLV have levels; every other skill is still the fixed Lv 5 prototype.
    Fire Bolt (SKILL-SPEC.md): Lv N = N fireballs of 100% MATK, SP 12+2(N-1), cast 0.5+0.3(N-1) s, 0.3 s apart (0.2 s from Lv 6), cooldown 0, Global Delay 1.4 s. */
 const SKLV={fire_bolt:{max:10,def:5},overload_energy:{max:5,def:5},mana_flow:{max:10,def:10},elemental_attunement:{max:5,def:5}};   // v20.6: passives with levels too (derive reads them)
-const OE_DUR=[20,40,60,80,120],OE_CAST=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, cast; cooldown 60 s and Global Delay 1 s at every level
+const OE_DUR=[20,40,60,80,120],OE_CAST=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, cast, SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
 const skMax=id=>SKLV[id]?SKLV[id].max:1;   // every other skill is learn-only (one level) until its levels are designed
 function skAt(id,lv){
   const k=SK[id];if(!k||!SKLV[id])return k;
   const L=clamp(Math.floor(lv)||SKLV[id].def,1,SKLV[id].max);
   if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:L,sp:10+2*L,cast:+(.2+.3*L).toFixed(2),gap:L>=6?.2:.3});
-  if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],cast:OE_CAST[L-1]});
+  if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],cast:OE_CAST[L-1],sp:35+15*L});
   return k;
 }
 /* ---------- skill AI (used by idle play and by the simulator) ----------

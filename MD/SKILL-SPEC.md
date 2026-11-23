@@ -11,6 +11,7 @@
 | ประเภท | Active or Passive |
 | Type | Physical, Magic or Support |
 | เป้าหมาย | Target (for example one enemy) and the **hit type** (§2) |
+| การใช้ (Targeting) | **Self Cast** (กดแล้วร่ายเลย ไม่ต้องเลือกเป้าหมาย; may still have a cast time) or **Target Cast** (must pick an enemy or ally first). Do not write “Instant Cast”: in MMOs it means *no cast time* |
 | ระยะห่างระหว่างฮิต | For multi-hit skills: seconds between two hits, and what happens if the target dies in the middle |
 | ระยะ | Maximum range in tiles |
 | เงื่อนไขก่อนเรียน | Prerequisite skills. “None” means it can be learned right away |
@@ -139,23 +140,25 @@ Pattern Lv 1–9: Max SP +Lv%, regen +(8 + 2 × Lv)%, cost −Lv%; Lv 10 is a ju
 |---|---|
 | MAX Lv | 5 |
 | ประเภท | Buff |
+| การใช้ | **Self Cast**: กดแล้วร่ายเลย ไม่ต้องเลือกเป้าหมาย (still has the cast time below) |
 | เป้าหมาย | ตัวเอง และสมาชิกใน Party ทั้งหมดในระยะ 12 × 12 ช่องรอบตัวเอง (6 tiles each way, a square) |
 | คูลดาวน์ | 60 s at every level |
 | Global Delay | 1 s at every level |
-| SP | ⚠ **30 at every level** (not given by NIIQ; placeholder) |
 | รายละเอียด | ตั้งสมาธิอันแน่วแน่ที่จะดึงทุกพลังของจักรวาล มาเพิ่มอัตราเกินพิกัดให้ตัวเองและเพื่อน |
 
-| Lv | Overload Rate | Duration | Cast |
-|---|---|---|---|
-| 1 | +1% | 20 s | 1.0 s |
-| 2 | +2% | 40 s | 1.2 s |
-| 3 | +3% | 60 s | 1.4 s |
-| 4 | +4% | 80 s | 1.6 s |
-| 5 | +5% | 120 s | 2.0 s |
+| Lv | Overload Rate | Duration | Cast | SP |
+|---|---|---|---|---|
+| 1 | +1% | 20 s | 1.0 s | 50 |
+| 2 | +2% | 40 s | 1.2 s | 65 |
+| 3 | +3% | 60 s | 1.4 s | 80 |
+| 4 | +4% | 80 s | 1.6 s | 95 |
+| 5 | +5% | 120 s | 2.0 s | 110 |
+
+SP = 35 + 15 × Lv (lowered by Mana Flow like every skill).
 
 How it is built:
 - The bonus is added to the base Overload Rate before the target's LUK and the skill's overMul: `max(0, CRIT + bonus − targetLUK/5) × overMul` (`COMBAT-FORMULAS.md` §3b). It does not raise physical CRIT.
-- ⚠ The spec says both “Instant Cast” and a cast time per level. The game uses the cast times in the table (shortened by DEX like every spell) and the buff takes effect the moment the cast ends.
+- Self Cast (NIIQ: the spec's “Instant Cast” meant “press and it casts, no target needed”). The cast time in the table applies, shortened by DEX like every spell; the buff takes effect the moment the cast ends.
 - Party members are simulated players (no combat stats yet), so the buff only works on the caster; party members in town within the 12 × 12 area get the visual effect. It will apply to them when party combat exists.
 - Recasting refreshes the duration and replaces the bonus with the new level's.
 - Idle casts it when the target is in range and the buff is not up. The simulator (CP, offline estimate) does the same at Lv 5.
@@ -195,7 +198,7 @@ New side effect of stopping fireballs when the target dies: CP counts damage dea
 
 ## 7. ⚠ Open items
 1. Max level and per-level effects of every skill except Fire Bolt, Overload Energy, Mana Flow and Elemental Attunement (now one level each).
-1b. Overload Energy: SP cost, “Instant Cast” vs the cast times, party members without combat stats (§3d).
+1b. Overload Energy: party members without combat stats (§3d).
 2. Potion and wing slots (§5).
 3. Respec (reset skill points).
 4. Global Delay for the other skills, and whether it really starts when the cast ends (it does in the game).
