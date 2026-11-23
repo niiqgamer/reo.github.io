@@ -26,7 +26,7 @@ Every Beginner has one skill, **Basic Skill**, with **10 levels**. Lv 1 is given
 | 1 | Talk, fight, use skills, use items, Idle | Given; nothing is locked |
 | 2 | Sit (HP / SP regen ×3), stand up, set a status sign | Sit and *Set status* are disabled in the right-click menu until Lv 2 |
 | 3 | **First Aid** (skill) | Restore **50 HP** · SP **10** · cooldown **5 s** · no cast time |
-| 4 | **Heavy Strike** (skill, id `bash`) | **200% ATK** on one enemy · SP **5** · cooldown **5 s** · range **1 tile** · no cast time. Beginner basic attacks reach 1.6 tiles, so using it on a target further than 1 tile walks in first and then strikes (gives up after 4 s; Idle then skips it for 3 s) |
+| 4 | **Heavy Strike** (skill, id `bash`) | **200% ATK** on one enemy · SP **5** · cooldown **5 s** · range **1.6 tiles** (same as the Beginner basic attack) · no cast time. On a target further away (up to 7.6 tiles) the character walks in first and then strikes (gives up after 4 s; Idle then skips it for 3 s) |
 | 5 | **Pocket Dimension** | Personal storage (300 slots) through **Narvis**, an NPC in every main town (`ITEMS.md` §7) |
 | 6 | Friends | *Add friend* is disabled and Social → Friends is locked until Lv 6 |
 | 7 | Party | *Create a party* and Social → Party are locked until Lv 7 |
