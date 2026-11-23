@@ -114,7 +114,7 @@ With 5 pieces, staff × 1 puts the Spellcaster level with the Ranger, so the rul
 **⚠ Still open:** points reset (respec), whether unspent points carry over on class change (the answer so far is no, because Job Lv resets), the max level and per-level effect of every skill except Fire Bolt.
 
 ## 5. Hotbar
-The player chooses, for each hotbar slot, **which skill and which level** goes in it (Skills window → Hotbar setup, one drop-down for the skill and one for the level; “Highest learned” follows the level the player has). A slot uses that level’s own SP cost, cast time and number of hits, and a level above the one learned is not possible. Example: Fire Bolt Lv 3 on slot 1 and Fire Bolt Lv 10 on slot 2. Slots 8–0 stay the three potion/wing items.
+The player chooses, for each hotbar slot, **which skill and which level** goes in it (Skills window → Hotbar setup, one drop-down for the skill and one for the level; “Highest learned” follows the level the player has). A slot uses that level’s own SP cost, cast time and number of hits, and a level above the one learned is not possible. Example: Fire Bolt Lv 3 on slot 1 and Fire Bolt Lv 10 on slot 2. The 10 slots are free: a slot holds a skill or a usable item, dragged from the bag or the Skills window or picked in Hotbar setup (`UI-UX.md` §25). The default layout puts skills on 1–7 and Fly Wing, Red Potion and Blue Potion on 8, 9 and 0. Auto-potion uses the slot that holds Red Potion (HP below 35%) or Blue Potion (SP below 15%); if no slot holds it, it does nothing.
 
 **Decided:** Fire Bolt has a 0 s cooldown, so levels do not block each other. After Lv 2 the player can cast Lv 10 straight away; only the Global Delay (1.4 s) has to pass.
 

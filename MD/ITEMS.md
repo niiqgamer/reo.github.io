@@ -71,7 +71,7 @@ Stackable items total **46** (12 consumables, 34 materials/ores/quest items; v19
 | Sage Leaf / ใบเซจ | **+50% SP regen**, 60 s | 45 | Rimeback |
 | Aether Dew / น้ำค้างอีเธอร์ | +40% Max SP | 60 | (shop later) |
 
-Herbs and potions use the hotbar/inventory "Use" button. Buffs show as icons under the character card.
+Herbs and potions use the hotbar/inventory "Use" button. A usable item can also be dragged from the bag onto any hotbar slot (`UI-UX.md` §25); gear, materials and quest items cannot go on the bar. Buffs show as icons under the character card.
 
 ## 3. Equipment
 
