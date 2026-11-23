@@ -1582,11 +1582,11 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .skc-arw.pas .l i{border-right-color:var(--ac)}.skc-arw.pas .r i{border-left-color:var(--ac)}
 .skt-chip{font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:8px;background:var(--ac);color:#fff;white-space:nowrap}
 .skt-chip.pas{background:none;color:var(--ac);box-shadow:inset 0 0 0 1.2px var(--ac)}
-.skt-foot{display:flex;align-items:center;gap:6px}
+.skt-foot{display:flex;align-items:center;gap:6px;min-width:0}
 .skt-foot .grow{flex:1}
-.skt-pts{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border:1px solid var(--w-line);border-radius:8px;background:var(--w-card);font-size:12.5px;font-weight:700;white-space:nowrap}
+.skt-pts{min-width:0;overflow:hidden;text-overflow:ellipsis;display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border:1px solid var(--w-line);border-radius:8px;background:var(--w-card);font-size:12.5px;font-weight:700;white-space:nowrap}
 .skt-foot .lt-btn{height:30px;min-width:76px}
-.skt-cost{font-size:11.5px;font-weight:600;color:#a8780e;white-space:nowrap}
+.skt-pts.pend{border-color:#ffc83a;box-shadow:inset 0 0 0 1px #ffc83a}
 .lt-btn.grey{background:var(--w-grey);border-color:var(--w-grey);color:#fff}
 .si{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:12px;background:var(--w-card);border:1px solid var(--w-line);color:var(--w-ink)}
 .si-top{display:flex;gap:10px;align-items:center}
@@ -1601,7 +1601,7 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .si-lv.on p{font-weight:600}
 .si-tag{display:inline-block;align-self:flex-start;padding:1px 9px;border-radius:8px;background:var(--ac);color:#fff;font-size:10.5px;font-weight:700;line-height:15px}
 .si-tb{width:100%;border-collapse:separate;border-spacing:0 3px;font-size:11.5px;text-align:center}
-.si-tb th{font-weight:700;padding:2px;border-bottom:1.5px solid var(--w-ink2)}
+.si-tb th{font-weight:700;padding:2px}
 .si-tb td{padding:2px;border:1.2px solid var(--w-ink2);border-left:0;font-weight:600;font-variant-numeric:tabular-nums}
 .si-tb td:first-child{border-left:1.2px solid var(--w-ink2);border-radius:9px 0 0 9px;color:var(--ac)}
 .si-tb td:last-child{border-radius:0 9px 9px 0}
@@ -2858,12 +2858,12 @@ Object.assign(D2.th,{m_social:"สังคม",soc_friends:"เพื่อน"
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 /* v20.10 Skills Tree window */
 Object.assign(D2.en,{w_skinfo:"Skill Info",si_self:"Self Cast",si_target:"Target Cast",si_k_phys:"Physical",si_k_magic:"Magic",si_k_heal:"Heal",si_k_buff:"Buff",si_k_zone:"Zone",si_k_move:"Movement",
- si_lv:"Level {n}",si_det:"In details",si_delay:"Delay",si_fb:"{a} fireball(s), {b}% MATK in total · SP {c}",si_oe:"Overload Rate +{a}% for {b} seconds · SP {c}",skt_cost:"Learn uses {n}",
- w_skill:"Skills Tree",skt_pts:"Skill Points : {a} / {b}",skt_learn:"Learn",skt_reset:"Reset",skt_active:"Active",skt_passive:"Passive",
+ si_lv:"Level {n}",si_det:"In details",si_delay:"Delay",si_fb:"{a} fireball(s), {b}% MATK in total · SP {c}",si_oe:"Overload Rate +{a}% for {b} seconds · SP {c}",
+ w_skill:"Skills Tree",skt_pts:"Skill Points : {n}",skt_learn:"Learn",skt_reset:"Reset",skt_active:"Active",skt_passive:"Passive",
  skt_done:"Learned: {s}",skt_nopts:"Not enough skill points."});
 Object.assign(D2.th,{w_skinfo:"ข้อมูลสกิล",si_self:"ร่ายใส่ตัวเอง",si_target:"เลือกเป้าหมาย",si_k_phys:"กายภาพ",si_k_magic:"เวท",si_k_heal:"ฟื้นฟู",si_k_buff:"บัฟ",si_k_zone:"พื้นที่",si_k_move:"เคลื่อนที่",
- si_lv:"เลเวล {n}",si_det:"รายละเอียด",si_delay:"ดีเลย์",si_fb:"ลูกไฟ {a} ลูก รวม {b}% MATK · SP {c}",si_oe:"เพิ่มอัตราเกินพิกัด +{a}% ระยะเวลา {b} วินาที · SP {c}",skt_cost:"ใช้ {n} แต้ม",
- w_skill:"ผังสกิล",skt_pts:"แต้มสกิล : {a} / {b}",skt_learn:"เรียน",skt_reset:"รีเซ็ต",skt_active:"แอคทีฟ",skt_passive:"พาสซีฟ",
+ si_lv:"เลเวล {n}",si_det:"รายละเอียด",si_delay:"ดีเลย์",si_fb:"ลูกไฟ {a} ลูก รวม {b}% MATK · SP {c}",si_oe:"เพิ่มอัตราเกินพิกัด +{a}% ระยะเวลา {b} วินาที · SP {c}",
+ w_skill:"ผังสกิล",skt_pts:"แต้มสกิล : {n}",skt_learn:"เรียน",skt_reset:"รีเซ็ต",skt_active:"แอคทีฟ",skt_passive:"พาสซีฟ",
  skt_done:"เรียนแล้ว: {s}",skt_nopts:"แต้มสกิลไม่พอ"});
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
 /* v19.2 light windows (Character / Status / Inventory) */
@@ -3871,8 +3871,8 @@ D.jp={
   "lt_sell_hint":"アイテムを長押しすると選択を始められます。"
 };
 Object.assign(D.jp,{w_skinfo:"スキル情報",si_self:"自己詠唱",si_target:"対象指定",si_k_phys:"物理",si_k_magic:"魔法",si_k_heal:"回復",si_k_buff:"バフ",si_k_zone:"範囲",si_k_move:"移動",
- si_lv:"レベル {n}",si_det:"詳細",si_delay:"ディレイ",si_fb:"火球 {a} 個、合計 MATK {b}% · SP {c}",si_oe:"オーバーロード率 +{a}%、{b} 秒間 · SP {c}",skt_cost:"消費 {n}",
- w_skill:"スキルツリー",skt_pts:"スキルポイント : {a} / {b}",skt_learn:"習得",skt_reset:"リセット",skt_active:"アクティブ",skt_passive:"パッシブ",
+ si_lv:"レベル {n}",si_det:"詳細",si_delay:"ディレイ",si_fb:"火球 {a} 個、合計 MATK {b}% · SP {c}",si_oe:"オーバーロード率 +{a}%、{b} 秒間 · SP {c}",
+ w_skill:"スキルツリー",skt_pts:"スキルポイント : {n}",skt_learn:"習得",skt_reset:"リセット",skt_active:"アクティブ",skt_passive:"パッシブ",
  skt_done:"習得：{s}",skt_nopts:"スキルポイントが足りません。"});   // v20.10 Skills Tree
 let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
 const t=k=>(D[lang][k]??D.en[k]??k);
@@ -7092,7 +7092,7 @@ function skRaise(id){if(!skMine().includes(id)||skLvOf(id)>=skMaxOf(id)||skAvail
    Basic Skill is the tile "basic_skill" (raised only as a Beginner); First Aid and Heavy Strike come from Basic Skill Lv 3 and 4. */
 let skTab=null,skSel=null,skCur={};
 const BASIC_T="basic_skill";
-const skTabs=()=>S.arch==="beginner"?["beginner"]:["beginner",S.arch];
+const skTabs=()=>[S.arch];   // one tab: the Beginner tree, or the archetype tree (which already holds the Beginner skills in column 1)
 const skTabNow=()=>{const L=skTabs();return L.includes(skTab)?skTab:L[L.length-1]};
 const skTreeIds=tab=>tab==="beginner"?[BASIC_T,...BASIC_ACT]:[BASIC_T,...BASIC_ACT,...REOC.ARCH[tab].passives,...REOC.ARCH[tab].actives];
 /* tree layout: rows of up to 4 archetype skills (columns 2-5); column 1 holds Basic Skill, First Aid, Heavy Strike. Default: passives, then actives */
@@ -7109,7 +7109,6 @@ const skLearned=id=>id===BASIC_T?basicLv():skLvOf(id);
 const skMaxT=id=>id===BASIC_T?BASIC_MAX:skMaxOf(id);
 const skCanLearn=id=>id===BASIC_T?S.arch==="beginner":skMine().includes(id);
 const skView=id=>skCur[id]>0?skCur[id]:skLearned(id);   // the level the tile shows
-const skPool=()=>S.arch==="beginner"?BASIC_MAX-1:jcap()-1;   // every point this class can earn: Beginner 9, C1 49
 function skPendCost(){let n=0;for(const id in skCur)if(skCanLearn(id))n+=Math.max(0,skCur[id]-skLearned(id));return n}
 function skCurFix(){   // keep the cursors valid after a level, Job Lv or class change; drafts that no longer fit the points left are cut back
   for(const id of Object.keys(skCur)){const L=skLearned(id);let c=Math.min(skCur[id]|0,skMaxT(id));
@@ -7735,7 +7734,7 @@ const WIN={
   const tabs=`<div class="skt-tabs">${skTabs().map(a=>`<button class="${a===tab?"on":""}" style="--tc:${ARC_COL[a]}" data-act="sktab" data-v="${a}">${a==="beginner"?"":svg(ARCH_IC[a])}<span>${t("ar_"+a)}</span></button>`).join("")}</div>`;
   return `<div class="skt" style="--ac:${ARC_COL[tab]}">${tabs}
    <div class="skt-well"><div class="skt-grid">${cells}</div></div>
-   <div class="skt-foot"><span class="skt-pts">${fmt("skt_pts",{a:skSpent(),b:skPool()})}</span>${cost?`<small class="skt-cost">${fmt("skt_cost",{n:cost})}</small>`:""}<span class="grow"></span>
+   <div class="skt-foot"><span class="skt-pts${cost?" pend":""}">${fmt("skt_pts",{n:skAvail()-cost})}</span><span class="grow"></span>
     <button class="lt-btn blue" data-act="sklearn"${cost?"":" disabled"}>${t("skt_learn")}</button><button class="lt-btn grey" data-act="skreset"${cost?"":" disabled"}>${t("skt_reset")}</button></div></div>`},
  quest:()=>{
     const ids=Object.keys(QD),act=ids.filter(id=>S.q[id]&&S.q[id].s==="active"),av=ids.filter(id=>!QD[id].giver&&(!S.q[id]||S.q[id].s==="avail"));
