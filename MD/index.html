@@ -2327,6 +2327,7 @@ D2.en.q_today="Done today";D2.th.q_today="ทำแล้ววันนี้";
 D2.en.q_todayMsg="Already done today. Come back tomorrow.";D2.th.q_todayMsg="วันนี้ทำเควสต์นี้ไปแล้ว กลับมาใหม่พรุ่งนี้นะ";
 D2.en.lumi_end0="You made it all the way through Field 03 and back. I knew you had it in you.";D2.th.lumi_end0="เจ้าฝ่าไปจนถึงทุ่ง 03 แล้วกลับมาได้ ข้ารู้อยู่แล้วว่าเจ้าทำได้";
 D2.en.lumi_end1="Gadolinium is a little safer thanks to you. Take this, you have earned it.";D2.th.lumi_end1="แกโดลิเนียมปลอดภัยขึ้นเพราะเจ้า รับนี่ไปเถอะ เจ้าสมควรได้รับมัน";
+D2.en.arch_auto="Job Lv 10 and Basic Skill Lv 10! Archetype Trial started: defeat 1 Elite, then see Sera.";D2.th.arch_auto="Job Lv 10 และ Basic Skill Lv 10 แล้ว! เริ่มบททดสอบอาร์คีไทป์: ปราบ Elite 1 ตัว แล้วกลับไปหาเซร่า";
 D2.en.qa_title="Archetype Trial";D2.th.qa_title="บททดสอบอาร์คีไทป์";
 D2.en.qt_job="Job";D2.th.qt_job="อาชีพ";
 D2.en.jobMaxC1="Job Lv 50 reached.";D2.th.jobMaxC1="Job Lv ถึง 50 แล้ว";
@@ -5419,6 +5420,13 @@ function talkTo(n){
   setMarker(n.x,n.y);
 }
 /* Archetype Helper: explains archetypes, gives the Archetype Trial at Job Lv 10 (C0 only) */
+/* v20.5: the Archetype Trial starts by itself once a Beginner has Job Lv 10 and Basic Skill Lv 10 (no need to visit Sera first) */
+function autoArchTrial(silent){
+  if(S.arch!=="beginner"||S.jlv<10||!hasBasic("arch"))return;
+  const q=S.q.arch;if(q&&(q.s==="active"||q.s==="done"))return;
+  if(silent){S.q.arch={s:"active",st:0,p:0,n:(q&&q.n)||0};if(!S.pins.includes("arch")&&S.pins.length<5)S.pins.push("arch");return}
+  acceptQuest("arch");toast(t("arch_auto"),true);
+}
 function helperTalk(n){
   const intro=["helper_i0","helper_i1","helper_i2","helper_i3","helper_i4"];
   if(S.arch!=="beginner"){openDlg(n.nameK,[fmt("helper_done",{a:t("ar_"+S.arch)})].map(x=>({raw:x})),n.pal,null);return}
@@ -5493,7 +5501,7 @@ function questEvent(e){
 }
 function acceptQuest(id){if(doneToday(id)){toast(t("q_todayMsg"));return}AUD.sfx("quest");const d=QD[id];S.q[id]={s:"active",st:0,p:0,n:(S.q[id]&&S.q[id].n)||0,day:S.q[id]&&S.q[id].day};
   if(S.pins.length<5&&!S.pins.includes(id))S.pins.push(id);toast(fmt("q_accepted",{q:t(d.titleK)}));checkInstant();renderQuest();save()}
-function abandonQuest(id){if(id==="main")return;const n=(S.q[id]&&S.q[id].n)||0;S.q[id]={s:"avail",st:0,p:0,n,day:S.q[id]&&S.q[id].day};S.pins=S.pins.filter(x=>x!==id);if(player.nav===id)player.nav=null;renderQuest();save()}
+function abandonQuest(id){if(id==="main"||id==="arch")return;const n=(S.q[id]&&S.q[id].n)||0;S.q[id]={s:"avail",st:0,p:0,n,day:S.q[id]&&S.q[id].day};S.pins=S.pins.filter(x=>x!==id);if(player.nav===id)player.nav=null;renderQuest();save()}
 function togglePin(id){if(S.pins.includes(id))S.pins=S.pins.filter(x=>x!==id);else{if(S.pins.length>=5){toast(t("q_pinMax"));return}S.pins.push(id)}renderQuest();save()}
 function startNav(id){if(player.dead||!curObj(id))return;player.nav=id;player.target=null;player.path=[];navT=0;hideHint();toast(fmt("q_navStart",{q:t(QD[id].titleK)}));renderQuest()}
 const monMatch=(mo,o)=>!mo.dead&&mo.dieT<=0&&(!o.mon||mo.type===o.mon)&&(!o.elite||mo.elite);
@@ -5536,7 +5544,7 @@ function gainBase(n){S.exp+=n;let up=false;while(S.exp>=need(S.lv)){S.exp-=need(
   if(up&&winId)renderWin();   // open windows (character) show the new stats right away
   if(up){S.hp=hpMax();S.sp=spMax();fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:1.4,c:"#ffd76a",follow:true});save()}}
 function gainJob(n){if(S.jlv>=jcap()){S.jexp=0;return}S.jexp+=n;while(S.jlv<jcap()&&S.jexp>=jneed(S.jlv)){S.jexp-=jneed(S.jlv);S.jlv++;toast(fmt("jobUp",{n:S.jlv}),true);fx.push({k:"ring",x:player.x,y:player.y,t:0,d:.8,c:"#7cf0a8",r:70,follow:true})}
-  if(S.jlv>=jcap()){S.jexp=0;toast(t(S.arch==="beginner"?"jobMax":"jobMaxC1"))}}
+  if(S.jlv>=jcap()){S.jexp=0;toast(t(S.arch==="beginner"?"jobMax":"jobMaxC1"))}autoArchTrial()}
 
 /* ================= combat (REOC formulas) ================= */
 const rnd=Math.random;
@@ -5737,7 +5745,7 @@ const basicLv=()=>Math.max(1,Math.min(BASIC_MAX,S.basicLv|0));
 const hasBasic=k=>basicLv()>=(BASIC_UNLOCK[k]||1);
 const basicNeed=k=>fmt("bs_need",{n:BASIC_UNLOCK[k]});
 function basicBlock(k){if(hasBasic(k))return false;AUD.sfx("err");toast(basicNeed(k));return true}   // true = blocked (and the player was told why)
-function basicRaise(){if(S.arch!=="beginner"||basicLv()>=BASIC_MAX||skAvail()<=0)return;S.basicLv=basicLv()+1;AUD.sfx("levelup");toast(fmt("bs_up",{n:S.basicLv,a:t("bs_u_"+BASIC_ROWS[S.basicLv-1])}),true);_pdKey="";buildSlots();renderWin();save()}
+function basicRaise(){if(S.arch!=="beginner"||basicLv()>=BASIC_MAX||skAvail()<=0)return;S.basicLv=basicLv()+1;AUD.sfx("levelup");toast(fmt("bs_up",{n:S.basicLv,a:t("bs_u_"+BASIC_ROWS[S.basicLv-1])}),true);_pdKey="";buildSlots();renderWin();save();autoArchTrial()}
 const actList=()=>S.arch==="beginner"?REOC.ARCH.beginner.actives:[...REOC.ARCH[S.arch].actives,...BASIC_ACT];   // skills a hotbar slot may hold
 function skMine(){if(S.arch==="beginner")return [];const A=REOC.ARCH[S.arch];return [...A.actives,...A.passives]}   // skills raised with points (Beginner: only Basic Skill)
 function skMaxOf(id){return REOC.skMax(id)}
@@ -6334,7 +6342,7 @@ const WIN={
     const done=ids.reduce((a,id)=>a+((S.q[id]&&S.q[id].n)||0),0);
     const row=(id,on)=>{const d=QD[id],pin=S.pins.includes(id),lv=(d.type==="main"||d.type==="job")?0:qlv(id);
       return `<div class="row qrow" style="--qc:${QCOL[d.type]}"><span class="qbar"></span><div class="grow"><b>${t(d.titleK)}</b> <small style="display:inline;color:${QCOL[d.type]}">${t("qt_"+d.type)}${d.rep?" · "+t("q_repeat"):""}${lv?" · Lv "+lv:""}</small><small>${on?objText(id):fmtObjPreview(id)}</small></div>
-      ${on?`<button class="btn sm ${pin?"pri":""}" data-act="pin" data-q="${id}">${t(pin?"q_tracked":"q_track")}</button><button class="btn sm" data-act="auto" data-q="${id}">${t("q_auto")}</button>${id!=="main"?`<button class="btn sm" data-act="abandon" data-q="${id}">×</button>`:""}`:doneToday(id)?`<span class="qs done">${t("q_today")}</span>`:`<button class="btn sm pri" data-act="accept" data-q="${id}">${t("q_accept")}</button>`}</div>`};
+      ${on?`<button class="btn sm ${pin?"pri":""}" data-act="pin" data-q="${id}">${t(pin?"q_tracked":"q_track")}</button><button class="btn sm" data-act="auto" data-q="${id}">${t("q_auto")}</button>${id!=="main"&&id!=="arch"?`<button class="btn sm" data-act="abandon" data-q="${id}">×</button>`:""}`:doneToday(id)?`<span class="qs done">${t("q_today")}</span>`:`<button class="btn sm pri" data-act="accept" data-q="${id}">${t("q_accept")}</button>`}</div>`};
     const grp={};for(const id of av){const k=QD[id].qmap||"gen";(grp[k]=grp[k]||[]).push(id)}
     const groups=["field1","field2","field3","geo","ruins","gen"].filter(k=>grp[k]).map(k=>`<div class="w-sec sub">${k==="gen"?t("q_general"):t(MAPS[k].nameK)}${k!=="gen"&&MAPS[k].rec?` <span class="muted">· ${fmt("rec",{n:num(MAPS[k].rec)})}</span>`:""}</div><div class="rows">${grp[k].sort((a,b)=>qlv(a)-qlv(b)).map(id=>row(id,false)).join("")}</div>`).join("");
     return `<div class="w-sec">${t("q_active")} <span class="muted">· ${fmt("q_count",{n:S.pins.filter(id=>S.q[id]&&S.q[id].s==="active").length})}</span></div><div class="rows">${act.map(id=>row(id,true)).join("")||`<p class="muted">—</p>`}</div>
@@ -6747,7 +6755,7 @@ function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[d
   else if(a==="stotab"){stoTab=b.dataset.v;renderWin()}
   else if(a==="stopage"){stoPage[stoTab]=Math.max(0,(stoPage[stoTab]|0)+ +b.dataset.d);renderWin()}
   else if(a==="stomv")stoMove(b.dataset.k)
-  else if(a==="tJob"){S.jlv=10;S.jexp=0;toast("Job Lv 10");renderWin();save()}
+  else if(a==="tJob"){S.jlv=10;S.jexp=0;toast("Job Lv 10");renderWin();save();autoArchTrial()}
   else if(a==="tElite"){const q=S.q.arch,o=curObj("arch");if(q&&o&&o.t==="kill"){q.p=Math.min(o.n,q.p+10);if(q.p>=o.n)completeStage("arch");renderQuest();toast(`${t("qa_title")}: ${q.p}/${o.n}`)}else toast(t("tEliteNeed"));renderWin();save()}
   else if(a==="st")stRaise(b.dataset.k,+(b.dataset.n||1))
   else if(a==="stAuto"){S.autoStat=!S.autoStat;if(S.autoStat)S.stats=REOC.autoStats(S.arch,S.lv);S.hp=Math.min(S.hp,hpMax());S.sp=Math.min(S.sp,spMax());renderWin();save()}
@@ -7000,6 +7008,7 @@ try{if(saved){
   if(S.q.main.s==="done"&&S.q.main.st<QD.main.stages.length){S.q.main.s="active";if(!S.pins.includes("main")&&S.pins.length<5)S.pins.unshift("main")}
   if(!REOC.ARCH[S.arch])S.arch="beginner";
   if(S.arch!=="beginner"&&(!S.q.arch||S.q.arch.s!=="done"))S.q.arch={s:"done",st:2,p:0,n:1};
+  autoArchTrial(true);   // older saves that already meet the requirements get the trial now
   {const st={};for(const k of REOC.STATS)st[k]=Math.max(1,Math.min(99,Math.floor(+(S.stats&&S.stats[k])||1)));S.stats=st}
   if(typeof S.autoStat!=="boolean")S.autoStat=true;
   if(typeof S.autoIdle!=="boolean")S.autoIdle=true;

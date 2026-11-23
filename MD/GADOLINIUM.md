@@ -41,7 +41,7 @@ The ground texture is drawn in chunks of up to 2048 px (`groundGen` / `groundChu
 | `lumi` | Guide Lumi / ผู้นำทาง ลูมิ | (55, 43), beside the monument | Starter quest giver |
 | `bors` | Bors the Merchant / พ่อค้าบอร์ส | (61, 36), Tool Dealer path | Potions, Scandium shop |
 | `veyra` | Captain Veyra / กัปตันเวย์รา | (37, 62), Forge path | Combat and idle tips |
-| `helper` | Archetype Helper Sera / ผู้แนะแนวอาร์คีไทป์ เซร่า | (57, 63), Inn path | Teaches the 4 archetypes; gives the Archetype Trial at Job Lv 10 with Basic Skill Lv 10 |
+| `helper` | Archetype Helper Sera / ผู้แนะแนวอาร์คีไทป์ เซร่า | (57, 63), Inn path | Teaches the 4 archetypes; takes the Archetype Trial turn-in (the trial starts automatically at Job Lv 10 with Basic Skill Lv 10) |
 | `narvis` | Narvis / นาร์วิส (role tag POCKET DIMENSION) | (41, 57), west edge of the plaza (`NARVIS_AT`) | Opens the Pocket Dimension (personal storage) for Basic Skill Lv 5+ (`ITEMS.md` §7). Every main town gets its own Narvis |
 
 `placeTownNpcs` snaps each NPC to the nearest free road or plaza tile.

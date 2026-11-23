@@ -32,7 +32,7 @@ Every Beginner has one skill, **Basic Skill**, with **10 levels**. Lv 1 is given
 | 7 | Party | *Create a party* and Social → Party are locked until Lv 7 |
 | 8 | Trade | Player trade and stalls (both still *Soon*) show the Lv 8 requirement until then |
 | 9 | Guild | Social → Guild and guild invites are locked until Lv 9 |
-| 10 | Archetype | Sera gives the Archetype Trial only with **Basic Skill Lv 10** and Job Lv 10 (§4) |
+| 10 | Archetype | The Archetype Trial **starts automatically** once Basic Skill Lv 10 and Job Lv 10 are both reached (§4) |
 
 - **Kept for good.** Choosing an Archetype never removes Basic Skill or anything it taught. First Aid and Heavy Strike stay in the Skills window and can go on any hotbar slot (new archetype hotbars put them after the 4 archetype skills). An Archetype's own points start from 0 as before; Basic Skill does not use them.
 - First Aid and Heavy Strike have no + button of their own: their level comes from Basic Skill (Lv 3 / Lv 4). A locked one says "Requires Basic Skill Lv N" when used.
@@ -113,7 +113,7 @@ supporter: tbd_4_1 … tbd_4_4
 |---|---|
 | 1 | Every new character is a **Beginner (C0)**, Job Lv cap 10. |
 | 2 | Talk to **Archetype Helper Sera** in Gadolinium plaza (tile 28, 27). She explains the 4 archetypes. Before Job Lv 10 she only teaches and says to come back. |
-| 3 | At **Job Lv 10** and **Basic Skill Lv 10** (§1b) she offers the quest **Archetype Trial**: defeat **1 Elite monster** in any field. The quest is only given by her (it never appears in the Quests window list). |
+| 3 | **v20.5: automatic.** The moment the character has both **Job Lv 10** and **Basic Skill Lv 10** (§1b), whichever comes last, the quest **Archetype Trial** starts by itself and is tracked: defeat **1 Elite monster** in any field. No visit to Sera is needed to start it (talking to her still starts it as a fallback). It never appears in the Quests window list and cannot be abandoned. Older saves that already meet both requirements get it when loaded. |
 | 4 | Return to her. A choice window shows the 4 archetypes; the player picks **exactly one** (Choose → Confirm). |
 | 5 | The character becomes that archetype (**C1**). **Job Lv resets to 1** with a new cap of **50**. Reward: 500 Base EXP, 30 Yttrium. |
 | 6 | The choice is **permanent**. Talking to her again only gives encouragement. |
