@@ -118,7 +118,7 @@ Players can switch auto-assign off and spend points by hand in the Character win
 
 ## Prototype-only behavior
 - **v5.1:** no more free switching. A Beginner picks **one** archetype, permanently, through the Archetype Trial (Job Lv 10 → 1 Elite → choose). See `JOBS.md` §4.
-- Settings has two **test shortcuts** for checking the flow quickly: set Job Lv 10, and +10 Elite kills on the trial. Remove them before release.
+- Settings has one **test shortcut** for checking the flow quickly: set Job Lv 10. Remove it before release. (The old "+10 Elite kills" shortcut was removed in v20.7.)
 - Recommended CP: Field 01 **150**, Field 02 **450**.
 
 ## Known gaps / next balancing pass

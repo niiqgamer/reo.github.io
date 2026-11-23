@@ -115,7 +115,7 @@ supporter: tbd_4_1 … tbd_4_4
 | 2 | Talk to **Archetype Helper Sera** in Gadolinium plaza (tile 28, 27). She explains the 4 archetypes. Before Job Lv 10 she only teaches and says to come back. |
 | 3 | **v20.5: automatic.** The moment the character has both **Job Lv 10** and **Basic Skill Lv 10** (§1b), whichever comes last, the quest **Archetype Trial** starts by itself and is tracked: defeat **1 Elite monster** in any field. No visit to Sera is needed to start it (talking to her still starts it as a fallback). It never appears in the Quests window list and cannot be abandoned. Older saves that already meet both requirements get it when loaded. |
 | 4 | Return to her. A choice window shows the 4 archetypes; the player picks **exactly one** (Choose → Confirm). |
-| 5 | The character becomes that archetype (**C1**). **Job Lv resets to 1** with a new cap of **50**. Reward: 500 Base EXP, 30 Yttrium. |
+| 5 | The character becomes that archetype (**C1**). **Job Lv resets to 1** with a new cap of **50**. Reward: 500 Base EXP, 30 Yttrium and the full **10-piece class set** of that archetype (**Lv 10**, Common ✪, no random options), equipped at once; the Beginner pieces go to the bag (v20.7). |
 | 6 | The choice is **permanent**. Talking to her again only gives encouragement. |
 
 - Requirement used: **Job Lv 10**. The earlier draft also required Base Lv 10; it was dropped to match the latest direction.

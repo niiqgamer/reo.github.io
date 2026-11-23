@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.6 (this update)
+## Changes in v20.7 (this update)
+- **Quests.** Main quest "A New Beginning" is now 9 chapters (3 kills each in Field 01/02/03, then return to Lumi). The Archetype Trial needs 1 Elite and **starts automatically** at Job Lv 10 + Basic Skill Lv 10; it can't be abandoned. Finishing it gives the chosen archetype's **full 10-piece class set** (Lv 10, Common, no random options), equipped at once. The "+10 Elite kills" test button is gone from Settings. Every Normal quest can be done **once per day**; every Elite Hunt pays only 1 Yttrium. See `QUESTS.md`, `JOBS.md` §4.
+
+## Changes in v20.6
 - **Spellcaster skills.** Mana Flow is now Lv 1–10 (Max SP +1–12%, SP regen +10–30%, SP cost −1–12%) and Elemental Attunement Lv 1–5 (+5% weakness bonus per level, 175% at Lv 5). New buff **Overload Energy** Lv 1–5: +1–5% Overload Rate for 20–120 s to self and party within 12 × 12 tiles, cooldown 60 s, Global Delay 1 s, cast 1–2 s, SP 50 / 65 / 80 / 95 / 110, Self Cast (no target needed). New spec term: **Self Cast** vs **Target Cast** (`SKILL-SPEC.md` §1). The Skills window shows each passive's current and next level. See `SKILL-SPEC.md` §3b–3d, `ARCHETYPES.md`, `COMBAT-FORMULAS.md` §3b.
 
 ## Changes in v20.5

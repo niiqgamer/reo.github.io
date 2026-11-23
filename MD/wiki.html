@@ -453,8 +453,8 @@ const SETS={beginner:[["Wanderer","AGI"],["Scout","HIT, FLEE"],["Apprentice","IN
 /* quests */
 const MAINQ=[
  ["คุยกับ Guide Lumi","40 / 20",""],["พบ Bors ที่ Tool Dealer","60 / 30","Red Potion ×5"],["แตะคริสตัล Gadolinium","180 / 80","20 Y"],
- ["ปราบมอนสเตอร์ใน Field 01 ครบ 10 ตัว","200 / 100","30 Y"],["ไปให้ถึง Field 02","150 / 80",""],["ปราบ Elite 1 ตัว","400 / 200","50 Y"],
- ["ไปให้ถึง Field 03","500 / 260",""],["ปราบ Gadolith","3,000 / 1,800","100 Y"]];
+ ["ปราบมอนสเตอร์ใน Field 01 ครบ 3 ตัว","200 / 100","30 Y"],["ไปให้ถึง Field 02","150 / 80",""],["ปราบมอนสเตอร์ใน Field 02 ครบ 3 ตัว","400 / 200","50 Y"],
+ ["ไปให้ถึง Field 03","500 / 260",""],["ปราบมอนสเตอร์ใน Field 03 ครบ 3 ตัว","800 / 450",""],["กลับไปหา Guide Lumi","3,000 / 1,800","100 Y"]];
 const SIDEQ=[
  ["qs_gel","Glowing Lamp Oil","น้ำมันตะเกียงเรืองแสง","field1","เก็บ Lumite Gel 8 ชิ้น แล้วส่งให้ Bors","150 / 90","300 Sc",["mat_gel"]],
  ["qs_crawl","Crawler Control","กำจัดเจ้าตัวคลาน","field1","ปราบ Crawlix 12 ตัว แล้วรายงานต่อ Captain Veyra","260 / 150","15 Y",["crawlix"]],
@@ -465,7 +465,7 @@ const HUNTS=[
  ["nebulite","field2",12,"691","454","269",""],["shardback","field2",10,"900","612","328",""],["cryoculus","field2",15,"2,295","1,485","780",""],
  ["glacilite","field3",15,"3,105","2,025","1,176",""],["rimeback","field3",15,"4,455","2,903","1,608",""],["magnoculus","field3",15,"6,345","4,050","2,400",""]
 ];
-const ELITEQ=[["field1","900","500","700","5 Y"],["field2","2,400","1,400","1,500","8 Y"],["field3","5,200","3,000","3,000","12 Y"]];
+const ELITEQ=[["field1","—","—","—","1 Y"],["field2","—","—","—","1 Y"],["field3","—","—","—","1 Y"]];
 
 /* ================= modal ================= */
 const modal=$("#modal"),mbox=$("#mbox");
@@ -561,7 +561,7 @@ P.home=()=>{
 
 P.intro=()=>{
   const feat=[["Browser MMORPG","เล่นบนเว็บเบราว์เซอร์ ออกแบบให้เล่นบนมือถือได้ด้วย"],["Idle Mechanics","กดปุ่ม Idle เพื่อล่าอัตโนมัติ หยุดเมื่อเปลี่ยนแมพหรือกลับเมือง"],["2.5D Isometric","มุมมองควอเตอร์วิวสไตล์อนิเมะชิบิ กล้องล็อกที่ตัวละครเสมอ"],["Thai / English","สลับภาษาได้ทันทีโดยไม่ต้องรีโหลดหน้า"],["Auto-quest","แตะเควสต์ในตัวติดตามเพื่อให้ตัวละครเดินไปทำให้เอง"],["Layout ยืดหยุ่น","Auto / แนวนอน / แนวตั้ง สลับได้โดยไม่เสียสถานะเกม"]];
-  const guide=[["เข้าเกม","เล่นแบบ Guest หรือสมัครบัญชี ตัวละครใหม่เกิดกลางจัตุรัสแกโดลิเนียมในฐานะ Beginner"],["เควสต์เปิดเรื่อง","คุยกับ Guide Lumi → พบ Bors → แตะคริสตัล Gadolinium"],["ออกล่า","ออกประตูตะวันออกไป Field 01 ปราบมอนสเตอร์ 10 ตัว หรือกด Idle"],["เลือก Archetype","เมื่อ Job Lv 10 ไปหา Archetype Helper Sera ทำ Archetype Trial (ปราบ Elite 10 ตัว)"],["ไปต่อ","เก็บเลเวลที่ Field 02 และ Field 03 พร้อมอัปเกรดอุปกรณ์"],["ท้าบอส","เมื่อ CP พร้อมไปปราบ Gadolith ที่ลานบอสของ Field 03"]];
+  const guide=[["เข้าเกม","เล่นแบบ Guest หรือสมัครบัญชี ตัวละครใหม่เกิดกลางจัตุรัสแกโดลิเนียมในฐานะ Beginner"],["เควสต์เปิดเรื่อง","คุยกับ Guide Lumi → พบ Bors → แตะคริสตัล Gadolinium"],["ออกล่า","ออกประตูตะวันออกไป Field 01 ปราบมอนสเตอร์ 3 ตัว หรือกด Idle"],["เลือก Archetype","เมื่อ Job Lv 10 และ Basic Skill Lv 10 เควสต์ Archetype Trial เริ่มเอง ปราบ Elite 1 ตัว แล้วกลับไปหา Sera รับชุดประจำ Archetype 10 ชิ้น"],["ไปต่อ","เก็บเลเวลที่ Field 02 และ Field 03 พร้อมอัปเกรดอุปกรณ์"],["ท้าบอส","เมื่อ CP พร้อมไปปราบ Gadolith ที่ลานบอสของ Field 03"]];
   return `<div class="page">${head("แนะนำเกม","แนะนำเกมเบื้องต้น","Rare Earth Online (REO) คือเกม MMORPG ผสม Idle บนเบราว์เซอร์ ทุกพื้นที่ตั้งชื่อตามธาตุหายาก และแสงสีเงิน-ม่วงของธาตุเหล่านี้คือเส้นเรื่องของโลกในเกม")}
   <div class="hero" style="--hero:url('${IMG.scene_town}');min-height:220px;padding:24px 30px"><h1 style="font-size:32px">เมืองแห่งการเริ่มต้น · แกโดลิเนียม</h1><p style="margin:6px 0 0">ผู้เล่นทุกคนเริ่มต้นที่นี่ เป็น Beginner ที่กลางจัตุรัสเมือง แล้วค่อย ๆ ออกเดินทางสู่ทุ่งที่อยู่ไกลออกไป</p></div>
   <section class="sec"><h2>จุดเด่นของเกม</h2><div class="grid g3">${feat.map(f=>`<div class="card"><h4>${f[0]}</h4><p class="muted" style="margin:6px 0 0">${f[1]}</p></div>`).join("")}</div></section>
@@ -617,8 +617,8 @@ P.archetype=()=>{
   <section class="sec"><h2>Archetype Trial</h2><div class="steps">
     <div class="stp"><b>ขั้นที่ 1</b><span>ตัวละครใหม่เป็น Beginner (Job Lv สูงสุด 10)</span></div>
     <div class="stp"><b>ขั้นที่ 2</b><span>คุยกับ Archetype Helper Sera ที่จัตุรัสแกโดลิเนียมเพื่อดูข้อมูลทั้ง 4 สาย</span></div>
-    <div class="stp"><b>ขั้นที่ 3</b><span>เมื่อ Job Lv 10 และ Basic Skill Lv 10 รับเควสต์ปราบ Elite 1 ตัวในสนามใดก็ได้ (Elite มีวงทองใต้เท้า)</span></div>
-    <div class="stp"><b>ขั้นที่ 4</b><span>กลับไปหา Sera เลือก 1 Archetype ถาวร รับ 500 Base EXP และ 30 Y · Job Lv รีเป็น 1 (สูงสุด 50)</span></div></div></section>
+    <div class="stp"><b>ขั้นที่ 3</b><span>เมื่อ Job Lv 10 และ Basic Skill Lv 10 เควสต์จะเริ่มเองอัตโนมัติ: ปราบ Elite 1 ตัวในสนามใดก็ได้ (Elite มีวงทองใต้เท้า)</span></div>
+    <div class="stp"><b>ขั้นที่ 4</b><span>กลับไปหา Sera เลือก 1 Archetype ถาวร รับ 500 Base EXP, 30 Y และชุดประจำ Archetype ครบ 10 ชิ้น (สวมให้ทันที) · Job Lv รีเป็น 1 (สูงสุด 50)</span></div></div></section>
   <footer class="ft">REO Wiki · ค่าต่าง ๆ เป็นต้นแบบและอาจปรับสมดุลในอนาคต</footer></div>`;
 };
 
@@ -715,20 +715,20 @@ P.items=()=>{
 P.quests=()=>{
   return `<div class="page">${head("Quests","Quests","รับเควสต์ได้ไม่จำกัด ตัวติดตามแสดงได้สูงสุด 5 เควสต์ แตะเควสต์ในตัวติดตามเพื่อให้ตัวละครเดินไปทำให้เอง (Auto-quest) คลิกที่แมพเพื่อยกเลิก",
   `<div style="display:flex;gap:8px;flex-wrap:wrap"><span class="qt main">Main</span><span class="qt job">Job</span><span class="qt side">Side</span><span class="qt normal">Normal</span></div>`)}
-  <section class="sec"><h2><span class="qt main" style="font-size:14px">Main</span> A New Beginning <span class="th" style="font-weight:400">จุดเริ่มต้นใหม่</span></h2><p class="lead">8 บท ตั้งแต่ในเมืองจนถึงการปราบบอสตัวแรก · รางวัลเป็น Base EXP / Job EXP</p>
+  <section class="sec"><h2><span class="qt main" style="font-size:14px">Main</span> A New Beginning <span class="th" style="font-weight:400">จุดเริ่มต้นใหม่</span></h2><p class="lead">9 บท ตั้งแต่ในเมือง ผ่าน Field 01–03 แล้วกลับมาหา Lumi · รางวัลเป็น Base EXP / Job EXP</p>
     <div class="chap" style="margin-top:18px">${MAINQ.map((c,i)=>`<div class="cp"><span class="no">บท ${i+1}</span><b>${c[0]}</b><div class="rw"><span class="chip">EXP ${c[1]}</span>${c[2]?`<span class="chip" style="color:var(--goldtext)">${c[2]}</span>`:""}</div></div>`).join("")}</div></section>
   <section class="sec"><h2><span class="qt job" style="font-size:14px">Job</span> Archetype Trial <span class="th" style="font-weight:400">บททดสอบอาร์คีไทป์</span></h2>
-    <div class="card"><p style="margin:0">ให้โดย <b>Archetype Helper Sera</b> เมื่อ Job Lv 10 (ไม่แสดงในรายการเควสต์ปกติ) · ปราบ Elite 10 ตัวในสนามใดก็ได้ → กลับไปเลือก 1 ใน 4 Archetype · รางวัล 500 Base EXP และ 30 Y</p></div></section>
+    <div class="card"><p style="margin:0">เริ่มเองอัตโนมัติเมื่อ <b>Job Lv 10</b> และ <b>Basic Skill Lv 10</b> (ไม่แสดงในรายการเควสต์ปกติ ยกเลิกไม่ได้) · ปราบ Elite 1 ตัวในสนามใดก็ได้ → กลับไปหา <b>Archetype Helper Sera</b> เลือก 1 ใน 4 Archetype · รางวัล 500 Base EXP, 30 Y และ<b>ชุดประจำ Archetype ครบ 10 ชิ้น</b> (Lv 10 ระดับธรรมดา ไม่มีออฟชั่นสุ่ม สวมให้ทันที)</p></div></section>
   <section class="sec"><h2><span class="qt side" style="font-size:14px">Side</span> เควสต์ข้าง</h2><div class="grid g3">${SIDEQ.map(q=>`<div class="card"><div style="display:flex;gap:10px;align-items:center">${cell(q[7][0].startsWith("mat")?ITEMS[q[7][0]].svg:`<img src="${monImg(q[7][0])}" style="width:50px;height:50px;object-fit:contain" alt="">`,"",0)}<div><h4>${q[1]}</h4><div class="th">${q[2]} · ${mapById(q[3]).n}</div></div></div>
     <p style="margin:10px 0">${q[4]}</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip">EXP ${q[5]}</span><span class="chip" style="color:var(--goldtext)">${q[6]}</span></div></div>`).join("")}</div></section>
-  <section class="sec"><h2><span class="qt normal" style="font-size:14px">Normal</span> ล่ามอนสเตอร์ (ทำซ้ำได้)</h2><p class="lead">ทุกมอนสเตอร์มีเควสต์ล่าประจำตัว รางวัลเป็นโบนัสเพิ่มจาก EXP ที่ได้ตอนปราบ · ลิมิตทำซ้ำรายวัน ${SOON}</p>
+  <section class="sec"><h2><span class="qt normal" style="font-size:14px">Normal</span> ล่ามอนสเตอร์ (รายวัน)</h2><p class="lead">ทุกมอนสเตอร์มีเควสต์ล่าประจำตัว รางวัลเป็นโบนัสเพิ่มจาก EXP ที่ได้ตอนปราบ · เควสต์ Normal ทุกอันทำได้วันละครั้ง · Elite Hunt ทุกแมพให้ 1 Y อย่างเดียว</p>
     <div class="tw"><table><thead><tr><th>เควสต์</th><th>แมพ</th><th>เป้าหมาย</th><th>Base EXP</th><th>Job EXP</th><th>Scandium</th></tr></thead><tbody>
     ${HUNTS.map(h=>`<tr><td><button class="mchip" data-mon="${h[0]}" type="button" style="padding:4px 10px 4px 6px"><img src="${monImg(h[0])}" alt=""><span><b>Hunt: ${monById(h[0]).n}</b></span></button></td><td>${mapById(h[1]).n}</td><td>${h[2]} ตัว</td><td>${h[3]}</td><td>${h[4]}</td><td>${h[5]}</td></tr>`).join("")}
     ${ELITEQ.map(e=>`<tr><td><b>Elite Hunt</b></td><td>${mapById(e[0]).n}</td><td>Elite 3 ตัว</td><td>${e[1]}</td><td>${e[2]}</td><td>${e[3]} <span class="chip">+${e[4]}</span></td></tr>`).join("")}
     <tr><td><button class="mchip" data-mon="gadolith" type="button" style="padding:4px 10px 4px 6px"><img src="${monImg("gadolith")}" alt=""><span><b>Boss Hunt: Gadolith</b></span></button></td><td>Field 03</td><td>บอส 1 ตัว</td><td>2,500</td><td>1,500</td><td>2,500 <span class="chip">+20 Y</span></td></tr>
     <tr><td><b>Ore Delivery</b></td><td>ทั่วไป</td><td>Gadolinium Ore 3 ชิ้น</td><td>200</td><td>100</td><td>500</td></tr></tbody></table></div></section>
   <section class="sec"><h2>ไอเท็มเควสต์</h2><div class="grid g3">${["mat_gel","mat_ore","mat_gheart"].map(i=>`<button class="ib" data-item="${i}" type="button" style="flex-direction:row;text-align:left;gap:12px;padding:12px">${cell(ITEMS[i].svg,"q")}<span><b>${esc(ITEMS[i].n[0])}</b><br><small>${esc(ITEMS[i].d[1])}</small></span></button>`).join("")}</div>
-    <p class="muted" style="font-size:13px;margin:10px 0 0">ไอเท็มเควสต์อยู่แท็บ Quest ในช่องเก็บของ ขายและทิ้งไม่ได้ · เควสต์ของ Class/Job ขั้น C2 และเควสต์รายวัน ${SOON}</p></section>
+    <p class="muted" style="font-size:13px;margin:10px 0 0">ไอเท็มเควสต์อยู่แท็บ Quest ในช่องเก็บของ ขายและทิ้งไม่ได้ · เควสต์ของ Class/Job ขั้น C2 ${SOON}</p></section>
   <footer class="ft">REO Wiki · รางวัลและเงื่อนไขเป็นค่าในเกมเวอร์ชันปัจจุบัน</footer></div>`;
 };
 

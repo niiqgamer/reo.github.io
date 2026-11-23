@@ -18,7 +18,7 @@ Available quests are **grouped by map** (Field 01, 02, 03, Path to the Geosyncli
 ## Current quests
 | ID | Type | Title (EN / TH) | Stages | Reward |
 |---|---|---|---|---|
-| `arch` | **Job** (violet `#B98CFF`), starts automatically at Job Lv 10 + Basic Skill Lv 10, can't be abandoned | Archetype Trial / บททดสอบอาร์คีไทป์ | defeat 1 Elite (any field) → return and choose 1 of 4 archetypes | 500 Base EXP, 30 Y, becomes C1 |
+| `arch` | **Job** (violet `#B98CFF`), starts automatically at Job Lv 10 + Basic Skill Lv 10, can't be abandoned | Archetype Trial / บททดสอบอาร์คีไทป์ | defeat 1 Elite (any field) → return and choose 1 of 4 archetypes | 500 Base EXP, 30 Y, becomes C1, plus the full **10-piece class set** of the chosen archetype (**Lv 10**, Common, no random options), worn at once. Beginner pieces go to the bag |
 | `main` | Main | A New Beginning / จุดเริ่มต้นใหม่ | Lumi → Bors → Crystal → 3 kills in Field 01 → reach Field 02 → 3 kills in Field 02 → reach Field 03 → 3 kills in Field 03 → return to Lumi (see below) | per stage; 9 chapters in total (see below) |
 | `qs_gel` | Side | Glowing Lamp Oil / น้ำมันตะเกียงเรืองแสง | collect 8 Lumite Gel → Bors | 150 / 90 EXP, 300 Sc |
 | `qs_crawl` | Side | Crawler Control / กำจัดเจ้าตัวคลาน | 12 Crawlix → Veyra | 260 / 150 EXP, 15 Y |

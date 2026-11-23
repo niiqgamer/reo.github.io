@@ -162,7 +162,7 @@ Beginner มีสกิลเดียวคือ **Basic Skill** 10 เลเ
 1. ตัวละครใหม่เป็น Beginner (Job Lv สูงสุด 10)
 2. อัพ Job Lv ให้ถึง 10 และอัพ **Basic Skill** ให้เต็ม Lv 10
 3. พอครบทั้งสองอย่าง เควสต์ Archetype Trial จะเริ่มเองอัตโนมัติ: ปราบ Elite 1 ตัวในสนามใดก็ได้
-4. กลับไปหา Sera เลือก 1 Archetype ถาวร · รับ 500 Base EXP และ 30 Y · Job Lv รีเป็น 1 (สูงสุด 50)
+4. กลับไปหา Sera เลือก 1 Archetype ถาวร · รับ 500 Base EXP, 30 Y และ**ชุดประจำ Archetype ครบ 10 ชิ้น** (Lv 10 ระดับธรรมดา ไม่มีออฟชั่นสุ่ม สวมให้ทันที) · Job Lv รีเป็น 1 (สูงสุด 50)
 
 ---
 
@@ -478,7 +478,7 @@ Lv 20 · Earth · HP 8,000 · ATK 58 · Hard DEF 25% · MDEF 20% · โจมต
 | 9 | กลับไปหา Guide Lumi | 3,000 / 1,800 | 100 Y |
 
 ### Job: Archetype Trial
-เริ่มเองอัตโนมัติเมื่อ Job Lv 10 และ Basic Skill Lv 10 · ปราบ Elite 1 ตัว แล้วส่งที่ Archetype Helper Sera → เลือก 1 Archetype · 500 Base EXP + 30 Y
+เริ่มเองอัตโนมัติเมื่อ Job Lv 10 และ Basic Skill Lv 10 · ปราบ Elite 1 ตัว แล้วส่งที่ Archetype Helper Sera → เลือก 1 Archetype · 500 Base EXP + 30 Y + ชุดประจำ Archetype 10 ชิ้น
 
 ### Side
 | เควสต์ | แมพ | เป้าหมาย | EXP | รางวัล |
