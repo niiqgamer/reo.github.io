@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.5. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.6. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.5 (this update)
+## Changes in v20.6 (this update)
+- **Spellcaster skills.** Mana Flow is now Lv 1–10 (Max SP +1–12%, SP regen +10–30%, SP cost −1–12%) and Elemental Attunement Lv 1–5 (+5% weakness bonus per level, 175% at Lv 5). New buff **Overload Energy** Lv 1–5: +1–5% Overload Rate for 20–120 s to self and party within 12 × 12 tiles, cooldown 60 s, Global Delay 1 s, cast 1–2 s, SP 30 (⚠ placeholder). The Skills window shows each passive's current and next level. See `SKILL-SPEC.md` §3b–3d, `ARCHETYPES.md`, `COMBAT-FORMULAS.md` §3b.
+
+## Changes in v20.5
 - **Drag and drop on the hotkey bar.** Drag a usable item from the bag or a skill from the Skills window onto any of the 10 hotkey slots. The bar is no longer locked: a slot holds a skill or a usable item (potion, Fly Wing, apple), and a slot can be moved (drop it on another slot to swap) or cleared (drop it outside the bar; the item or skill is kept). Bag gear, materials, quest and cash items, worn pieces and passive skills are refused on the bar with a notice. A bag item dropped outside any zone does nothing. Worn pieces and bag items can be picked up for future trade and sell zones. Auto-potion uses whichever slot holds Red or Blue Potion. Saves with the old layout (7 skill slots, then Fly Wing, Red Potion, Blue Potion) migrate on load. See `UI-UX.md` §25, `SKILL-SPEC.md` §5 and `REO-INSTRUCTIONS.md` §5.
 
 ## Changes in v20.4

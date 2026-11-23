@@ -1700,10 +1700,10 @@ function spent(stats){return STATS.reduce((a,k)=>a+costTo(stats[k]||1),0)}
 
 /* ---------- elements ---------- */
 const STRONG={fire:"earth",water:"fire",wind:"water",earth:"wind"};
-// REO: weak/same-element = 0.75 (classic goes lower); Attunement raises weakness bonus 1.5 -> 1.75
+// REO: weak/same-element = 0.75 (classic goes lower); Elemental Attunement adds +5% per level to the 1.5 weakness bonus (attune = 0.05 x Lv, max 1.75 at Lv 5)
 function elemMult(a,d,attune){
   if(!a||a==="neutral"||a==="holy"||!d||d==="neutral")return 1;
-  if(STRONG[a]===d)return attune?1.75:1.5;
+  if(STRONG[a]===d)return 1.5+(+attune||0);
   if(STRONG[d]===a||a===d)return .75;
   return 1;
 }
@@ -1721,7 +1721,7 @@ const ARCH={
    actives:["double_strafe","arrow_shower","piercing_shot","evasive_leap"],passives:["eagle_eye","steady_aim"]},
  spellcaster:{type:"MAGIC",range:7,hpLv:30,spLv:11,aspd:1.3,weapon:{atk:12,lvAtk:1,ranged:false,matkBase:2,matkLv:.65},armor:.05,
    tpl:{str:0,agi:0,vit:2,int:6,dex:4,luk:0},basic:{kind:"magic",ratio:.7,elem:"neutral"},
-   actives:["fire_bolt","frost_nova","lightning_spear","stone_spike"],passives:["mana_flow","elemental_attunement"]},
+   actives:["fire_bolt","frost_nova","lightning_spear","stone_spike","overload_energy"],passives:["mana_flow","elemental_attunement"]},
  supporter:{type:"SUPPORT",range:9,healRange:15,hpLv:42,spLv:9,aspd:1.1,weapon:{atk:25,lvAtk:1.5,ranged:false,matkPct:.10},armor:.12,
    tpl:{str:0,agi:0,vit:4,int:5,dex:3,luk:0},basic:{kind:"magic",ratio:.6,elem:"holy"},
    actives:["heal","holy_light","blessing","sanctuary"],passives:["divine_grace","guardian_aura"]}
@@ -1749,6 +1749,7 @@ const SK={
  frost_nova:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.6,sp:20,cd:5,cast:.6,aoe:2.5,at:"self",freeze:.4,freezeDur:2,ic:"snow"},
  lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:3.8,sp:22,cd:3,cast:1.6,range:7,ic:"bolt"},
  stone_spike:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:2.6,sp:16,cd:2,cast:1.0,range:7,stunChance:.2,stun:1,ic:"spike"},
+ overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:120,sp:30,cd:60,gd:1,cast:2,area:6,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 30 is an ASSUMPTION (SKILL-SPEC.md)
  // supporter — Sustain: Heal (classic formula) + overheal turns into a Grace shield; buffs reach 15 tiles
  heal:{arch:"supporter",kind:"heal",lvl:5,sp:13,cd:1,range:15,ic:"plus"},
  holy_light:{arch:"supporter",kind:"magic",elem:"holy",ratio:2.0,sp:15,cd:1.5,cast:.8,range:9,ic:"sun"},
@@ -1760,18 +1761,22 @@ const PASSIVE={
  iron_body:{arch:"fighter",hpPct:.15,softDefMul:1.5},
  eagle_eye:{arch:"ranger",range:3,hit:10},
  steady_aim:{arch:"ranger",perTile:.02,crit:5},
- mana_flow:{arch:"spellcaster",spRegen:1.6,spCost:.9},
- elemental_attunement:{arch:"spellcaster",attune:true},
+ mana_flow:{arch:"spellcaster"},              // v20.6: Lv 1-10, see manaFlow()
+ elemental_attunement:{arch:"spellcaster",per:.05},   // v20.6: Lv 1-5, +5% weakness bonus per level
  divine_grace:{arch:"supporter",healPct:.2,shieldCap:.2},
  guardian_aura:{arch:"supporter",def:.08,mdef:.10}
 };
 
 /* ---------- derived stats (substats) ---------- */
+/* Mana Flow (v20.6): Lv N = Max SP +N%, SP regen +(8+2N)%, SP cost -N% ; Lv 10 = +12% / +30% / -12% */
+function manaFlow(lv){lv=Math.max(0,Math.min(10,lv|0));if(!lv)return {sp:0,regen:0,cost:0};return lv>=10?{sp:.12,regen:.30,cost:.12}:{sp:lv/100,regen:(8+2*lv)/100,cost:lv/100}}
 function derive(p){
   const A=ARCH[p.arch]||ARCH.beginner,b=p.buffs||{},s={};
   for(const k of STATS)s[k]=Math.max(1,(p.stats&&p.stats[k])||1);
   if(b.blessing){s.str+=8;s.int+=8;s.dex+=8}
-  const has=k=>A.passives.includes(k)&&(!p.learned||p.learned.includes(k));   // v20: p.learned (game only) = passives the player has learned; the simulator leaves it out = all
+  // v20.6: p.pasLv (game only) = {passive: level learned}; the simulator leaves it out = every passive at its max level
+  const pl=k=>A.passives.includes(k)?(p.pasLv?(p.pasLv[k]|0):skMax(k)):0,has=k=>pl(k)>0;
+  const mf=manaFlow(pl("mana_flow"));
   const ranged=A.weapon.ranged;
   // iRO: melee status ATK = STR + [STR/10]^2 + [DEX/5] + [LUK/5]; ranged swaps STR and DEX
   const statusAtk=ranged? s.dex+fl(s.dex/10)**2+fl(s.str/5)+fl(s.luk/5) : s.str+fl(s.str/10)**2+fl(s.dex/5)+fl(s.luk/5);
@@ -1785,7 +1790,7 @@ function derive(p){
   const baseHP=300+A.hpLv*(p.lv-1),baseSP=80+A.spLv*(p.lv-1);
   // iRO: Max HP +1% per VIT ; Max SP +1% per INT
   const maxHP=fl(baseHP*(1+s.vit/100)*(has("iron_body")?1+PASSIVE.iron_body.hpPct:1));
-  const maxSP=fl(baseSP*(1+s.int/100));
+  const maxSP=fl(baseSP*(1+s.int/100)*(1+mf.sp));
   // iRO: HIT = DEX + BaseLv ; FLEE = AGI + BaseLv ; CRIT = 1 + LUK*0.3 ; perfect dodge = 1 + LUK*0.1
   const hit=s.dex+p.lv+(has("weapon_mastery")?PASSIVE.weapon_mastery.hit:0)+(has("eagle_eye")?PASSIVE.eagle_eye.hit:0);
   const flee=s.agi+p.lv+(b.leap?30:0);
@@ -1804,9 +1809,9 @@ function derive(p){
   const range=A.range+(has("eagle_eye")?PASSIVE.eagle_eye.range:0);
   // iRO natural regen (per tick) adapted to per-second: HP = MaxHP/200 + VIT/5 ; SP = MaxSP/100 + INT/6 + 1
   const hpRegen=(maxHP/200+s.vit/5)/4;
-  const spRegen=(maxSP/100+s.int/6+1)/2*(has("mana_flow")?PASSIVE.mana_flow.spRegen:1);
+  const spRegen=(maxSP/100+s.int/6+1)/2*(1+mf.regen);
   const d={arch:p.arch,type:A.type,lv:p.lv,s,ranged,statusAtk,watk,mastery,matkMin,matkMax,maxHP,maxSP,hit,flee,crit,pdodge,interval,aspd,softDef,hardDef,mdef,softMdef,castMul,range,hpRegen,spRegen,
-    attune:has("elemental_attunement"),perTile:has("steady_aim")?PASSIVE.steady_aim.perTile:0,spCost:has("mana_flow")?PASSIVE.mana_flow.spCost:1,
+    attune:PASSIVE.elemental_attunement.per*pl("elemental_attunement"),perTile:has("steady_aim")?PASSIVE.steady_aim.perTile:0,spCost:1-mf.cost,over:p.over||0,
     healMul:1+(has("divine_grace")?PASSIVE.divine_grace.healPct:0),shieldCap:has("divine_grace")?PASSIVE.divine_grace.shieldCap:0,healRange:A.healRange||A.range};
   // gear: flat bonuses from equipped items (weapon ATK, DEF, HP, ...)
   const G=p.gear||{};
@@ -1862,7 +1867,8 @@ function magicHit(d,m,o,r){
   const em=elemMult(o.elem||"neutral",m.elem,d.attune);
   // Overload (magic critical, COMBAT-FORMULAS.md 3b): chance = max(0, CRIT - targetLUK/5) x overMul; a skill without overMul never Overloads.
   // Damage uses the top of the MATK range x1.3 and still takes MDEF.
-  const op=Math.min(100,Math.max(0,(d.crit-(m.luk||0)/5)*(o.overMul||0)));
+  // v20.6: Overload Energy adds its +% to the base Overload Rate (d.over), not to CRIT
+  const op=Math.min(100,Math.max(0,(d.crit+(d.over||0)-(m.luk||0)/5)*(o.overMul||0)));
   if(op>0&&r()*100<op)return {dmg:Math.max(1,fl(d.matkMax*o.ratio*em*(o.bonus||1)*1.3*(1-m.mdef)-m.softMdef)),weak:em>1,over:true};
   return {dmg:Math.max(1,fl(matk*o.ratio*em*(o.bonus||1)*(1-m.mdef)-m.softMdef)),weak:em>1};
 }
@@ -1892,12 +1898,14 @@ function autoStats(arch,lv,base){
 /* ---------- skill levels (v20) ----------
    Skills listed in SKLV have levels; every other skill is still the fixed Lv 5 prototype.
    Fire Bolt (SKILL-SPEC.md): Lv N = N fireballs of 100% MATK, SP 12+2(N-1), cast 0.5+0.3(N-1) s, 0.3 s apart (0.2 s from Lv 6), cooldown 0, Global Delay 1.4 s. */
-const SKLV={fire_bolt:{max:10,def:5}};
+const SKLV={fire_bolt:{max:10,def:5},overload_energy:{max:5,def:5},mana_flow:{max:10,def:10},elemental_attunement:{max:5,def:5}};   // v20.6: passives with levels too (derive reads them)
+const OE_DUR=[20,40,60,80,120],OE_CAST=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, cast; cooldown 60 s and Global Delay 1 s at every level
 const skMax=id=>SKLV[id]?SKLV[id].max:1;   // every other skill is learn-only (one level) until its levels are designed
 function skAt(id,lv){
   const k=SK[id];if(!k||!SKLV[id])return k;
   const L=clamp(Math.floor(lv)||SKLV[id].def,1,SKLV[id].max);
   if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:L,sp:10+2*L,cast:+(.2+.3*L).toFixed(2),gap:L>=6?.2:.3});
+  if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],cast:OE_CAST[L-1]});
   return k;
 }
 /* ---------- skill AI (used by idle play and by the simulator) ----------
@@ -1923,6 +1931,7 @@ function pickSkill(ctx){
     if(ctx.near>=2&&ready("arrow_shower"))return "arrow_shower";
     if(reserve&&ready("double_strafe"))return "double_strafe";return null;
    case "spellcaster":{
+    if(!ctx.buffs.overEn&&ctx.dist<=d.range&&ready("overload_energy"))return "overload_energy";   // v20.6: keep the Overload Energy buff up while fighting
     if(ctx.near>=2&&ctx.dist<=SK.frost_nova.aoe&&ready("frost_nova"))return "frost_nova";
     if(ctx.dist>d.range)return null;
     const spells=["lightning_spear","stone_spike","fire_bolt"].filter(ready);
@@ -1948,8 +1957,9 @@ function pickSkill(ctx){
 function simulate(arch,lv,monKeys,opt){
   opt=opt||{};const KL=id=>skAt(id,(opt.skLv||{})[id]||0);const r=rngOf(opt.seed||7),secs=opt.secs||300,pack=opt.pack||1,dt=.05,travel=opt.travel??4;
   const stats=opt.stats||autoStats(arch,lv);
-  const buffs={},cd={};let zone=0,shield=0,momentum=0,momT=0;
-  let d=derive({arch,lv,stats,buffs,gear:opt.gear});
+  const buffs={},cd={};let zone=0,shield=0,momentum=0,momT=0,ovV=0;
+  const DV=()=>derive({arch,lv,stats,buffs,gear:opt.gear,over:buffs.overEn>0?ovV:0});
+  let d=DV();
   let hp=d.maxHP,sp=d.maxSP,t=0,kills=0,deaths=0,dealt=0,taken=0,hpSum=0,hpN=0,casting=null,swing=0,mi=0,wait=0;
   let mobs=[],pending=[],gdT=0;
   const spawn=()=>{const key=monKeys[mi++%monKeys.length];const m=Object.assign({},opt.elite?eliteOf(MONC[key]):MONC[key]);
@@ -1972,16 +1982,16 @@ function simulate(arch,lv,monKeys,opt){
       if(k.freeze)for(const x of targets)if(r()<k.freeze)x.stun=Math.max(x.stun,k.freezeDur);
       if(k.stunChance&&m&&r()<k.stunChance)m.stun=Math.max(m.stun,k.stun)}
     else if(k.kind==="heal"){const h=healAmount(d,k),over=Math.max(0,hp+h-d.maxHP);hp=Math.min(d.maxHP,hp+h);if(d.shieldCap)shield=Math.min(d.maxHP*d.shieldCap,shield+over)}
-    else if(k.kind==="buff"){buffs[k.buff]=k.dur;if(k.buff==="blessing")d=derive({arch,lv,stats,buffs,gear:opt.gear});
+    else if(k.kind==="buff"){buffs[k.buff]=k.dur;if(k.over)ovV=k.over;if(k.buff==="blessing"||k.over)d=DV();
       if(k.taunt)mobs.forEach(x=>x.aggro=true)}
-    else if(k.kind==="move"){for(const x of mobs)x.dist+=k.leap;buffs.leap=k.dur;buffs.leapShot=1;d=derive({arch,lv,stats,buffs,gear:opt.gear})}
+    else if(k.kind==="move"){for(const x of mobs)x.dist+=k.leap;buffs.leap=k.dur;buffs.leapShot=1;d=DV()}
     else if(k.kind==="zone"){zone=k.dur}};
   while(t<secs){
     t+=dt;
     for(const k in cd)cd[k]=Math.max(0,cd[k]-dt);gdT=Math.max(0,gdT-dt);
     for(const q of pending)q.t-=dt;
     for(let i=0;i<pending.length;){const q=pending[i];if(q.x.hpNow<=0){pending.splice(i,1);continue}if(q.t<=0){pending.splice(i,1);hitMob(q.x,magicHit(d,q.x,{ratio:q.k.ratio,elem:q.k.elem,overMul:q.k.overMul},r));continue}i++}
-    for(const k of Object.keys(buffs)){if(k==="leapShot")continue;buffs[k]-=dt;if(buffs[k]<=0){delete buffs[k];d=derive({arch,lv,stats,buffs,gear:opt.gear})}}
+    for(const k of Object.keys(buffs)){if(k==="leapShot")continue;buffs[k]-=dt;if(buffs[k]<=0){delete buffs[k];d=DV()}}
     if(momT>0){momT-=dt;if(momT<=0)momentum=0}
     sp=Math.min(d.maxSP,sp+d.spRegen*dt);
     if(wait>0){wait-=dt;hp=Math.min(d.maxHP,hp+(d.hpRegen+d.maxHP*.015)*dt);if(wait<=0)spawn();continue}
@@ -2029,7 +2039,7 @@ function combatPower(arch,lv,stats,gear){
   const ehp=d.maxHP/(1-d.hardDef)+d.softDef*30;
   const v=Math.round(sim.dps*6+ehp/20);_cpc.set(key,v);return v;
 }
-return {STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax};
+return {manaFlow,STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax};
 })();
 
 
@@ -2248,7 +2258,7 @@ D2.en.st_sim="Ping and player counts are simulated until a game server is connec
 D2.en.mech_beginner="Beginner: raise Basic Skill (Lv 1–10) with your skill points to learn First Aid, Heavy Strike and everyday abilities.";D2.th.mech_beginner="Beginner: ใช้แต้มสกิลอัป Basic Skill (Lv 1–10) เพื่อเรียน First Aid, โจมตีหนักหน่วง และความสามารถพื้นฐาน"
 D2.en.mech_fighter="Momentum: basic hits and Power Strike build up to 5 stacks (lost after 5 s without hitting). Crushing Blow spends them for +50% damage each and stuns at 3+.";D2.th.mech_fighter="Momentum: ตีปกติและ Power Strike สะสมได้สูงสุด 5 สแตก (หายถ้าไม่ตี 5 วิ) Crushing Blow ใช้สแตกทั้งหมด +50% ต่อสแตก และสตันเมื่อมี 3 ขึ้นไป";
 D2.en.mech_ranger="Distance: +2% damage per tile beyond 3 (max +18% at 12 tiles). Evasive Leap jumps away and empowers your next shot.";D2.th.mech_ranger="ระยะห่าง: ดาเมจ +2% ต่อช่องที่เกิน 3 (สูงสุด +18% ที่ 12 ช่อง) Evasive Leap กระโดดหนีและเพิ่มพลังลูกถัดไป";
-D2.en.mech_spellcaster="Casting + elements: spells have cast times (DEX shortens them) and never miss. Hitting an element's weakness deals 150% (175% with Attunement).";D2.th.mech_spellcaster="ร่ายเวท + ธาตุ: เวทมีเวลาร่าย (DEX ลดได้) และไม่มีวันพลาด โจมตีธาตุที่แพ้ได้ 150% (175% เมื่อมี Attunement)";
+D2.en.mech_spellcaster="Casting + elements: spells have cast times (DEX shortens them) and never miss. Hitting an element's weakness deals 150% (up to 175% with Elemental Attunement Lv 5).";D2.th.mech_spellcaster="ร่ายเวท + ธาตุ: เวทมีเวลาร่าย (DEX ลดได้) และไม่มีวันพลาด โจมตีธาตุที่แพ้ได้ 150% (สูงสุด 175% เมื่อ Elemental Attunement Lv 5)";
 D2.en.mech_supporter="Sustain: Heal uses the iRO formula; overhealing becomes a Grace shield (up to 20% Max HP). Buffs reach 15 tiles.";D2.th.mech_supporter="ฟื้นฟูต่อเนื่อง: Heal ใช้สูตร iRO ฮีลเกินเลือดเต็มจะกลายเป็นโล่ Grace (สูงสุด 20% HP) บัฟไกลได้ 15 ช่อง";
 D2.en.sk_bash="Heavy Strike";D2.th.sk_bash="โจมตีหนักหน่วง";
 D2.en.skd_bash="Strike one enemy hard for 200% ATK. Range 1.6 tiles (steps in first if further). No cast time.";D2.th.skd_bash="ฟาดศัตรู 1 ตัวอย่างหนัก 200% ATK ระยะ 1.6 ช่อง (ถ้าไกลกว่านั้นจะเดินเข้าไปก่อน) ไม่มีเวลาร่าย";
@@ -2297,9 +2307,16 @@ D2.en.skd_lightning_spear="380% MATK wind to one enemy.";D2.th.skd_lightning_spe
 D2.en.sk_stone_spike="Stone Spike";D2.th.sk_stone_spike="Stone Spike";
 D2.en.skd_stone_spike="260% MATK earth; 20% chance to stun 1 s.";D2.th.skd_stone_spike="260% MATK ธาตุดิน โอกาสสตัน 20% นาน 1 วิ";
 D2.en.sk_mana_flow="Mana Flow";D2.th.sk_mana_flow="Mana Flow";
-D2.en.skd_mana_flow="SP regeneration +60% and skill SP cost −10%.";D2.th.skd_mana_flow="ฟื้น SP +60% และใช้ SP น้อยลง 10%";
+D2.en.skd_mana_flow="Trains SP to flow through the whole body as efficiently as possible. Max SP, SP regeneration and SP cost improve with each level (Lv 10: +12% / +30% / −12%).";D2.th.skd_mana_flow="ฝึกการไหลเวียน SP ทั่วทั้งร่างกาย ให้มีประสิทธิภาพสูงสุด เพิ่ม Max SP ฟื้น SP เร็วขึ้น และใช้ SP น้อยลงตามเลเวล (Lv 10: +12% / +30% / −12%)";
+D2.en.pe_mf="Max SP +{a}%, SP regen +{b}%, SP cost −{c}%";D2.th.pe_mf="Max SP +{a}% ฟื้น SP เร็วขึ้น {b}% ใช้ SP น้อยลง {c}%";
+D2.en.pe_ea="weakness bonus +{a}% (hits for {b}%)";D2.th.pe_ea="ตีจุดอ่อนธาตุแรงขึ้น +{a}% (รวม {b}%)";
+D2.en.pe_next="Next:";D2.th.pe_next="เลเวลถัดไป:";
+D2.en.durLbl="Duration";D2.th.durLbl="ระยะเวลา";
+D2.en.sk_overload_energy="Overload Energy";D2.th.sk_overload_energy="Overload Energy";
+D2.en.skd_overload_energy="Focus with unwavering resolve to draw on every power of the universe: raises the Overload Rate of yourself and every party member within a 12 × 12 area around you (+1% per level). Cooldown 60 s.";D2.th.skd_overload_energy="ตั้งสมาธิอันแน่วแน่ที่จะดึงทุกพลังของจักรวาล มาเพิ่มอัตราเกินพิกัดให้ตัวเองและสมาชิกปาร์ตี้ทั้งหมดในระยะ 12×12 ช่องรอบตัว (+1% ต่อเลเวล) คูลดาวน์ 60 วิ";
+D2.en.fx_overEn_d="Overload Rate raised (Overload Energy).";D2.th.fx_overEn_d="อัตราเกินพิกัดเพิ่มขึ้น (Overload Energy)";
 D2.en.sk_elemental_attunement="Elemental Attunement";D2.th.sk_elemental_attunement="Elemental Attunement";
-D2.en.skd_elemental_attunement="Weakness bonus 150% → 175%.";D2.th.skd_elemental_attunement="โบนัสชนะธาตุ 150% → 175%";
+D2.en.skd_elemental_attunement="Learn the weaknesses of the universe's main elements. Hitting an element's weakness deals +5% more per level (150% → 175% at Lv 5).";D2.th.skd_elemental_attunement="เรียนรู้จุดอ่อนเกี่ยวกับธาตุหลักในจักรวาล ตีจุดอ่อนธาตุแรงเพิ่มขึ้น +5% ต่อเลเวล (150% → 175% ที่ Lv 5)";
 D2.en.sk_heal="Heal";D2.th.sk_heal="ฮีล";
 D2.en.skd_heal="Heal [(Base Lv + INT) / 8] × 44 HP. Overheal becomes a Grace shield.";D2.th.skd_heal="ฟื้นฟู [(Base Lv + INT) / 8] × 44 HP ส่วนที่เกินกลายเป็นโล่ Grace";
 D2.en.sk_holy_light="Holy Light";D2.th.sk_holy_light="Holy Light";
@@ -4246,17 +4263,17 @@ const gameState={lv:1,exp:0,jlv:1,jexp:0,hp:420,sp:120,sc:1250,y:0,la:0,arch:"be
   sound:true,music:true,gfx:"hi",autoIdle:true,bag:[],equip:null,uidN:1,skLv:{},hot:null,hotArch:"",store:{inv:{},bag:[]}};
 const S=gameState;
 /* ---- combat state: buffs, cooldowns, derived stats (REOC) ---- */
-const BF={warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0,burn:0,burnDps:0,burnAcc:0,slow:0};
+const BF={overEn:0,overEnV:0,warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0,burn:0,burnDps:0,burnAcc:0,slow:0};
 /* v19: gates of the two new maps (Base Lv and Combat Power both needed) */
 let gateT=0,aggroGrace=0;
 const CD={};
 let _pd=null,_pdKey="";
 /* derived stats = base stats + equipped gear + herb buffs (combat math lives in REOC) */
 function pd(){
-  const b=BF,k=S.arch+"|"+S.lv+"|"+JSON.stringify(S.stats)+"|"+eqKey()+"|"+learnedPas().join()+"|"+(b.warCry>0?1:0)+(b.blessing>0?1:0)+(b.leap>0?1:0)+(b.herbAtk>0?1:0)+(b.herbDef>0?1:0)+(b.sage>0?1:0);
+  const b=BF,k=S.arch+"|"+S.lv+"|"+JSON.stringify(S.stats)+"|"+eqKey()+"|"+learnedPas().map(i=>i+skLvOf(i)).join()+"|"+(b.overEn>0?b.overEnV:0)+(b.warCry>0?1:0)+(b.blessing>0?1:0)+(b.leap>0?1:0)+(b.herbAtk>0?1:0)+(b.herbDef>0?1:0)+(b.sage>0?1:0);
   if(k!==_pdKey){
     _pdKey=k;const m=gearMods();
-    const d=REOC.derive({learned:learnedPas(),arch:S.arch,lv:S.lv,stats:effStats(),buffs:{warCry:b.warCry>0,blessing:b.blessing>0,leap:b.leap>0},gear:m});
+    const d=REOC.derive({pasLv:Object.fromEntries(learnedPas().map(i=>[i,skLvOf(i)])),over:b.overEn>0?b.overEnV:0,arch:S.arch,lv:S.lv,stats:effStats(),buffs:{warCry:b.warCry>0,blessing:b.blessing>0,leap:b.leap>0},gear:m});
     d.ab=m.ab;
     if(b.herbAtk>0){d.statusAtk=Math.round(d.statusAtk*1.1);d.watk=Math.round(d.watk*1.1)}
     if(b.herbDef>0)d.softDef=Math.round(d.softDef*1.15);
@@ -5631,7 +5648,7 @@ function die(){
   $("#deathOv").classList.remove("hidden");pushChat({ch:"sys",k:"sys_dead"});
 }
 function respawn(){player.dead=false;S.hp=hpMax();S.sp=spMax();$("#deathOv").classList.add("hidden");goMap("town",TOWN_SPAWN[0],TOWN_SPAWN[1])}
-function resetCombatState(){volleys.length=0;balls.length=0;player.gd=0;BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=0;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
+function resetCombatState(){volleys.length=0;balls.length=0;player.gd=0;BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=BF.overEn=BF.overEnV=0;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
 function addMomentum(n){BF.momentum=Math.min(5,BF.momentum+n);BF.momT=5}
 /* ---- Fire Bolt volley (v20): fireballs are released one at a time (0.3 s apart, 0.2 s from Lv 6). If the target dies, the ones not yet released never come out.
    A fireball falls for (gap - 0.02) s and deals its damage when it lands. ---- */
@@ -5651,7 +5668,7 @@ function updateVolleys(dt){
 }
 function updateCombat(dt){
   player.atkCd=Math.max(0,player.atkCd-dt);player.lunge=Math.max(0,player.lunge-dt);player.combatT+=dt;
-  for(const k of ["warCry","blessing","leap","regen","herbAtk","herbDef","sage"])if(BF[k]>0)BF[k]=Math.max(0,BF[k]-dt);
+  for(const k of ["warCry","blessing","leap","overEn","regen","herbAtk","herbDef","sage"])if(BF[k]>0)BF[k]=Math.max(0,BF[k]-dt);
   if(BF.slow>0)BF.slow=Math.max(0,BF.slow-dt);player.speed=3.6*(BF.slow>0?.65:1);
   if(BF.burn>0&&!player.dead){BF.burn=Math.max(0,BF.burn-dt);BF.burnAcc+=dt;if(BF.burnAcc>=1){BF.burnAcc-=1;damagePlayer(Math.max(1,Math.round(BF.burnDps)),t("fx_burn"))}}
   if(BF.momT>0){BF.momT-=dt;if(BF.momT<=0)BF.momentum=0}
@@ -5734,7 +5751,7 @@ function updateMon(mo,dt){
 /* ================= skills ================= */
 const SKC={bash:"#ffb08a",first_aid:"#8af0b6",power_strike:"#ff8a6a",cleave:"#ffb070",crushing_blow:"#ff6a5a",war_cry:"#ff9a9a",
  double_strafe:"#d8f0a0",arrow_shower:"#b8f08a",piercing_shot:"#f0ffd0",evasive_leap:"#ffffff",
- fire_bolt:ELC.fire,frost_nova:ELC.water,lightning_spear:"#fff36a",stone_spike:ELC.earth,
+ fire_bolt:ELC.fire,frost_nova:ELC.water,lightning_spear:"#fff36a",stone_spike:ELC.earth,overload_energy:"#c9b8ff",
  heal:"#8af0b6",holy_light:"#ffe9a0",blessing:"#ffd76a",sanctuary:"#fff2b8"};
 const SKG={beginner:"linear-gradient(135deg,#ff9f72,#cf3f2c)",fighter:"linear-gradient(135deg,#ff9a7a,#b8322a)",ranger:"linear-gradient(135deg,#b8f08a,#3f8a3a)",
  spellcaster:"linear-gradient(135deg,#c9b8ff,#5a3fc8)",supporter:"linear-gradient(135deg,#fff0b0,#c9962a)"};
@@ -5760,6 +5777,13 @@ function basicRaise(){if(S.arch!=="beginner"||basicLv()>=BASIC_MAX||skAvail()<=0
 const actList=()=>S.arch==="beginner"?REOC.ARCH.beginner.actives:[...REOC.ARCH[S.arch].actives,...BASIC_ACT];   // skills a hotbar slot may hold
 function skMine(){if(S.arch==="beginner")return [];const A=REOC.ARCH[S.arch];return [...A.actives,...A.passives]}   // skills raised with points (Beginner: only Basic Skill)
 function skMaxOf(id){return REOC.skMax(id)}
+/* v20.6: what a levelled passive gives now and at the next level (Skills window) */
+function pasEffAt(id,lv){
+  if(id==="mana_flow"){const f=REOC.manaFlow(lv);return fmt("pe_mf",{a:Math.round(f.sp*100),b:Math.round(f.regen*100),c:Math.round(f.cost*100)})}
+  if(id==="elemental_attunement")return fmt("pe_ea",{a:Math.round(lv*REOC.PASSIVE.elemental_attunement.per*100),b:Math.round(150+lv*REOC.PASSIVE.elemental_attunement.per*100)});
+  return ""}
+function pasEff(id){if(!REOC.SKLV[id])return "";const L=skLvOf(id),mx=skMaxOf(id),a=L?pasEffAt(id,L):"",n=L<mx?pasEffAt(id,L+1):"";
+  return `<small>${a?`<b>Lv ${L}:</b> ${a}`:""}${a&&n?" · ":""}${n?`${t("pe_next")} ${n}`:""}</small>`}
 function skLvOf(id){if(BASIC_UNLOCK[id])return hasBasic(id)?1:0;return Math.max(0,Math.min(skMaxOf(id),(S.skLv&&S.skLv[id])|0))}
 function learnedPas(){return REOC.ARCH[S.arch].passives.filter(id=>skLvOf(id)>0)}
 function learnedAct(){return REOC.ARCH[S.arch].actives.filter(id=>skLvOf(id)>0)}
@@ -5915,6 +5939,9 @@ function finishSkill(id,tg,lv){
      if(d.shieldCap&&over>0)BF.shield=Math.min(hpMax()*d.shieldCap,BF.shield+over);
      fx.push({k:"rise",x,y,t:0,d:1,c:col,follow:true});floatText("+"+num(h)+" HP",col);break}
    case "buff":{BF[k.buff]=k.dur;
+     if(k.over){BF.overEnV=k.over;_pdKey="";   // v20.6 Overload Energy: self + party members within 6 tiles (a 12x12 square). Party members are simulated (no combat stats yet), so on them it is only shown
+       fx.push({k:"ring",x,y,t:0,d:.8,c:col,r:k.area*48});
+       if(S.party&&cur===town)for(const m of S.party.members){const w=findPlayer(m.name);if(w&&Math.abs(w.x-x)<=k.area&&Math.abs(w.y-y)<=k.area)fx.push({k:"rise",x:w.x,y:w.y,t:0,d:1.1,c:col})}}
      if(k.taunt){for(const m of liveMon())if(dist(m,player)<=k.taunt&&!m.aggro){m.aggro=true;m.speed=MON[m.type].speed*1.6}fx.push({k:"ring",x,y,t:0,d:.6,c:col,r:k.taunt*45})}
      else fx.push({k:"rise",x,y,t:0,d:1.1,c:col,follow:true});
      floatText(t("sk_"+id),col);break}
@@ -5926,7 +5953,7 @@ function autoSkill(){
   if(player.casting||player.dead)return;
   const tg=alive(player.target)?player.target:null,d=pd();
   const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0;
-  const id=REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0},
+  const id=REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0},
     dist:tg?dist(tg,player):99,near,tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
   if(id)useSkill(id,true,lvFor(id));
 }
@@ -6089,6 +6116,7 @@ function renderFx(){
   if(BF.warCry>0)list.push({ic:"shout",c:SKG.fighter,nk:"sk_war_cry",dk:"fx_warcry_d",val:fmtSec(BF.warCry)});
   if(BF.leap>0)list.push({ic:"wing",c:SKG.ranger,nk:"sk_evasive_leap",dk:"fx_leap_d",val:fmtSec(BF.leap)});
   if(BF.leapShot)list.push({ic:"pierce",c:SKG.ranger,nk:"fx_leapshot",dk:"fx_leapshot_d",val:"+60%"});
+  if(BF.overEn>0)list.push({ic:"sparkle",c:SKG.spellcaster,nk:"sk_overload_energy",dk:"fx_overEn_d",val:fmtSec(BF.overEn)});
   if(BF.blessing>0)list.push({ic:"star",c:SKG.supporter,nk:"sk_blessing",dk:"fx_bless_d",val:fmtSec(BF.blessing)});
   if(BF.shield>0)list.push({ic:"shield",c:SKG.supporter,nk:"fx_grace",dk:"fx_grace_d",val:num(BF.shield)});
   if(BF.zone)list.push({ic:"halo",c:SKG.supporter,nk:"sk_sanctuary",dk:"fx_sanct_d",val:fmtSec(BF.zone.t)});
@@ -6358,9 +6386,9 @@ const WIN={
    <ol class="bs-list">${BASIC_ROWS.map((k,i)=>{const on=bL>i,nx=bL===i;return `<li class="${on?"on":nx?"next":""}"><span class="bs-n">${i+1}</span><span class="grow"><b>${t("bs_u_"+k)}</b><small>${t("bs_d_"+k)}</small></span>${on?`<span class="bs-ok">✓</span>`:svg("lock")}</li>`}).join("")}</ol>`;
   const act=actList().map(id=>{const k0=REOC.SK[id],L=skLvOf(id),k=lvd[id]?REOC.skAt(id,L||1):k0,
       cast=k.cast?` · ${t("castLbl")} ${(k.cast*d.castMul).toFixed(1)}s`:"",rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"",
-      gd=k.gd?` · ${t("gdLbl")} ${k.gd}s`:"",fb=lvd[id]?` · ${t("fbLbl")} ${k.hits}`:"";
+      gd=k.gd?` · ${t("gdLbl")} ${k.gd}s`:"",fb=id==="fire_bolt"?` · ${t("fbLbl")} ${k.hits}`:k.over?` · ${t("lt_over")} +${k.over}% · ${t("durLbl")} ${k.dur}s`:"";
     return `<div class="row" data-dnd="s:${id}"${L?"":' style="opacity:.62"'}><span class="dot" style="--c:${skGrad(id)}">${svg(IC[k0.ic]?k0.ic:"star")}</span><div class="grow"><b>${t("sk_"+id)}</b>${k0.elem?` <small style="display:inline;color:${k0.elem==="holy"?"#b8861e":ELC[k0.elem]}">· ${t("el_"+k0.elem)}</small>`:""}<small>${t("skd_"+id)}</small><small>SP ${Math.ceil(k.sp*d.spCost)} · ${t("cd")} ${k.cd}s${gd}${cast}${rg}${fb}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`}).join("");
-  const pas=A.passives.map(id=>`<div class="row" data-dnd="s:${id}"${skLvOf(id)?"":' style="opacity:.62"'}><span class="dot" style="--c:linear-gradient(135deg,#d8d4e8,#6f6a8f)">${svg("gear")}</span><div class="grow"><b>${t("sk_"+id)}</b><small>${t("skd_"+id)}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`).join("");
+  const pas=A.passives.map(id=>`<div class="row" data-dnd="s:${id}"${skLvOf(id)?"":' style="opacity:.62"'}><span class="dot" style="--c:linear-gradient(135deg,#d8d4e8,#6f6a8f)">${svg("gear")}</span><div class="grow"><b>${t("sk_"+id)}</b><small>${t("skd_"+id)}</small>${pasEff(id)}</div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`).join("");
   const pts=`<p class="muted" style="margin:0 0 6px"><b>${fmt("skpLine",{n:skAvail()})}</b></p>`;
   const itIds=Object.keys(ITEMDB).filter(hotUsable);
   const hot=`<div class="w-sec">${t("hotCfg")}</div><div class="rows">${SLOTS.map((sl,i)=>{
@@ -6632,7 +6660,7 @@ function statusBody(){
     ${cell("lt_flee",num(Math.round(d.flee)))}${cell("lt_pdodge",d.pdodge.toFixed(1)+"%")}
     ${cell("lt_hit",num(Math.round(d.hit)))}${cell("lt_phit","0%",none)}
     ${cell("lt_crit",d.crit.toFixed(1)+"%")}${cell("lt_critd","+40%")}
-    ${cell("lt_over",d.crit.toFixed(1)+"%",t("lt_tip_over"))}${cell("lt_overd","+30%")}
+    ${cell("lt_over",(d.crit+(d.over||0)).toFixed(1)+"%",t("lt_tip_over"))}${cell("lt_overd","+30%")}
     ${cell("lt_vcast",(vcast?"-":"")+vcast+"%")}${cell("lt_fcast","0 "+t("lt_sec"),none)}
     ${cell("lt_idef","0%",none)}${cell("lt_imdef","0%",none)}</div>`;
   return head+ltHr+basic+ltHr+det;

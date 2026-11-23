@@ -59,11 +59,14 @@ Every spell has a cast time reduced by DEX (×(1 − DEX/150)). Spells **never m
 | Frost Nova | 260% MATK water, all within 2.5 tiles; 40% freeze 2 s | 20 | 5 s | 0.6 s |
 | Lightning Spear | 380% MATK wind | 22 | 3 s | 1.6 s |
 | Stone Spike | 260% MATK earth; 20% stun 1 s | 16 | 2 s | 1.0 s |
+| Overload Energy (Lv 1–5, buff) | +Lv% Overload Rate to self and party within a 12 × 12 area; lasts 20 / 40 / 60 / 80 / 120 s; Global Delay 1 s | 30 ⚠ | 60 s | 1 / 1.2 / 1.4 / 1.6 / 2 s |
 
 | Passive | Effect |
 |---|---|
-| Mana Flow | SP regen +60%, skill SP cost −10% |
-| Elemental Attunement | Weakness bonus 150% → 175% |
+| Mana Flow (Lv 1–10) | Lv N: Max SP +N%, SP regen +(8 + 2N)%, skill SP cost −N%. Lv 10: +12% / +30% / −12% |
+| Elemental Attunement (Lv 1–5) | Weakness bonus +5% per level: 150% → 155 / 160 / 165 / 170 / 175% |
+
+Full per-level tables: `SKILL-SPEC.md` §3b–3d.
 
 Basic attack: Arcane Bolt, 70% MATK neutral, 7 tiles.
 
