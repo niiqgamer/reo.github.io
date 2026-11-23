@@ -11,9 +11,10 @@
 ## 2. NPC spots (nothing may cover an NPC)
 - On start the game finds, for each NPC, the nearest open road or plaza tile where **no prop drawn later overlaps the NPC's sprite or name plate** (checked with each prop's screen box). NPCs stay at least 4.5 tiles from each other, outside the crystal circle and away from the portal.
 - Wandering townspeople never pick a target near an NPC, stop if they get within 2 tiles, and are moved away at the start. Measured closest approach over 40 s: 1.96 tiles.
-- **Name plate:** a bigger gold-edged plate above the head with the NPC name and a role tag (GUIDE, SHOP, QUESTS, ARCHETYPE). The quest "!" sits above it.
+- **Name plate:** a bigger gold-edged plate above the head with the NPC name and a role tag (GUIDE, SHOP, QUESTS, ARCHETYPE, POCKET DIMENSION). The quest "!" sits above it.
 
 - **Gates (v19):** the east, west and south road ends are portals. Nothing is planted within 4 tiles of any gate, and NPC or decor search keeps 5 tiles away. The west and south gates have a **warning sign**: two wooden posts, a dark board with a gold frame, a pulsing red banner (WARNING / คำเตือน) and the text "Monster Lv.25+" or "Monster Lv.30+".
 
 ## 3. If you add props or NPCs
+- **Every main town has a Narvis** (Pocket Dimension NPC, v20.4). A new main town must place one; the storage it opens is the same for the character in every town.
 Give every new prop kind a depth key `k` and an entry in `staticBox` (screen box). The NPC spot search then avoids it automatically.

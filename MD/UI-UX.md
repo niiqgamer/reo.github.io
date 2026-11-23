@@ -520,4 +520,12 @@ The browser menu ("Save image as…") never opens on the game. Right-click (phon
 
 **Guild** (`S.guild = {name, rank: "master" | "officer" | "member", members, canInvite?}`, saved). Guild creation is not built yet, so a new character has no guild and the invite item never shows. *Invite to guild* appears only for a guild master or officer (or `canInvite`). Players already in a guild get a warning toast. The Guild tab shows "No guild yet · Soon" when you have none; the Character window shows the guild name instead of "NO GUILD".
 
+**Basic Skill locks (v20.4).** Menu items whose Basic Skill level is not reached are disabled with a "Requires Basic Skill Lv N" hint: Sit (Lv 2), Set status (Lv 2), Add friend (Lv 6), Create a party (Lv 7), Trade / Open a stall (Lv 8). In Social, a locked Friends / Party / Guild tab shows one locked row with its requirement (`JOBS.md` §1b).
+
 Simulated players: about a quarter already have a party and a third already have a guild (`hasParty` / `hasGuild`).
+
+## 24. Basic Skill and Pocket Dimension windows (v20.4)
+
+**Skills window.** For a Beginner it starts with the **Basic Skill** section: one row (icon, short text, "Lv N/10", **+** while points are left), then a numbered list of the 10 levels. Reached levels are lit with a green ✓, the next one has a dashed purple border, later ones are faded with a lock. First Aid and Heavy Strike show a "Basic Lv 3 / 4" tag instead of a **+**. After the Archetype choice the Basic Skill section moves below the archetype skills (no **+**, text "kept for good"), and First Aid and Heavy Strike stay in the hotbar drop-downs.
+
+**Pocket Dimension window** (`storage`, 640 × 380, icon: cube). Hint line, two tabs (Bag · Dimension), a 10 × 3 grid in the light-window cell style, then both capacities ("Bag slots 12/100 · Dimension slots 4/300") and the page arrows. Click a cell to move it to the other side. Rules: `ITEMS.md` §7.

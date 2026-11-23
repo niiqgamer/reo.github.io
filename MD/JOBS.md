@@ -17,6 +17,28 @@
 
 The **archetype** is the role family. A player picks a **class** at C1, which places them in that class’s archetype, and later picks one of that class’s two **jobs** at C2.
 
+## 1b. Basic Skill: the Beginner skill tree (v20.4)
+
+Every Beginner has one skill, **Basic Skill**, with **10 levels**. Lv 1 is given at the start. Each next level costs **1 skill point** (1 Job Lv = 1 point, the first at Job Lv 2) and teaches one ability. Beginner Job Lv is capped at 10, which gives exactly **9 points**, so Basic Skill Lv 10 uses all of them. Raise it in the Skills window (the + on the Basic Skill row).
+
+| Lv | Teaches | Rule in the game |
+|---|---|---|
+| 1 | Talk, fight, use skills, use items, Idle | Given; nothing is locked |
+| 2 | Sit (HP / SP regen ×3), stand up, set a status sign | Sit and *Set status* are disabled in the right-click menu until Lv 2 |
+| 3 | **First Aid** (skill) | Restore **50 HP** · SP **10** · cooldown **5 s** · no cast time |
+| 4 | **Heavy Strike** (skill, id `bash`) | **200% ATK** on one enemy · SP **8** · cooldown **1.6 s** · range 1.6 · no cast time ⚠ |
+| 5 | **Pocket Dimension** | Personal storage (300 slots) through **Narvis**, an NPC in every main town (`ITEMS.md` §7) |
+| 6 | Friends | *Add friend* is disabled and Social → Friends is locked until Lv 6 |
+| 7 | Party | *Create a party* and Social → Party are locked until Lv 7 |
+| 8 | Trade | Player trade and stalls (both still *Soon*) show the Lv 8 requirement until then |
+| 9 | Guild | Social → Guild and guild invites are locked until Lv 9 |
+| 10 | Archetype | Sera gives the Archetype Trial only with **Basic Skill Lv 10** and Job Lv 10 (§4) |
+
+- **Kept for good.** Choosing an Archetype never removes Basic Skill or anything it taught. First Aid and Heavy Strike stay in the Skills window and can go on any hotbar slot (new archetype hotbars put them after the 4 archetype skills). An Archetype's own points start from 0 as before; Basic Skill does not use them.
+- First Aid and Heavy Strike have no + button of their own: their level comes from Basic Skill (Lv 3 / Lv 4). A locked one says "Requires Basic Skill Lv N" when used.
+- Code: `S.basicLv` (1–10), `BASIC_UNLOCK`, `hasBasic(k)`, `basicRaise()`. Older saves: a Beginner starts at Basic Skill Lv 1 and gets back the points spent on Bash / First Aid; an Archetype gets Lv 10.
+- ⚠ The request listed Lv 4 with the First Aid numbers (copied by mistake). The game keeps the old Bash numbers for Heavy Strike until NIIQ gives its own.
+
 ---
 
 ## 2. Archetypes
@@ -92,7 +114,7 @@ supporter: tbd_4_1 … tbd_4_4
 |---|---|
 | 1 | Every new character is a **Beginner (C0)**, Job Lv cap 10. |
 | 2 | Talk to **Archetype Helper Sera** in Gadolinium plaza (tile 28, 27). She explains the 4 archetypes. Before Job Lv 10 she only teaches and says to come back. |
-| 3 | At **Job Lv 10** she offers the quest **Archetype Trial**: defeat **1 Elite monster** in any field. The quest is only given by her (it never appears in the Quests window list). |
+| 3 | At **Job Lv 10** and **Basic Skill Lv 10** (§1b) she offers the quest **Archetype Trial**: defeat **1 Elite monster** in any field. The quest is only given by her (it never appears in the Quests window list). |
 | 4 | Return to her. A choice window shows the 4 archetypes; the player picks **exactly one** (Choose → Confirm). |
 | 5 | The character becomes that archetype (**C1**). **Job Lv resets to 1** with a new cap of **50**. Reward: 500 Base EXP, 30 Yttrium. |
 | 6 | The choice is **permanent**. Talking to her again only gives encouragement. |
@@ -128,7 +150,7 @@ Implementation rules:
 1. Names for Spellcaster class 3.2 and its two jobs (the draft repeated Wizard/Warlock).
 2. All 4 Supporter classes and 8 jobs.
 3. Is the archetype chosen separately before the class, or implied by the class choice? (This doc assumes implied.)
-4. ✅ Job Lv resets to 1 on the C0 → C1 change (v5.1). Still open: do unspent skill points carry over?
+4. ✅ Job Lv resets to 1 on the C0 → C1 change (v5.1). Beginner points all go into Basic Skill (§1b), which is kept; Archetype points start again from 0.
 5. Thai display names for archetypes, classes and jobs, or keep English names in both languages?
 6. Spelling check: “Swordman” (kept as written) vs “Swordsman”.
 7. Archetype accent colors for UI (job icons, name tags, skill effects).

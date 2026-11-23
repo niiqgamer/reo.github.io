@@ -109,6 +109,7 @@ With 5 pieces, staff × 1 puts the Spellcaster level with the Ranger, so the rul
 - **Fire Bolt** has Lv 1–10 (§3).
 - **Every other skill has one level** (1 point to learn it, the prototype numbers) until its levels are designed. ⚠ NIIQ has not given per-level effects for them yet.
 - **Passives** are learned the same way (1 point each) and only work once learned.
+- **Beginner (v20.4):** a Beginner spends points only on **Basic Skill** (Lv 1 given, Lv 2–10 cost 1 point each). First Aid and Heavy Strike come from Basic Skill Lv 3 and Lv 4 and stay learned after the Archetype choice (`JOBS.md` §1b).
 
 **⚠ Still open:** points reset (respec), whether unspent points carry over on class change (the answer so far is no, because Job Lv resets), the max level and per-level effect of every skill except Fire Bolt.
 
