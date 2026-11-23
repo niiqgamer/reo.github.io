@@ -26,7 +26,7 @@ Every Beginner has one skill, **Basic Skill**, with **10 levels**. Lv 1 is given
 | 1 | Talk, fight, use skills, use items, Idle | Given; nothing is locked |
 | 2 | Sit (HP / SP regen ×3), stand up, set a status sign | Sit and *Set status* are disabled in the right-click menu until Lv 2 |
 | 3 | **First Aid** (skill) | Restore **50 HP** · SP **10** · cooldown **5 s** · no cast time |
-| 4 | **Heavy Strike** (skill, id `bash`) | **200% ATK** on one enemy · SP **8** · cooldown **1.6 s** · range 1.6 · no cast time ⚠ |
+| 4 | **Heavy Strike** (skill, id `bash`) | **200% ATK** on one enemy · SP **5** · cooldown **5 s** · range **1 tile** · no cast time. Beginner basic attacks reach 1.6 tiles, so using it on a target further than 1 tile walks in first and then strikes (gives up after 4 s; Idle then skips it for 3 s) |
 | 5 | **Pocket Dimension** | Personal storage (300 slots) through **Narvis**, an NPC in every main town (`ITEMS.md` §7) |
 | 6 | Friends | *Add friend* is disabled and Social → Friends is locked until Lv 6 |
 | 7 | Party | *Create a party* and Social → Party are locked until Lv 7 |
@@ -37,7 +37,6 @@ Every Beginner has one skill, **Basic Skill**, with **10 levels**. Lv 1 is given
 - **Kept for good.** Choosing an Archetype never removes Basic Skill or anything it taught. First Aid and Heavy Strike stay in the Skills window and can go on any hotbar slot (new archetype hotbars put them after the 4 archetype skills). An Archetype's own points start from 0 as before; Basic Skill does not use them.
 - First Aid and Heavy Strike have no + button of their own: their level comes from Basic Skill (Lv 3 / Lv 4). A locked one says "Requires Basic Skill Lv N" when used.
 - Code: `S.basicLv` (1–10), `BASIC_UNLOCK`, `hasBasic(k)`, `basicRaise()`. Older saves: a Beginner starts at Basic Skill Lv 1 and gets back the points spent on Bash / First Aid; an Archetype gets Lv 10.
-- ⚠ The request listed Lv 4 with the First Aid numbers (copied by mistake). The game keeps the old Bash numbers for Heavy Strike until NIIQ gives its own.
 
 ---
 
