@@ -529,15 +529,15 @@ Simulated players: about a quarter already have a party and a third already have
 
 ## 24. Basic Skill and Pocket Dimension windows (v20.4)
 
-**Skills window.** For a Beginner it starts with the **Basic Skill** section: one row (icon, short text, "Lv N/10", **+** while points are left), then a numbered list of the 10 levels. Reached levels are lit with a green ✓, the next one has a dashed purple border, later ones are faded with a lock. First Aid and Heavy Strike show a "Basic Lv 3 / 4" tag instead of a **+**. After the Archetype choice the Basic Skill section moves below the archetype skills (no **+**, text "kept for good"), and First Aid and Heavy Strike stay in the hotbar drop-downs.
+**Skills window.** *Replaced in v20.9 by the Skills Tree (§26).* The Basic Skill levels and what each teaches now show in the Basic Skill tile and its detail box.
 
 **Pocket Dimension window** (`storage`, 640 × 380, icon: cube). Hint line, two tabs (Bag · Dimension), a 10 × 3 grid in the light-window cell style, then both capacities ("Bag slots 12/100 · Dimension slots 4/300") and the page arrows. Click a cell to move it to the other side. Rules: `ITEMS.md` §7.
 
 ## 25. Drag and drop on the hotkey bar (v20.5)
 
-**Drag sources.** Mouse: the drag starts once the pointer has moved 6 px. Touch: a bag cell or a worn piece starts when the finger moves; a Skills row starts after a 230 ms hold, so the list still scrolls.
+**Drag sources.** Mouse: the drag starts once the pointer has moved 6 px. Touch: a bag cell or a worn piece starts when the finger moves; a Skills Tree tile starts after a 230 ms hold, so the window still scrolls.
 - **Bag cells** (every tab: Usable, Gear, Other, Quest, Cash): every item can be picked up. Pocket Dimension (storage) cells cannot.
-- **Skills window:** every row, active or passive. The **+** button and the drop-downs are not drag handles.
+- **Skills Tree (§26):** every tile except Basic Skill, active or passive. The level arrows and the drop-downs are not drag handles.
 - **Character window:** a worn piece can be picked up.
 - **Hotkey slots:** a filled slot can be dragged.
 
@@ -548,7 +548,7 @@ Simulated players: about a quarter already have a party and a third already have
 | Dragged | Result |
 |---|---|
 | Usable item from the bag | Goes on the slot. The bag count does not change. |
-| Active skill of this archetype (or a Basic Skill active) | Goes on the slot at the highest learned level. |
+| Active skill of this archetype (or a Basic Skill active) | Goes on the slot at the level picked with the tile’s ◀ ▶ arrows (v20.9); with no pick, at the highest learned level. |
 | Another hotkey slot | Moves there. If the target has something, the two swap. |
 | Gear, materials, quest or cash items, worn pieces | Refused. Notice: "This item can't be placed here." (ไอเท็มนี้ไม่สามารถวางที่นี่ได้) |
 | Passive skill | Refused. Notice: "Passive skills can't go on the hotkey bar." (สกิลแบบ Passive ใส่บนแถบ hotkey ไม่ได้) |
@@ -563,4 +563,75 @@ While a drag is over the bar, the slot under the pointer shows a **gold** ring w
 
 **Free slots.** A slot is not tied to one skill or item. The same item can sit on more than one slot. On a class change, skills that the new archetype does not have are removed from the bar, the empty skill slots are filled with the new skills (the four archetype skills first, then First Aid and Heavy Strike), and items stay where they are.
 
-**Hotkey setup (Skills window).** One drop-down per slot (10 rows). The list shows the archetype's skills, then the usable items. The level drop-down stays for skills.
+**Hotkey setup (Skills window).** Folded under the grey *Hotbar setup* bar at the bottom of the Skills Tree (v20.9); tap it to open. One drop-down per slot (10 rows). The list shows the archetype's skills, then the usable items. The level drop-down stays for skills.
+
+## 26. Skills Tree window (v20.9)
+
+Replaces the old Skills list (§24). Window `skill`, title **Skills Tree / ผังสกิล / スキルツリー** with a sparkle icon, **440 px wide, height fits the content** (the same frame as Status and Bag).
+
+**Tabs, one per class line.** C0 **Beginner** is always there. After the Archetype choice the character's own C1 tab is added and opens first. C2 and C3 have no tab until those classes exist. Each line has one colour (`ARC_COL` / `SKG` in the code), used for its tab, tiles, level pills and the skill icons everywhere (hotkey bar, drag ghost):
+
+| Line | Colour |
+|---|---|
+| C0 Beginner | blue `#0a6fc2` |
+| Fighter | red `#d23b34` |
+| Ranger | green `#2e9447` |
+| Spellcaster | purple `#7440c8` |
+| Supporter | yellow `#d69a0c` |
+
+Under the tabs: the line's mechanic in one muted sentence.
+
+**Grid.** 5 columns, at least 2 rows; empty cells are dashed. Order: Basic Skill, First Aid, Heavy Strike, then the archetype's passives, then its actives (the Beginner tab has only the first three). Each cell: name on top (cut with … when long), the 56 px tile, then a pill under it.
+
+| Tile | Look |
+|---|---|
+| Active, learned | archetype-colour fill, white line, white icon |
+| Passive (and Basic Skill), learned | white fill, archetype-colour line and icon; outlined pill |
+| Not learned | grey (active: grey fill; passive: pale grey) and a grey name |
+| Selected | gold ring |
+| Draft (planned, not yet learned) | in colour again, with a gold **+N** badge (levels planned) |
+
+The pill shows the learned level. First Aid and Heavy Strike before they unlock show "Basic Lv 3" / "Basic Lv 4".
+
+**Learning (draft, then Learn).** Tap a grey skill: it turns to colour as a **Lv 1 draft** and the pill becomes **◀ level ▶**. ▶ plans one more level (1 skill point each), ◀ takes one back (◀ at Lv 1 of a skill that is not learned drops the draft). Several skills can be planned at once. Nothing is spent until **Learn** (blue, shows the cost, e.g. "Learn (3)"); **Reset** drops every draft. Both are disabled when there is no draft. ▶ stops at the max level and when the drafts already use every point left ("Not enough skill points."). Basic Skill is planned the same way, but only as a Beginner; First Aid and Heavy Strike have no draft (they come from Basic Skill Lv 3 / 4; tapping them says so). Learning Basic Skill levels shows what each new level teaches and can start the Archetype Trial (`JOBS.md` §1b).
+
+**Level for the hotkey bar.** On a learned skill with levels (Fire Bolt, Overload Energy), ◀ ▶ below the learned level pick the level a drag puts on the hotkey bar (`data-dnd="s:id:lv"`; the slot keeps that level, `SKILL-SPEC.md` §5). Example: Fire Bolt learned at Lv 5, ◀ ◀ shows 3, drag → the slot casts Lv 3.
+
+**Detail box** (below the grid). Name in the line colour, an Active / Passive chip, the element (if any), "Lv learned/max", the description, the numbers at the shown level (SP, cooldown, Global Delay, cast, range, fireballs, Overload Rate; a passive's effect at that level; Basic Skill: what that level teaches) and one coloured hint: the draft cost, "Not learned yet…", "Requires Basic Skill Lv N", "Passive: works by itself…" or "Drag the icon onto a hotkey slot to use Lv N". With nothing selected it explains how to learn.
+
+**Footer.** "Skill Points : spent / pool" (pool = every point the class can earn: Beginner 9, C1 49) with "N left" (after drafts), then **Learn** and **Reset**. Below: the folded *Hotbar setup* (§25).
+
+**Skill icons (v20.9).** Every skill has its own duotone icon (`SKI`, 32 × 32 grid, lines in `currentColor`, class `a` = soft fill). Tiles colour them (white on actives, line colour on passives); the hotkey bar and drag ghost show them white on the line gradient. The element no longer changes the icon colour.
+
+| Line | Skill | Icon |
+|---|---|---|
+| Beginner | Basic Skill | sprout |
+| | First Aid | cross in a rounded square |
+| | Heavy Strike | sword with impact marks |
+| Fighter | Power Strike | burst star |
+| | Whirlwind Cleave | spinning arc |
+| | Crushing Blow | hammer with cracks |
+| | War Cry | horn with sound waves |
+| | Weapon Mastery (passive) | crossed swords |
+| | Iron Body (passive) | cross shield |
+| Ranger | Double Strafe | two arrows |
+| | Arrow Shower | arrows falling on a ring |
+| | Piercing Shot | arrow through a target |
+| | Evasive Leap | wing |
+| | Eagle Eye (passive) | eye |
+| | Steady Aim (passive) | crosshair |
+| Spellcaster | Fire Bolt | falling fireball with trails |
+| | Frost Nova | snowflake |
+| | Lightning Spear | lightning bolt |
+| | Stone Spike | rock spikes |
+| | Overload Energy | four-point sparkle |
+| | Mana Flow (passive) | drop with waves |
+| | Elemental Attunement (passive) | ring with four element points |
+| Supporter | Heal | heart with plus |
+| | Holy Light | sun |
+| | Blessing | star under a halo |
+| | Sanctuary | pillars on a glowing circle |
+| | Divine Grace (passive) | feather |
+| | Guardian Aura (passive) | shield in an aura |
+
+These are placeholders drawn in code; a later art pass can replace any entry of `SKI` without touching the rest.

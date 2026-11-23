@@ -1541,16 +1541,68 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .P .win.lt .inv-fix.sto .inv-grid{gap:4px}
 .win.lt .inv-fix.sto .lt-tabs button.on{background:var(--lb);border-color:var(--lb);color:#fff}
 .inv-fix.sto .inv-row{flex-wrap:wrap;gap:6px 10px}
-/* v20.4 Basic Skill list (Skills window) */
-.bs-list{list-style:none;margin:6px 0 4px;padding:0;display:grid;gap:4px}
-.bs-list li{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;border:1px solid var(--lline,rgba(0,0,0,.12));opacity:.55}
-.bs-list li.on{opacity:1;background:rgba(110,88,232,.08)}
-.bs-list li.next{opacity:.9;border-style:dashed;border-color:#6e58e8}
-.bs-list li small{display:block;font-size:11.5px;opacity:.8}
-.bs-list li svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2}
-.bs-n{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:#6e58e8;color:#fff}
-.bs-ok{flex:none;color:#2a9d5a;font-weight:800}
-.bs-tag{flex:none;font-size:11px;font-weight:700;padding:2px 7px;border-radius:8px;background:rgba(110,88,232,.14);color:#6e58e8;white-space:nowrap}
+/* v20.9 Skills Tree window: a tab per class line, a 5-column grid of skill tiles, the selected skill, Learn / Reset.
+   --ac is the archetype colour, --ag its gradient. Active = colour fill + white icon, passive = white + colour line and icon, not learned = grey */
+#wins .win.lt[data-w=skill]{--wiw:440px;--wih:auto}
+.skt{display:flex;flex-direction:column;gap:8px}
+.skt-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.skt-tabs button{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 14px;border:1px solid var(--lline);border-radius:8px;background:var(--w-card);color:var(--w-ink);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.skt-tabs button svg{width:15px;height:15px;fill:none;stroke:var(--tc);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.skt-tabs button:hover{background:var(--w-hover)}
+.skt-tabs button.on{background:var(--tc);border-color:var(--tc);color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.skt-tabs button.on svg{stroke:#fff}
+.skt-mech{margin:0;font-size:11.5px;line-height:1.45;color:var(--w-ink2)}
+.skt-well{padding:10px 6px 12px;border:1px solid var(--w-ink2);border-radius:12px;background:var(--w-bg)}
+.skt-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px 4px}
+.skc{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.skc-n{max-width:100%;height:15px;font-size:11px;line-height:15px;font-weight:500;color:var(--ac);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skc.off .skc-n{color:var(--w-ink2);opacity:.75}
+.sk-tile{position:relative;display:grid;place-items:center;width:56px;height:56px;padding:0;border-radius:12px;border:2px solid #1f2738;background:var(--ag);color:#fff;font:inherit;cursor:pointer;
+ box-shadow:inset 0 0 0 2px rgba(255,255,255,.95),0 2px 0 rgba(0,0,0,.18);transition:transform .08s}
+.sk-tile:hover{transform:translateY(-1px)}
+.sk-tile svg{width:36px;height:36px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.sk-tile.pas{background:#fff;color:var(--ac);border-color:var(--ac);box-shadow:inset 0 0 0 2px #fff,inset 0 0 0 3.5px var(--ac),0 2px 0 rgba(0,0,0,.12)}
+.sk-tile.pas svg{filter:none}
+.sk-tile.off{background:linear-gradient(160deg,#c9ccd2,#9ea3ad);color:#f3f4f6;border-color:#636975}
+.sk-tile.pas.off{background:#eef0f2;color:#a5aab3;border-color:#a5aab3;box-shadow:inset 0 0 0 2px #fff,inset 0 0 0 3.5px #c8cbd1}
+.sk-tile.sel{outline:3px solid #ffc83a;outline-offset:2px}
+.skc.empty .sk-tile{background:none;border:2px dashed var(--w-line);box-shadow:none;cursor:default;transform:none}
+.skc-plus{position:absolute;right:-8px;top:-8px;min-width:22px;height:18px;padding:0 4px;border-radius:9px;background:#ffc83a;color:#3a2a06;font-size:11px;font-weight:700;font-style:normal;line-height:18px;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.skc-lv{display:inline-flex;align-items:center;justify-content:center;min-width:50px;max-width:100%;height:19px;padding:0 6px;border-radius:10px;background:var(--ac);color:#fff;font-size:12.5px;font-weight:700;line-height:1;white-space:nowrap;box-sizing:border-box}
+.skc-lv.pas{background:#fff;color:var(--ac);box-shadow:inset 0 0 0 1.5px var(--ac)}
+.skc-lv.req{background:var(--w-grey);color:var(--w-ink2);font-size:10px;font-weight:600}
+.skc-lv.none{visibility:hidden}
+.skc-arw{display:inline-flex;align-items:center;min-width:58px;height:19px;border-radius:10px;background:var(--ac);color:#fff;font-size:12.5px;font-weight:700;overflow:hidden}
+.skc-arw b{flex:1;text-align:center;padding:0 2px}
+.skc-arw button{display:grid;place-items:center;width:19px;height:19px;padding:0;border:0;background:none;cursor:pointer}
+.skc-arw button:hover{background:rgba(255,255,255,.2)}
+.skc-arw button:disabled{opacity:.3;cursor:default;background:none}
+.skc-arw i{width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.skc-arw .l i{border-right:6px solid #fff}.skc-arw .r i{border-left:6px solid #fff}
+.skc-arw.pas{background:#fff;color:var(--ac);box-shadow:inset 0 0 0 1.5px var(--ac)}
+.skc-arw.pas .l i{border-right-color:var(--ac)}.skc-arw.pas .r i{border-left-color:var(--ac)}
+.skt-det{min-height:92px;padding:8px 10px;border-radius:10px;background:var(--w-card);border:1px solid var(--w-line);box-sizing:border-box}
+.skt-det.empty{display:grid;place-items:center;text-align:center}
+.skt-dh{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.skt-dh>b{color:var(--ac);font-size:14px}
+.skt-dh .grow{flex:1}
+.skt-dh .lv{font-size:12.5px;color:var(--w-ink)}
+.skt-chip{font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:8px;background:var(--ac);color:#fff;white-space:nowrap}
+.skt-chip.pas{background:none;color:var(--ac);box-shadow:inset 0 0 0 1.2px var(--ac)}
+.skt-det p{margin:0 0 3px;font-size:12px;line-height:1.45;color:var(--w-ink)}
+.win.lt .skt-det small{display:block;font-size:11.5px;line-height:1.45}
+.win.lt .skt-det small.hint{color:var(--ac);font-weight:600;margin-top:2px}
+.skt-foot{display:flex;align-items:center;gap:6px}
+.skt-foot .grow{flex:1}
+.skt-pts{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border:1px solid var(--w-line);border-radius:8px;background:var(--w-card);font-size:12.5px;font-weight:700;white-space:nowrap}
+.win.lt .skt-pts small{display:inline;font-size:11.5px;font-weight:500}
+.skt-foot .lt-btn{height:30px;min-width:76px}
+.skt-hotT{margin-top:0}.skt-hotT svg{width:15px;height:15px;flex:none;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.skt-hotT svg:last-child{transition:transform .15s}.skt-hotT.on svg:last-child{transform:rotate(180deg)}
+.skt-hot .rows{margin-top:6px}
+.ski .a{fill:currentColor;fill-opacity:.3;stroke:none}
+.slot .ski,.dnd-ghost .ski,.dot .ski{color:#fff;stroke-width:2.6}
+.slot .ski{width:24px;height:24px}
 .ctx-soon{font-size:10px;font-weight:600;padding:1px 7px;border-radius:8px;background:rgba(154,110,24,.16);color:var(--gold)}
 #wsp{position:absolute;z-index:11;right:16px;top:30%;width:min(300px,calc(100% - 32px));height:300px;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;pointer-events:auto}
 .wsp-h{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 12px;border-bottom:1px solid var(--line);cursor:move;touch-action:none;font-weight:600;font-size:13.5px}
@@ -2797,6 +2849,17 @@ Object.assign(D2.th,{m_social:"สังคม",soc_friends:"เพื่อน"
  fr_online:"ออนไลน์",fr_offline:"ออฟไลน์",fr_none:"ยังไม่มีเพื่อน คลิกขวาที่ผู้เล่นคนอื่นเพื่อเพิ่มเป็นเพื่อน",fr_count:"เพื่อน {n}/{m}",fr_del:"ลบ",fr_delSure:"ยืนยัน?",
  wsp_ph:"พิมพ์ข้อความ…",wsp_empty:"ทักทาย {n} ได้เลย แชทนี้เห็นกันแค่สองคน",wsp_new:"{n} กระซิบถึงคุณ"});
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
+/* v20.9 Skills Tree window */
+Object.assign(D2.en,{w_skill:"Skills Tree",skt_pts:"Skill Points : {a} / {b}",skt_left:"{n} left",skt_learn:"Learn",skt_reset:"Reset",skt_active:"Active",skt_passive:"Passive",
+ skt_pick:"Tap a skill to see what it does. A grey skill is not learned yet: tap it, set the level with ◀ ▶, then press Learn.",
+ skt_h_pend:"Lv {a} → {b}: {n} skill point(s). Press Learn to keep it, or Reset.",skt_h_new:"Not learned yet. Press ▶ to plan a level, then Learn.",
+ skt_h_pas:"Passive: works by itself once learned.",skt_h_drag:"Drag the icon onto a hotkey slot to use Lv {n}.",skt_h_lv:"◀ ▶ picks the level.",
+ skt_done:"Learned: {s}",skt_nopts:"Not enough skill points."});
+Object.assign(D2.th,{w_skill:"ผังสกิล",skt_pts:"แต้มสกิล : {a} / {b}",skt_left:"เหลือ {n}",skt_learn:"เรียน",skt_reset:"รีเซ็ต",skt_active:"แอคทีฟ",skt_passive:"พาสซีฟ",
+ skt_pick:"แตะสกิลเพื่อดูรายละเอียด สกิลสีเทาคือยังไม่ได้เรียน: แตะ เลือกเลเวลด้วย ◀ ▶ แล้วกดเรียน",
+ skt_h_pend:"Lv {a} → {b}: ใช้ {n} แต้มสกิล กดเรียนเพื่อยืนยัน หรือรีเซ็ต",skt_h_new:"ยังไม่ได้เรียน กด ▶ เพื่อเลือกเลเวล แล้วกดเรียน",
+ skt_h_pas:"พาสซีฟ: ทำงานเองเมื่อเรียนแล้ว",skt_h_drag:"ลากไอคอนไปวางในช่อง hotkey เพื่อใช้ Lv {n}",skt_h_lv:"◀ ▶ เลือกเลเวล",
+ skt_done:"เรียนแล้ว: {s}",skt_nopts:"แต้มสกิลไม่พอ"});
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
 /* v19.2 light windows (Character / Status / Inventory) */
 Object.assign(D.en,{w_itemdet:"Item Info",inf_req:"REQ",inf_lock:"LOCK",inf_locked:"LOCKED",inf_cmp_on:"Compare ON",inf_cmp_off:"Compare OFF",inf_cmp_with:"Compared with equipped",inf_cmp_none:"Nothing equipped in this slot",
@@ -3806,6 +3869,11 @@ D.jp={
   "lt_cancel":"キャンセル",
   "lt_sell_hint":"アイテムを長押しすると選択を始められます。"
 };
+Object.assign(D.jp,{w_skill:"スキルツリー",skt_pts:"スキルポイント : {a} / {b}",skt_left:"残り {n}",skt_learn:"習得",skt_reset:"リセット",skt_active:"アクティブ",skt_passive:"パッシブ",
+ skt_pick:"スキルをタップすると説明が見られます。灰色は未習得のスキルです。タップして ◀ ▶ でレベルを選び、習得を押してください。",
+ skt_h_pend:"Lv {a} → {b}：スキルポイント {n}。習得で確定、リセットで取り消し。",skt_h_new:"未習得。▶ でレベルを選び、習得を押してください。",
+ skt_h_pas:"パッシブ：習得すると自動で効果があります。",skt_h_drag:"アイコンをホットキーにドラッグすると Lv {n} で使えます。",skt_h_lv:"◀ ▶ でレベルを選択。",
+ skt_done:"習得：{s}",skt_nopts:"スキルポイントが足りません。"});   // v20.9 Skills Tree
 let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
 const t=k=>(D[lang][k]??D.en[k]??k);
 const fmt=(k,o)=>t(k).replace(/\{(\w)\}/g,(_,c)=>o[c]);
@@ -4089,6 +4157,40 @@ const IC={
  note:'<path d="M5 4h9l3 3v4M5 4v16h12v-3"/><path d="M8 9h5M8 12h4M8 15h3"/><path d="M19.5 10.5l1.8 1.8-6.8 6.8-2.6.8.8-2.6z"/>'
 };
 const svg=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]}</svg>`;
+/* v20.9 skill icons: one duotone glyph per skill on a 32 x 32 grid. Lines use currentColor; class "a" is a soft fill of the same colour.
+   The tile sets the colour: white on an active skill (archetype colour behind it), the archetype colour on a passive (white behind it). */
+const SKI={
+ basic_skill:'<path class="a" d="M16 18c-1-5-5-8-10-7 0 5 4 8 10 7zM16 15c1-5 5-8 10-7 0 5-4 8-10 7z"/><path d="M16 28V14"/><path d="M16 18c-1-5-5-8-10-7 0 5 4 8 10 7zM16 15c1-5 5-8 10-7 0 5-4 8-10 7z"/><path d="M8 28h16"/>',
+ first_aid:'<rect class="a" x="5" y="5" width="22" height="22" rx="6"/><rect x="5" y="5" width="22" height="22" rx="6"/><path d="M16 10v12M10 16h12" stroke-width="3.2"/>',
+ bash:'<path class="a" d="M23 4h5v5L15 22l-5-5z"/><path d="M23 4h5v5L15 22l-5-5z"/><path d="M8 15l9 9M11 21l-6 6"/><path d="M4 9l3 1M8 4l1 3M3 15l3-1"/>',
+ power_strike:'<path class="a" d="M16 3l2.6 6.4L25 7l-2.4 6.4L29 16l-6.4 2.6L25 25l-6.4-2.4L16 29l-2.6-6.4L7 25l2.4-6.4L3 16l6.4-2.6L7 7l6.4 2.4z"/><path d="M16 3l2.6 6.4L25 7l-2.4 6.4L29 16l-6.4 2.6L25 25l-6.4-2.4L16 29l-2.6-6.4L7 25l2.4-6.4L3 16l6.4-2.6L7 7l6.4 2.4z"/><circle cx="16" cy="16" r="3.5"/>',
+ cleave:'<path class="a" d="M22 16a6 6 0 1 1-6-6"/><path d="M27 16A11 11 0 1 1 16 5"/><path d="M13 2l4 3-4 3"/><path d="M22 16a6 6 0 1 1-6-6"/><path d="M27 16l-3-3M27 16l3-3"/>',
+ crushing_blow:'<path class="a" d="M16 4l12 12-5 5L11 9z"/><path d="M16 4l12 12-5 5L11 9z"/><path d="M14 15l-9 9a2.8 2.8 0 0 0 4 4l9-9"/><path d="M3 11l3 1M6 6l2 2M11 3l1 3"/>',
+ war_cry:'<path class="a" d="M4 13v6h5l9 6V7l-9 6z"/><path d="M4 13v6h5l9 6V7l-9 6z"/><path d="M22 12a5 5 0 0 1 0 8M25.5 8.5a10 10 0 0 1 0 15"/>',
+ weapon_mastery:'<path class="a" d="M5 5h4l12 12-4 4L5 9z"/><path d="M5 5h4l12 12-4 4L5 9zM27 5h-4L11 17l4 4 12-12z"/><path d="M16 26l-4 0M19 23l7 7M13 23l-7 7"/>',
+ iron_body:'<path class="a" d="M16 4l10 4v8c0 7-5 11-10 12-5-1-10-5-10-12V8z"/><path d="M16 4l10 4v8c0 7-5 11-10 12-5-1-10-5-10-12V8z"/><path d="M16 9v14M10 14h12"/>',
+ double_strafe:'<path class="a" d="M19 6l6 4-6 4zM19 18l6 4-6 4z"/><path d="M3 10h21M19 6l6 4-6 4M3 22h21M19 18l6 4-6 4"/><path d="M3 10l-1-3M3 10l-1 3M3 22l-1-3M3 22l-1 3"/>',
+ arrow_shower:'<ellipse class="a" cx="16" cy="27" rx="11" ry="3"/><ellipse cx="16" cy="27" rx="11" ry="3"/><path d="M9 3v14M16 3v18M23 3v14M6 14l3 4 3-4M13 18l3 4 3-4M20 14l3 4 3-4"/>',
+ piercing_shot:'<circle class="a" cx="12" cy="16" r="7.5"/><circle cx="12" cy="16" r="7.5"/><circle cx="12" cy="16" r="2.5"/><path d="M2 16h26M24 11.5l5 4.5-5 4.5"/>',
+ evasive_leap:'<path class="a" d="M5 22C9 12 17 7 28 6c-2 9-10 16-23 16z"/><path d="M5 22C9 12 17 7 28 6c-2 9-10 16-23 16z"/><path d="M5 22l14-10M3 27h9M15 27h4"/>',
+ eagle_eye:'<path class="a" d="M3 16c4-7 9-10 13-10s9 3 13 10c-4 7-9 10-13 10S7 23 3 16z"/><path d="M3 16c4-7 9-10 13-10s9 3 13 10c-4 7-9 10-13 10S7 23 3 16z"/><circle cx="16" cy="16" r="4.5"/><circle cx="16" cy="16" r="1" fill="currentColor"/>',
+ steady_aim:'<circle class="a" cx="16" cy="16" r="5"/><circle cx="16" cy="16" r="11"/><circle cx="16" cy="16" r="5"/><path d="M16 2v7M16 23v7M2 16h7M23 16h7"/>',
+ fire_bolt:'<circle class="a" cx="11" cy="21" r="7"/><path d="M14 18L27 5M18 22l10-7M10 14l7-10"/><circle cx="11" cy="21" r="7"/><path d="M9 21a2.5 2.5 0 0 0 4 2"/>',
+ frost_nova:'<path class="a" d="M16 11l4.3 2.5v5L16 21l-4.3-2.5v-5z"/><path d="M16 3v26M4.7 9.5l22.6 13M27.3 9.5l-22.6 13"/><path d="M12 5l4 3 4-3M12 27l4-3 4 3M4 14l4.5-1-1.5-4.5M28 18l-4.5 1 1.5 4.5M4 18l4.5 1-1.5 4.5M28 14l-4.5-1 1.5-4.5"/>',
+ lightning_spear:'<path class="a" d="M19 3L7 18h8l-3 11 13-16h-8z"/><path d="M19 3L7 18h8l-3 11 13-16h-8z"/>',
+ stone_spike:'<path class="a" d="M3 28l5-12 3 6 5-17 5 14 3-5 5 14z"/><path d="M3 28l5-12 3 6 5-17 5 14 3-5 5 14z"/><path d="M16 5l1 9M8 16l1 5"/>',
+ overload_energy:'<path class="a" d="M16 4c1 7 4 10 11 12-7 2-10 5-11 12-1-7-4-10-11-12 7-2 10-5 11-12z"/><path d="M16 4c1 7 4 10 11 12-7 2-10 5-11 12-1-7-4-10-11-12 7-2 10-5 11-12z"/><path d="M26 3v5M23.5 5.5h5M6 23v4M4 25h4"/>',
+ mana_flow:'<path class="a" d="M16 3c5 6 8 10 8 15a8 8 0 0 1-16 0c0-5 3-9 8-15z"/><path d="M16 3c5 6 8 10 8 15a8 8 0 0 1-16 0c0-5 3-9 8-15z"/><path d="M11 19c2-2.5 4 2.5 6 0s3-1.5 4 0M12.5 23.5c1.5-1.5 3 1.5 4.5 0"/>',
+ elemental_attunement:'<circle class="a" cx="16" cy="16" r="4"/><circle cx="16" cy="16" r="11"/><circle cx="16" cy="16" r="4"/><circle cx="16" cy="5" r="2.6" fill="currentColor"/><circle cx="27" cy="16" r="2.6" fill="currentColor"/><circle cx="16" cy="27" r="2.6" fill="currentColor"/><circle cx="5" cy="16" r="2.6" fill="currentColor"/>',
+ heal:'<path class="a" d="M16 27S5 20.5 5 12.5a5.5 5.5 0 0 1 11-1.5 5.5 5.5 0 0 1 11 1.5C27 20.5 16 27 16 27z"/><path d="M16 27S5 20.5 5 12.5a5.5 5.5 0 0 1 11-1.5 5.5 5.5 0 0 1 11 1.5C27 20.5 16 27 16 27z"/><path d="M16 13v8M12 17h8"/>',
+ holy_light:'<circle class="a" cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="6"/><path d="M16 2v5M16 25v5M2 16h5M25 16h5M6 6l3.5 3.5M22.5 22.5 26 26M26 6l-3.5 3.5M9.5 22.5 6 26"/>',
+ blessing:'<ellipse cx="16" cy="5" rx="7" ry="2.2"/><path class="a" d="M16 10l2.4 5 5.6.8-4 3.9 1 5.5-5-2.6-5 2.6 1-5.5-4-3.9 5.6-.8z"/><path d="M16 10l2.4 5 5.6.8-4 3.9 1 5.5-5-2.6-5 2.6 1-5.5-4-3.9 5.6-.8z"/>',
+ sanctuary:'<ellipse class="a" cx="16" cy="24" rx="13" ry="5"/><ellipse cx="16" cy="24" rx="13" ry="5"/><path d="M8 23V10M24 23V10M16 4v13M12 8.5h8"/>',
+ divine_grace:'<path class="a" d="M25 4C13 6 8 14 7 26c8-1 16-8 18-22z"/><path d="M25 4C13 6 8 14 7 26c8-1 16-8 18-22z"/><path d="M5 28l15-17M12 20h5M15 16h4"/>',
+ guardian_aura:'<path class="a" d="M16 6l8 3v6c0 6-4 9-8 10-4-1-8-4-8-10V9z"/><path d="M16 6l8 3v6c0 6-4 9-8 10-4-1-8-4-8-10V9z"/><path d="M5 6a14 14 0 0 0 0 20M27 6a14 14 0 0 1 0 20"/>'
+};
+/* a skill's icon: its own glyph, else the old 24-grid icon */
+const skSvg=id=>{if(SKI[id])return `<svg class="ski" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SKI[id]}</svg>`;const k=REOC.SK[id];return svg(k&&IC[k.ic]?k.ic:"gear")};
 
 /* ================= Audio (v18): 8-bit chip music for every map + sound effects, all synthesized (no files) ================= */
 const AUD=(()=>{
@@ -6654,7 +6756,7 @@ function giveClassSet(a){
 function chooseArchetype(a){
   if(S.arch!=="beginner"||!REOC.ARCH[a]||a==="beginner")return;
   const o=curObj("arch");if(!o||!o.choose)return;
-  becomeArch(a);const L=giveClassSet(a);completeStage("arch");closeWin();
+  becomeArch(a);skTab=null;skSel=null;skCur={};const L=giveClassSet(a);completeStage("arch");closeWin();
   openDlg("n_helper",[{raw:fmt("helper_chosen",{a:t("ar_"+a)})},{raw:fmt("helper_set",{a:t("ar_"+a),l:L})}],PAL.helper,null);
 }
 function touchCrystal(){
@@ -6935,10 +7037,12 @@ const SKC={bash:"#ffb08a",first_aid:"#8af0b6",power_strike:"#ff8a6a",cleave:"#ff
  double_strafe:"#d8f0a0",arrow_shower:"#b8f08a",piercing_shot:"#f0ffd0",evasive_leap:"#ffffff",
  fire_bolt:ELC.fire,frost_nova:ELC.water,lightning_spear:"#fff36a",stone_spike:ELC.earth,overload_energy:"#c9b8ff",
  heal:"#8af0b6",holy_light:"#ffe9a0",blessing:"#ffd76a",sanctuary:"#fff2b8"};
-const SKG={beginner:"linear-gradient(135deg,#ff9f72,#cf3f2c)",fighter:"linear-gradient(135deg,#ff9a7a,#b8322a)",ranger:"linear-gradient(135deg,#b8f08a,#3f8a3a)",
- spellcaster:"linear-gradient(135deg,#c9b8ff,#5a3fc8)",supporter:"linear-gradient(135deg,#fff0b0,#c9962a)"};
-const SKG_EL={fire:"linear-gradient(135deg,#ffd27a,#de4f25)",water:"linear-gradient(135deg,#c8f2ff,#3684d2)",wind:"linear-gradient(135deg,#f6ff9a,#7ab82a)",earth:"linear-gradient(135deg,#e8c48a,#8a5a2a)"};
-const skGrad=id=>{const k=REOC.SK[id];return (k.elem&&SKG_EL[k.elem])||SKG[k.arch]||SKG.beginner};
+/* v20.9: one colour per class line, used by the Skills Tree tabs and tiles and by every skill icon (hotkey bar, drag ghost):
+   C0 Beginner blue, C1 Fighter red, Ranger green, Spellcaster purple, Supporter yellow */
+const ARC_COL={beginner:"#0a6fc2",fighter:"#d23b34",ranger:"#2e9447",spellcaster:"#7440c8",supporter:"#d69a0c"};
+const SKG={beginner:"linear-gradient(135deg,#5db3f5,#0a5fae)",fighter:"linear-gradient(135deg,#ff8b78,#b52a24)",ranger:"linear-gradient(135deg,#8fdc7c,#237a3a)",
+ spellcaster:"linear-gradient(135deg,#b597f5,#5a2fb0)",supporter:"linear-gradient(135deg,#ffd75e,#c4860a)"};
+const skGrad=id=>{const k=REOC.SK[id]||REOC.PASSIVE[id];return SKG[k&&k.arch]||SKG.beginner};   // v20.9: the archetype colour (the element shows in the skill text)
 const ITEMS={wing:{item:"wing",ic:"wing",c:"linear-gradient(135deg,#f0f8ff,#7aa4c4)",cd:3},red:{item:"red",ic:"potion",c:"linear-gradient(135deg,#ffa2ae,#c02843)",cd:.8},blue:{item:"blue",ic:"potion",c:"linear-gradient(135deg,#a2d4ff,#2a5fc0)",cd:.8}};
 let SLOTS=[];
 /* ---- skill levels (v20): 1 Job Lv = 1 skill point, spent by the player. Lv 1 of a levelled skill is free (ASSUMPTION, see SKILL-SPEC.md) ---- */
@@ -6980,6 +7084,81 @@ function skFix(){   // keep every level inside the points the character has (Job
   while(skAvail()<0){let best=null;for(const id of skMine())if(skLvOf(id)>0&&(!best||skLvOf(id)>skLvOf(best)))best=id;if(!best)break;S.skLv[best]--}
 }
 function skRaise(id){if(!skMine().includes(id)||skLvOf(id)>=skMaxOf(id)||skAvail()<=0)return;S.skLv[id]=skLvOf(id)+1;_pdKey="";buildSlots();renderWin();save()}
+/* ---- v20.9 Skills Tree (UI-UX.md §26) ----
+   Tabs: C0 Beginner, then the character's own C1 archetype (C2 / C3 tabs come when those classes exist).
+   Every tile has a level cursor skCur[id]. Above the learned level the cursor is a draft: 1 skill point per level, kept only when
+   Learn is pressed (Reset drops every draft). At or below the learned level it is the level a drag puts on the hotkey bar.
+   Basic Skill is the tile "basic_skill" (raised only as a Beginner); First Aid and Heavy Strike come from Basic Skill Lv 3 and 4. */
+let skTab=null,skSel=null,skCur={},skHotOpen=false;
+const BASIC_T="basic_skill";
+const skTabs=()=>S.arch==="beginner"?["beginner"]:["beginner",S.arch];
+const skTabNow=()=>{const L=skTabs();return L.includes(skTab)?skTab:L[L.length-1]};
+const skTreeIds=tab=>tab==="beginner"?[BASIC_T,...BASIC_ACT]:[BASIC_T,...BASIC_ACT,...REOC.ARCH[tab].passives,...REOC.ARCH[tab].actives];
+const skArchOf=id=>id===BASIC_T||BASIC_ACT.includes(id)?"beginner":(REOC.SK[id]||REOC.PASSIVE[id]).arch;
+const skIsPas=id=>id===BASIC_T||!REOC.SK[id];   // Basic Skill and the archetype passives: white tiles, never on the hotkey bar
+const skLearned=id=>id===BASIC_T?basicLv():skLvOf(id);
+const skMaxT=id=>id===BASIC_T?BASIC_MAX:skMaxOf(id);
+const skCanLearn=id=>id===BASIC_T?S.arch==="beginner":skMine().includes(id);
+const skView=id=>skCur[id]>0?skCur[id]:skLearned(id);   // the level the tile shows
+const skPool=()=>S.arch==="beginner"?BASIC_MAX-1:jcap()-1;   // every point this class can earn: Beginner 9, C1 49
+function skPendCost(){let n=0;for(const id in skCur)if(skCanLearn(id))n+=Math.max(0,skCur[id]-skLearned(id));return n}
+function skCurFix(){   // keep the cursors valid after a level, Job Lv or class change; drafts that no longer fit the points left are cut back
+  for(const id of Object.keys(skCur)){const L=skLearned(id);let c=Math.min(skCur[id]|0,skMaxT(id));
+    if(c>L&&!skCanLearn(id))c=L;if(id===BASIC_T&&c<L)c=L;
+    if(c<1||c===L)delete skCur[id];else skCur[id]=c}
+  let over=skPendCost()-skAvail();
+  for(const id of Object.keys(skCur).reverse()){while(over>0&&skCur[id]>skLearned(id)){skCur[id]--;over--}if(skCur[id]<1||skCur[id]===skLearned(id))delete skCur[id]}
+}
+function skStepOk(id,n){   // can the cursor of this tile go to level n?
+  const L=skLearned(id);
+  if(n<(id===BASIC_T?L:L>0?1:0)||n>skMaxT(id))return false;
+  if(n>L&&n>skView(id))return skCanLearn(id)&&skPendCost()<skAvail();
+  return true}
+function skStep(id,d){
+  const n=skView(id)+d,L=skLearned(id);
+  if(!skStepOk(id,n)){if(d>0&&n<=skMaxT(id)&&n>L){AUD.sfx("err");toast(skCanLearn(id)?t("skt_nopts"):BASIC_UNLOCK[id]?basicNeed(id):t("bs_kept"))}return}
+  skSel=id;if(n===L||n<1)delete skCur[id];else skCur[id]=n;AUD.sfx("click");renderWin()}
+function skPick(id){   // a tap on a tile selects it; a grey skill that can be learned also gets a Lv 1 draft
+  skSel=id;const L=skLearned(id);
+  if(!L&&!(skCur[id]>0)){if(skCanLearn(id)){if(skPendCost()<skAvail())skCur[id]=1;else{AUD.sfx("err");toast(t("skt_nopts"))}}else if(BASIC_UNLOCK[id])toast(basicNeed(id))}
+  AUD.sfx("click");renderWin()}
+function skLearn(){
+  skCurFix();const cost=skPendCost();if(!cost)return;
+  const names=[],L0=basicLv();
+  for(const id of Object.keys(skCur)){const L=skLearned(id),c=skCur[id];if(c<=L||!skCanLearn(id))continue;
+    if(id===BASIC_T)S.basicLv=c;else S.skLv[id]=c;
+    names.push(t(id===BASIC_T?"bs_title":"sk_"+id)+" Lv "+c);delete skCur[id]}
+  AUD.sfx("levelup");toast(fmt("skt_done",{s:names.join(", ")}),true);
+  for(let n=L0+1;n<=basicLv();n++)toast(fmt("bs_up",{n,a:t("bs_u_"+BASIC_ROWS[n-1])}),true);   // what each new Basic Skill level teaches
+  _pdKey="";buildSlots();renderWin();save();if(basicLv()>L0)autoArchTrial()}
+function skReset(){for(const id of Object.keys(skCur))if(skCur[id]>skLearned(id))delete skCur[id];AUD.sfx("click");renderWin()}
+function skTile(id){
+  const L=skLearned(id),v=skView(id),mx=skMaxT(id),pas=skIsPas(id),pend=v>L,on=L>0||pend,sel=skSel===id,a=skArchOf(id);
+  const name=t(id===BASIC_T?"bs_title":"sk_"+id);
+  const dnd=id===BASIC_T?"":` data-dnd="s:${id}:${REOC.SKLV[id]&&L?Math.min(v,L):0}"`;   // the drag carries the level picked with the arrows
+  const arw=(sel||pend)&&(mx>1||(!L&&skCanLearn(id)));
+  const low=`<span class="skc-arw${pas?" pas":""}"><button class="l" data-act="skstep" data-id="${id}" data-d="-1" aria-label="-"${skStepOk(id,v-1)?"":" disabled"}><i></i></button><b>${v}</b><button class="r" data-act="skstep" data-id="${id}" data-d="1" aria-label="+"${skStepOk(id,v+1)?"":" disabled"}><i></i></button></span>`;
+  const pill=arw?low:L?`<span class="skc-lv${pas?" pas":""}">${L}</span>`:BASIC_UNLOCK[id]?`<span class="skc-lv req">${t("bs_short")} ${BASIC_UNLOCK[id]}</span>`:`<span class="skc-lv none"></span>`;
+  return `<div class="skc${on?"":" off"}" style="--ac:${ARC_COL[a]};--ag:${SKG[a]}"><span class="skc-n" title="${name}">${name}</span><button class="sk-tile${pas?" pas":""}${on?"":" off"}${sel?" sel":""}" data-act="skpick" data-id="${id}"${dnd} aria-label="${name}">${skSvg(id)}${pend?`<em class="skc-plus">+${v-L}</em>`:""}</button>${pill}</div>`}
+function skDetail(tab){
+  const id=skSel&&skTreeIds(tab).includes(skSel)?skSel:null;
+  if(!id)return `<div class="skt-det empty"><small>${t("skt_pick")}</small></div>`;
+  const L=skLearned(id),v=skView(id),mx=skMaxT(id),pas=skIsPas(id),a=skArchOf(id),d=pd(),lv=Math.max(1,v);
+  let el="",desc,stat="",hint="";
+  if(id===BASIC_T){desc=t(S.arch==="beginner"?"bs_desc":"bs_kept");const r=BASIC_ROWS[lv-1];stat=`<b>Lv ${lv}:</b> ${t("bs_u_"+r)} · ${t("bs_d_"+r)}`}
+  else if(pas){desc=t("skd_"+id);const e=REOC.SKLV[id]?pasEffAt(id,lv):"";if(e)stat=`<b>Lv ${lv}:</b> ${e}`}
+  else{const k0=REOC.SK[id],k=REOC.SKLV[id]?REOC.skAt(id,lv):k0;desc=t("skd_"+id);
+    if(k0.elem)el=` <small style="display:inline;color:${k0.elem==="holy"?"#b8861e":ELC[k0.elem]}">${t("el_"+k0.elem)}</small>`;
+    const cast=k.cast?` · ${t("castLbl")} ${(k.cast*d.castMul).toFixed(1)}s`:"",rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"",
+      gd=k.gd?` · ${t("gdLbl")} ${k.gd}s`:"",fb=id==="fire_bolt"?` · ${t("fbLbl")} ${k.hits}`:k.over?` · ${t("lt_over")} +${k.over}% · ${t("durLbl")} ${k.dur}s`:"";
+    stat=`${REOC.SKLV[id]?`<b>Lv ${lv}:</b> `:""}SP ${Math.ceil(k.sp*d.spCost)} · ${t("cd")} ${k.cd}s${gd}${cast}${rg}${fb}`}
+  if(v>L)hint=fmt("skt_h_pend",{a:L,b:v,n:v-L});
+  else if(!L)hint=BASIC_UNLOCK[id]?basicNeed(id):skCanLearn(id)?t("skt_h_new"):"";
+  else if(id===BASIC_T)hint=S.arch==="beginner"&&L<mx?t("skt_h_new"):"";
+  else if(pas)hint=t("skt_h_pas");
+  else hint=fmt("skt_h_drag",{n:REOC.SKLV[id]?Math.min(v,L):L})+(mx>1?" "+t("skt_h_lv"):"");
+  return `<div class="skt-det" style="--ac:${ARC_COL[a]}"><div class="skt-dh"><b>${t(id===BASIC_T?"bs_title":"sk_"+id)}</b><span class="skt-chip${pas?" pas":""}">${t(pas?"skt_passive":"skt_active")}</span>${el}<span class="grow"></span><b class="lv">Lv ${L}/${mx}</b></div>
+   <p>${desc}</p>${stat?`<small>${stat}</small>`:""}${hint?`<small class="hint">${hint}</small>`:""}</div>`}
 const slotLv=sl=>sl&&sl.id&&REOC.SKLV[sl.id]?(sl.lv>0?Math.min(sl.lv,skLvOf(sl.id)):skLvOf(sl.id)):0;   // lv 0 on a slot = the highest level learned
 function lvFor(id){   // level Idle uses: the level set on the first hotbar slot that holds the skill, else the highest learned
   if(!REOC.SKLV[id])return 0;const sl=SLOTS.find(x=>x.id===id&&!x.item);return sl?slotLv(sl):skLvOf(id)}
@@ -7013,8 +7192,8 @@ function renderHotbar(){
   $("#hotbar").innerHTML=SLOTS.map((s,i)=>{
     const dr=` data-drop="hot" data-i="${i}"`;   // every slot is a drop zone
     if(!s.id)return `<button class="slot empty"${dr} aria-label="--"><span class="k">${(i+1)%10}</span></button>`;
-    const lv=s.item?0:slotLv(s),name=(s.item?itemName(s.item):t("sk_"+s.id))+(lv?" Lv "+lv:""),ic=s.item?s.ic:REOC.SK[s.id].ic,c=s.item?s.c:skGrad(s.id);
-    return `<button class="slot" data-dnd="h:${i}"${dr} title="${name}" aria-label="${name}"><span class="k">${(i+1)%10}</span><span class="ic" style="--c:${c}">${s.item?itemArt(s.item):svg(IC[ic]?ic:"star")}</span>${s.item?`<span class="n">${S.inv[s.item]||0}</span>`:lv?`<span class="n lvb">Lv${lv}</span>`:""}</button>`}).join("");
+    const lv=s.item?0:slotLv(s),name=(s.item?itemName(s.item):t("sk_"+s.id))+(lv?" Lv "+lv:""),c=s.item?s.c:skGrad(s.id);
+    return `<button class="slot" data-dnd="h:${i}"${dr} title="${name}" aria-label="${name}"><span class="k">${(i+1)%10}</span><span class="ic" style="--c:${c}">${s.item?itemArt(s.item):skSvg(s.id)}</span>${s.item?`<span class="n">${S.inv[s.item]||0}</span>`:lv?`<span class="n lvb">Lv${lv}</span>`:""}</button>`}).join("");
 }
 $("#hotbar").addEventListener("click",e=>{const b=e.target.closest(".slot");if(b)useSlot(+b.dataset.i)});
 function flashSlot(i){const b=$(`.slot[data-i="${i}"]`);if(b){b.classList.add("flash");setTimeout(()=>b.classList.remove("flash"),160)}}
@@ -7555,30 +7734,25 @@ const WIN={
  archpick:()=>{
   const list=["fighter","ranger","spellcaster","supporter"];
   return `<p class="muted" style="margin:0 0 10px">${t("pick_intro")}</p><div class="rows">${list.map(a=>{const A=REOC.ARCH[a];
-    return `<div class="row arch-card" style="--qc:${SKC[A.actives[0]]}"><span class="dot" style="--c:${SKG[a]}">${svg(REOC.SK[A.actives[0]].ic)}</span><div class="grow"><b>${t("ar_"+a)}</b> <small style="display:inline">${t("ty_"+A.type)}</small><small>${t("mech_"+a)}</small><small>${A.actives.map(id=>t("sk_"+id)).join(" · ")}</small></div>
+    return `<div class="row arch-card" style="--qc:${SKC[A.actives[0]]}"><span class="dot" style="--c:${SKG[a]}">${skSvg(A.actives[0])}</span><div class="grow"><b>${t("ar_"+a)}</b> <small style="display:inline">${t("ty_"+A.type)}</small><small>${t("mech_"+a)}</small><small>${A.actives.map(id=>t("sk_"+id)).join(" · ")}</small></div>
     <button class="btn sm ${pickArm===a?"danger":"pri"}" data-act="pick" data-v="${a}">${t(pickArm===a?"pick_confirm":"pick_choose")}</button></div>`}).join("")}</div>
    <p class="muted" style="margin-top:8px">${t("pick_note")}</p>`},
+ /* v20.9 Skills Tree: helpers next to skTile() */
  skill:()=>{
-  const A=REOC.ARCH[S.arch],d=pd(),lvd=REOC.SKLV;
-  const upBtn=id=>BASIC_UNLOCK[id]?`<span class="bs-tag">${t("bs_short")} ${BASIC_UNLOCK[id]}</span>`:`<button class="btn sm pri" data-act="skup" data-id="${id}" ${skLvOf(id)>=skMaxOf(id)||skAvail()<=0?"disabled":""}>+</button>`;
-  const lvTxt=id=>skLvOf(id)?`Lv ${skLvOf(id)}/${skMaxOf(id)}`:t("skNone");
-  /* v20.4 Basic Skill: one row with its level, then what each level teaches (unlocked rows lit, the next one marked) */
-  const bL=basicLv(),beg=S.arch==="beginner";
-  const basic=`<div class="w-sec">${t("bs_title")}</div><div class="rows"><div class="row bs-main"><span class="dot" style="--c:${SKG.beginner}">${svg("star")}</span><div class="grow"><b>${t("bs_title")}</b><small>${t(beg?"bs_desc":"bs_kept")}</small></div><b>Lv ${bL}/${BASIC_MAX}</b>${beg?`<button class="btn sm pri" data-act="bsup" ${bL>=BASIC_MAX||skAvail()<=0?"disabled":""}>+</button>`:""}</div></div>
-   <ol class="bs-list">${BASIC_ROWS.map((k,i)=>{const on=bL>i,nx=bL===i;return `<li class="${on?"on":nx?"next":""}"><span class="bs-n">${i+1}</span><span class="grow"><b>${t("bs_u_"+k)}</b><small>${t("bs_d_"+k)}</small></span>${on?`<span class="bs-ok">✓</span>`:svg("lock")}</li>`}).join("")}</ol>`;
-  const act=actList().map(id=>{const k0=REOC.SK[id],L=skLvOf(id),k=lvd[id]?REOC.skAt(id,L||1):k0,
-      cast=k.cast?` · ${t("castLbl")} ${(k.cast*d.castMul).toFixed(1)}s`:"",rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"",
-      gd=k.gd?` · ${t("gdLbl")} ${k.gd}s`:"",fb=id==="fire_bolt"?` · ${t("fbLbl")} ${k.hits}`:k.over?` · ${t("lt_over")} +${k.over}% · ${t("durLbl")} ${k.dur}s`:"";
-    return `<div class="row" data-dnd="s:${id}"${L?"":' style="opacity:.62"'}><span class="dot" style="--c:${skGrad(id)}">${svg(IC[k0.ic]?k0.ic:"star")}</span><div class="grow"><b>${t("sk_"+id)}</b>${k0.elem?` <small style="display:inline;color:${k0.elem==="holy"?"#b8861e":ELC[k0.elem]}">· ${t("el_"+k0.elem)}</small>`:""}<small>${t("skd_"+id)}</small><small>SP ${Math.ceil(k.sp*d.spCost)} · ${t("cd")} ${k.cd}s${gd}${cast}${rg}${fb}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`}).join("");
-  const pas=A.passives.map(id=>`<div class="row" data-dnd="s:${id}"${skLvOf(id)?"":' style="opacity:.62"'}><span class="dot" style="--c:linear-gradient(135deg,#d8d4e8,#6f6a8f)">${svg("gear")}</span><div class="grow"><b>${t("sk_"+id)}</b><small>${t("skd_"+id)}</small>${pasEff(id)}</div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`).join("");
-  const pts=`<p class="muted" style="margin:0 0 6px"><b>${fmt("skpLine",{n:skAvail()})}</b></p>`;
+  skCurFix();const tab=skTabNow(),ids=skTreeIds(tab),lvd=REOC.SKLV,cost=skPendCost();
+  const cells=Array.from({length:Math.max(10,Math.ceil(ids.length/5)*5)},(_,i)=>ids[i]?skTile(ids[i]):`<div class="skc empty"><span class="skc-n"></span><span class="sk-tile"></span><span class="skc-lv none"></span></div>`).join("");
+  const tabs=`<div class="skt-tabs">${skTabs().map(a=>`<button class="${a===tab?"on":""}" style="--tc:${ARC_COL[a]}" data-act="sktab" data-v="${a}">${svg(ARCH_IC[a])}<span>${t("ar_"+a)}</span></button>`).join("")}</div>`;
   const itIds=Object.keys(ITEMDB).filter(hotUsable);
-  const hot=`<div class="w-sec">${t("hotCfg")}</div><div class="rows">${SLOTS.map((sl,i)=>{
+  const hot=!skHotOpen?"":`<div class="rows">${SLOTS.map((sl,i)=>{
       const cur=sl.id?(sl.item?"i:":"s:")+sl.id:"";
       const opts=`<option value="">${t("hotNone")}</option><optgroup label="${t("hotGrpSk")}">${actList().map(id=>`<option value="s:${id}"${cur==="s:"+id?" selected":""}>${t("sk_"+id)}</option>`).join("")}</optgroup><optgroup label="${t("hotGrpIt")}">${itIds.map(id=>`<option value="i:${id}"${cur==="i:"+id?" selected":""}>${itemName(id)}</option>`).join("")}</optgroup>`;
       let lvSel="";if(sl.id&&!sl.item&&lvd[sl.id]){const learned=skLvOf(sl.id);lvSel=`<select class="sk-sel" data-hot="${i}" data-part="lv"><option value="0"${!sl.lv?" selected":""}>${t("hotMax")}</option>${Array.from({length:learned},(_,j)=>`<option value="${j+1}"${sl.lv===j+1?" selected":""}>Lv ${j+1}</option>`).join("")}</select>`}
       return `<div class="row"><b>${(i+1)%10}</b><select class="sk-sel" data-hot="${i}" data-part="id">${opts}</select>${lvSel}</div>`}).join("")}</div><p class="muted">${t("hotNote")}</p>`;
-  return `<p class="muted" style="margin:0 0 8px">${t("mech_"+S.arch)}</p>${pts}${beg?basic:""}<div class="w-sec">${t("actives")}</div><div class="rows">${act}</div>${pas?`<div class="w-sec">${t("passives")}</div><div class="rows">${pas}</div>`:""}${beg?"":basic}${hot}`},
+  return `<div class="skt" style="--ac:${ARC_COL[tab]}">${tabs}<p class="skt-mech">${t("mech_"+tab)}</p>
+   <div class="skt-well"><div class="skt-grid">${cells}</div></div>${skDetail(tab)}
+   <div class="skt-foot"><span class="skt-pts">${fmt("skt_pts",{a:skSpent(),b:skPool()})}<small>${fmt("skt_left",{n:skAvail()-cost})}</small></span><span class="grow"></span>
+    <button class="lt-btn blue" data-act="sklearn"${cost?"":" disabled"}>${t("skt_learn")}${cost?` (${cost})`:""}</button><button class="lt-btn" data-act="skreset"${cost?"":" disabled"}>${t("skt_reset")}</button></div>
+   <div class="skt-hot"><button class="lt-row skt-hotT${skHotOpen?" on":""}" data-act="skhot"><span class="lt-row-l">${svg("bars")}${t("hotCfg")}</span>${svg("chevD")}</button>${hot}</div></div>`},
  quest:()=>{
     const ids=Object.keys(QD),act=ids.filter(id=>S.q[id]&&S.q[id].s==="active"),av=ids.filter(id=>!QD[id].giver&&(!S.q[id]||S.q[id].s==="avail"));
     const done=ids.reduce((a,id)=>a+((S.q[id]&&S.q[id].n)||0),0);
@@ -7626,7 +7800,7 @@ const WSLOT=[{k:"A",el:"win",b:"winB",t:"winT",n:"winNav",h:"winH",x:"winX"},{k:
 let winSide=null,winDet=null,_wkey={A:"",B:"",C:""},_wsig={},ptrDown=false,_wwT=0;
 let mapSel=null,mapTab="info",shopTab="sc",setTab="gfx",socTab="friends",frArm=null;
 const slotWin=k=>k==="A"?winId:k==="B"?winSide:winDet;
-const WTITLES={itemdet:"w_itemdet",idlesum:"w_idlesum",idleset:"w_idleset",worldmap:"w_worldmap",mapinfo:"w_mapinfo"};
+const WTITLES={skill:"w_skill",itemdet:"w_itemdet",idlesum:"w_idlesum",idleset:"w_idleset",worldmap:"w_worldmap",mapinfo:"w_mapinfo"};
 const winTitle=id=>t(WTITLES[id]||"m_"+id);
 function openWin(k,o){
   AUD.sfx("open");
@@ -7652,7 +7826,7 @@ function winSig(id){
     case "status":pd();return [S.lv,Math.floor(S.exp),S.jlv,Math.floor(S.jexp),S.kills,S.deaths,_pdKey,statFree(),S.autoStat?1:0,S.arch].join("|");
     case "inv":return invSig();
     case "storage":return invSig()+"|"+stoTab+"|"+stoPage.bag+"|"+stoPage.store+"|"+JSON.stringify(S.store)+"|"+lang;
-    case "skill":return S.arch+"|"+S.lv+"|"+S.jlv+"|"+basicLv()+"|"+JSON.stringify(S.skLv)+"|"+JSON.stringify(S.hot)+"|"+lang;
+    case "skill":return S.arch+"|"+S.lv+"|"+S.jlv+"|"+basicLv()+"|"+JSON.stringify(S.skLv)+"|"+JSON.stringify(S.hot)+"|"+lang+"|"+skTabNow()+"|"+skSel+"|"+JSON.stringify(skCur)+"|"+skHotOpen;
     case "quest":return JSON.stringify(S.q)+"|"+S.pins.join();
     case "social":return socTab+"|"+(S.friends||[]).join()+"|"+frArm+"|"+ptArm+"|"+ptRen+"|"+S.lv+"|"+JSON.stringify(S.party)+"|"+JSON.stringify(S.guild);
     case "shop":return [S.sc,S.y,S.la,shopTab,S.invPacks,SHOP.map(([k])=>S.inv[k]).join()].join("|");
@@ -7662,7 +7836,7 @@ function winSig(id){
     default:return "";
   }}catch(e){return ""}
 }
-const LIGHT_W={has:()=>true},W_IC={char:"person",status:"pillars",inv:"backpack",itemdet:"note",storage:"vault"};   // v19.6: every window uses the new frame
+const LIGHT_W={has:()=>true},W_IC={char:"person",status:"pillars",inv:"backpack",itemdet:"note",storage:"vault",skill:"sparkle"};   // v19.6: every window uses the new frame
 function drawSlot(sl,id,portrait){
   const el=$("#"+sl.el),B=$("#"+sl.b);el.classList.remove("hidden");el.dataset.w=id;
   const key=id+"|"+(id==="char"?charView:id==="itemdet"?(eqSel||invSel||""):id==="mapinfo"?mapSel+"|"+mapTab:""),top=B.scrollTop;
@@ -7993,8 +8167,12 @@ function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[d
   else if(a==="style")toast(t("style_soon"))
   else if(a==="trial")trialGo()
   else if(a==="pick"){const v=b.dataset.v;if(pickArm!==v){pickArm=v;renderWin();return}pickArm=null;chooseArchetype(v)}
-  else if(a==="skup")skRaise(b.dataset.id)
-  else if(a==="bsup")basicRaise()
+  else if(a==="sktab"){skTab=b.dataset.v;renderWin()}
+  else if(a==="skpick")skPick(b.dataset.id)
+  else if(a==="skstep")skStep(b.dataset.id,+b.dataset.d)
+  else if(a==="sklearn")skLearn()
+  else if(a==="skreset")skReset()
+  else if(a==="skhot"){skHotOpen=!skHotOpen;renderWin()}
   else if(a==="stotab"){stoTab=b.dataset.v;renderWin()}
   else if(a==="stopage"){stoPage[stoTab]=Math.max(0,(stoPage[stoTab]|0)+ +b.dataset.d);renderWin()}
   else if(a==="stomv")stoMove(b.dataset.k)
@@ -8034,12 +8212,12 @@ addEventListener("pointerup",lpCancel,true);addEventListener("pointercancel",lpC
    An item or skill is dragged from the bag, the Skills window or a worn slot and dropped on a hotkey slot. A hotkey slot can be moved (drop on another slot) or cleared (drop outside any zone); the bag, the Skills list and the worn piece are never changed by a drop that is refused. Drop zones carry data-drop; a future trade or sell zone adds its entry to DROP_ZONES. */
 const DROP_ZONES={hot:{check:src=>hotCheck(src),drop:(src,el)=>hotDrop(src,+el.dataset.i)}};
 const DND={p:null,pid:0,sx:0,sy:0,x:0,y:0,on:false,moved:false,hold:false,ghost:null,zone:null,timer:0,endT:-1e9};
-const skIcon=id=>{const k=REOC.SK[id];return `<span class="ic" style="--c:${k?skGrad(id):"linear-gradient(135deg,#d8d4e8,#6f6a8f)"}">${svg(k&&IC[k.ic]?k.ic:"gear")}</span>`};   // passives have no SK entry: a grey gear
+const skIcon=id=>`<span class="ic" style="--c:${skGrad(id)}">${skSvg(id)}</span>`;   // v20.9: every skill (passives too) has its own icon in its archetype colour
 function dndSource(k){   // what a drag carries: "i:"/"g:" bag entry, "e:" worn slot, "s:" skill, "h:" hotkey slot
   const p=k.slice(2);
   if(k[0]==="i"||k[0]==="g"){const e=invFind(k);return e?{k,cat:e.cat,id:e.id,html:`<span class="ii-ic">${itemArt(e.id)}</span>`}:null}
   if(k[0]==="e"){const it=S.equip[p];return it?{k,cat:"gear",id:it.id,html:`<span class="ii-ic">${itemArt(it.id)}</span>`}:null}
-  if(k[0]==="s")return {k,cat:"skill",id:p,html:skIcon(p)};   // a passive too: hotCheck refuses it, so the player is told why
+  if(k[0]==="s"){const [id,lv]=p.split(":");return {k,cat:"skill",id,lv:+lv||0,html:skIcon(id)}}   // "s:id:lv" (v20.9: lv = the level picked in the Skills Tree, 0 = highest learned). A passive too: hotCheck refuses it, so the player is told why
   if(k[0]==="h"){const sl=SLOTS[+p];if(!sl||!sl.id)return null;return sl.item?{k,cat:"use",id:sl.item,html:`<span class="ic" style="--c:${sl.c}">${itemArt(sl.item)}</span>`}:{k,cat:"skill",id:sl.id,html:skIcon(sl.id)}}
   return null;
 }
@@ -8053,7 +8231,7 @@ function hotCheck(src){   // can this drag go on a hotkey slot? {ok} or {ok:fals
 function hotDrop(src,i){
   const c=hotCheck(src);if(!c.ok){AUD.sfx("err");toast(c.msg);return false}
   if(src[0]==="h"){const from=+src.slice(2);if(from!==i){const a=S.hot[from];S.hot[from]=S.hot[i];S.hot[i]=a}}   // move, or swap with what is there
-  else{const s=dndSource(src);S.hot[i]=s.cat==="skill"?{id:s.id,lv:0}:{item:s.id}}
+  else{const s=dndSource(src);S.hot[i]=s.cat==="skill"?{id:s.id,lv:s.lv||0}:{item:s.id}}
   AUD.sfx("click");buildSlots();renderWin();save();return true;
 }
 function hotClear(i){if(!S.hot[i])return;S.hot[i]=null;buildSlots();renderWin();save()}
@@ -8086,11 +8264,11 @@ function dndReset(){
   document.body.classList.remove("dnd-on");
   Object.assign(DND,{p:null,on:false,moved:false,hold:false,ghost:null,zone:null,timer:0});
 }
-function dndStart(e,el){   // pointerdown on a draggable. Mouse and pen: a drag starts after 6 px. Touch on a Skills row: after a 230 ms hold, so the list still scrolls
+function dndStart(e,el){   // pointerdown on a draggable. Mouse and pen: a drag starts after 6 px. Touch on a Skills tile: after a 230 ms hold, so the window still scrolls
   if(e.button>0||DND.on)return;dndReset();
   if(el.classList.contains("row")&&e.target.closest("button,select,input"))return;   // the + button and the selects are not drag handles
   DND.p=el.dataset.dnd;DND.pid=e.pointerId;DND.sx=DND.x=e.clientX;DND.sy=DND.y=e.clientY;
-  DND.hold=el.classList.contains("row")&&e.pointerType==="touch";
+  DND.hold=(el.classList.contains("row")||el.classList.contains("sk-tile"))&&e.pointerType==="touch";
   if(DND.hold)DND.timer=setTimeout(()=>{DND.timer=0;dndBegin()},230);
 }
 addEventListener("pointermove",e=>{

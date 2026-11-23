@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.6. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.9. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.8 (this update)
+## Changes in v20.9 (this update)
+- **Skills Tree window** replaces the Skills list. Same frame as Status and Bag (440 px wide). Tabs per class line: C0 **Beginner** (blue) and, after the Archetype choice, the character's own C1 tab: Fighter red, Ranger green, Spellcaster purple, Supporter yellow (C2 / C3 tabs later). A 5-column grid of tiles: active = colour fill, passive = white with a colour line, not learned = grey. Learning is a draft: tap a skill, plan levels with ◀ ▶, then **Learn**; **Reset** drops the draft. On a learned skill, ◀ ▶ pick the level a drag puts on the hotkey bar. Footer "Skill Points : spent / pool". Hotbar setup is folded at the bottom. Every skill has a new duotone icon in its line colour (hotkey bar too); the element no longer colours the icon. See `UI-UX.md` §26 (and §24, §25), `SKILL-SPEC.md` §4–5, `JOBS.md` §1b.
+
+## Changes in v20.8
 - **Japanese (日本語) added as a third language.** The language switch now reads ไทย · EN · 日本語 in Settings (Other tab) and on the login page. The browser picks Japanese when its language starts with `ja`. Every key of the dictionary has a `jp` text (`D.jp`, 984 keys) and the login page has `I.jp`. Bilingual data (items, gear, abilities, set names, rarity, chat seed lines) gets its Japanese from the `JPX` table, keyed by the English text, read with `LP` / `LO` / `PT`. Numbers and times use `LOCALE[lang]` (`ja-JP`). Japanese text uses Noto Sans JP. The wiki (`wiki.html`) is Thai-only and is unchanged. See `UI-UX.md` §4, `REO-INSTRUCTIONS.md` (Languages, Localization).
 
 ## Changes in v20.7
