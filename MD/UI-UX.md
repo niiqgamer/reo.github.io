@@ -366,10 +366,10 @@ These three windows, and the **Item Detail** window that opens from them, now us
 | Hit | Perfect Hit |
 | Critical Rate | Critical Damage (`+40%`, the crit multiplier ×1.4) |
 | Overload Rate | Overload Damage (`+30%`, the Overload multiplier ×1.3) |
-| Variable Casting (`−(DEX/150)%`) | Fixed Casting |
+| Variable Casting (`−(1 − vctMul)%`: `√((DEX×2+INT)/530)` and gear) | Fixed Casting (`−%` from gear) |
 | Ignore DEF | Ignore Magic DEF |
 
-- **Placeholders:** Global Delay, Perfect Hit, Fixed Casting, Ignore DEF and Ignore Magic DEF have **no system yet** (nothing raises them), so they show `0%` / `0 sec`; hovering says so. **Overload Rate** shows the base chance (= CRIT); each magic skill multiplies it by its own Overload rate (`COMBAT-FORMULAS.md` 3b).
+- **Placeholders:** Perfect Hit, Ignore DEF and Ignore Magic DEF have **no system yet** (nothing raises them), so they show `0%`; hovering says so. **Fixed Casting** and **Global Delay** show the gear reduction (`−x%`); no item gives it yet, so they read `0%` with the same hover note (v20.9). **Overload Rate** shows the base chance (= CRIT); each magic skill multiplies it by its own Overload rate (`COMBAT-FORMULAS.md` 3b).
 - **Removed from Status:** kills / deaths record, the EXP bars (the player card has them), weapon and armor type rows.
 
 **Inventory (440 px wide)**

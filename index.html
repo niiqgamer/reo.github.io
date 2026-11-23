@@ -1729,7 +1729,7 @@ const ARCH={
 
 /* ---------- skills (prototype skill level 5) ----------
  kind: phys | magic | heal | buff | zone | move
- aoe: radius in tiles; at: "self" | "target". range in tiles. cast in seconds (before DEX). */
+ aoe: radius in tiles; at: "self" | "target". range in tiles. vct / fct: variable / fixed cast time in seconds (v20.9; vct is shortened by DEX and INT, fct only by gear). */
 const SK={
  // beginner
  bash:{arch:"beginner",kind:"phys",ratio:2.0,sp:5,cd:5,range:1.6,ic:"sword"},   // v20.4: "Heavy Strike", Basic Skill Lv 4 (JOBS.md §1b): 200% ATK, SP 5, cooldown 5 s, no cast, range 1.6 tiles (= Beginner basic attack)
@@ -1744,15 +1744,15 @@ const SK={
  arrow_shower:{arch:"ranger",kind:"phys",ratio:.9,sp:14,cd:4,range:12,aoe:1.6,at:"target",ranged:true,ic:"rain"},
  piercing_shot:{arch:"ranger",kind:"phys",ratio:3.2,ignoreDef:.5,canCrit:true,critMul:2,sp:18,cd:6,range:12,ranged:true,ic:"pierce"},
  evasive_leap:{arch:"ranger",kind:"move",leap:3,buff:"leap",dur:4,sp:10,cd:10,ic:"wing"},
- // spellcaster — Casting (DEX shortens cast) + elemental weakness; spells never miss
- fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.0,hits:5,sp:20,cd:0,gd:1.4,cast:1.7,gap:.3,range:7,overMul:.5,lv:5,ic:"flame"},   // v20: this is the Lv 5 row; skAt() gives every level (SKILL-SPEC.md)
- frost_nova:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.6,sp:20,cd:5,cast:.6,aoe:2.5,at:"self",freeze:.4,freezeDur:2,ic:"snow"},
- lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:3.8,sp:22,cd:3,cast:1.6,range:7,ic:"bolt"},
- stone_spike:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:2.6,sp:16,cd:2,cast:1.0,range:7,stunChance:.2,stun:1,ic:"spike"},
- overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:120,sp:110,cd:60,gd:1,cast:2,area:6,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 50/65/80/95/110
+ // spellcaster — Casting (DEX and INT shorten the variable cast) + elemental weakness; spells never miss
+ fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.0,hits:5,sp:20,cd:0,gd:1.4,vct:1.7,fct:0,gap:.3,range:7,overMul:.5,lv:5,ic:"flame"},   // v20: this is the Lv 5 row; skAt() gives every level (SKILL-SPEC.md)
+ frost_nova:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.6,sp:20,cd:5,vct:.6,fct:0,aoe:2.5,at:"self",freeze:.4,freezeDur:2,ic:"snow"},
+ lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:3.8,sp:22,cd:3,vct:1.6,fct:0,range:7,ic:"bolt"},
+ stone_spike:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:2.6,sp:16,cd:2,vct:1.0,fct:0,range:7,stunChance:.2,stun:1,ic:"spike"},
+ overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:120,sp:110,cd:60,gd:1,vct:2,fct:0,area:6,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 50/65/80/95/110
  // supporter — Sustain: Heal (classic formula) + overheal turns into a Grace shield; buffs reach 15 tiles
  heal:{arch:"supporter",kind:"heal",lvl:5,sp:13,cd:1,range:15,ic:"plus"},
- holy_light:{arch:"supporter",kind:"magic",elem:"holy",ratio:2.0,sp:15,cd:1.5,cast:.8,range:9,ic:"sun"},
+ holy_light:{arch:"supporter",kind:"magic",elem:"holy",ratio:2.0,sp:15,cd:1.5,vct:.8,fct:0,range:9,ic:"sun"},
  blessing:{arch:"supporter",kind:"buff",buff:"blessing",dur:120,sp:24,cd:30,range:15,ic:"star"},
  sanctuary:{arch:"supporter",kind:"zone",dur:8,radius:2.5,healPct:.04,ratio:.5,elem:"holy",sp:35,cd:18,ic:"halo"}
 };
@@ -1804,13 +1804,16 @@ function derive(p){
   const hardDef=Math.min(.7,A.armor+(b.warCry?.20:0)+(b.guard?.30:0)+(has("guardian_aura")?PASSIVE.guardian_aura.def:0));
   const mdef=Math.min(.6,.05+(has("guardian_aura")?PASSIVE.guardian_aura.mdef:0));
   const softMdef=fl(s.int/2);   // REO: half of classic's ~1 per INT
-  // iRO: cast time x (1 - DEX/150)
-  const castMul=Math.max(0,1-s.dex/150);
+  // v20.9 (iRO Renewal): cast = VCT x vctMul + FCT x fctMul. Stats cut VCT by sqrt((DEX*2+INT)/530) (gone at 530);
+  // FCT, cooldown and Global Delay are cut only by gear abilities (ab.vct / ab.fct / ab.cdr / ab.gd, in %)
+  const GA=(p.gear&&p.gear.ab)||{},cut=v=>Math.max(0,1-(v||0)/100);
+  const vctStat=Math.max(0,1-Math.sqrt((s.dex*2+s.int)/530));
+  const vctMul=vctStat*cut(GA.vct),fctMul=cut(GA.fct),cdMul=cut(GA.cdr),gdMul=cut(GA.gd);
   const range=A.range+(has("eagle_eye")?PASSIVE.eagle_eye.range:0);
   // iRO natural regen (per tick) adapted to per-second: HP = MaxHP/200 + VIT/5 ; SP = MaxSP/100 + INT/6 + 1
   const hpRegen=(maxHP/200+s.vit/5)/4;
   const spRegen=(maxSP/100+s.int/6+1)/2*(1+mf.regen);
-  const d={arch:p.arch,type:A.type,lv:p.lv,s,ranged,statusAtk,watk,mastery,matkMin,matkMax,maxHP,maxSP,hit,flee,crit,pdodge,interval,aspd,softDef,hardDef,mdef,softMdef,castMul,range,hpRegen,spRegen,
+  const d={arch:p.arch,type:A.type,lv:p.lv,s,ranged,statusAtk,watk,mastery,matkMin,matkMax,maxHP,maxSP,hit,flee,crit,pdodge,interval,aspd,softDef,hardDef,mdef,softMdef,vctStat,vctMul,fctMul,cdMul,gdMul,range,hpRegen,spRegen,
     attune:PASSIVE.elemental_attunement.per*pl("elemental_attunement"),perTile:has("steady_aim")?PASSIVE.steady_aim.perTile:0,spCost:1-mf.cost,over:p.over||0,
     healMul:1+(has("divine_grace")?PASSIVE.divine_grace.healPct:0),shieldCap:has("divine_grace")?PASSIVE.divine_grace.shieldCap:0,healRange:A.healRange||A.range};
   // gear: flat bonuses from equipped items (weapon ATK, DEF, HP, ...)
@@ -1897,17 +1900,19 @@ function autoStats(arch,lv,base){
 
 /* ---------- skill levels (v20) ----------
    Skills listed in SKLV have levels; every other skill is still the fixed Lv 5 prototype.
-   Fire Bolt (SKILL-SPEC.md): Lv N = N fireballs of 100% MATK, SP 12+2(N-1), cast 0.5+0.3(N-1) s, 0.3 s apart (0.2 s from Lv 6), cooldown 0, Global Delay 1.4 s. */
+   Fire Bolt (SKILL-SPEC.md): Lv N = N fireballs of 100% MATK, SP 12+2(N-1), cast 0.5+0.3(N-1) s, 0.3 s apart (0.2 s from Lv 6), cooldown 0, Global Delay 1.4 s. The cast is all VCT for now (FCT 0). */
 const SKLV={fire_bolt:{max:10,def:5},overload_energy:{max:5,def:5},mana_flow:{max:10,def:10},elemental_attunement:{max:5,def:5}};   // v20.6: passives with levels too (derive reads them)
-const OE_DUR=[20,40,60,80,120],OE_CAST=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, cast, SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
+const OE_DUR=[20,40,60,80,120],OE_VCT=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, VCT (FCT 0), SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
 const skMax=id=>SKLV[id]?SKLV[id].max:1;   // every other skill is learn-only (one level) until its levels are designed
 function skAt(id,lv){
   const k=SK[id];if(!k||!SKLV[id])return k;
   const L=clamp(Math.floor(lv)||SKLV[id].def,1,SKLV[id].max);
-  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:L,sp:10+2*L,cast:+(.2+.3*L).toFixed(2),gap:L>=6?.2:.3});
-  if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],cast:OE_CAST[L-1],sp:35+15*L});
+  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:L,sp:10+2*L,vct:+(.2+.3*L).toFixed(2),gap:L>=6?.2:.3});
+  if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],vct:OE_VCT[L-1],sp:35+15*L});
   return k;
 }
+// v20.9: real cast time in seconds for skill row k and derived stats d (VCT cut by stats and gear, FCT by gear only)
+const castTime=(k,d)=>(k.vct||0)*d.vctMul+(k.fct||0)*d.fctMul;
 /* ---------- skill AI (used by idle play and by the simulator) ----------
  ctx: {d, hp, sp, cd{}, momentum, buffs{}, dist (to target), near (# targets within 2.5), tgtElem, inZone} */
 function pickSkill(ctx){
@@ -1938,7 +1943,7 @@ function pickSkill(ctx){
     if(!spells.length)return null;
     // prefer the spell the target is weak to, then the biggest hitter
     let best=null,bv=-1;
-    for(const id of spells){const k=skx(id);const v=k.ratio*(k.hits||1)*elemMult(k.elem,ctx.tgtElem,d.attune)/(k.cast||1);if(v>bv){bv=v;best=id}}
+    for(const id of spells){const k=skx(id);const v=k.ratio*(k.hits||1)*elemMult(k.elem,ctx.tgtElem,d.attune)/(castTime(k,d)||1);if(v>bv){bv=v;best=id}}
     if(!reserve&&elemMult(SK[best].elem,ctx.tgtElem,d.attune)<=1)return null;
     return best;}
    case "supporter":
@@ -1970,7 +1975,7 @@ function simulate(arch,lv,monKeys,opt){
   const doBasic=m=>{const b=ARCH[arch].basic;
     if(b.kind==="phys"){const res=physHit(d,m,{ratio:b.ratio,dist:d.ranged?m.dist:0},r);hitMob(m,res);if(arch==="fighter"&&!res.miss){momentum=Math.min(5,momentum+1);momT=5}}
     else hitMob(m,magicHit(d,m,{ratio:b.ratio,elem:b.elem},r))};
-  const doSkill=(id,m)=>{const k=KL(id);sp-=k.sp*d.spCost;cd[id]=k.cd;if(k.gd)gdT=k.gd;
+  const doSkill=(id,m)=>{const k=KL(id);sp-=k.sp*d.spCost;cd[id]=k.cd*d.cdMul;if(k.gd)gdT=k.gd*d.gdMul;
     const targets=k.aoe?mobs.filter(x=>x.hpNow>0&&(k.at==="self"?x.dist<=k.aoe:true)):(m?[m]:[]);
     if(k.kind==="phys"){for(const x of targets)for(let h=0;h<(k.hits||1);h++){
         const ratio=k.ratio+(k.spend?k.perStack*momentum:0);
@@ -2013,7 +2018,7 @@ function simulate(arch,lv,monKeys,opt){
     const near=mobs.filter(x=>x.hpNow>0&&x.dist<=2.5).length;
     const ctx={d,hp,sp,cd,momentum,buffs,dist:m.dist,near:pack>1?mobs.filter(x=>x.hpNow>0).length:1,tgtElem:m.elem,inZone:zone>0,engaged:m.aggro,skLv:opt.skLv,gd:gdT};
     const id=pickSkill(ctx);
-    if(id){const k=KL(id);if(k.cast){casting={id,t:k.cast*d.castMul};continue}doSkill(id,m);continue}
+    if(id){const k=KL(id);{const ct=castTime(k,d);if(ct>.05){casting={id,t:ct};continue}}doSkill(id,m);continue}
     if(swing<=0&&m.dist<=d.range){swing=d.interval;doBasic(m)}
   }
   return {arch,lv,kills,deaths,dealt:Math.round(dealt),taken:Math.round(taken),dps:+(dealt/secs).toFixed(1),hpLeft:hpN?+(hpSum/hpN).toFixed(2):0,maxHP:d.maxHP,stats};
@@ -2039,7 +2044,7 @@ function combatPower(arch,lv,stats,gear){
   const ehp=d.maxHP/(1-d.hardDef)+d.softDef*30;
   const v=Math.round(sim.dps*6+ehp/20);_cpc.set(key,v);return v;
 }
-return {manaFlow,STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax};
+return {manaFlow,STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax,castTime};
 })();
 
 
@@ -2241,7 +2246,7 @@ D2.en.stAutoOn="Auto-assign: on";D2.th.stAutoOn="แจกแต้มอัต�
 D2.en.stAutoOff="Auto-assign: off";D2.th.stAutoOff="แจกแต้มอัตโนมัติ: ปิด";
 D2.en.stReset="Reset stats";D2.th.stReset="รีเซ็ตค่าสถานะ";
 D2.en.substats="Combat stats";D2.th.substats="ค่าต่อสู้";
-D2.en.castLbl="Cast";D2.th.castLbl="ร่าย";
+D2.en.castLbl="Cast";D2.th.castLbl="ร่าย";D2.en.vctLbl="VCT";D2.th.vctLbl="แปรผัน";D2.en.fctLbl="FCT";D2.th.fctLbl="คงที่";
 D2.en.statRef="ATK = status + weapon. FLEE = AGI-based + perfect dodge. DEF/MDEF = % from gear + flat from VIT/INT. Stat rules follow iRO Classic.";D2.th.statRef="ATK = จากค่าสถานะ + อาวุธ · FLEE = จาก AGI + หลบหลีกสมบูรณ์ · DEF/MDEF = % จากอุปกรณ์ + ค่าคงที่จาก VIT/INT · กติกาค่าสถานะอ้างอิง iRO Classic";
 D2.en.actives="Active skills";D2.th.actives="สกิลกดใช้";
 D2.en.passives="Passive skills";D2.th.passives="สกิลติดตัว";
@@ -2258,7 +2263,7 @@ D2.en.st_sim="Ping and player counts are simulated until a game server is connec
 D2.en.mech_beginner="Beginner: raise Basic Skill (Lv 1–10) with your skill points to learn First Aid, Heavy Strike and everyday abilities.";D2.th.mech_beginner="Beginner: ใช้แต้มสกิลอัป Basic Skill (Lv 1–10) เพื่อเรียน First Aid, โจมตีหนักหน่วง และความสามารถพื้นฐาน"
 D2.en.mech_fighter="Momentum: basic hits and Power Strike build up to 5 stacks (lost after 5 s without hitting). Crushing Blow spends them for +50% damage each and stuns at 3+.";D2.th.mech_fighter="Momentum: ตีปกติและ Power Strike สะสมได้สูงสุด 5 สแตก (หายถ้าไม่ตี 5 วิ) Crushing Blow ใช้สแตกทั้งหมด +50% ต่อสแตก และสตันเมื่อมี 3 ขึ้นไป";
 D2.en.mech_ranger="Distance: +2% damage per tile beyond 3 (max +18% at 12 tiles). Evasive Leap jumps away and empowers your next shot.";D2.th.mech_ranger="ระยะห่าง: ดาเมจ +2% ต่อช่องที่เกิน 3 (สูงสุด +18% ที่ 12 ช่อง) Evasive Leap กระโดดหนีและเพิ่มพลังลูกถัดไป";
-D2.en.mech_spellcaster="Casting + elements: spells have cast times (DEX shortens them) and never miss. Hitting an element's weakness deals 150% (up to 175% with Elemental Attunement Lv 5).";D2.th.mech_spellcaster="ร่ายเวท + ธาตุ: เวทมีเวลาร่าย (DEX ลดได้) และไม่มีวันพลาด โจมตีธาตุที่แพ้ได้ 150% (สูงสุด 175% เมื่อ Elemental Attunement Lv 5)";
+D2.en.mech_spellcaster="Casting + elements: spells have a variable cast (DEX and INT shorten it) plus a fixed cast (only gear shortens it) and never miss. Hitting an element's weakness deals 150% (up to 175% with Elemental Attunement Lv 5).";D2.th.mech_spellcaster="ร่ายเวท + ธาตุ: เวทมีเวลาร่ายแปรผัน (DEX และ INT ลดได้) กับเวลาร่ายคงที่ (ลดได้จากไอเท็มเท่านั้น) และไม่มีวันพลาด โจมตีธาตุที่แพ้ได้ 150% (สูงสุด 175% เมื่อ Elemental Attunement Lv 5)";
 D2.en.mech_supporter="Sustain: Heal uses the iRO formula; overhealing becomes a Grace shield (up to 20% Max HP). Buffs reach 15 tiles.";D2.th.mech_supporter="ฟื้นฟูต่อเนื่อง: Heal ใช้สูตร iRO ฮีลเกินเลือดเต็มจะกลายเป็นโล่ Grace (สูงสุด 20% HP) บัฟไกลได้ 15 ช่อง";
 D2.en.sk_bash="Heavy Strike";D2.th.sk_bash="โจมตีหนักหน่วง";
 D2.en.skd_bash="Strike one enemy hard for 200% ATK. Range 1.6 tiles (steps in first if further). No cast time.";D2.th.skd_bash="ฟาดศัตรู 1 ตัวอย่างหนัก 200% ATK ระยะ 1.6 ช่อง (ถ้าไกลกว่านั้นจะเดินเข้าไปก่อน) ไม่มีเวลาร่าย";
@@ -3117,6 +3122,8 @@ D.jp={
   "stReset":"ステータスをリセット",
   "substats":"戦闘ステータス",
   "castLbl":"詠唱",
+  "vctLbl":"変動",
+  "fctLbl":"固定",
   "statRef":"ATK = ステータス + 武器。FLEE = AGI基準 + 完全回避。DEF/MDEF = 装備の％ + VIT/INTによる固定値。ステータスの計算はiRO Classicに準拠。",
   "actives":"アクティブスキル",
   "passives":"パッシブスキル",
@@ -3132,7 +3139,7 @@ D.jp={
   "mech_beginner":"初心者：スキルポイントで基本スキル（Lv 1–10）を上げると、ファーストエイドやヘビーストライクなどの能力を覚えます。",
   "mech_fighter":"勢い：通常攻撃とパワーストライクで勢いが最大5スタックまで溜まります（5秒間攻撃しないと失われます）。クラッシングブローは消費して1スタックにつき与ダメージ+50%、3スタック以上で気絶させます。",
   "mech_ranger":"距離：3マスを超えた分、1マスごとにダメージ+2%（12マスで最大+18%）。回避跳躍で飛び退き、次の一撃を強化します。",
-  "mech_spellcaster":"詠唱と属性：魔法には詠唱時間があり（DEXで短縮）、外れません。モンスターの弱点属性に当てると150%のダメージ（属性習熟Lv5で最大175%）。",
+  "mech_spellcaster":"詠唱と属性：魔法には変動詠唱（DEXとINTで短縮）と固定詠唱（装備でのみ短縮）があり、外れません。モンスターの弱点属性に当てると150%のダメージ（属性習熟Lv5で最大175%）。",
   "mech_supporter":"持続：ヒールはiROの計算式を使い、過剰回復は恩寵のシールドになります（最大HPの20%まで）。バフは15マスまで届きます。",
   "sk_bash":"ヘビーストライク",
   "skd_bash":"敵1体に攻撃力200%の強撃。射程1.6マス（遠ければ先に間合いを詰めます）。詠唱なし。",
@@ -7070,8 +7077,8 @@ function useSkill(id,auto,lvArg){
     player.target=tg;faceToward(player,tg.x,tg.y);
   }
   if((k.kind==="phys"||k.kind==="magic")&&k.aoe&&k.at==="self"&&!isField()){if(!auto)toast(t("noTarget"));return false}
-  AUD.sfx("skill");S.sp-=cost;CD[id]=k.cd*(1-((pd().ab&&pd().ab.cdr)||0)/100);
-  if(k.cast){const ct=k.cast*d.castMul;if(ct>.05){player.casting={id,lv,tg,t:ct,total:ct,cost};player.path=[];player.moving=false;return true}}
+  AUD.sfx("skill");S.sp-=cost;   // v20.9: the cooldown starts when the cast ends (finishSkill), as SKILL-SPEC.md says
+  {const ct=REOC.castTime(k,d);if(ct>.05){player.casting={id,lv,tg,t:ct,total:ct,cost};player.path=[];player.moving=false;return true}}
   finishSkill(id,tg,lv);return true;
 }
 function leapAway(n){
@@ -7083,7 +7090,8 @@ function leapAway(n){
 }
 function finishSkill(id,tg,lv){
   const k=lv?REOC.skAt(id,lv):REOC.SK[id],d=pd(),x=player.x,y=player.y,col=SKC[id]||"#fff";
-  if(k.gd){player.gd=k.gd;player.gdMax=k.gd}   // Global Delay starts when the cast ends
+  CD[id]=k.cd*d.cdMul;   // cooldown and Global Delay both start when the cast ends
+  if(k.gd){player.gd=k.gd*d.gdMul;player.gdMax=player.gd}
   if(tg&&!alive(tg))tg=null;
   const area=k.aoe?(k.at==="self"?liveMon().filter(m=>dist(m,player)<=k.aoe):(tg?liveMon().filter(m=>dist(m,tg)<=k.aoe):[])):(tg?[tg]:[]);
   switch(k.kind){
@@ -7567,9 +7575,9 @@ const WIN={
   const basic=`<div class="w-sec">${t("bs_title")}</div><div class="rows"><div class="row bs-main"><span class="dot" style="--c:${SKG.beginner}">${svg("star")}</span><div class="grow"><b>${t("bs_title")}</b><small>${t(beg?"bs_desc":"bs_kept")}</small></div><b>Lv ${bL}/${BASIC_MAX}</b>${beg?`<button class="btn sm pri" data-act="bsup" ${bL>=BASIC_MAX||skAvail()<=0?"disabled":""}>+</button>`:""}</div></div>
    <ol class="bs-list">${BASIC_ROWS.map((k,i)=>{const on=bL>i,nx=bL===i;return `<li class="${on?"on":nx?"next":""}"><span class="bs-n">${i+1}</span><span class="grow"><b>${t("bs_u_"+k)}</b><small>${t("bs_d_"+k)}</small></span>${on?`<span class="bs-ok">✓</span>`:svg("lock")}</li>`}).join("")}</ol>`;
   const act=actList().map(id=>{const k0=REOC.SK[id],L=skLvOf(id),k=lvd[id]?REOC.skAt(id,L||1):k0,
-      cast=k.cast?` · ${t("castLbl")} ${(k.cast*d.castMul).toFixed(1)}s`:"",rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"",
-      gd=k.gd?` · ${t("gdLbl")} ${k.gd}s`:"",fb=id==="fire_bolt"?` · ${t("fbLbl")} ${k.hits}`:k.over?` · ${t("lt_over")} +${k.over}% · ${t("durLbl")} ${k.dur}s`:"";
-    return `<div class="row" data-dnd="s:${id}"${L?"":' style="opacity:.62"'}><span class="dot" style="--c:${skGrad(id)}">${svg(IC[k0.ic]?k0.ic:"star")}</span><div class="grow"><b>${t("sk_"+id)}</b>${k0.elem?` <small style="display:inline;color:${k0.elem==="holy"?"#b8861e":ELC[k0.elem]}">· ${t("el_"+k0.elem)}</small>`:""}<small>${t("skd_"+id)}</small><small>SP ${Math.ceil(k.sp*d.spCost)} · ${t("cd")} ${k.cd}s${gd}${cast}${rg}${fb}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`}).join("");
+      ct=REOC.castTime(k,d),cast=k.vct||k.fct?` · ${t("castLbl")} ${ct.toFixed(1)}s (${t("vctLbl")} ${(k.vct*d.vctMul).toFixed(1)} + ${t("fctLbl")} ${((k.fct||0)*d.fctMul).toFixed(1)})`:"",rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"",
+      gd=k.gd?` · ${t("gdLbl")} ${+(k.gd*d.gdMul).toFixed(2)}s`:"",fb=id==="fire_bolt"?` · ${t("fbLbl")} ${k.hits}`:k.over?` · ${t("lt_over")} +${k.over}% · ${t("durLbl")} ${k.dur}s`:"";
+    return `<div class="row" data-dnd="s:${id}"${L?"":' style="opacity:.62"'}><span class="dot" style="--c:${skGrad(id)}">${svg(IC[k0.ic]?k0.ic:"star")}</span><div class="grow"><b>${t("sk_"+id)}</b>${k0.elem?` <small style="display:inline;color:${k0.elem==="holy"?"#b8861e":ELC[k0.elem]}">· ${t("el_"+k0.elem)}</small>`:""}<small>${t("skd_"+id)}</small><small>SP ${Math.ceil(k.sp*d.spCost)} · ${t("cd")} ${+(k.cd*d.cdMul).toFixed(2)}s${gd}${cast}${rg}${fb}</small></div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`}).join("");
   const pas=A.passives.map(id=>`<div class="row" data-dnd="s:${id}"${skLvOf(id)?"":' style="opacity:.62"'}><span class="dot" style="--c:linear-gradient(135deg,#d8d4e8,#6f6a8f)">${svg("gear")}</span><div class="grow"><b>${t("sk_"+id)}</b><small>${t("skd_"+id)}</small>${pasEff(id)}</div><b>${lvTxt(id)}</b>${upBtn(id)}</div>`).join("");
   const pts=`<p class="muted" style="margin:0 0 6px"><b>${fmt("skpLine",{n:skAvail()})}</b></p>`;
   const itIds=Object.keys(ITEMDB).filter(hotUsable);
@@ -7833,17 +7841,17 @@ function statusBody(){
     <div class="st-foot"><button class="lt-btn red" data-act="stReset">${t("lt_reset")}</button><button class="lt-btn${S.autoStat?" blue":""}" data-act="stAuto" title="${t(S.autoStat?"stAutoOn":"stAutoOff")}">${t("lt_auto")}</button><span class="grow"></span><span class="st-left">${t("lt_left")}</span><b class="lt-pill green">${free}</b></div></div>`;
   const none=t("lt_tip_none");
   const cell=(k,v,tip)=>`<div class="sd"${tip?` title="${tip}"`:""}><span>${t(k)}</span><b>${v}</b></div>`;
-  const vcast=Math.round((1-d.castMul)*100);
+  const vcast=Math.round((1-d.vctMul)*100),fcast=Math.round((1-d.fctMul)*100),gdcut=Math.round((1-d.gdMul)*100);
   const det=`<div class="st-det">
     ${cell("lt_atk",num(Math.round(d.statusAtk+d.watk+d.mastery)),`${Math.round(d.statusAtk)} + ${Math.round(d.watk+d.mastery)}`)}${cell("lt_matk",`${num(Math.round(d.matkMin))} ~ ${num(Math.round(d.matkMax))}`)}
     ${cell("lt_def",`${Math.round(d.hardDef*100)}% +${Math.round(d.softDef)}`)}${cell("lt_mdef",`${Math.round(d.mdef*100)}% +${Math.round(d.softMdef)}`)}
     ${cell("lt_hp",num(d.maxHP))}${cell("lt_sp",num(d.maxSP))}
-    ${cell("lt_aspd",`${d.aspd} (${d.interval.toFixed(2)} ${t("lt_sec")})`)}${cell("lt_gd","0%",none)}
+    ${cell("lt_aspd",`${d.aspd} (${d.interval.toFixed(2)} ${t("lt_sec")})`)}${cell("lt_gd",(gdcut?"-":"")+gdcut+"%",gdcut?"":none)}
     ${cell("lt_flee",num(Math.round(d.flee)))}${cell("lt_pdodge",d.pdodge.toFixed(1)+"%")}
     ${cell("lt_hit",num(Math.round(d.hit)))}${cell("lt_phit","0%",none)}
     ${cell("lt_crit",d.crit.toFixed(1)+"%")}${cell("lt_critd","+40%")}
     ${cell("lt_over",(d.crit+(d.over||0)).toFixed(1)+"%",t("lt_tip_over"))}${cell("lt_overd","+30%")}
-    ${cell("lt_vcast",(vcast?"-":"")+vcast+"%")}${cell("lt_fcast","0 "+t("lt_sec"),none)}
+    ${cell("lt_vcast",(vcast?"-":"")+vcast+"%")}${cell("lt_fcast",(fcast?"-":"")+fcast+"%",fcast?"":none)}
     ${cell("lt_idef","0%",none)}${cell("lt_imdef","0%",none)}</div>`;
   return head+ltHr+basic+ltHr+det;
 }

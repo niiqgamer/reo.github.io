@@ -44,7 +44,7 @@ Basic hits and Power Strike add Momentum (max 5, lost after 5 s without hitting)
 | Steady Aim | Distance bonus, +5% crit |
 
 ## Spellcaster — Casting + elements
-Every spell has a cast time reduced by DEX (×(1 − DEX/150)). Spells **never miss**. One spell per element, so the caster can always hit a weakness:
+Every spell has a variable cast (VCT) reduced by DEX and INT (×(1 − √((DEX × 2 + INT) / 530))) and a fixed cast (FCT, 0 for now) only gear reduces (`COMBAT-FORMULAS.md` §2b). Spells **never miss**. One spell per element, so the caster can always hit a weakness:
 
 | Monster element | Weak to | Spell |
 |---|---|---|
@@ -53,7 +53,7 @@ Every spell has a cast time reduced by DEX (×(1 − DEX/150)). Spells **never m
 | Wind (Nebulite) | Earth | Stone Spike |
 | Fire (Oculoth) | Water | Frost Nova (area) |
 
-| Active | Effect | SP | CD | Cast |
+| Active | Effect | SP | CD | VCT (FCT 0) |
 |---|---|---|---|---|
 | Fire Bolt | 100% MATK per fireball, fire; fireballs = skill Lv (Lv 1–10), dropped one at a time, 0.3 s apart (0.2 s from Lv 6), they stop if the target dies | 12 + 2 per Lv | 0 s, then 1.4 s Global Delay | 0.5 s + 0.3 s per Lv |
 | Frost Nova | 260% MATK water, all within 2.5 tiles; 40% freeze 2 s | 20 | 5 s | 0.6 s |

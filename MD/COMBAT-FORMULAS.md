@@ -21,7 +21,7 @@
 | Hard DEF | armor % | iRO |
 | Soft MDEF | `⌊INT / 2⌋` flat | **REO** (classic ≈ 1 per INT) |
 | Attack delay | `base × (1 − AGI×0.004 − DEX×0.001)`, min 0.2 s; ASPD = `200 − 50 × delay` | iRO (−0.4% / −0.1%), cap 190 |
-| Cast time | `base × (1 − DEX/150)` | iRO |
+| Cast time | `VCT × vctMul + FCT × fctMul` (§2b) | iRO Renewal |
 | HP regen /s | `(MaxHP/200 + VIT/5) / 4` | iRO per tick, adapted |
 | SP regen /s | `(MaxSP/100 + INT/6 + 1) / 2` | iRO per tick, adapted |
 | Sitting | HP and SP regen × 3 while sitting (v20.1, see `UI-UX.md` §23) | |
@@ -41,6 +41,23 @@ normal = max(1, ⌊raw × (1 − hardDEF × (1 − ignoreDEF)) − softDEF⌋)
 crit   = ⌊(statusATK + weaponATK + mastery) × skill% × element × bonus × 1.4⌋   // ignores DEF and FLEE
 ```
 **REO:** crits get ×1.4 (classic crits only use max roll and ignore DEF).
+
+
+## 2b. Casting, cooldown and Global Delay (v20.9)
+Every skill can have up to four timing values. A value a skill does not state is 0.
+
+| Value | Field | What it does | Reduced by |
+|---|---|---|---|
+| Variable Cast (VCT) | `vct` | Cast time that stats shorten | Stats: `× (1 − √((DEX × 2 + INT) / 530))`, 0 once DEX × 2 + INT ≥ 530; gear that says it lowers VCT (`ab.vct` %, multiplies) |
+| Fixed Cast (FCT) | `fct` | Cast time that stats do not touch | Gear that says it lowers FCT (`ab.fct` %) only |
+| Skill Cooldown | `cd` | Locks **this** skill | Gear only: the *Cooldown* ability (`ab.cdr`, 5–15%) |
+| Global Delay | `gd` | Locks **every** skill (basic attacks stay free) | Gear only (`ab.gd` %); no item has it yet |
+
+- Real cast = `VCT × vctMul + FCT × fctMul` (`castTime()` in the code). Under 0.05 s the skill goes off at once.
+- The cast starts after SP is paid. Moving, a new order or a target loss cancels it and refunds the SP.
+- Cooldown and Global Delay both start when the cast **ends**.
+- Every spell's cast time is all VCT for now (FCT 0) until NIIQ sets FCT values.
+- Examples (VCT left): DEX 50 / INT 50 → 47%; DEX 99 / INT 1 → 39%; DEX 1 / INT 99 → 56%; DEX 150 / INT 230 → 0%.
 
 ## 3. Magic damage
 ```
