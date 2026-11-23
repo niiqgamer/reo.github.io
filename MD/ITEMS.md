@@ -209,3 +209,11 @@ Window layout: `UI-UX.md` §19. Rule changes:
 - **Discard is removed.** Sell replaces it. Quest items still cannot be sold.
 - **Refine** is only offered for a worn piece (Character window → Item Info → Refine). Pieces in the bag show Compare and Sell only.
 - **Compare ON/OFF** toggle replaces the always-on comparison block of v11; when ON, unchanged stats are listed too (with `-`).
+
+## 7. Pocket Dimension: personal storage (v20.4)
+
+- Unlocked by **Basic Skill Lv 5** (`JOBS.md` §1b). Opened only by talking to **Narvis**, who stands in every main town (Gadolinium: west edge of the plaza). Without Lv 5 he explains and sends you away.
+- **300 slots** (`STORE_MAX`), counted like the bag: each stack and each equipment piece is one slot. Saved per character in `S.store = {inv, bag}`.
+- Window: two tabs, **Bag** and **Dimension**, 10 × 3 cells per page. Click an item to move it to the other side: a whole stack, or one equipment piece. Worn equipment stays worn.
+- Quest items cannot be stored. A full side refuses the move with a toast (bag: `inv_full`, dimension: `sto_full`).
+- The window closes when you walk more than 5 tiles from Narvis or leave town.

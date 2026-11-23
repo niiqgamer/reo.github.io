@@ -603,10 +603,21 @@ P.archetype=()=>{
       ${a.pas.map(s=>`<div class="skill"><div><b>${s[0]}</b><div class="muted" style="font-size:13.5px">${s[1]}</div></div></div>`).join("")}
       ${a.id==="spellcaster"?`<h3 style="font-size:19px;margin:16px 0 8px">ธาตุของมอนสเตอร์ vs เวทที่ควรใช้</h3><div class="tw"><table><thead><tr><th>ธาตุมอนสเตอร์</th><th>อ่อนต่อ</th><th>เวท</th></tr></thead><tbody>${Object.entries(WEAK).map(([k,v])=>`<tr><td><span class="dot" style="background:${EL[k].c}"></span> ${k} · ${EL[k].th}</td><td>${v[0]}</td><td>${v[1]}</td></tr>`).join("")}</tbody></table></div>`:""}
       <p class="muted" style="font-size:13px;margin:14px 0 0">สกิลเฉพาะของแต่ละ Class และ Job ${SOON}</p></div></div>
+  <section class="sec"><h2>Basic Skill <span class="th" style="font-weight:400">ผังสกิล Beginner</span></h2><div class="card">
+    <p style="margin:0 0 10px">Beginner มีสกิลเดียวคือ <b>Basic Skill</b> 10 เลเวล ได้ Lv 1 ตั้งแต่เริ่ม เลเวลถัดไปใช้ 1 แต้มสกิล (1 Job Lv = 1 แต้ม) Job Lv 10 ให้ 9 แต้มพอดีถึง Lv 10 · อัปที่หน้าต่างสกิล · <b>ทุกความสามารถอยู่ติดตัวตลอดไปแม้เลือก Archetype แล้ว</b></p>
+    <div class="tw"><table><thead><tr><th>Lv</th><th>ได้เรียน</th></tr></thead><tbody>
+    <tr><td>1</td><td>พูดคุย ต่อสู้ ใช้สกิล ใช้ไอเท็ม และ Idle (มีให้เลย)</td></tr>
+    <tr><td>2</td><td>นั่ง (ฟื้น HP / SP ×3) ลุกยืน และตั้งป้ายสถานะ</td></tr>
+    <tr><td>3</td><td>สกิล <b>First Aid</b>: ฟื้นฟู 50 HP · SP 10 · คูลดาวน์ 5 วิ · ไม่มีเวลาร่าย</td></tr>
+    <tr><td>4</td><td>สกิล <b>Heavy Strike (โจมตีหนักหน่วง)</b>: 200% ATK ศัตรู 1 ตัว · SP 8 · คูลดาวน์ 1.6 วิ · ไม่มีเวลาร่าย</td></tr>
+    <tr><td>5</td><td><b>Pocket Dimension</b>: คลังเก็บของส่วนตัว 300 ช่อง ใช้ผ่าน NPC <b>Narvis</b> ที่อยู่ในทุกเมืองหลัก</td></tr>
+    <tr><td>6</td><td>เพิ่มเพื่อน</td></tr><tr><td>7</td><td>ตั้งปาร์ตี้และเชิญผู้เล่น</td></tr><tr><td>8</td><td>การค้าขาย (แลกเปลี่ยน / แผงลอย ${SOON})</td></tr>
+    <tr><td>9</td><td>เข้าร่วมกิลด์</td></tr><tr><td>10</td><td>เรียนรู้ Archetype (รับ Archetype Trial ได้)</td></tr>
+    </tbody></table></div></div></section>
   <section class="sec"><h2>Archetype Trial</h2><div class="steps">
     <div class="stp"><b>ขั้นที่ 1</b><span>ตัวละครใหม่เป็น Beginner (Job Lv สูงสุด 10)</span></div>
     <div class="stp"><b>ขั้นที่ 2</b><span>คุยกับ Archetype Helper Sera ที่จัตุรัสแกโดลิเนียมเพื่อดูข้อมูลทั้ง 4 สาย</span></div>
-    <div class="stp"><b>ขั้นที่ 3</b><span>เมื่อ Job Lv 10 รับเควสต์ปราบ Elite 10 ตัวในสนามใดก็ได้ (Elite มีวงทองใต้เท้า)</span></div>
+    <div class="stp"><b>ขั้นที่ 3</b><span>เมื่อ Job Lv 10 และ Basic Skill Lv 10 รับเควสต์ปราบ Elite 1 ตัวในสนามใดก็ได้ (Elite มีวงทองใต้เท้า)</span></div>
     <div class="stp"><b>ขั้นที่ 4</b><span>กลับไปหา Sera เลือก 1 Archetype ถาวร รับ 500 Base EXP และ 30 Y · Job Lv รีเป็น 1 (สูงสุด 50)</span></div></div></section>
   <footer class="ft">REO Wiki · ค่าต่าง ๆ เป็นต้นแบบและอาจปรับสมดุลในอนาคต</footer></div>`;
 };
@@ -618,7 +629,7 @@ P.class=()=>{
   <div class="route" style="margin-bottom:6px"><span class="n">Beginner · C0 <span class="th">× 1</span></span><i>→</i><span class="n">Archetype · 4 สาย</span><i>→</i><span class="n">Class · C1 <span class="th">× 16</span></span><i>→</i><span class="n">Job · C2 <span class="th">× 32</span></span></div>
   <section class="sec"><h2>แผนผังอาชีพ</h2><div class="tree">${ARCH.map(col).join("")}</div></section>
   <section class="sec"><h2>วิธีเปลี่ยนอาชีพ</h2><div class="tw"><table><thead><tr><th>ขั้น</th><th>เงื่อนไข</th><th>ผลลัพธ์</th></tr></thead><tbody>
-    <tr><td><b>C0 → C1</b></td><td>Job Lv 10 แล้วทำ Archetype Trial: ปราบ Elite 10 ตัว แล้วกลับไปหา Archetype Helper Sera</td><td>เลือก Archetype 1 สาย (ถาวร) · Job Lv รีเป็น 1 สูงสุด 50 · รับ 500 Base EXP และ 30 Y</td></tr>
+    <tr><td><b>C0 → C1</b></td><td>Job Lv 10 + Basic Skill Lv 10 แล้วทำ Archetype Trial: ปราบ Elite 1 ตัว แล้วกลับไปหา Archetype Helper Sera</td><td>เลือก Archetype 1 สาย (ถาวร) · Job Lv รีเป็น 1 สูงสุด 50 · รับ 500 Base EXP และ 30 Y</td></tr>
     <tr><td><b>C1 → C2</b></td><td>Base Lv 50 ขึ้นไป และ Job Lv 50 (สูงสุด) พร้อมเควสต์เปลี่ยนอาชีพขั้นสูง</td><td>เป็น Job (C2) · ระบบและเควสต์ ${SOON}</td></tr>
     <tr><td><b>เพดานเลเวล</b></td><td colspan="2">Base Lv สูงสุด 99 · Job Lv สูงสุด: Beginner 10, Archetype 50</td></tr></tbody></table></div></section>
   <section class="sec"><h2>สิ่งที่ยังไม่เปิดเผย</h2><div class="grid g3"><div class="soonbox"><b>Spellcaster 3.2</b>ชื่อ Class และ Job ${SOON}</div><div class="soonbox"><b>Supporter ทั้ง 4 Class</b>รวม 8 Job ${SOON}</div><div class="soonbox"><b>รีเซ็ตอาชีพ</b>ไอเท็มเปลี่ยน Class/Job ${SOON}</div></div></section>
@@ -639,7 +650,7 @@ P.map=()=>{
     <div class="card"><h3 style="font-size:18px;margin-bottom:8px">พอร์ทัลและเส้นทาง</h3><ul class="dots">${m.portals.map(p=>`<li>${p[0]} → <b>${p[1]}</b></li>`).join("")}</ul><p class="muted" style="font-size:13px;margin:8px 0 0">เมื่อข้ามแมพ ตัวละครจะไปโผล่ใกล้พอร์ทัลที่นำกลับไปทางเดิมเสมอ</p></div></div>
   ${town?`<section class="sec"><h2>NPC และสถานที่</h2><div class="grid g2"><div class="card"><h4 style="margin-bottom:8px">NPC</h4><div class="tw"><table><tbody>
     <tr><td><b>Guide Lumi</b><div class="th">ผู้นำทาง ลูมิ</div></td><td>ให้เควสต์เปิดเรื่อง</td></tr><tr><td><b>Bors the Merchant</b><div class="th">พ่อค้าบอร์ส</div></td><td>ขายยาและของใช้ด้วย Scandium</td></tr>
-    <tr><td><b>Captain Veyra</b><div class="th">กัปตันเวย์รา</div></td><td>เคล็ดลับการต่อสู้และ Idle · เควสต์ข้าง</td></tr><tr><td><b>Archetype Helper Sera</b><div class="th">เซร่า</div></td><td>สอนเรื่อง 4 Archetype · ให้ Archetype Trial</td></tr></tbody></table></div></div>
+    <tr><td><b>Captain Veyra</b><div class="th">กัปตันเวย์รา</div></td><td>เคล็ดลับการต่อสู้และ Idle · เควสต์ข้าง</td></tr><tr><td><b>Narvis</b><div class="th">นาร์วิส</div></td><td>เปิด Pocket Dimension (คลังเก็บของส่วนตัว 300 ช่อง) · ต้องมี Basic Skill Lv 5</td></tr><tr><td><b>Archetype Helper Sera</b><div class="th">เซร่า</div></td><td>สอนเรื่อง 4 Archetype · ให้ Archetype Trial</td></tr></tbody></table></div></div>
     <div class="card"><h4 style="margin-bottom:8px">อาคารในเมือง</h4><ul class="dots"><li>Gadolinium Crystal: คริสตัลลอยกลางจัตุรัส</li><li>Adventurers’ Guild: ศูนย์เปลี่ยนอาชีพในอนาคต</li><li>Tool Dealer: ร้านขายของ (Scandium)</li><li>Silver Moon Inn: โรงแรม 2 ชั้น</li><li>Ironhart Forge: โรงตีเหล็ก NPC ตีบวกในอนาคต</li></ul><p class="muted" style="font-size:13px;margin:8px 0 0">NPC ตีบวก/การ์ด และผู้ดูแลดันเจี้ยนรายวัน ${SOON}</p></div></div></section>`
   :`<section class="sec"><h2>มอนสเตอร์ในแมพนี้</h2><div style="display:flex;flex-wrap:wrap;gap:10px">${mons.map(i=>`<button class="mchip" data-mon="${i}" type="button"><img src="${monImg(i)}" alt=""><span><b>${monById(i).n}</b> <span class="th">Lv ${monById(i).lv}</span></span></button>`).join("")}</div></section>`}
   <section class="sec"><h2>ระบบแผนที่โลกและวาร์ป</h2><div class="grid g2"><div class="card"><ul class="dots"><li>เปิดด้วยปุ่มลูกโลกที่มินิแมพหรือกดปุ่ม <b>M</b></li><li>แตะแมพบนแผนภาพเพื่อดู Map Info 5 แท็บ: ข้อมูลแมพ, Monster, Boss, Item Drop, Quests</li><li>แมพที่ยังไม่เคยไปจะแสดงเป็น ??? และล็อกไว้</li></ul></div>

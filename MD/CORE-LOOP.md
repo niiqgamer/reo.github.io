@@ -130,7 +130,7 @@ The exact formula is an open question; implement CP as a single function so it c
 7. Instance boss: solo or party, entry limits, CP requirement.
 8. Daily dungeon: entries per day, reset time (server time zone), rewards.
 9. Idle farming: hours cap for offline rewards, material tables per area.
-10. ✅ Skill points come from **Job Lv**: 1 Job Lv = 1 skill point (the first at Job Lv 2), spent by the player on every skill, active or passive, which all start at Lv 0 (`SKILL-SPEC.md` §4). Stat points still come from Base Lv.
+10. ✅ Skill points come from **Job Lv**: 1 Job Lv = 1 skill point (the first at Job Lv 2), spent by the player on every skill, active or passive, which all start at Lv 0 (`SKILL-SPEC.md` §4). Stat points still come from Base Lv. A Beginner spends them on **Basic Skill** (Lv 1–10, `JOBS.md` §1b).
 
 
 ## Field boss (v6)

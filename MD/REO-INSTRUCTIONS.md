@@ -143,7 +143,7 @@ The current target shows a bouncing gold **!** marker. The quest tracker’s **G
 
 ### Skills (hotbar)
 
-Skills belong to the archetype, not to a fixed list. The player chooses which skill, and which level of it, goes in each hotbar slot (`SKILL-SPEC.md` §5); potions sit in the hotbar as well. Skill points come from Job Lv: 1 Job Lv = 1 point (the first at Job Lv 2), spent by the player; every skill of every archetype, active or passive, starts at Lv 0 and is raised by hand (`SKILL-SPEC.md` §4). Changing class resets Job Lv, so the new class starts with no points. Full skill kits are in `ARCHETYPES.md`. The old fixed table (Guard, Thunder, Gd Pulse and so on) was removed.
+Skills belong to the archetype, not to a fixed list. The player chooses which skill, and which level of it, goes in each hotbar slot (`SKILL-SPEC.md` §5); potions sit in the hotbar as well. Skill points come from Job Lv: 1 Job Lv = 1 point (the first at Job Lv 2), spent by the player; every skill of every archetype, active or passive, starts at Lv 0 and is raised by hand (`SKILL-SPEC.md` §4). Changing class resets Job Lv, so the new class starts with no points. Full skill kits are in `ARCHETYPES.md`. Beginners raise only **Basic Skill** (Lv 1–10), which unlocks sitting, First Aid, Heavy Strike, the Pocket Dimension, friends, party, trade, guild and the Archetype Trial, and is kept for good (`JOBS.md` §1b). The old fixed table (Guard, Thunder, Gd Pulse and so on) was removed.
 
 ---
 

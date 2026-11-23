@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.3. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.4. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,11 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.3 (this update)
+## Changes in v20.4 (this update)
+- **Basic Skill**, the Beginner skill tree: one skill, Lv 1–10 (Lv 1 given, 1 skill point per level, 9 points at Job Lv 10). Each level unlocks one ability: sit / status (2), First Aid 50 HP · SP 10 · CD 5 s (3), Heavy Strike (4), Pocket Dimension (5), friends (6), party (7), trade (8), guild (9), Archetype Trial (10). Kept for good after the Archetype choice. See `JOBS.md` §1b.
+- New NPC **Narvis** (Gadolinium, west edge of the plaza) opens the **Pocket Dimension**, a 300-slot personal storage. See `ITEMS.md` §7, `GADOLINIUM.md`, `UI-UX.md` §24.
+
+## Changes in v20.3
 - Party rewards: a size bonus on EXP, Items and Scandium (2 people +5%, 3 +12%, 4 +21%, 5 +32%, 6 +47%, cumulative). Two leader settings: EXP sharing (own / split equally) and Item & Scandium sharing (own / rotate). A party needs a level gap of at most 20; the invite is refused otherwise. The leader can rename the party (2–10 characters); the title shows as "Character (Party)". See `ECONOMY.md` §4 and `UI-UX.md` §23.
 
 ## Changes in v20.2
