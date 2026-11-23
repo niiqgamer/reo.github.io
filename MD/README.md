@@ -49,7 +49,7 @@
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
 ## Changes in v20.4 (this update)
-- **Basic Skill**, the Beginner skill tree: one skill, Lv 1–10 (Lv 1 given, 1 skill point per level, 9 points at Job Lv 10). Each level unlocks one ability: sit / status (2), First Aid 50 HP · SP 10 · CD 5 s (3), Heavy Strike (4), Pocket Dimension (5), friends (6), party (7), trade (8), guild (9), Archetype Trial (10). Kept for good after the Archetype choice. See `JOBS.md` §1b.
+- **Basic Skill**, the Beginner skill tree: one skill, Lv 1–10 (Lv 1 given, 1 skill point per level, 9 points at Job Lv 10). Each level unlocks one ability: sit / status (2), First Aid 50 HP · SP 10 · CD 5 s (3), Heavy Strike 200% ATK · SP 5 · CD 5 s · range 1.6 tiles, same as the basic attack (4), Pocket Dimension (5), friends (6), party (7), trade (8), guild (9), Archetype Trial (10). Kept for good after the Archetype choice. See `JOBS.md` §1b.
 - New NPC **Narvis** (Gadolinium, west edge of the plaza) opens the **Pocket Dimension**, a 300-slot personal storage. See `ITEMS.md` §7, `GADOLINIUM.md`, `UI-UX.md` §24.
 
 ## Changes in v20.3

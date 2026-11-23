@@ -1721,7 +1721,7 @@ const ARCH={
  aoe: radius in tiles; at: "self" | "target". range in tiles. cast in seconds (before DEX). */
 const SK={
  // beginner
- bash:{arch:"beginner",kind:"phys",ratio:2.0,sp:8,cd:1.6,range:1.6,ic:"sword"},   // v20.4: "Heavy Strike", Basic Skill Lv 4
+ bash:{arch:"beginner",kind:"phys",ratio:2.0,sp:5,cd:5,range:1.6,ic:"sword"},   // v20.4: "Heavy Strike", Basic Skill Lv 4 (JOBS.md §1b): 200% ATK, SP 5, cooldown 5 s, no cast, range 1.6 tiles (= Beginner basic attack)
  first_aid:{arch:"beginner",kind:"heal",flat:50,sp:10,cd:5,ic:"plus"},   // v20.4: Basic Skill Lv 3 (JOBS.md §1b): 50 HP, SP 10, cooldown 5 s, no cast
  // fighter — Momentum: basic hits and Power Strike add stacks (max 5), Crushing Blow spends them
  power_strike:{arch:"fighter",kind:"phys",ratio:2.5,sp:8,cd:1.5,range:1.8,momentum:1,ic:"sword"},
@@ -1898,7 +1898,7 @@ function pickSkill(ctx){
   switch(d.arch){
    case "beginner":
     if(hpPct<.5&&ready("first_aid"))return "first_aid";
-    if(reserve&&ready("bash")&&ctx.dist<=SK.bash.range)return "bash";return null;
+    if(reserve&&ready("bash")&&ctx.dist<=Math.max(SK.bash.range,d.range))return "bash";   // the game steps in to the skill range firstreturn null;
    case "fighter":
     if(hpPct<.6&&!ctx.buffs.warCry&&ready("war_cry"))return "war_cry";
     if(ctx.dist>SK.power_strike.range)return null;
@@ -2240,7 +2240,7 @@ D2.en.mech_ranger="Distance: +2% damage per tile beyond 3 (max +18% at 12 tiles)
 D2.en.mech_spellcaster="Casting + elements: spells have cast times (DEX shortens them) and never miss. Hitting an element's weakness deals 150% (175% with Attunement).";D2.th.mech_spellcaster="ร่ายเวท + ธาตุ: เวทมีเวลาร่าย (DEX ลดได้) และไม่มีวันพลาด โจมตีธาตุที่แพ้ได้ 150% (175% เมื่อมี Attunement)";
 D2.en.mech_supporter="Sustain: Heal uses the iRO formula; overhealing becomes a Grace shield (up to 20% Max HP). Buffs reach 15 tiles.";D2.th.mech_supporter="ฟื้นฟูต่อเนื่อง: Heal ใช้สูตร iRO ฮีลเกินเลือดเต็มจะกลายเป็นโล่ Grace (สูงสุด 20% HP) บัฟไกลได้ 15 ช่อง";
 D2.en.sk_bash="Heavy Strike";D2.th.sk_bash="โจมตีหนักหน่วง";
-D2.en.skd_bash="Strike one enemy hard for 200% ATK. No cast time.";D2.th.skd_bash="ฟาดศัตรู 1 ตัวอย่างหนัก 200% ATK ไม่มีเวลาร่าย";
+D2.en.skd_bash="Strike one enemy hard for 200% ATK. Range 1.6 tiles (steps in first if further). No cast time.";D2.th.skd_bash="ฟาดศัตรู 1 ตัวอย่างหนัก 200% ATK ระยะ 1.6 ช่อง (ถ้าไกลกว่านั้นจะเดินเข้าไปก่อน) ไม่มีเวลาร่าย";
 D2.en.sk_first_aid="First Aid";D2.th.sk_first_aid="ปฐมพยาบาลเบื้องต้น";
 D2.en.skd_first_aid="Restore 50 HP. No cast time.";D2.th.skd_first_aid="ฟื้นฟู 50 HP ไม่มีเวลาร่าย";
 D2.en.sk_power_strike="Power Strike";D2.th.sk_power_strike="Power Strike";
@@ -2543,7 +2543,7 @@ Object.assign(D2.en,{bs_title:"Basic Skill",bs_short:"Basic Lv",bs_need:"Require
  bs_u_talk:"Basics",bs_d_talk:"Talk, fight, use skills, use items and Idle.",
  bs_u_sit:"Sit and status",bs_d_sit:"Sit down (HP / SP recover 3× faster), stand up, and set a status sign in town.",
  bs_u_first_aid:"First Aid",bs_d_first_aid:"Learn First Aid: restore 50 HP · SP 10 · cooldown 5 s · no cast time.",
- bs_u_bash:"Heavy Strike",bs_d_bash:"Learn Heavy Strike: 200% ATK on one enemy · SP 8 · cooldown 1.6 s · no cast time.",
+ bs_u_bash:"Heavy Strike",bs_d_bash:"Learn Heavy Strike: 200% ATK on one enemy · SP 5 · cooldown 5 s · no cast time · range 1.6 tiles.",
  bs_u_storage:"Pocket Dimension",bs_d_storage:"Use your own large storage (300 slots) through Narvis, found in every main town.",
  bs_u_friend:"Friends",bs_d_friend:"Add other players as friends.",
  bs_u_party:"Party",bs_d_party:"Create a party and invite players.",
@@ -2563,7 +2563,7 @@ Object.assign(D2.th,{bs_title:"Basic Skill",bs_short:"Basic Lv",bs_need:"ต้�
  bs_u_talk:"ทักษะพื้นฐาน",bs_d_talk:"พูดคุย ต่อสู้ ใช้สกิล ใช้ไอเท็ม และ Idle",
  bs_u_sit:"การนั่งและสถานะ",bs_d_sit:"นั่ง (ฟื้น HP / SP เร็วขึ้น 3 เท่า) ลุกยืน และตั้งป้ายสถานะในเมือง",
  bs_u_first_aid:"ปฐมพยาบาลเบื้องต้น",bs_d_first_aid:"เรียนสกิล First Aid: ฟื้นฟู 50 HP · SP 10 · คูลดาวน์ 5 วิ · ไม่มีเวลาร่าย",
- bs_u_bash:"โจมตีหนักหน่วง",bs_d_bash:"เรียนสกิล Heavy Strike: 200% ATK ใส่ศัตรู 1 ตัว · SP 8 · คูลดาวน์ 1.6 วิ · ไม่มีเวลาร่าย",
+ bs_u_bash:"โจมตีหนักหน่วง",bs_d_bash:"เรียนสกิล Heavy Strike: โจมตีหนักหน่วง 200% ATK ใส่ศัตรู 1 ตัว · SP 5 · คูลดาวน์ 5 วิ · ไม่มีเวลาร่าย · ระยะ 1.6 ช่อง",
  bs_u_storage:"Pocket Dimension",bs_d_storage:"ใช้คลังเก็บของใหญ่ส่วนตัว (300 ช่อง) ผ่าน NPC Narvis ที่อยู่ในทุกเมืองหลัก",
  bs_u_friend:"การเป็นเพื่อนกัน",bs_d_friend:"เพิ่มผู้เล่นอื่นเป็นเพื่อน",
  bs_u_party:"การตั้งปาร์ตี้",bs_d_party:"สร้างปาร์ตี้และเชิญผู้เล่น",
@@ -5644,9 +5644,13 @@ function updateCombat(dt){
       z.acc+=dt;if(z.acc>=.5){z.acc-=.5;for(const m of liveMon())if(Math.hypot(m.x-z.x,m.y-z.y)<=k.radius)magicAttack(m,{ratio:k.ratio*.5,elem:"holy",c:"#ffe9a0"})}}
     if(z.t<=0)BF.zone=null}
   if(player.casting){const c=player.casting;c.t-=dt;if(c.t<=0){player.casting=null;finishSkill(c.id,c.tg,c.lv)}return}
-  const tg=player.target;if(!tg)return;
-  if(!alive(tg)){player.target=null;return}
-  const d=dist(player,tg),R=pd().range;
+  const tg=player.target;if(!tg){player.pend=null;return}
+  if(!alive(tg)){player.target=null;player.pend=null;return}
+  /* v20.4: a pending melee skill walks in to its own range, then fires (gives up after 4 s or on a new target) */
+  const pe=player.pend;let R=pd().range;
+  if(pe){pe.t-=dt;const k=REOC.SK[pe.id];if(pe.tg!==tg||pe.t<=0||!k){if(pe.t<=0)player.pendNo=performance.now()+3000;player.pend=null}
+    else{R=Math.min(R,k.range+.3);if(dist(player,tg)<=R){player.pend=null;player.path=[];player.moving=false;useSkill(pe.id,true,pe.lv);return}}}
+  const d=dist(player,tg);
   if(d>R){player.chaseT-=dt;if(player.chaseT<=0||!player.path.length){player.chaseT=.35;walkTo(player,Math.floor(tg.x),Math.floor(tg.y))}}
   else{player.path=[];player.moving=false;faceToward(player,tg.x,tg.y);if(player.atkCd<=0){player.atkCd=pd().interval;basicAttack(tg)}}
 }
@@ -5812,6 +5816,11 @@ function useSkill(id,auto,lvArg){
     if(!isField()){if(!auto)toast(t("noTarget"));return false}
     const R=skillTargetRange(k,d)+.3;
     tg=alive(player.target)?player.target:null;
+    /* v20.4: a melee skill on a target a few tiles away: walk in to the skill range, then use it (player.pend) */
+    if(tg&&!k.ranged&&dist(tg,player)>R&&dist(tg,player)<=d.range+6){
+      if(player.pend&&player.pend.id===id&&player.pend.tg===tg)return true;
+      if(auto&&performance.now()<(player.pendNo||0))return false;   // could not reach it a moment ago: Idle keeps hitting normally for 3 s
+      player.pend={id,lv,tg,t:4};player.chaseT=0;return true}
     if(!tg||dist(tg,player)>R)tg=nearestMon(R);
     if(!tg){if(!auto)toast(t("noTarget"));return false}
     player.target=tg;faceToward(player,tg.x,tg.y);
