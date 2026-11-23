@@ -1,7 +1,7 @@
 # Skill Spec: the standard for writing a skill (DRAFT)
 
 > Part of the REO docs. Combat numbers: `COMBAT-FORMULAS.md`. Kits per archetype: `ARCHETYPES.md`.
-> Status: draft from NIIQ. Fire Bolt (§3) is the first skill written to this standard. These are skills of the **archetype**; classes are not split yet. **Fire Bolt, skill levels, the hotbar setup, Global Delay, weaponMATK and Overload are in the game (v20 build).** Items marked ⚠ are assumptions or open questions.
+> Status: draft from NIIQ. Fire Bolt (§3) is the first skill written to this standard. These are skills of the **archetype**; classes are not split yet. **Fire Bolt, skill levels, the hotbar level choice, Global Delay, weaponMATK and Overload are in the game (v20 build).** Items marked ⚠ are assumptions or open questions.
 
 ## 1. Fields every skill states
 
@@ -173,7 +173,7 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 - **Every skill of every archetype, active or passive, is raised by hand by the player.** Nothing is learned for free.
 - When the class changes (Beginner → archetype) Job Lv resets to 1, so the character starts with **no points** and must gain Job Lv first (`JOBS.md`).
 
-**In the game now:** every skill starts at Lv 0 (not learned) and costs 1 point per level. A skill at Lv 0 cannot be used (a toast says so; Idle skips it; its hotbar slot is greyed). A C1 class (Job Lv cap 50) gets 49 points in total; Beginner (cap 10) gets 9.
+**In the game now:** every skill starts at Lv 0 (not learned) and costs 1 point per level. Since v20.10 points are spent in the **Skills Tree** as a draft: tap a skill, plan levels with ◀ ▶, then **Learn** (Reset drops the draft; `UI-UX.md` §26). A skill at Lv 0 cannot be used (a toast says so; Idle skips it; its hotbar slot is greyed). A C1 class (Job Lv cap 50) gets 49 points in total; Beginner (cap 10) gets 9.
 - **Fire Bolt** has Lv 1–10 (§3).
 - **Overload Energy** has Lv 1–5 (§3d); **Mana Flow** Lv 1–10 and **Elemental Attunement** Lv 1–5 (§3b, §3c): the first passives with levels.
 - **Every other skill has one level** (1 point to learn it, the prototype numbers) until its levels are designed. ⚠ NIIQ has not given per-level effects for them yet.
@@ -183,7 +183,7 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 **⚠ Still open:** points reset (respec), whether unspent points carry over on class change (the answer so far is no, because Job Lv resets), the max level and per-level effect of every skill except Fire Bolt.
 
 ## 5. Hotbar
-The player chooses, for each hotbar slot, **which skill and which level** goes in it (Skills window → Hotbar setup, one drop-down for the skill and one for the level; “Highest learned” follows the level the player has). A slot uses that level’s own SP cost, cast time and number of hits, and a level above the one learned is not possible. Example: Fire Bolt Lv 3 on slot 1 and Fire Bolt Lv 10 on slot 2. The 10 slots are free: a slot holds a skill or a usable item, dragged from the bag or the Skills window or picked in Hotbar setup (`UI-UX.md` §25). The default layout puts skills on 1–7 and Fly Wing, Red Potion and Blue Potion on 8, 9 and 0. Auto-potion uses the slot that holds Red Potion (HP below 35%) or Blue Potion (SP below 15%); if no slot holds it, it does nothing.
+The player chooses, for each hotbar slot, **which skill and which level** goes in it. v20.10: in the Skills Tree, ◀ ▶ under a learned skill pick the level and dragging the tile puts that level on the slot (`UI-UX.md` §26). The Hotbar setup drop-downs were removed in v20.10. A slot filled with no level picked uses the highest level learned. A slot uses that level’s own SP cost, cast time and number of hits, and a level above the one learned is not possible. Example: Fire Bolt Lv 3 on slot 1 and Fire Bolt Lv 10 on slot 2. The 10 slots are free: a slot holds a skill or a usable item, dragged from the bag or the Skills Tree (`UI-UX.md` §25). The default layout puts skills on 1–7 and Fly Wing, Red Potion and Blue Potion on 8, 9 and 0. Auto-potion uses the slot that holds Red Potion (HP below 35%) or Blue Potion (SP below 15%); if no slot holds it, it does nothing.
 
 **Decided:** Fire Bolt has a 0 s cooldown, so levels do not block each other. After Lv 2 the player can cast Lv 10 straight away; only the Global Delay (1.4 s) has to pass.
 

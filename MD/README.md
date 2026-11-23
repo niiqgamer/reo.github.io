@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.6. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.10. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.9 (this update)
+## Changes in v20.10 (this update)
+- **Skills Tree window** replaces the Skills list. Same frame as Status and Bag (440 px wide). Tabs per class line: C0 **Beginner** (blue) and, after the Archetype choice, the character's own C1 tab: Fighter red, Ranger green, Spellcaster purple, Supporter yellow (C2 / C3 tabs later). A 5 × 5 grid laid out as in the design: column 1 = Basic Skill, First Aid, Heavy Strike; columns 2–5 = the archetype (passives row, actives row; Spellcaster puts Overload Energy on the first row). Tiles: active = colour fill, passive = white with a colour line, not learned = grey. Learning is a draft: tap a skill, plan levels with ◀ ▶, then **Learn**; **Reset** drops the draft. On a learned skill, ◀ ▶ pick the level a drag puts on the hotkey bar. Footer "Skill Points : spent / pool", Learn, Reset. A left click on a skill opens the new **Skill Info** window (Item Info size): name and level, chips, description, every level, and a VCT / FCT / CD / Delay table (base values; it replaces the v20.9 "Cast x s (VCT a + FCT b)" line of the old list). The Hotbar setup drop-downs are removed (skills reach the bar by drag and drop). Every skill has a new duotone icon in its line colour (hotkey bar too); the element no longer colours the icon. See `UI-UX.md` §26 (and §24, §25), `SKILL-SPEC.md` §4–5, `JOBS.md` §1b.
+
+## Changes in v20.9
 - **Casting split into VCT and FCT (iRO Renewal).** Every skill can state four timing values: Variable Cast (`vct`), Fixed Cast (`fct`), Cooldown (`cd`) and Global Delay (`gd`); a missing value is 0. Real cast = `VCT × (1 − √((DEX×2+INT)/530)) × gear + FCT × gear` (replaces `× (1 − DEX/150)`). FCT, Cooldown and Global Delay are lowered by gear only (`ab.fct`, `ab.cdr`, `ab.gd`; only *Cooldown* exists so far). Every spell's old cast time is now its VCT, FCT 0 for now. The cooldown now starts when the cast ends, as `SKILL-SPEC.md` says (it used to start with the cast). The Skills window shows `Cast x s (VCT a + FCT b)`; the Status window shows the FCT and Global Delay reductions. Wiki Fire Bolt row brought up to date. See `COMBAT-FORMULAS.md` §2b, `SKILL-SPEC.md` §1, `UI-UX.md`.
 
 ## Changes in v20.8
