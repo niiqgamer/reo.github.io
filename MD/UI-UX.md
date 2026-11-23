@@ -563,7 +563,7 @@ While a drag is over the bar, the slot under the pointer shows a **gold** ring w
 
 **Free slots.** A slot is not tied to one skill or item. The same item can sit on more than one slot. On a class change, skills that the new archetype does not have are removed from the bar, the empty skill slots are filled with the new skills (the four archetype skills first, then First Aid and Heavy Strike), and items stay where they are.
 
-**Hotkey setup (Skills window).** Folded under the grey *Hotbar setup* bar at the bottom of the Skills Tree (v20.9); tap it to open. One drop-down per slot (10 rows). The list shows the archetype's skills, then the usable items. The level drop-down stays for skills.
+**Hotkey setup.** Removed in v20.9: slots are filled only by drag and drop. The level comes from the Skills Tree arrows (§26).
 
 ## 26. Skills Tree window (v20.9)
 
@@ -579,9 +579,7 @@ Replaces the old Skills list (§24). Window `skill`, title **Skills Tree / ผ�
 | Spellcaster | purple `#7440c8` |
 | Supporter | yellow `#d69a0c` |
 
-Under the tabs: the line's mechanic in one muted sentence.
-
-**Grid.** 5 columns, at least 2 rows; empty cells are dashed. Order: Basic Skill, First Aid, Heavy Strike, then the archetype's passives, then its actives (the Beginner tab has only the first three). Each cell: name on top (cut with … when long), the 56 px tile, then a pill under it.
+**Grid.** 5 columns × 5 rows (more rows if a line ever needs them); empty cells are dashed. **Column 1** holds the Beginner skills top to bottom: Basic Skill, First Aid, Heavy Strike. **Columns 2–5** hold the archetype, one row at a time (`skGrid`, `SKT_ROWS`): by default the passives on row 1 and the actives on row 2 (a row longer than 4 wraps). Spellcaster: row 1 Mana Flow, Elemental Attunement, Overload Energy; row 2 Fire Bolt, Frost Nova, Lightning Spear, Stone Spike. The Beginner tab has only column 1. Each cell: name on top (cut with … when long), the 56 px tile, then a pill under it.
 
 | Tile | Look |
 |---|---|
@@ -591,15 +589,20 @@ Under the tabs: the line's mechanic in one muted sentence.
 | Selected | gold ring |
 | Draft (planned, not yet learned) | in colour again, with a gold **+N** badge (levels planned) |
 
-The pill shows the learned level. First Aid and Heavy Strike before they unlock show "Basic Lv 3" / "Basic Lv 4".
+The pill shows the learned level. A learned active with levels (Fire Bolt, Overload Energy) always shows **◀ level ▶** instead; any tile shows them while it is selected or has a draft. First Aid and Heavy Strike before they unlock show "Basic Lv 3" / "Basic Lv 4".
 
-**Learning (draft, then Learn).** Tap a grey skill: it turns to colour as a **Lv 1 draft** and the pill becomes **◀ level ▶**. ▶ plans one more level (1 skill point each), ◀ takes one back (◀ at Lv 1 of a skill that is not learned drops the draft). Several skills can be planned at once. Nothing is spent until **Learn** (blue, shows the cost, e.g. "Learn (3)"); **Reset** drops every draft. Both are disabled when there is no draft. ▶ stops at the max level and when the drafts already use every point left ("Not enough skill points."). Basic Skill is planned the same way, but only as a Beginner; First Aid and Heavy Strike have no draft (they come from Basic Skill Lv 3 / 4; tapping them says so). Learning Basic Skill levels shows what each new level teaches and can start the Archetype Trial (`JOBS.md` §1b).
+**Learning (draft, then Learn).** Tap a grey skill: it turns to colour as a **Lv 1 draft** and the pill becomes **◀ level ▶**. ▶ plans one more level (1 skill point each), ◀ takes one back (◀ at Lv 1 of a skill that is not learned drops the draft). Several skills can be planned at once. Nothing is spent until **Learn**; **Reset** drops every draft. Both are disabled when there is no draft. ▶ stops at the max level and when the drafts already use every point left ("Not enough skill points."). Basic Skill is planned the same way, but only as a Beginner; First Aid and Heavy Strike have no draft (they come from Basic Skill Lv 3 / 4; tapping them says so). Learning Basic Skill levels shows what each new level teaches and can start the Archetype Trial (`JOBS.md` §1b).
 
 **Level for the hotkey bar.** On a learned skill with levels (Fire Bolt, Overload Energy), ◀ ▶ below the learned level pick the level a drag puts on the hotkey bar (`data-dnd="s:id:lv"`; the slot keeps that level, `SKILL-SPEC.md` §5). Example: Fire Bolt learned at Lv 5, ◀ ◀ shows 3, drag → the slot casts Lv 3.
 
-**Detail box** (below the grid). Name in the line colour, an Active / Passive chip, the element (if any), "Lv learned/max", the description, the numbers at the shown level (SP, cooldown, Global Delay, cast, range, fireballs, Overload Rate; a passive's effect at that level; Basic Skill: what that level teaches) and one coloured hint: the draft cost, "Not learned yet…", "Requires Basic Skill Lv N", "Passive: works by itself…" or "Drag the icon onto a hotkey slot to use Lv N". With nothing selected it explains how to learn.
+**Skill Info window** (`skinfo`, title Skill Info / ข้อมูลสกิล / スキル情報, note icon). A left click on a tile opens it in the Item Info slot, with the Item Info size and placement (beside the tree; on a phone it floats in the middle over a dimmed screen). Escape or × closes it; switching tabs closes it too. Content, in a white card:
+- the 76 px tile and "**Name Lv.learned/max**" in the line colour; chips: archetype, then Passive, or the targeting (**Self Cast** / **Target Cast**) and the kind (Physical, Magic · element, Heal, Buff, Zone, Movement);
+- the description;
+- **Level 1 … Level max**: what each level gives (Fire Bolt: fireballs, total % MATK, SP; Overload Energy: Overload Rate, duration, SP; Mana Flow / Elemental Attunement: the passive effect; Basic Skill: what the level teaches; a one-level active: SP and range). The learned level is bold, higher levels are faded. One-level passives have no level list;
+- **In details** (actives only): a table Lv | VCT (cast time before DEX) | FCT (fixed cast, no system yet: –) | CD | Delay (Global Delay), the learned row tinted.
+SP shown is the real cost (after Mana Flow).
 
-**Footer.** "Skill Points : spent / pool" (pool = every point the class can earn: Beginner 9, C1 49) with "N left" (after drafts), then **Learn** and **Reset**. Below: the folded *Hotbar setup* (§25).
+**Footer.** "Skill Points : spent / pool" (pool = every point the class can earn: Beginner 9, C1 49), the draft cost while there is one ("Learn uses N"), then **Learn** (blue) and **Reset** (grey). The old Hotbar setup drop-downs are gone (§25).
 
 **Skill icons (v20.9).** Every skill has its own duotone icon (`SKI`, 32 × 32 grid, lines in `currentColor`, class `a` = soft fill). Tiles colour them (white on actives, line colour on passives); the hotkey bar and drag ghost show them white on the line gradient. The element no longer changes the icon colour.
 

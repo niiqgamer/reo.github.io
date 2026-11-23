@@ -1,7 +1,7 @@
 # Skill Spec: the standard for writing a skill (DRAFT)
 
 > Part of the REO docs. Combat numbers: `COMBAT-FORMULAS.md`. Kits per archetype: `ARCHETYPES.md`.
-> Status: draft from NIIQ. Fire Bolt (§3) is the first skill written to this standard. These are skills of the **archetype**; classes are not split yet. **Fire Bolt, skill levels, the hotbar setup, Global Delay, weaponMATK and Overload are in the game (v20 build).** Items marked ⚠ are assumptions or open questions.
+> Status: draft from NIIQ. Fire Bolt (§3) is the first skill written to this standard. These are skills of the **archetype**; classes are not split yet. **Fire Bolt, skill levels, the hotbar level choice, Global Delay, weaponMATK and Overload are in the game (v20 build).** Items marked ⚠ are assumptions or open questions.
 
 ## 1. Fields every skill states
 
@@ -181,7 +181,7 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 **⚠ Still open:** points reset (respec), whether unspent points carry over on class change (the answer so far is no, because Job Lv resets), the max level and per-level effect of every skill except Fire Bolt.
 
 ## 5. Hotbar
-The player chooses, for each hotbar slot, **which skill and which level** goes in it. v20.9: in the Skills Tree, ◀ ▶ under a learned skill pick the level and dragging the tile puts that level on the slot (`UI-UX.md` §26). The drop-downs stay (Skills window → Hotbar setup, folded; one drop-down for the skill and one for the level; “Highest learned” follows the level the player has). A slot uses that level’s own SP cost, cast time and number of hits, and a level above the one learned is not possible. Example: Fire Bolt Lv 3 on slot 1 and Fire Bolt Lv 10 on slot 2. The 10 slots are free: a slot holds a skill or a usable item, dragged from the bag or the Skills window or picked in Hotbar setup (`UI-UX.md` §25). The default layout puts skills on 1–7 and Fly Wing, Red Potion and Blue Potion on 8, 9 and 0. Auto-potion uses the slot that holds Red Potion (HP below 35%) or Blue Potion (SP below 15%); if no slot holds it, it does nothing.
+The player chooses, for each hotbar slot, **which skill and which level** goes in it. v20.9: in the Skills Tree, ◀ ▶ under a learned skill pick the level and dragging the tile puts that level on the slot (`UI-UX.md` §26). The Hotbar setup drop-downs were removed in v20.9. A slot filled with no level picked uses the highest level learned. A slot uses that level’s own SP cost, cast time and number of hits, and a level above the one learned is not possible. Example: Fire Bolt Lv 3 on slot 1 and Fire Bolt Lv 10 on slot 2. The 10 slots are free: a slot holds a skill or a usable item, dragged from the bag or the Skills Tree (`UI-UX.md` §25). The default layout puts skills on 1–7 and Fly Wing, Red Potion and Blue Potion on 8, 9 and 0. Auto-potion uses the slot that holds Red Potion (HP below 35%) or Blue Potion (SP below 15%); if no slot holds it, it does nothing.
 
 **Decided:** Fire Bolt has a 0 s cooldown, so levels do not block each other. After Lv 2 the player can cast Lv 10 straight away; only the Global Delay (1.4 s) has to pass.
 

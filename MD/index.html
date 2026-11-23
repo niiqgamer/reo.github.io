@@ -822,7 +822,7 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 #wins .win{pointer-events:auto;position:relative;left:auto;top:auto;transform:none;flex:0 1 auto;min-width:300px;display:flex;flex-direction:column;min-height:0;max-height:100%;
  width:var(--wiw,480px);height:var(--wih,auto);padding:8px;overflow:hidden;border-radius:18px;z-index:1}
 #wins .win.hidden{display:none !important}
-#wins .win[data-w=itemdet]{z-index:3}
+#wins .win[data-w=itemdet],#wins .win[data-w=skinfo]{z-index:3}
 #wins .win-h{margin:0 0 8px;flex:none;cursor:move}
 #wins .win-b{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain}
 #wins .win-nav{flex:none;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin-top:8px}
@@ -834,7 +834,7 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .win[data-w=char]{--wiw:480px;--wih:700px;zoom:.8}   /* 20% smaller than before */
 .win[data-w=status]{--wiw:480px;--wih:560px}
 .win[data-w=inv]{--wiw:640px;--wih:520px}
-.win[data-w=itemdet]{--wiw:320px;--wih:520px}
+.win[data-w=itemdet],.win[data-w=skinfo]{--wiw:320px;--wih:520px}
 .win[data-w=storage]{--wiw:640px;--wih:380px}
 .win[data-w=skill],.win[data-w=quest],.win[data-w=archpick]{--wiw:480px;--wih:560px}
 .win[data-w=social]{--wiw:440px;--wih:440px}
@@ -845,15 +845,15 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .win[data-w=idlesum]{--wiw:400px;--wih:480px}
 .win[data-w=idleset]{--wiw:450px;--wih:520px}
 .win[data-w=idlerew]{--wiw:440px;--wih:460px}
-.cmp #wins.three .win[data-w=itemdet]{position:absolute;right:10px;top:50%;transform:translateY(-50%)}   /* only on narrow screens the detail floats over the right edge */
+.cmp #wins.three .win[data-w=itemdet],.cmp #wins.three .win[data-w=skinfo]{position:absolute;right:10px;top:50%;transform:translateY(-50%)}   /* only on narrow screens the detail floats over the right edge */
 /* phones: windows stack in one scrolling column, always above the menu bar */
 .P #wins{inset:6px 6px 70px 6px;flex-direction:column;justify-content:flex-start;align-items:stretch;overflow-y:auto;overflow-x:hidden;gap:8px;padding:0;-webkit-overflow-scrolling:touch}
 .P #wins .win{width:100%;height:min(var(--wih,auto),calc(var(--sh,800px) - 84px));max-height:none;padding:7px}
 .P #wins.pair .win{height:auto;min-height:0}
 .P #wins .win[data-w=char]{height:auto}
 .P #wins .win-h{cursor:default}
-.P #wins .win[data-w=itemdet]{position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);width:min(340px,calc(100% - 20px));height:min(62vh,470px);z-index:9;box-shadow:0 0 0 100vmax rgba(4,6,30,.55),0 18px 50px rgba(0,0,22,.6)}
-.P #wins.three .win[data-w=itemdet]{right:auto;top:46%}
+.P #wins .win[data-w=itemdet],.P #wins .win[data-w=skinfo]{position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);width:min(340px,calc(100% - 20px));height:min(62vh,470px);z-index:9;box-shadow:0 0 0 100vmax rgba(4,6,30,.55),0 18px 50px rgba(0,0,22,.6)}
+.P #wins.three .win[data-w=itemdet],.P #wins.three .win[data-w=skinfo]{right:auto;top:46%}
 .P #wins .wn{height:42px;font-size:10px}
 
 /* ---- map name shows only when entering a map ---- */
@@ -1148,7 +1148,7 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .win[data-w=char] .chr-panel{min-height:447px;box-sizing:border-box}   /* Equipment and Costume pages keep the same height, so the window does not jump when switching tabs */
 .win[data-w=status]{--wih:520px}
 .win[data-w=inv]{--wih:520px}
-.win[data-w=itemdet]{--wih:480px}
+.win[data-w=itemdet],.win[data-w=skinfo]{--wih:480px}
 .win[data-w=skill],.win[data-w=quest],.win[data-w=archpick]{--wih:520px}
 .win[data-w=social]{--wih:400px}
 .win[data-w=shop]{--wih:440px}
@@ -1369,7 +1369,7 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .inv-hint.on{color:#1c7a3a;font-weight:600}
 .lt-btn.sell{min-width:84px}
 /* Item detail on a light frame */
-#wins .win.lt[data-w=itemdet]{--wiw:330px}
+#wins .win.lt[data-w=itemdet],#wins .win.lt[data-w=skinfo]{--wiw:330px}
 .win.lt .det-top{padding:8px 10px;border-radius:10px;background:var(--w-card);border:1px solid var(--lline)}
 .win.lt .det-meta .stars{text-shadow:0 0 1px #000,0 1px 1px rgba(0,0,0,.6)}
 .win.lt .det-stats,.win.lt .cmp{background:var(--w-card);border:1px solid var(--lline);border-radius:10px}
@@ -1396,9 +1396,9 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .inf-name .inf-ref{display:inline-block;vertical-align:2px;padding:1px 6px;border-radius:7px;background:#0a6fc2;color:#fff;font-size:11.5px;font-weight:800;line-height:1.3}
 .P .win.lt .eqs .cs,.P .win.lt .inv-fix .ii-st{font-size:9.5px}
 /* v19.4 Item Info (fixed 360 x 550, no scroll) */
-#wins .win.lt[data-w=itemdet]{--wiw:360px;--wih:550px;width:360px;height:550px;max-height:100%}
+#wins .win.lt[data-w=itemdet],#wins .win.lt[data-w=skinfo]{--wiw:360px;--wih:550px;width:360px;height:550px;max-height:100%}
 .win.lt[data-w=itemdet] .win-b{overflow:hidden}
-.win.lt[data-w=itemdet] .win-h{font-size:22px;margin-bottom:8px}
+.win.lt[data-w=itemdet] .win-h,.win.lt[data-w=skinfo] .win-h{font-size:22px;margin-bottom:8px}
 .inf{display:grid;grid-template-columns:72px minmax(0,1fr);gap:6px;align-items:start}
 .inf-l{display:flex;flex-direction:column;gap:6px}
 .inf-ic{width:72px;height:72px;padding:6px;border:1px solid var(--w-grey);border-radius:12px;background:var(--w-card);cursor:pointer;display:grid;place-items:center}
@@ -1448,7 +1448,7 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .inf-qty b{min-width:20px;text-align:center;font-size:12px;font-weight:600}
 .win.lt .ii-lk{position:absolute;left:3px;top:3px;width:15px;height:15px;border-radius:5px;background:#d9a21c;display:grid;place-items:center;z-index:2}
 .win.lt .ii-lk svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2.8}
-.P #wins .win.lt[data-w=itemdet]{width:min(360px,calc(100vw - 16px));height:550px}
+.P #wins .win.lt[data-w=itemdet],.P #wins .win.lt[data-w=skinfo]{width:min(360px,calc(100vw - 16px));height:550px}
 /* phones */
 .P #wins .win.lt{padding:8px}
 .P .win.lt .win-h{font-size:21px}
@@ -1551,7 +1551,6 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .skt-tabs button:hover{background:var(--w-hover)}
 .skt-tabs button.on{background:var(--tc);border-color:var(--tc);color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.18)}
 .skt-tabs button.on svg{stroke:#fff}
-.skt-mech{margin:0;font-size:11.5px;line-height:1.45;color:var(--w-ink2)}
 .skt-well{padding:10px 6px 12px;border:1px solid var(--w-ink2);border-radius:12px;background:var(--w-bg)}
 .skt-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px 4px}
 .skc{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
@@ -1581,25 +1580,32 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .skc-arw .l i{border-right:6px solid #fff}.skc-arw .r i{border-left:6px solid #fff}
 .skc-arw.pas{background:#fff;color:var(--ac);box-shadow:inset 0 0 0 1.5px var(--ac)}
 .skc-arw.pas .l i{border-right-color:var(--ac)}.skc-arw.pas .r i{border-left-color:var(--ac)}
-.skt-det{min-height:92px;padding:8px 10px;border-radius:10px;background:var(--w-card);border:1px solid var(--w-line);box-sizing:border-box}
-.skt-det.empty{display:grid;place-items:center;text-align:center}
-.skt-dh{display:flex;align-items:center;gap:6px;margin-bottom:3px}
-.skt-dh>b{color:var(--ac);font-size:14px}
-.skt-dh .grow{flex:1}
-.skt-dh .lv{font-size:12.5px;color:var(--w-ink)}
 .skt-chip{font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:8px;background:var(--ac);color:#fff;white-space:nowrap}
 .skt-chip.pas{background:none;color:var(--ac);box-shadow:inset 0 0 0 1.2px var(--ac)}
-.skt-det p{margin:0 0 3px;font-size:12px;line-height:1.45;color:var(--w-ink)}
-.win.lt .skt-det small{display:block;font-size:11.5px;line-height:1.45}
-.win.lt .skt-det small.hint{color:var(--ac);font-weight:600;margin-top:2px}
 .skt-foot{display:flex;align-items:center;gap:6px}
 .skt-foot .grow{flex:1}
 .skt-pts{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border:1px solid var(--w-line);border-radius:8px;background:var(--w-card);font-size:12.5px;font-weight:700;white-space:nowrap}
-.win.lt .skt-pts small{display:inline;font-size:11.5px;font-weight:500}
 .skt-foot .lt-btn{height:30px;min-width:76px}
-.skt-hotT{margin-top:0}.skt-hotT svg{width:15px;height:15px;flex:none;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.skt-hotT svg:last-child{transition:transform .15s}.skt-hotT.on svg:last-child{transform:rotate(180deg)}
-.skt-hot .rows{margin-top:6px}
+.skt-cost{font-size:11.5px;font-weight:600;color:#a8780e;white-space:nowrap}
+.lt-btn.grey{background:var(--w-grey);border-color:var(--w-grey);color:#fff}
+.si{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:12px;background:var(--w-card);border:1px solid var(--w-line);color:var(--w-ink)}
+.si-top{display:flex;gap:10px;align-items:center}
+.sk-tile.big{width:76px;height:76px;border-radius:14px;flex:none;cursor:default}.sk-tile.big:hover{transform:none}.sk-tile.big svg{width:50px;height:50px}
+.si-head{min-width:0;display:flex;flex-direction:column;gap:5px}
+.si-head>b{font-size:17px;font-weight:700;line-height:1.2;color:var(--ac)}
+.si-chips{display:flex;flex-wrap:wrap;gap:4px}
+.si-desc{margin:0;padding-bottom:6px;border-bottom:2px solid var(--w-line);font-size:12.5px;line-height:1.5}
+.si-lvs{display:flex;flex-direction:column;gap:5px;padding-bottom:8px;border-bottom:2px solid var(--w-line)}
+.si-lv p{margin:1px 0 0;font-size:12px;line-height:1.4}
+.si-lv.dim{opacity:.6}
+.si-lv.on p{font-weight:600}
+.si-tag{display:inline-block;align-self:flex-start;padding:1px 9px;border-radius:8px;background:var(--ac);color:#fff;font-size:10.5px;font-weight:700;line-height:15px}
+.si-tb{width:100%;border-collapse:separate;border-spacing:0 3px;font-size:11.5px;text-align:center}
+.si-tb th{font-weight:700;padding:2px;border-bottom:1.5px solid var(--w-ink2)}
+.si-tb td{padding:2px;border:1.2px solid var(--w-ink2);border-left:0;font-weight:600;font-variant-numeric:tabular-nums}
+.si-tb td:first-child{border-left:1.2px solid var(--w-ink2);border-radius:9px 0 0 9px;color:var(--ac)}
+.si-tb td:last-child{border-radius:0 9px 9px 0}
+.si-tb tr.on td{background:color-mix(in srgb,var(--ac) 14%,var(--w-card))}
 .ski .a{fill:currentColor;fill-opacity:.3;stroke:none}
 .slot .ski,.dnd-ghost .ski,.dot .ski{color:#fff;stroke-width:2.6}
 .slot .ski{width:24px;height:24px}
@@ -2345,11 +2351,7 @@ D2.en.skd_fire_bolt="Drops one fireball per skill level on one enemy, 100% MATK 
 D2.en.skpLine="Skill points: {n} (1 per Job Lv)";D2.th.skpLine="แต้มสกิล: {n} (1 Job Lv = 1 แต้ม)";
 D2.en.gdLbl="Global Delay";D2.th.gdLbl="ดีเลย์รวม";
 D2.en.fbLbl="Fireballs";D2.th.fbLbl="ลูกไฟ";
-D2.en.hotCfg="Hotbar setup";D2.th.hotCfg="ตั้งค่า Hotbar";
-D2.en.hotNone="Empty";D2.th.hotNone="ว่าง";
-D2.en.hotMax="Highest learned";D2.th.hotMax="สูงสุดที่เรียน";
-D2.en.hotNote="Drag a skill or a usable item onto a slot, or pick one here. Drag a slot off the bar to clear it. Keys 1\u20130 use the slots.";D2.th.hotNote="\u0e25\u0e32\u0e01\u0e2a\u0e01\u0e34\u0e25\u0e2b\u0e23\u0e37\u0e2d\u0e44\u0e2d\u0e40\u0e17\u0e47\u0e21\u0e43\u0e0a\u0e49\u0e07\u0e32\u0e19\u0e44\u0e1b\u0e27\u0e32\u0e07\u0e43\u0e19\u0e0a\u0e48\u0e2d\u0e07 \u0e2b\u0e23\u0e37\u0e2d\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e08\u0e32\u0e01\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e19\u0e35\u0e49 \u0e25\u0e32\u0e01\u0e0a\u0e48\u0e2d\u0e07\u0e2d\u0e2d\u0e01\u0e19\u0e2d\u0e01\u0e41\u0e16\u0e1a\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e25\u0e49\u0e32\u0e07\u0e0a\u0e48\u0e2d\u0e07 \u0e01\u0e14\u0e1b\u0e38\u0e48\u0e21 1\u20130 \u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e43\u0e0a\u0e49\u0e0a\u0e48\u0e2d\u0e07\u0e19\u0e31\u0e49\u0e19";D2.en.dnd_item_no="This item can't be placed here.";D2.th.dnd_item_no="\u0e44\u0e2d\u0e40\u0e17\u0e47\u0e21\u0e19\u0e35\u0e49\u0e44\u0e21\u0e48\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e27\u0e32\u0e07\u0e17\u0e35\u0e48\u0e19\u0e35\u0e48\u0e44\u0e14\u0e49";D2.en.dnd_skill_no="Passive skills can't go on the hotkey bar.";D2.th.dnd_skill_no="\u0e2a\u0e01\u0e34\u0e25\u0e41\u0e1a\u0e1a Passive \u0e43\u0e2a\u0e48\u0e1a\u0e19\u0e41\u0e16\u0e1a hotkey \u0e44\u0e21\u0e48\u0e44\u0e14\u0e49";D2.en.hotGrpSk="Skills";D2.th.hotGrpSk="สกิล";D2.en.hotGrpIt="Items";D2.th.hotGrpIt="ไอเท็ม";
-D2.en.fctOver="OVERLOAD!";D2.th.fctOver="เกินพิกัด!";
+D2.en.dnd_item_no="This item can't be placed here.";D2.th.dnd_item_no="\u0e44\u0e2d\u0e40\u0e17\u0e47\u0e21\u0e19\u0e35\u0e49\u0e44\u0e21\u0e48\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e27\u0e32\u0e07\u0e17\u0e35\u0e48\u0e19\u0e35\u0e48\u0e44\u0e14\u0e49";D2.en.dnd_skill_no="Passive skills can't go on the hotkey bar.";D2.th.dnd_skill_no="\u0e2a\u0e01\u0e34\u0e25\u0e41\u0e1a\u0e1a Passive \u0e43\u0e2a\u0e48\u0e1a\u0e19\u0e41\u0e16\u0e1a hotkey \u0e44\u0e21\u0e48\u0e44\u0e14\u0e49";D2.en.fctOver="OVERLOAD!";D2.th.fctOver="เกินพิกัด!";
 D2.en.skNone="Not learned";D2.th.skNone="ยังไม่ได้เรียน";
 D2.en.skNotLearned="Skill not learned yet. Spend a skill point in the Skills window.";D2.th.skNotLearned="ยังไม่ได้เรียนสกิลนี้ ใช้แต้มสกิลในหน้าสกิล";
 D2.en.sk_frost_nova="Frost Nova";D2.th.sk_frost_nova="Frost Nova";
@@ -2850,15 +2852,13 @@ Object.assign(D2.th,{m_social:"สังคม",soc_friends:"เพื่อน"
  wsp_ph:"พิมพ์ข้อความ…",wsp_empty:"ทักทาย {n} ได้เลย แชทนี้เห็นกันแค่สองคน",wsp_new:"{n} กระซิบถึงคุณ"});
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 /* v20.9 Skills Tree window */
-Object.assign(D2.en,{w_skill:"Skills Tree",skt_pts:"Skill Points : {a} / {b}",skt_left:"{n} left",skt_learn:"Learn",skt_reset:"Reset",skt_active:"Active",skt_passive:"Passive",
- skt_pick:"Tap a skill to see what it does. A grey skill is not learned yet: tap it, set the level with ◀ ▶, then press Learn.",
- skt_h_pend:"Lv {a} → {b}: {n} skill point(s). Press Learn to keep it, or Reset.",skt_h_new:"Not learned yet. Press ▶ to plan a level, then Learn.",
- skt_h_pas:"Passive: works by itself once learned.",skt_h_drag:"Drag the icon onto a hotkey slot to use Lv {n}.",skt_h_lv:"◀ ▶ picks the level.",
+Object.assign(D2.en,{w_skinfo:"Skill Info",si_self:"Self Cast",si_target:"Target Cast",si_k_phys:"Physical",si_k_magic:"Magic",si_k_heal:"Heal",si_k_buff:"Buff",si_k_zone:"Zone",si_k_move:"Movement",
+ si_lv:"Level {n}",si_det:"In details",si_delay:"Delay",si_fb:"{a} fireball(s), {b}% MATK in total · SP {c}",si_oe:"Overload Rate +{a}% for {b} seconds · SP {c}",skt_cost:"Learn uses {n}",
+ w_skill:"Skills Tree",skt_pts:"Skill Points : {a} / {b}",skt_learn:"Learn",skt_reset:"Reset",skt_active:"Active",skt_passive:"Passive",
  skt_done:"Learned: {s}",skt_nopts:"Not enough skill points."});
-Object.assign(D2.th,{w_skill:"ผังสกิล",skt_pts:"แต้มสกิล : {a} / {b}",skt_left:"เหลือ {n}",skt_learn:"เรียน",skt_reset:"รีเซ็ต",skt_active:"แอคทีฟ",skt_passive:"พาสซีฟ",
- skt_pick:"แตะสกิลเพื่อดูรายละเอียด สกิลสีเทาคือยังไม่ได้เรียน: แตะ เลือกเลเวลด้วย ◀ ▶ แล้วกดเรียน",
- skt_h_pend:"Lv {a} → {b}: ใช้ {n} แต้มสกิล กดเรียนเพื่อยืนยัน หรือรีเซ็ต",skt_h_new:"ยังไม่ได้เรียน กด ▶ เพื่อเลือกเลเวล แล้วกดเรียน",
- skt_h_pas:"พาสซีฟ: ทำงานเองเมื่อเรียนแล้ว",skt_h_drag:"ลากไอคอนไปวางในช่อง hotkey เพื่อใช้ Lv {n}",skt_h_lv:"◀ ▶ เลือกเลเวล",
+Object.assign(D2.th,{w_skinfo:"ข้อมูลสกิล",si_self:"ร่ายใส่ตัวเอง",si_target:"เลือกเป้าหมาย",si_k_phys:"กายภาพ",si_k_magic:"เวท",si_k_heal:"ฟื้นฟู",si_k_buff:"บัฟ",si_k_zone:"พื้นที่",si_k_move:"เคลื่อนที่",
+ si_lv:"เลเวล {n}",si_det:"รายละเอียด",si_delay:"ดีเลย์",si_fb:"ลูกไฟ {a} ลูก รวม {b}% MATK · SP {c}",si_oe:"เพิ่มอัตราเกินพิกัด +{a}% ระยะเวลา {b} วินาที · SP {c}",skt_cost:"ใช้ {n} แต้ม",
+ w_skill:"ผังสกิล",skt_pts:"แต้มสกิล : {a} / {b}",skt_learn:"เรียน",skt_reset:"รีเซ็ต",skt_active:"แอคทีฟ",skt_passive:"พาสซีฟ",
  skt_done:"เรียนแล้ว: {s}",skt_nopts:"แต้มสกิลไม่พอ"});
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
 /* v19.2 light windows (Character / Status / Inventory) */
@@ -3230,14 +3230,8 @@ D.jp={
   "skpLine":"スキルポイント：{n}（ジョブLv 1ごとに1）",
   "gdLbl":"グローバルディレイ",
   "fbLbl":"火球",
-  "hotCfg":"ホットバーの設定",
-  "hotNone":"空",
-  "hotMax":"習得済みの最大",
-  "hotNote":"スキルか使用アイテムをスロットにドラッグするか、ここで選んでください。スロットからドラッグして外すと解除されます。キー1–0でスロットを使えます。",
   "dnd_item_no":"このアイテムはここに置けません。",
   "dnd_skill_no":"パッシブスキルはホットバーに置けません。",
-  "hotGrpSk":"スキル",
-  "hotGrpIt":"アイテム",
   "fctOver":"オーバーロード！",
   "skNone":"未習得",
   "skNotLearned":"まだ習得していません。スキル画面でスキルポイントを使ってください。",
@@ -3869,10 +3863,9 @@ D.jp={
   "lt_cancel":"キャンセル",
   "lt_sell_hint":"アイテムを長押しすると選択を始められます。"
 };
-Object.assign(D.jp,{w_skill:"スキルツリー",skt_pts:"スキルポイント : {a} / {b}",skt_left:"残り {n}",skt_learn:"習得",skt_reset:"リセット",skt_active:"アクティブ",skt_passive:"パッシブ",
- skt_pick:"スキルをタップすると説明が見られます。灰色は未習得のスキルです。タップして ◀ ▶ でレベルを選び、習得を押してください。",
- skt_h_pend:"Lv {a} → {b}：スキルポイント {n}。習得で確定、リセットで取り消し。",skt_h_new:"未習得。▶ でレベルを選び、習得を押してください。",
- skt_h_pas:"パッシブ：習得すると自動で効果があります。",skt_h_drag:"アイコンをホットキーにドラッグすると Lv {n} で使えます。",skt_h_lv:"◀ ▶ でレベルを選択。",
+Object.assign(D.jp,{w_skinfo:"スキル情報",si_self:"自己詠唱",si_target:"対象指定",si_k_phys:"物理",si_k_magic:"魔法",si_k_heal:"回復",si_k_buff:"バフ",si_k_zone:"範囲",si_k_move:"移動",
+ si_lv:"レベル {n}",si_det:"詳細",si_delay:"ディレイ",si_fb:"火球 {a} 個、合計 MATK {b}% · SP {c}",si_oe:"オーバーロード率 +{a}%、{b} 秒間 · SP {c}",skt_cost:"消費 {n}",
+ w_skill:"スキルツリー",skt_pts:"スキルポイント : {a} / {b}",skt_learn:"習得",skt_reset:"リセット",skt_active:"アクティブ",skt_passive:"パッシブ",
  skt_done:"習得：{s}",skt_nopts:"スキルポイントが足りません。"});   // v20.9 Skills Tree
 let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
 const t=k=>(D[lang][k]??D.en[k]??k);
@@ -5406,6 +5399,7 @@ function invFind(k){
   const g=S.bag.find(x=>x.uid===key);return g?{k,id:g.id,qty:1,ref:g.ref||0,cat:"gear",uid:key,roll:g.roll,lock:!!g.lock}:null;
 }
 /* what the item-detail window shows: a piece that is worn (picked on the Character window) or something in the bag */
+const detOk=()=>winDet==="skinfo"?!!skSel&&winId==="skill":!!detEntry();   // v20.9: the detail slot holds Item Info or Skill Info
 function detEntry(){
   if(eqSel){const it=S.equip[eqSel];return it?{k:"e:"+eqSel,id:it.id,qty:1,ref:it.ref||0,cat:"gear",uid:it.uid,roll:it.roll,lock:!!it.lock,equipped:true,slot:eqSel}:null}
   return invSel?invFind(invSel):null;
@@ -7089,11 +7083,19 @@ function skRaise(id){if(!skMine().includes(id)||skLvOf(id)>=skMaxOf(id)||skAvail
    Every tile has a level cursor skCur[id]. Above the learned level the cursor is a draft: 1 skill point per level, kept only when
    Learn is pressed (Reset drops every draft). At or below the learned level it is the level a drag puts on the hotkey bar.
    Basic Skill is the tile "basic_skill" (raised only as a Beginner); First Aid and Heavy Strike come from Basic Skill Lv 3 and 4. */
-let skTab=null,skSel=null,skCur={},skHotOpen=false;
+let skTab=null,skSel=null,skCur={};
 const BASIC_T="basic_skill";
 const skTabs=()=>S.arch==="beginner"?["beginner"]:["beginner",S.arch];
 const skTabNow=()=>{const L=skTabs();return L.includes(skTab)?skTab:L[L.length-1]};
 const skTreeIds=tab=>tab==="beginner"?[BASIC_T,...BASIC_ACT]:[BASIC_T,...BASIC_ACT,...REOC.ARCH[tab].passives,...REOC.ARCH[tab].actives];
+/* tree layout: rows of up to 4 archetype skills (columns 2-5); column 1 holds Basic Skill, First Aid, Heavy Strike. Default: passives, then actives */
+const SKT_ROWS={spellcaster:[["mana_flow","elemental_attunement","overload_energy"],["fire_bolt","frost_nova","lightning_spear","stone_spike"]]};
+function skGrid(tab){
+  const col=[BASIC_T,...BASIC_ACT],A=REOC.ARCH[tab],rows=[];
+  if(tab!=="beginner")for(const r of SKT_ROWS[tab]||[A.passives,A.actives])for(let i=0;i<r.length;i+=4)rows.push(r.slice(i,i+4));
+  const n=Math.max(5,col.length,rows.length),g=[];
+  for(let r=0;r<n;r++)for(let c=0;c<5;c++)g.push(c?(rows[r]&&rows[r][c-1])||null:col[r]||null);
+  return g}
 const skArchOf=id=>id===BASIC_T||BASIC_ACT.includes(id)?"beginner":(REOC.SK[id]||REOC.PASSIVE[id]).arch;
 const skIsPas=id=>id===BASIC_T||!REOC.SK[id];   // Basic Skill and the archetype passives: white tiles, never on the hotkey bar
 const skLearned=id=>id===BASIC_T?basicLv():skLvOf(id);
@@ -7119,7 +7121,7 @@ function skStep(id,d){
   if(!skStepOk(id,n)){if(d>0&&n<=skMaxT(id)&&n>L){AUD.sfx("err");toast(skCanLearn(id)?t("skt_nopts"):BASIC_UNLOCK[id]?basicNeed(id):t("bs_kept"))}return}
   skSel=id;if(n===L||n<1)delete skCur[id];else skCur[id]=n;AUD.sfx("click");renderWin()}
 function skPick(id){   // a tap on a tile selects it; a grey skill that can be learned also gets a Lv 1 draft
-  skSel=id;const L=skLearned(id);
+  skSel=id;winDet="skinfo";const L=skLearned(id);   // a left click opens Skill Info beside the tree
   if(!L&&!(skCur[id]>0)){if(skCanLearn(id)){if(skPendCost()<skAvail())skCur[id]=1;else{AUD.sfx("err");toast(t("skt_nopts"))}}else if(BASIC_UNLOCK[id])toast(basicNeed(id))}
   AUD.sfx("click");renderWin()}
 function skLearn(){
@@ -7136,29 +7138,10 @@ function skTile(id){
   const L=skLearned(id),v=skView(id),mx=skMaxT(id),pas=skIsPas(id),pend=v>L,on=L>0||pend,sel=skSel===id,a=skArchOf(id);
   const name=t(id===BASIC_T?"bs_title":"sk_"+id);
   const dnd=id===BASIC_T?"":` data-dnd="s:${id}:${REOC.SKLV[id]&&L?Math.min(v,L):0}"`;   // the drag carries the level picked with the arrows
-  const arw=(sel||pend)&&(mx>1||(!L&&skCanLearn(id)));
+  const arw=pend||(sel&&(mx>1||(!L&&skCanLearn(id))))||(!pas&&L>0&&mx>1);   // learned actives with levels always show the arrows (level for the hotkey bar)
   const low=`<span class="skc-arw${pas?" pas":""}"><button class="l" data-act="skstep" data-id="${id}" data-d="-1" aria-label="-"${skStepOk(id,v-1)?"":" disabled"}><i></i></button><b>${v}</b><button class="r" data-act="skstep" data-id="${id}" data-d="1" aria-label="+"${skStepOk(id,v+1)?"":" disabled"}><i></i></button></span>`;
   const pill=arw?low:L?`<span class="skc-lv${pas?" pas":""}">${L}</span>`:BASIC_UNLOCK[id]?`<span class="skc-lv req">${t("bs_short")} ${BASIC_UNLOCK[id]}</span>`:`<span class="skc-lv none"></span>`;
   return `<div class="skc${on?"":" off"}" style="--ac:${ARC_COL[a]};--ag:${SKG[a]}"><span class="skc-n" title="${name}">${name}</span><button class="sk-tile${pas?" pas":""}${on?"":" off"}${sel?" sel":""}" data-act="skpick" data-id="${id}"${dnd} aria-label="${name}">${skSvg(id)}${pend?`<em class="skc-plus">+${v-L}</em>`:""}</button>${pill}</div>`}
-function skDetail(tab){
-  const id=skSel&&skTreeIds(tab).includes(skSel)?skSel:null;
-  if(!id)return `<div class="skt-det empty"><small>${t("skt_pick")}</small></div>`;
-  const L=skLearned(id),v=skView(id),mx=skMaxT(id),pas=skIsPas(id),a=skArchOf(id),d=pd(),lv=Math.max(1,v);
-  let el="",desc,stat="",hint="";
-  if(id===BASIC_T){desc=t(S.arch==="beginner"?"bs_desc":"bs_kept");const r=BASIC_ROWS[lv-1];stat=`<b>Lv ${lv}:</b> ${t("bs_u_"+r)} · ${t("bs_d_"+r)}`}
-  else if(pas){desc=t("skd_"+id);const e=REOC.SKLV[id]?pasEffAt(id,lv):"";if(e)stat=`<b>Lv ${lv}:</b> ${e}`}
-  else{const k0=REOC.SK[id],k=REOC.SKLV[id]?REOC.skAt(id,lv):k0;desc=t("skd_"+id);
-    if(k0.elem)el=` <small style="display:inline;color:${k0.elem==="holy"?"#b8861e":ELC[k0.elem]}">${t("el_"+k0.elem)}</small>`;
-    const cast=k.cast?` · ${t("castLbl")} ${(k.cast*d.castMul).toFixed(1)}s`:"",rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"",
-      gd=k.gd?` · ${t("gdLbl")} ${k.gd}s`:"",fb=id==="fire_bolt"?` · ${t("fbLbl")} ${k.hits}`:k.over?` · ${t("lt_over")} +${k.over}% · ${t("durLbl")} ${k.dur}s`:"";
-    stat=`${REOC.SKLV[id]?`<b>Lv ${lv}:</b> `:""}SP ${Math.ceil(k.sp*d.spCost)} · ${t("cd")} ${k.cd}s${gd}${cast}${rg}${fb}`}
-  if(v>L)hint=fmt("skt_h_pend",{a:L,b:v,n:v-L});
-  else if(!L)hint=BASIC_UNLOCK[id]?basicNeed(id):skCanLearn(id)?t("skt_h_new"):"";
-  else if(id===BASIC_T)hint=S.arch==="beginner"&&L<mx?t("skt_h_new"):"";
-  else if(pas)hint=t("skt_h_pas");
-  else hint=fmt("skt_h_drag",{n:REOC.SKLV[id]?Math.min(v,L):L})+(mx>1?" "+t("skt_h_lv"):"");
-  return `<div class="skt-det" style="--ac:${ARC_COL[a]}"><div class="skt-dh"><b>${t(id===BASIC_T?"bs_title":"sk_"+id)}</b><span class="skt-chip${pas?" pas":""}">${t(pas?"skt_passive":"skt_active")}</span>${el}<span class="grow"></span><b class="lv">Lv ${L}/${mx}</b></div>
-   <p>${desc}</p>${stat?`<small>${stat}</small>`:""}${hint?`<small class="hint">${hint}</small>`:""}</div>`}
 const slotLv=sl=>sl&&sl.id&&REOC.SKLV[sl.id]?(sl.lv>0?Math.min(sl.lv,skLvOf(sl.id)):skLvOf(sl.id)):0;   // lv 0 on a slot = the highest level learned
 function lvFor(id){   // level Idle uses: the level set on the first hotbar slot that holds the skill, else the highest learned
   if(!REOC.SKLV[id])return 0;const sl=SLOTS.find(x=>x.id===id&&!x.item);return sl?slotLv(sl):skLvOf(id)}
@@ -7737,22 +7720,15 @@ const WIN={
     return `<div class="row arch-card" style="--qc:${SKC[A.actives[0]]}"><span class="dot" style="--c:${SKG[a]}">${skSvg(A.actives[0])}</span><div class="grow"><b>${t("ar_"+a)}</b> <small style="display:inline">${t("ty_"+A.type)}</small><small>${t("mech_"+a)}</small><small>${A.actives.map(id=>t("sk_"+id)).join(" · ")}</small></div>
     <button class="btn sm ${pickArm===a?"danger":"pri"}" data-act="pick" data-v="${a}">${t(pickArm===a?"pick_confirm":"pick_choose")}</button></div>`}).join("")}</div>
    <p class="muted" style="margin-top:8px">${t("pick_note")}</p>`},
- /* v20.9 Skills Tree: helpers next to skTile() */
+ /* v20.9 Skills Tree: helpers next to skTile(). Column 1 = Beginner skills, columns 2-5 = the archetype (skGrid) */
  skill:()=>{
-  skCurFix();const tab=skTabNow(),ids=skTreeIds(tab),lvd=REOC.SKLV,cost=skPendCost();
-  const cells=Array.from({length:Math.max(10,Math.ceil(ids.length/5)*5)},(_,i)=>ids[i]?skTile(ids[i]):`<div class="skc empty"><span class="skc-n"></span><span class="sk-tile"></span><span class="skc-lv none"></span></div>`).join("");
-  const tabs=`<div class="skt-tabs">${skTabs().map(a=>`<button class="${a===tab?"on":""}" style="--tc:${ARC_COL[a]}" data-act="sktab" data-v="${a}">${svg(ARCH_IC[a])}<span>${t("ar_"+a)}</span></button>`).join("")}</div>`;
-  const itIds=Object.keys(ITEMDB).filter(hotUsable);
-  const hot=!skHotOpen?"":`<div class="rows">${SLOTS.map((sl,i)=>{
-      const cur=sl.id?(sl.item?"i:":"s:")+sl.id:"";
-      const opts=`<option value="">${t("hotNone")}</option><optgroup label="${t("hotGrpSk")}">${actList().map(id=>`<option value="s:${id}"${cur==="s:"+id?" selected":""}>${t("sk_"+id)}</option>`).join("")}</optgroup><optgroup label="${t("hotGrpIt")}">${itIds.map(id=>`<option value="i:${id}"${cur==="i:"+id?" selected":""}>${itemName(id)}</option>`).join("")}</optgroup>`;
-      let lvSel="";if(sl.id&&!sl.item&&lvd[sl.id]){const learned=skLvOf(sl.id);lvSel=`<select class="sk-sel" data-hot="${i}" data-part="lv"><option value="0"${!sl.lv?" selected":""}>${t("hotMax")}</option>${Array.from({length:learned},(_,j)=>`<option value="${j+1}"${sl.lv===j+1?" selected":""}>Lv ${j+1}</option>`).join("")}</select>`}
-      return `<div class="row"><b>${(i+1)%10}</b><select class="sk-sel" data-hot="${i}" data-part="id">${opts}</select>${lvSel}</div>`}).join("")}</div><p class="muted">${t("hotNote")}</p>`;
-  return `<div class="skt" style="--ac:${ARC_COL[tab]}">${tabs}<p class="skt-mech">${t("mech_"+tab)}</p>
-   <div class="skt-well"><div class="skt-grid">${cells}</div></div>${skDetail(tab)}
-   <div class="skt-foot"><span class="skt-pts">${fmt("skt_pts",{a:skSpent(),b:skPool()})}<small>${fmt("skt_left",{n:skAvail()-cost})}</small></span><span class="grow"></span>
-    <button class="lt-btn blue" data-act="sklearn"${cost?"":" disabled"}>${t("skt_learn")}${cost?` (${cost})`:""}</button><button class="lt-btn" data-act="skreset"${cost?"":" disabled"}>${t("skt_reset")}</button></div>
-   <div class="skt-hot"><button class="lt-row skt-hotT${skHotOpen?" on":""}" data-act="skhot"><span class="lt-row-l">${svg("bars")}${t("hotCfg")}</span>${svg("chevD")}</button>${hot}</div></div>`},
+  skCurFix();const tab=skTabNow(),G=skGrid(tab),cost=skPendCost();
+  const cells=G.map(id=>id?skTile(id):`<div class="skc empty"><span class="skc-n"></span><span class="sk-tile"></span><span class="skc-lv none"></span></div>`).join("");
+  const tabs=`<div class="skt-tabs">${skTabs().map(a=>`<button class="${a===tab?"on":""}" style="--tc:${ARC_COL[a]}" data-act="sktab" data-v="${a}">${a==="beginner"?"":svg(ARCH_IC[a])}<span>${t("ar_"+a)}</span></button>`).join("")}</div>`;
+  return `<div class="skt" style="--ac:${ARC_COL[tab]}">${tabs}
+   <div class="skt-well"><div class="skt-grid">${cells}</div></div>
+   <div class="skt-foot"><span class="skt-pts">${fmt("skt_pts",{a:skSpent(),b:skPool()})}</span>${cost?`<small class="skt-cost">${fmt("skt_cost",{n:cost})}</small>`:""}<span class="grow"></span>
+    <button class="lt-btn blue" data-act="sklearn"${cost?"":" disabled"}>${t("skt_learn")}</button><button class="lt-btn grey" data-act="skreset"${cost?"":" disabled"}>${t("skt_reset")}</button></div></div>`},
  quest:()=>{
     const ids=Object.keys(QD),act=ids.filter(id=>S.q[id]&&S.q[id].s==="active"),av=ids.filter(id=>!QD[id].giver&&(!S.q[id]||S.q[id].s==="avail"));
     const done=ids.reduce((a,id)=>a+((S.q[id]&&S.q[id].n)||0),0);
@@ -7800,7 +7776,7 @@ const WSLOT=[{k:"A",el:"win",b:"winB",t:"winT",n:"winNav",h:"winH",x:"winX"},{k:
 let winSide=null,winDet=null,_wkey={A:"",B:"",C:""},_wsig={},ptrDown=false,_wwT=0;
 let mapSel=null,mapTab="info",shopTab="sc",setTab="gfx",socTab="friends",frArm=null;
 const slotWin=k=>k==="A"?winId:k==="B"?winSide:winDet;
-const WTITLES={skill:"w_skill",itemdet:"w_itemdet",idlesum:"w_idlesum",idleset:"w_idleset",worldmap:"w_worldmap",mapinfo:"w_mapinfo"};
+const WTITLES={skill:"w_skill",skinfo:"w_skinfo",itemdet:"w_itemdet",idlesum:"w_idlesum",idleset:"w_idleset",worldmap:"w_worldmap",mapinfo:"w_mapinfo"};
 const winTitle=id=>t(WTITLES[id]||"m_"+id);
 function openWin(k,o){
   AUD.sfx("open");
@@ -7812,7 +7788,7 @@ function openWin(k,o){
 }
 function closeWin(){if(winId==="idlerew"&&S.pending){settleIdle(false);return}if(winId)AUD.sfx("close");winId=winSide=winDet=null;eqSel=null;invSel=null;mapSel=null;renderWin()}
 function closeSlot(k){
-  if(k==="C"){winDet=null;eqSel=null;invSel=null}
+  if(k==="C"){winDet=null;eqSel=null;invSel=null;skSel=null}
   else if(k==="B"){if(winSide==="mapinfo")mapSel=null;winSide=null}
   else{if(winId==="idlerew"&&S.pending){settleIdle(false);return}if(winSide){winId=winSide;winSide=null}else{winId=null;winDet=null}}
   renderWin();
@@ -7826,20 +7802,21 @@ function winSig(id){
     case "status":pd();return [S.lv,Math.floor(S.exp),S.jlv,Math.floor(S.jexp),S.kills,S.deaths,_pdKey,statFree(),S.autoStat?1:0,S.arch].join("|");
     case "inv":return invSig();
     case "storage":return invSig()+"|"+stoTab+"|"+stoPage.bag+"|"+stoPage.store+"|"+JSON.stringify(S.store)+"|"+lang;
-    case "skill":return S.arch+"|"+S.lv+"|"+S.jlv+"|"+basicLv()+"|"+JSON.stringify(S.skLv)+"|"+JSON.stringify(S.hot)+"|"+lang+"|"+skTabNow()+"|"+skSel+"|"+JSON.stringify(skCur)+"|"+skHotOpen;
+    case "skill":return S.arch+"|"+S.lv+"|"+S.jlv+"|"+basicLv()+"|"+JSON.stringify(S.skLv)+"|"+JSON.stringify(S.hot)+"|"+lang+"|"+skTabNow()+"|"+skSel+"|"+JSON.stringify(skCur);
     case "quest":return JSON.stringify(S.q)+"|"+S.pins.join();
     case "social":return socTab+"|"+(S.friends||[]).join()+"|"+frArm+"|"+ptArm+"|"+ptRen+"|"+S.lv+"|"+JSON.stringify(S.party)+"|"+JSON.stringify(S.guild);
     case "shop":return [S.sc,S.y,S.la,shopTab,S.invPacks,SHOP.map(([k])=>S.inv[k]).join()].join("|");
     case "set":return [S.sound,S.music,S.vip,S.autoIdle,S.gfx,lang,layoutMode,zIdx,S.gm,setTab,Math.floor(lastSave/30000)].join("|");
+    case "skinfo":return skSel+"|"+(skSel?skLearned(skSel):0)+"|"+S.arch+"|"+lang+"|"+_pdKey;
     case "itemdet":{const e=detEntry();return e?[e.id,e.ref,e.qty,S.inv.refine_ore,JSON.stringify(e.roll)].join("|"):"x"}
     case "worldmap":case "mapinfo":return [S.sc,cur.id,Object.keys(S.visited).join(),mapSel,mapTab,player.dead?1:0,S.log&&0].join("|");
     default:return "";
   }}catch(e){return ""}
 }
-const LIGHT_W={has:()=>true},W_IC={char:"person",status:"pillars",inv:"backpack",itemdet:"note",storage:"vault",skill:"sparkle"};   // v19.6: every window uses the new frame
+const LIGHT_W={has:()=>true},W_IC={char:"person",status:"pillars",inv:"backpack",itemdet:"note",storage:"vault",skill:"sparkle",skinfo:"note"};   // v19.6: every window uses the new frame
 function drawSlot(sl,id,portrait){
   const el=$("#"+sl.el),B=$("#"+sl.b);el.classList.remove("hidden");el.dataset.w=id;
-  const key=id+"|"+(id==="char"?charView:id==="itemdet"?(eqSel||invSel||""):id==="mapinfo"?mapSel+"|"+mapTab:""),top=B.scrollTop;
+  const key=id+"|"+(id==="char"?charView:id==="itemdet"?(eqSel||invSel||""):id==="skinfo"?skSel:id==="mapinfo"?mapSel+"|"+mapTab:""),top=B.scrollTop;
   const lt=LIGHT_W.has(id);el.classList.toggle("lt",lt);   // v19.2: light windows with an icon in the title
   $("#"+sl.t).innerHTML=(lt&&W_IC[id]?`<i class="wt-ic">${svg(W_IC[id])}</i>`:"")+esc(winTitle(id));
   B.innerHTML=WIN[id]();B.scrollTop=_wkey[sl.k]===key?top:0;_wkey[sl.k]=key;   // a new page starts at the top, the same page keeps its place
@@ -7848,7 +7825,7 @@ function drawSlot(sl,id,portrait){
 }
 function renderWin(){
   const wins=$("#wins");
-  if(winDet&&!detEntry())winDet=null;
+  if(winDet&&!detOk())winDet=null;
   if(!winId){winSide=winDet=null;wins.classList.add("hidden");for(const sl of WSLOT)$("#"+sl.el).classList.add("hidden");return}
   wins.classList.remove("hidden");const portrait=stage.classList.contains("P");
   wins.classList.toggle("three",!!(winSide&&winDet));wins.classList.toggle("pair",!!winSide);
@@ -7859,7 +7836,7 @@ function renderWin(){
    (they stay where they were, and a double-click lands on the same item). Right side first, then left, else over the right edge. */
 function placeDet(){
   const wins=$("#wins");let det=null;const others=[];
-  for(const sl of WSLOT){const el=$("#"+sl.el);if(el.classList.contains("hidden"))continue;if(el.dataset.w==="itemdet")det=el;else others.push(el)}
+  for(const sl of WSLOT){const el=$("#"+sl.el);if(el.classList.contains("hidden"))continue;if(el.dataset.w==="itemdet"||el.dataset.w==="skinfo")det=el;else others.push(el)}
   for(const sl of WSLOT){const el=$("#"+sl.el);if(el!==det&&el.dataset.placed){el.dataset.placed="";el.style.cssText=""}}
   if(!det)return;
   if(stage.classList.contains("P")||!others.length){if(det.dataset.placed){det.dataset.placed="";det.style.cssText=""}return}
@@ -7875,7 +7852,7 @@ function watchWins(dt){
   _wwT+=dt;if(_wwT<.25)return;_wwT=0;
   if(!winId||ptrDown)return;
   const ae=document.activeElement;if(ae&&ae.closest&&ae.closest("#wins")&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))return;   // never redraw under a text field
-  if(winDet&&!detEntry()){winDet=null;renderWin();return}
+  if(winDet&&!detOk()){winDet=null;renderWin();return}
   const portrait=stage.classList.contains("P");
   for(const sl of WSLOT){const id=slotWin(sl.k);if(id&&_wsig[sl.k]!==winSig(id))drawSlot(sl,id,portrait)}
 }
@@ -8025,6 +8002,28 @@ WIN.status=statusBody;
 WIN.inv=invWin;
 WIN.storage=storageWin;
 WIN.itemdet=()=>{const e=detEntry();return e?`<div class="det">${invDetail(e)}</div>`:`<p class="muted">${t("inv_pick")}</p>`};
+/* v20.9 Skill Info: opened by a left click on a Skills Tree tile; sits where Item Info sits (UI-UX.md §26) */
+function siLevel(id,n){   // what one level gives
+  if(id===BASIC_T){const r=BASIC_ROWS[n-1];return `${t("bs_u_"+r)} · ${t("bs_d_"+r)}`}
+  if(!REOC.SK[id])return REOC.SKLV[id]?pasEffAt(id,n):"";
+  const k=REOC.SKLV[id]?REOC.skAt(id,n):REOC.SK[id],d=pd(),sp=Math.ceil(k.sp*d.spCost);
+  if(id==="fire_bolt")return fmt("si_fb",{a:k.hits,b:k.hits*100,c:sp});
+  if(id==="overload_energy")return fmt("si_oe",{a:k.over,b:k.dur,c:sp});
+  const rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"";
+  return `SP ${sp}${rg}`}
+WIN.skinfo=()=>{
+  const id=skSel;if(!id)return "";
+  const L=skLearned(id),mx=skMaxT(id),pas=skIsPas(id),a=skArchOf(id),k0=REOC.SK[id],sec=t("lt_sec");
+  const name=t(id===BASIC_T?"bs_title":"sk_"+id),desc=t(id===BASIC_T?(S.arch==="beginner"?"bs_desc":"bs_kept"):"skd_"+id);
+  const chips=[t("ar_"+a)];
+  if(pas)chips.push(t("skt_passive"));else{chips.push(t(k0.at==="self"||!(k0.range||k0.ranged)?"si_self":"si_target"));chips.push(t("si_k_"+k0.kind)+(k0.elem?" · "+t("el_"+k0.elem):""))}
+  const lvls=pas&&mx<2&&id!==BASIC_T?[]:Array.from({length:mx},(_,i)=>i+1);
+  const lvHtml=lvls.map(n=>`<div class="si-lv${n===L?" on":""}${n>L?" dim":""}"><span class="si-tag">${fmt("si_lv",{n})}</span><p>${siLevel(id,n)}</p></div>`).join("");
+  const tb=pas?"":`<span class="si-tag">${t("si_det")}</span><table class="si-tb"><thead><tr><th></th><th>VCT</th><th>FCT</th><th>CD</th><th>${t("si_delay")}</th></tr></thead><tbody>${lvls.map(n=>{const k=REOC.SKLV[id]?REOC.skAt(id,n):k0;
+    return `<tr${n===L?' class="on"':""}><td>Lv.${n}</td><td>${k.cast?k.cast+" "+sec:"–"}</td><td>–</td><td>${k.cd?k.cd+" "+sec:"–"}</td><td>${k.gd?k.gd+" "+sec:"–"}</td></tr>`}).join("")}</tbody></table>`;
+  return `<div class="si" style="--ac:${ARC_COL[a]};--ag:${SKG[a]}">
+   <div class="si-top"><span class="sk-tile big${pas?" pas":""}${L?"":" off"}">${skSvg(id)}</span><div class="si-head"><b>${name} Lv.${L}/${mx}</b><div class="si-chips">${chips.map((c,i)=>`<span class="skt-chip${i?" pas":""}">${c}</span>`).join("")}</div></div></div>
+   <p class="si-desc">${desc}</p>${lvHtml?`<div class="si-lvs">${lvHtml}</div>`:""}${tb}</div>`};
 
 /* ---------- Idle: summary (when stopped) and settings (mock-up) ---------- */
 WIN.idlesum=()=>{
@@ -8097,13 +8096,7 @@ WIN.set=()=>{
   return tabs+`<div class="set-body">${body}</div>`;
 };
 
-document.addEventListener("change",e=>{   // hotbar setup (Skills window): pick the skill and the level of each slot
-  const sel=e.target&&e.target.closest?e.target.closest("select[data-hot]"):null;if(!sel)return;
-  const i=+sel.dataset.hot;
-  if(sel.dataset.part==="id"){const v=sel.value;S.hot[i]=!v?null:v[0]==="i"?{item:v.slice(2)}:{id:v.slice(2),lv:0}}
-  else if(S.hot[i]&&S.hot[i].id)S.hot[i].lv=+sel.value|0;
-  buildSlots();renderWin();save();
-});
+
 function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[data-act]");
   /* v19.4 double-click: the second click of a double-click may land on whatever slid under the pointer (an empty cell, another window) when a window opened or moved */
   if(_dblK&&!invMulti&&(!b||(b.dataset.act!=="invsel"&&b.dataset.act!=="infdbl"))&&performance.now()-_dblT<380&&_dblXY&&Math.hypot(e.clientX-_dblXY[0],e.clientY-_dblXY[1])<8){const k=_dblK;_dblT=0;if(k[0]!=="e"){invSel=k;eqSel=null;winDet="itemdet";invDouble(k)}return}if(!b)return;const a=b.dataset.act;
@@ -8167,12 +8160,11 @@ function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[d
   else if(a==="style")toast(t("style_soon"))
   else if(a==="trial")trialGo()
   else if(a==="pick"){const v=b.dataset.v;if(pickArm!==v){pickArm=v;renderWin();return}pickArm=null;chooseArchetype(v)}
-  else if(a==="sktab"){skTab=b.dataset.v;renderWin()}
+  else if(a==="sktab"){skTab=b.dataset.v;skSel=null;if(winDet==="skinfo")winDet=null;renderWin()}
   else if(a==="skpick")skPick(b.dataset.id)
   else if(a==="skstep")skStep(b.dataset.id,+b.dataset.d)
   else if(a==="sklearn")skLearn()
   else if(a==="skreset")skReset()
-  else if(a==="skhot"){skHotOpen=!skHotOpen;renderWin()}
   else if(a==="stotab"){stoTab=b.dataset.v;renderWin()}
   else if(a==="stopage"){stoPage[stoTab]=Math.max(0,(stoPage[stoTab]|0)+ +b.dataset.d);renderWin()}
   else if(a==="stomv")stoMove(b.dataset.k)
