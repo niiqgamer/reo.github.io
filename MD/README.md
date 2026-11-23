@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.8 (this update)
+## Changes in v20.9 (this update)
+- **Casting split into VCT and FCT (iRO Renewal).** Every skill can state four timing values: Variable Cast (`vct`), Fixed Cast (`fct`), Cooldown (`cd`) and Global Delay (`gd`); a missing value is 0. Real cast = `VCT × (1 − √((DEX×2+INT)/530)) × gear + FCT × gear` (replaces `× (1 − DEX/150)`). FCT, Cooldown and Global Delay are lowered by gear only (`ab.fct`, `ab.cdr`, `ab.gd`; only *Cooldown* exists so far). Every spell's old cast time is now its VCT, FCT 0 for now. The cooldown now starts when the cast ends, as `SKILL-SPEC.md` says (it used to start with the cast). The Skills window shows `Cast x s (VCT a + FCT b)`; the Status window shows the FCT and Global Delay reductions. Wiki Fire Bolt row brought up to date. See `COMBAT-FORMULAS.md` §2b, `SKILL-SPEC.md` §1, `UI-UX.md`.
+
+## Changes in v20.8
 - **Japanese (日本語) added as a third language.** The language switch now reads ไทย · EN · 日本語 in Settings (Other tab) and on the login page. The browser picks Japanese when its language starts with `ja`. Every key of the dictionary has a `jp` text (`D.jp`, 984 keys) and the login page has `I.jp`. Bilingual data (items, gear, abilities, set names, rarity, chat seed lines) gets its Japanese from the `JPX` table, keyed by the English text, read with `LP` / `LO` / `PT`. Numbers and times use `LOCALE[lang]` (`ja-JP`). Japanese text uses Noto Sans JP. The wiki (`wiki.html`) is Thai-only and is unchanged. See `UI-UX.md` §4, `REO-INSTRUCTIONS.md` (Languages, Localization).
 
 ## Changes in v20.7
