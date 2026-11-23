@@ -7144,8 +7144,10 @@ function skTile(id){
   const L=skLearned(id),v=skView(id),mx=skMaxT(id),pas=skIsPas(id),pend=v>L,on=L>0||pend,sel=skSel===id,a=skArchOf(id);
   const name=t(id===BASIC_T?"bs_title":"sk_"+id);
   const dnd=id===BASIC_T?"":` data-dnd="s:${id}:${REOC.SKLV[id]&&L?Math.min(v,L):0}"`;   // the drag carries the level picked with the arrows
-  const arw=pend||(sel&&(mx>1||(!L&&skCanLearn(id))))||(!pas&&L>0&&mx>1);   // learned actives with levels always show the arrows (level for the hotkey bar)
-  const low=`<span class="skc-arw${pas?" pas":""}"><button class="l" data-act="skstep" data-id="${id}" data-d="-1" aria-label="-"${skStepOk(id,v-1)?"":" disabled"}><i></i></button><b>${v}</b><button class="r" data-act="skstep" data-id="${id}" data-d="1" aria-label="+"${skStepOk(id,v+1)?"":" disabled"}><i></i></button></span>`;
+  /* the arrows stay on (not only while selected, which a phone loses when Skill Info closes): a learned skill that can still be raised
+     (Basic Skill as a Beginner, a passive below max) and a learned active with levels (level for the hotkey bar) */
+  const arw=pend||(sel&&(mx>1||(!L&&skCanLearn(id))))||(L>0&&mx>1&&(!pas||(skCanLearn(id)&&L<mx)));
+  const low=`<span class="skc-arw${pas?" pas":""}"><button class="l" data-act="skstep" data-id="${id}" data-d="-1" aria-label="-"${skStepOk(id,v-1)?"":" disabled"}><i></i></button><b>${v}</b><button class="r" data-act="skstep" data-id="${id}" data-d="1" aria-label="+"${v<mx&&(v<L||skCanLearn(id))?"":" disabled"}><i></i></button></span>`;
   const pill=arw?low:L?`<span class="skc-lv${pas?" pas":""}">${L}</span>`:BASIC_UNLOCK[id]?`<span class="skc-lv req">${t("bs_short")} ${BASIC_UNLOCK[id]}</span>`:`<span class="skc-lv none"></span>`;
   return `<div class="skc${on?"":" off"}" style="--ac:${ARC_COL[a]};--ag:${SKG[a]}"><span class="skc-n" title="${name}">${name}</span><button class="sk-tile${pas?" pas":""}${on?"":" off"}${sel?" sel":""}" data-act="skpick" data-id="${id}"${dnd} aria-label="${name}">${skSvg(id)}${pend?`<em class="skc-plus">+${v-L}</em>`:""}</button>${pill}</div>`}
 const slotLv=sl=>sl&&sl.id&&REOC.SKLV[sl.id]?(sl.lv>0?Math.min(sl.lv,skLvOf(sl.id)):skLvOf(sl.id)):0;   // lv 0 on a slot = the highest level learned
