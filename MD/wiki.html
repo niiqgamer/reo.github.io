@@ -288,7 +288,7 @@ footer.ft{margin-top:44px;color:var(--muted);font-size:13px;text-align:center}
     <a class="logo" href="#home"><span class="gem"></span><span><b>REO Wiki</b><small>Rare Earth Online</small></span></a>
     <nav class="nav" id="nav"></nav>
     <div class="side-foot">
-      ข้อมูลตามเวอร์ชันเกมล่าสุด (v19.0) · รายการที่ยังไม่นิ่งแสดงเป็น <span class="soon">Coming Soon</span>
+      ข้อมูลตามเวอร์ชันเกมล่าสุด (v20.7) · รายการที่ยังไม่นิ่งแสดงเป็น <span class="soon">Coming Soon</span>
       <button id="themeBtn" type="button">สลับโหมดสว่าง / มืด</button>
     </div>
   </aside>
@@ -335,63 +335,63 @@ const MAPS=[
  {id:"town",n:"Gadolinium",th:"แกโดลิเนียม",sub:"Town of Beginnings",subTh:"เมืองแห่งการเริ่มต้น",cp:null,lv:"—",
   desc:"เมืองเริ่มต้นของผู้เล่นทุกคน ผังเมือง 98 × 98 ช่อง มีจัตุรัสกลางเมืองที่ลอยด้วยคริสตัล Gadolinium และอาคารสไตล์ครึ่งไม้ครึ่งปูน ตัวละครใหม่เกิดที่กลางจัตุรัสพอดี",
   look:"ถนนหินปูทางข้ามเมือง มีโคมไฟ แผงขายของ บ่อน้ำ และแนวป่าสีม่วงล้อมขอบเมือง ประตูทางตะวันออกคือทางออกไป Field 01 ส่วนประตูทางตะวันตกและทางใต้มีป้ายเตือน \"Monster Lv.25+\" และ \"Monster Lv.30+\" นำไปสู่แมพอันตราย",
-  portals:[["ประตูตะวันออก (46, 24)","Field 01"],["ประตูตะวันตก (2, 24) · ต้อง Lv 25+ และ CP 2,000+","Path to the Geosyncline"],["ประตูใต้ (24, 46) · ต้อง Lv 30+ และ CP 3,000+","Road to the Ruins"]],monsters:[]},
+  portals:[["ประตูตะวันออก (95, 49)","Field 01"],["ประตูตะวันตก (2, 49) · ต้อง Lv 25+ และ CP 2,000+","Path to the Geosyncline"],["ประตูใต้ (49, 95) · ต้อง Lv 30+ และ CP 3,000+","Road to the Ruins"]],monsters:[]},
  {id:"field1",n:"Field 01",th:"ทุ่งแกโดลิเนียม 01",sub:"Outskirts of Gadolinium",subTh:"ชานเมืองแกโดลิเนียม",cp:150,lv:"Lv 1–6",
   desc:"สนามล่าแห่งแรก เป็นทุ่งหญ้าสีเขียวอมฟ้า มีดอกไม้เรืองแสง เห็ดยักษ์ และบ่อน้ำสองแห่ง ผู้เล่นเข้าได้จากประตูทางตะวันออกของเมือง",
-  look:"รอบพอร์ทัลทางตะวันตกเป็นเขตปลอดภัย ไม่มีมอนสเตอร์เกิดภายในรัศมี 7 ช่อง",
-  portals:[["พอร์ทัลตะวันตก (2, 24)","Gadolinium"],["พอร์ทัลมุมขวาบน (30, 2)","Field 02"]],monsters:["lumite","crawlix","oculoth"]},
+  look:"รอบพอร์ทัลทางตะวันตกเป็นเขตปลอดภัย ไม่มีมอนสเตอร์เกิดภายในรัศมี 8 ช่องจากพอร์ทัล",
+  portals:[["พอร์ทัลตะวันตก (2, 49)","Gadolinium"],["พอร์ทัลด้านบน (61, 2)","Field 02"]],monsters:["lumite","crawlix","oculoth"]},
  {id:"field2",n:"Field 02",th:"ทุ่งแกโดลิเนียม 02",sub:"Amber Dusk Meadows",subTh:"ทุ่งอำพันยามสนธยา",cp:450,lv:"Lv 7–11",
   desc:"ทุ่งยามสนธยาที่เต็มไปด้วยหญ้าสีม่วง เห็ดและคริสตัลสีอำพันกับชมพู บ่อน้ำน้ำหวานสีอำพัน และต้นไม้โทนม่วง-ส้ม",
   look:"มอนสเตอร์สามชนิดอยู่คนละโซน: Nebulite ทางใต้ Shardback ตรงกลาง และ Cryoculus ทางเหนือ",
-  portals:[["พอร์ทัลล่างซ้าย (≈19, 46)","Field 01"],["พอร์ทัลด้านบน (19, 2)","Field 03"]],monsters:["nebulite","shardback","cryoculus"]},
+  portals:[["พอร์ทัลด้านล่าง (39, 95)","Field 01"],["พอร์ทัลด้านบน (39, 2)","Field 03"]],monsters:["nebulite","shardback","cryoculus"]},
  {id:"field3",n:"Field 03",th:"ทุ่งแกโดลิเนียม 03",sub:"Silverfrost Basin",subTh:"แอ่งน้ำแข็งเงิน",cp:900,lv:"Lv 13–17 · บอส Lv 20",
-  desc:"แอ่งน้ำแข็งสีฟ้าเงิน มีบ่อน้ำแข็ง ต้นไม้เคลือบน้ำค้างแข็ง และคริสตัลซีด ด้านบนสุดคือลานบอสวงหินกว้าง 5.6 ช่อง พร้อมวงรูนเรืองแสง",
+  desc:"แอ่งน้ำแข็งสีฟ้าเงิน มีบ่อน้ำแข็ง ต้นไม้เคลือบน้ำค้างแข็ง และคริสตัลซีด ด้านบนสุดคือลานบอสวงหินรัศมี 11.2 ช่อง พร้อมวงรูนเรืองแสง",
   look:"ไม่มีมอนสเตอร์ทั่วไปเกิดในลานบอส บอส Gadolith ไม่ถูก Idle เลือกเป็นเป้าหมายอัตโนมัติ ต้องสู้ด้วยตัวเอง",
-  portals:[["พอร์ทัลล่าง (26, 46)","Field 02"]],monsters:["glacilite","rimeback","magnoculus"],boss:"gadolith"},
+  portals:[["พอร์ทัลล่าง (53, 95)","Field 02"]],monsters:["glacilite","rimeback","magnoculus"],boss:"gadolith"},
  {id:"geo",n:"Path to the Geosyncline",th:"เส้นทางสู่รอยเลื่อนบรรพกาล",sub:"Ancient Fault Line",subTh:"รอยเลื่อนบรรพกาล",cp:2000,lv:"Lv 25–30 · เข้าได้เมื่อ Lv 25+ และ CP 2,000+",
   desc:"เส้นทางแห่งรอยเลื่อนบรรพกาล พื้นพิภพปริแตกคุกรุ่นด้วยมหาภัยธรณี ขณะที่สายน้ำลึกลับหลั่งไหลอาบซากอารยธรรมที่สูญหาย ที่นี่คือเขตแดนอันเดือดพล่าน ซึ่งแรงกดดันมหาศาลใต้เปลือกโลกพร้อมบดขยี้ทุกสรรพสิ่งให้จมดิ่งสู่ก้นเหวแห่งกาลเวลา",
   look:"รอยแยกเรืองแสงเป็นกำแพงกั้นทาง (เดินข้ามได้เฉพาะที่ถนนตัดผ่าน) สระน้ำลึกลับ แท่งศิลาโบราณสลักอักขระ มอนสเตอร์ธาตุหินและน้ำโจมตีก่อนเมื่อเข้าใกล้ และมีสกิลวงแดงเตือนก่อนตกกระทบ ไม่มีบอส",
-  portals:[["พอร์ทัลตะวันออก (46, 22)","Gadolinium"]],monsters:["faultcrawler","tidewraith","stratagolem"]},
+  portals:[["พอร์ทัลตะวันออก (95, 45)","Gadolinium"]],monsters:["faultcrawler","tidewraith","stratagolem"]},
  {id:"ruins",n:"Road to the Ruins",th:"ถนนสู่ซากปรักหักพัง",sub:"Road of Cinders",subTh:"ถนนสายเพลิงผลาญ",cp:3000,lv:"Lv 32–38 · เข้าได้เมื่อ Lv 30+ และ CP 3,000+",
   desc:"ถนนสายเพลิงผลาญมุ่งสู่ซากปรักหักพังอันไร้ซึ่งความปรานี ทุกย่างก้าวแผดเผาด้วยเปลวเพลิงทมิฬจากขุมนรก แผ่นดินนี้ถูกหล่อหลอมด้วยอัคคีเดือดระอุ พร้อมมอดไหม้ผู้บุกรุกให้กลายเป็นเถ้าธุลีไปตลอดกาล",
   look:"พื้นดำไหม้เกรียม บ่อลาวา เสาหักพังและกระถางไฟเรียงริมถนน มอนสเตอร์ธาตุไฟโจมตีก่อน สกิลบางอย่างทำให้ติดสถานะไฟลวก ไม่มีบอส",
-  portals:[["พอร์ทัลเหนือ (28, 2)","Gadolinium"]],monsters:["cinderling","magmaback","ashsentinel"]}
+  portals:[["พอร์ทัลเหนือ (57, 2)","Gadolinium"]],monsters:["cinderling","magmaback","ashsentinel"]}
 ];
 const mapById=id=>MAPS.find(m=>m.id===id);
 
 /* name EN, TH, map, lv, hp, atk, hardDEF%, MDEF%, aspd, exp[b,j], sc[lo,hi], element, count, drops, note */
 const MONS=[
- {id:"lumite",n:"Lumite",th:"ลูไมต์",map:"field1",lv:1,hp:60,atk:10,hd:2,md:5,as:1.6,exp:[20,14],sc:[3,7],el:"Water",cnt:9,main:["mat_gel",45],drops:["mat_spore","red_s"],
+ {id:"lumite",n:"Lumite",th:"ลูไมต์",map:"field1",lv:1,hp:60,atk:10,hd:2,md:5,as:1.6,exp:[20,14],sc:[3,7],el:"Water",cnt:27,main:["mat_gel",45],drops:["mat_spore","red_s"],
   note:"เจลลี่ลอยได้สามตา เป็นมอนสเตอร์ตัวแรกที่ผู้เล่นจะได้เจอ นุ่มและอ่อนที่สุดในเกม"},
- {id:"crawlix",n:"Crawlix",th:"ครอลลิกซ์",map:"field1",lv:3,hp:125,atk:17,hd:10,md:0,as:1.5,exp:[42,30],sc:[6,12],el:"Earth",cnt:7,main:["mat_shell",35],drops:["mat_claw","herb_glow"],
+ {id:"crawlix",n:"Crawlix",th:"ครอลลิกซ์",map:"field1",lv:3,hp:125,atk:17,hd:10,md:0,as:1.5,exp:[42,30],sc:[6,12],el:"Earth",cnt:21,main:["mat_shell",35],drops:["mat_claw","herb_glow"],
   note:"สัตว์เลื้อยคลานที่มีคริสตัลบนหลัง เคลื่อนที่ไวกว่า Lumite และมีเกราะหนากว่า"},
- {id:"oculoth",n:"Oculoth",th:"โอคูลอธ",map:"field1",lv:6,hp:250,atk:32,hd:5,md:20,as:1.8,exp:[90,60],sc:[12,22],el:"Fire",cnt:5,main:["mat_lens",30],drops:["mat_iris","red_l"],
+ {id:"oculoth",n:"Oculoth",th:"โอคูลอธ",map:"field1",lv:6,hp:250,atk:32,hd:5,md:20,as:1.8,exp:[90,60],sc:[12,22],el:"Fire",cnt:15,main:["mat_lens",30],drops:["mat_iris","red_l"],
   note:"ดวงตาหินลอยได้ แกร่งที่สุดใน Field 01 มีม่านตาสีส้มเรืองแสง"},
- {id:"nebulite",n:"Nebulite",th:"เนบิไลต์",map:"field2",lv:7,hp:170,atk:26,hd:5,md:15,as:1.5,exp:[64,42],sc:[10,18],el:"Wind",cnt:9,main:["mat_gel2",40],drops:["mat_stardust","herb_glow"],
+ {id:"nebulite",n:"Nebulite",th:"เนบิไลต์",map:"field2",lv:7,hp:170,atk:26,hd:5,md:15,as:1.5,exp:[64,42],sc:[10,18],el:"Wind",cnt:27,main:["mat_gel2",40],drops:["mat_stardust","herb_glow"],
   note:"ญาติสีฟ้าของ Lumite ที่อยู่ในทุ่งยามสนธยา หลบหลีกได้ดีกว่าเดิม (FLEE 30)"},
- {id:"shardback",n:"Shardback",th:"ชาร์ดแบ็ค",map:"field2",lv:9,hp:280,atk:34,hd:25,md:5,as:1.5,exp:[100,68],sc:[15,26],el:"Earth",cnt:7,main:["mat_amber",35],drops:["mat_shardcore","herb_ember"],
+ {id:"shardback",n:"Shardback",th:"ชาร์ดแบ็ค",map:"field2",lv:9,hp:280,atk:34,hd:25,md:5,as:1.5,exp:[100,68],sc:[15,26],el:"Earth",cnt:21,main:["mat_amber",35],drops:["mat_shardcore","herb_ember"],
   note:"ตัวสีม่วงที่คริสตัลสีอำพันบนหลัง เกราะแข็งมาก (Hard DEF 25%) เวทไฟได้ผลดี"},
- {id:"cryoculus",n:"Cryoculus",th:"ไครโอคูลัส",map:"field2",lv:11,hp:450,atk:46,hd:10,md:30,as:1.7,exp:[170,110],sc:[25,40],el:"Water",cnt:5,main:["mat_frost",30],drops:["mat_frozeniris","blue_l"],
+ {id:"cryoculus",n:"Cryoculus",th:"ไครโอคูลัส",map:"field2",lv:11,hp:450,atk:46,hd:10,md:30,as:1.7,exp:[170,110],sc:[25,40],el:"Water",cnt:15,main:["mat_frost",30],drops:["mat_frozeniris","blue_l"],
   note:"ดวงตาหินน้ำแข็ง HP สูงและต้านเวทมาก (MDEF 30%) ควรใช้ดาเมจกายภาพ"},
- {id:"glacilite",n:"Glacilite",th:"กลาซิไลต์",map:"field3",lv:13,hp:540,atk:44,hd:8,md:20,as:1.5,exp:[230,150],sc:[38,60],el:"Water",cnt:9,main:["mat_gel3",40],drops:["mat_sparkfrost","herb_frost"],
+ {id:"glacilite",n:"Glacilite",th:"กลาซิไลต์",map:"field3",lv:13,hp:540,atk:44,hd:8,md:20,as:1.5,exp:[230,150],sc:[38,60],el:"Water",cnt:27,main:["mat_gel3",40],drops:["mat_sparkfrost","herb_frost"],
   note:"เจลลี่น้ำแข็งที่ร่างกายเย็นจัด อยู่ทางตะวันตกเฉียงใต้ของแอ่ง"},
- {id:"rimeback",n:"Rimeback",th:"ไรม์แบ็ค",map:"field3",lv:15,hp:760,atk:54,hd:28,md:8,as:1.5,exp:[330,215],sc:[52,82],el:"Earth",cnt:7,main:["mat_rime",35],drops:["mat_rimebone","herb_sage"],
+ {id:"rimeback",n:"Rimeback",th:"ไรม์แบ็ค",map:"field3",lv:15,hp:760,atk:54,hd:28,md:8,as:1.5,exp:[330,215],sc:[52,82],el:"Earth",cnt:21,main:["mat_rime",35],drops:["mat_rimebone","herb_sage"],
   note:"สัตว์คริสตัลหลังน้ำแข็ง เกราะแข็งที่สุดในสนาม (Hard DEF 28%)"},
- {id:"magnoculus",n:"Magnoculus",th:"แมกโนคูลัส",map:"field3",lv:17,hp:1000,atk:66,hd:12,md:32,as:1.7,exp:[470,300],sc:[80,120],el:"Wind",cnt:5,main:["mat_mag",30],drops:["mat_magcoil","red_l"],
+ {id:"magnoculus",n:"Magnoculus",th:"แมกโนคูลัส",map:"field3",lv:17,hp:1000,atk:66,hd:12,md:32,as:1.7,exp:[470,300],sc:[80,120],el:"Wind",cnt:15,main:["mat_mag",30],drops:["mat_magcoil","red_l"],
   note:"ดวงตาหินแม่เหล็ก HP สูงสุดในสนามทั่วไป ต้านเวทสูง (MDEF 32%)"},
  {id:"gadolith",n:"Gadolith",th:"กาโดลิธ ผู้พิทักษ์คริสตัล",map:"field3",lv:20,hp:8000,atk:58,hd:25,md:20,as:2.6,exp:[2600,1700],sc:[1000,1600],el:"Earth",cnt:0,boss:true,main:["mat_gheart",100],drops:["mat_core","mat_ore","refine_ore"],
   note:"คริสตัลยักษ์ลอยได้ มีแกนตาเรืองแสงตรงกลาง ใหญ่กว่ามอนสเตอร์ทั่วไป 2.2 เท่า"},
- {id:"faultcrawler",n:"Faultcrawler",th:"ฟอลต์ครอว์เลอร์",map:"geo",lv:25,hp:2000,atk:78,hd:22,md:8,as:1.5,exp:[750,480],sc:[120,180],el:"Earth",cnt:8,main:["mat_fault",40],drops:["mat_seismic","red_l"],
+ {id:"faultcrawler",n:"Faultcrawler",th:"ฟอลต์ครอว์เลอร์",map:"geo",lv:25,hp:2000,atk:78,hd:22,md:8,as:1.5,exp:[750,480],sc:[120,180],el:"Earth",cnt:24,main:["mat_fault",40],drops:["mat_seismic","red_l"],
   note:"โจมตีก่อน (ระยะ 5.5 ช่อง) สัตว์หลังเกราะหินที่มีรอยแยกเรืองแสง สกิล: กระทืบสั่นสะเทือน (Tremor Stomp) วงแดงรอบตัว"},
- {id:"tidewraith",n:"Tidewraith",th:"ไทด์เรธ",map:"geo",lv:27,hp:2300,atk:84,hd:8,md:25,as:1.7,exp:[880,560],sc:[140,210],el:"Water",cnt:7,main:["mat_tide",38],drops:["mat_glyph","herb_frost"],
+ {id:"tidewraith",n:"Tidewraith",th:"ไทด์เรธ",map:"geo",lv:27,hp:2300,atk:84,hd:8,md:25,as:1.7,exp:[880,560],sc:[140,210],el:"Water",cnt:21,main:["mat_tide",38],drops:["mat_glyph","herb_frost"],
   note:"โจมตีก่อน (ระยะ 6 ช่อง) วิญญาณน้ำสวมฮู้ดจากอารยธรรมที่จมหาย สกิล: คลื่นดูดลึก (Undertow) วงแดงใต้เท้าผู้เล่น ติดสถานะเปียกชุ่ม เดินช้าลง 4 วินาที"},
- {id:"stratagolem",n:"Strata Golem",th:"สตราตาโกเลม",map:"geo",lv:30,hp:3200,atk:100,hd:26,md:12,as:2.0,exp:[1060,680],sc:[170,260],el:"Earth",cnt:5,main:["mat_strata",35],drops:["mat_press","herb_sage"],
+ {id:"stratagolem",n:"Strata Golem",th:"สตราตาโกเลม",map:"geo",lv:30,hp:3200,atk:100,hd:26,md:12,as:2.0,exp:[1060,680],sc:[170,260],el:"Earth",cnt:15,main:["mat_strata",35],drops:["mat_press","herb_sage"],
   note:"โจมตีก่อน (ระยะ 4.5 ช่อง) โกเลมหินซ้อนชั้น เดินช้าแต่ตีหนัก สกิล: บดเปลือกโลก (Crust Crush) วงใหญ่รอบตัว และก้อนหินถล่ม (Falling Debris)"},
- {id:"cinderling",n:"Cinderling",th:"ซินเดอร์ลิง",map:"ruins",lv:32,hp:3000,atk:104,hd:10,md:22,as:1.4,exp:[1250,800],sc:[190,290],el:"Fire",cnt:8,main:["mat_cinder",40],drops:["mat_embercore","herb_ember"],
+ {id:"cinderling",n:"Cinderling",th:"ซินเดอร์ลิง",map:"ruins",lv:32,hp:3000,atk:104,hd:10,md:22,as:1.4,exp:[1250,800],sc:[190,290],el:"Fire",cnt:24,main:["mat_cinder",40],drops:["mat_embercore","herb_ember"],
   note:"โจมตีก่อน (ระยะ 6.5 ช่อง) ภูตเพลิงตัวเล็กที่เร็วที่สุดในแมพ สกิล: ระเบิดเถ้าถ่าน (Ember Burst) ติดสถานะไฟลวก 5 วินาที"},
- {id:"magmaback",n:"Magmaback",th:"แมกมาแบ็ค",map:"ruins",lv:35,hp:4000,atk:122,hd:26,md:12,as:1.6,exp:[1480,940],sc:[230,350],el:"Fire",cnt:7,main:["mat_magma",36],drops:["mat_lavaglass","red_l"],
+ {id:"magmaback",n:"Magmaback",th:"แมกมาแบ็ค",map:"ruins",lv:35,hp:4000,atk:122,hd:26,md:12,as:1.6,exp:[1480,940],sc:[230,350],el:"Fire",cnt:21,main:["mat_magma",36],drops:["mat_lavaglass","red_l"],
   note:"โจมตีก่อน (ระยะ 5.5 ช่อง) สัตว์เกราะหินดำมีเส้นลาวา สกิล: พ่นลาวา (Lava Spit) ติดสถานะไฟลวก 4 วินาที"},
- {id:"ashsentinel",n:"Ashen Sentinel",th:"แอชเชนเซนทิเนล",map:"ruins",lv:38,hp:5200,atk:140,hd:24,md:26,as:1.9,exp:[1750,1110],sc:[275,415],el:"Fire",cnt:5,main:["mat_relic",32],drops:["mat_infernoshard","herb_dew"],
+ {id:"ashsentinel",n:"Ashen Sentinel",th:"แอชเชนเซนทิเนล",map:"ruins",lv:38,hp:5200,atk:140,hd:24,md:26,as:1.9,exp:[1750,1110],sc:[275,415],el:"Fire",cnt:15,main:["mat_relic",32],drops:["mat_infernoshard","herb_dew"],
   note:"โจมตีก่อน (ระยะ 5 ช่อง) ผู้พิทักษ์ซากปรักหักพังที่ไหม้เกรียม สกิล: เสาเพลิงนรก (Inferno Pillar) ติดไฟลวก 6 วินาที และคลื่นเถ้าถ่าน (Ashen Wave) วงใหญ่รอบตัว"}
 ];
 const monById=id=>MONS.find(m=>m.id===id);
@@ -399,7 +399,7 @@ const monImg=id=>IMG["mon_"+id];
 
 /* item sources */
 const EXTRA_SRC={red:["ตอนเริ่มเกม","ร้านค้า"],blue:["ตอนเริ่มเกม","ร้านค้า"],apple:["ตอนเริ่มเกม"],wing:["ตอนเริ่มเกม","ร้านค้า"],red_s:["ร้านค้า"],blue_l:["ร้านค้า"],
-  herb_dew:["ร้านค้า (เร็ว ๆ นี้)"],refine_ore:["มอนสเตอร์ทุกตัว (2–6%, Elite ×3)"],mat_core:["Elite 35%","Gadolith ×3"],mat_ore:["มอนสเตอร์ใน Field 01 (8%)","Gadolith ×5"],mat_gheart:["Gadolith ×1–2"]};
+  herb_dew:["ร้านค้า (เร็ว ๆ นี้)"],refine_ore:["มอนสเตอร์ทุกตัว (2–10%, Elite ×3)","Gadolith ×2–4"],mat_core:["Gadolith ×3"],mat_ore:["Gadolith ×5"],mat_gheart:["Gadolith ×1–2"]};
 const itemKind=id=>ITEMS[id].q?"quest":ITEMS[id].t==="use"?"consumable":"material";
 const KIND_TH={consumable:"Consumable",material:"Material",quest:"Quest item"};
 const dropMons=id=>MONS.filter(m=>m.main[0]===id||m.drops.includes(id)).map(m=>m.id);
@@ -422,7 +422,7 @@ const ARCH=[
   mech:"Cast + Element",mechD:"ทุกเวทมีเวลาร่าย (ลดตาม DEX) และไม่มีวันพลาด มีเวทหนึ่งตัวต่อธาตุ จึงเลือกเวทที่ตรงจุดอ่อนของมอนสเตอร์ได้เสมอ",
   stats:"INT > DEX > VIT",play:"ดาเมจพุ่งและโจมตีเป็นวง ต้องอ่านธาตุของมอนสเตอร์",hp:30,sp:11,watk:12,gr:1.0,def:"5%",
   auto:[["VIT",2],["INT",6],["DEX",4]],
-  skills:[["Fire Bolt","3 × 100% MATK ธาตุไฟ · ร่าย 1.0 s",12,"0.5 s"],["Frost Nova","260% MATK ธาตุน้ำ ทุกตัวในรัศมี 2.5 ช่อง · 40% แช่แข็ง 2 s · ร่าย 0.6 s",20,"5 s"],["Lightning Spear","380% MATK ธาตุลม · ร่าย 1.6 s",22,"3 s"],["Stone Spike","260% MATK ธาตุดิน · 20% สตัน 1 s · ร่าย 1.0 s",16,"2 s"],["Overload Energy","บัฟ Lv 1–5: อัตราเกินพิกัด +1% ต่อเลเวล ให้ตัวเองและปาร์ตี้ในระยะ 12×12 ช่อง · นาน 20/40/60/80/120 s · ร่าย 1–2 s · ดีเลย์รวม 1 s",30,"60 s"]],
+  skills:[["Fire Bolt (Lv 1–10)","ลูกไฟ = เลเวลสกิล ลูกละ 100% MATK ธาตุไฟ ตกทีละลูก ห่าง 0.3 s (0.2 s ตั้งแต่ Lv 6) หยุดถ้าเป้าหมายตาย · ร่าย 0.5 + 0.3/Lv s · ดีเลย์รวม 1.4 s","12–30","0 s"],["Frost Nova","260% MATK ธาตุน้ำ ทุกตัวในรัศมี 2.5 ช่อง · 40% แช่แข็ง 2 s · ร่าย 0.6 s",20,"5 s"],["Lightning Spear","380% MATK ธาตุลม · ร่าย 1.6 s",22,"3 s"],["Stone Spike","260% MATK ธาตุดิน · 20% สตัน 1 s · ร่าย 1.0 s",16,"2 s"],["Overload Energy","บัฟ Lv 1–5: อัตราเกินพิกัด +1% ต่อเลเวล ให้ตัวเองและปาร์ตี้ในระยะ 12×12 ช่อง · นาน 20/40/60/80/120 s · ร่าย 1–2 s · ดีเลย์รวม 1 s",30,"60 s"]],
   pas:[["Mana Flow (Lv 1–10)","Lv N: Max SP +N%, ฟื้น SP +(8+2N)%, SP ที่ใช้ −N% · Lv 10: +12% / +30% / −12%"],["Elemental Attunement (Lv 1–5)","ตีจุดอ่อนธาตุ +5% ต่อเลเวล (150% → 175% ที่ Lv 5)"]],
   basic:"Arcane Bolt · 70% MATK ธาตุกลาง · ระยะ 7 ช่อง"},
  {id:"supporter",n:"Supporter",th:"ผู้สนับสนุน",type:"SUPPORT",range:"1–15 ช่อง (ฮีล/บัฟ), 9 (โจมตี)",c:"#e0b04a",weapon:"supporter",
@@ -443,9 +443,9 @@ const TREE={
 
 /* equipment */
 const CLASSES=[["beginner","Beginner","ผู้เริ่มต้น"],["fighter","Fighter","นักรบ"],["ranger","Ranger","นักยิง"],["spellcaster","Spellcaster","ผู้ร่ายเวท"],["supporter","Supporter","ผู้สนับสนุน"]];
-const SLOTS=[["headTop","Top Headgear","หมวกบน",null],["headMid","Mid Headgear","หมวกกลาง",null],["headLow","Lower Headgear","หมวกล่าง",null],
-  ["armor","Armor","ชุดเกราะ","DEF = m × 0.9 · HP = m × 6"],["weapon","Weapon","อาวุธ","ATK = m × 2.2"],["shield","Shield","โล่","DEF = m × 0.7 · DEF% = ระดับดาว × 1%"],
-  ["garment","Garment","เสื้อคลุม",null],["shoes","Shoes","รองเท้า","DEF = m × 0.6 · HP = m × 3"],["ring","Ring","แหวน","CRIT = m × 0.08 · HIT = m × 0.3"],["bracelet","Bracelet","กำไล","HP = m × 10 · SP = m × 2"]];
+const SLOTS=[["headTop","Top Headgear","หมวกบน","DEF = m × 0.6 · HP = m × 4 · FLEE = m × 0.3"],["headMid","Mid Headgear","หมวกกลาง","HP = m × 4 · SP = m × 2.5"],["headLow","Lower Headgear","หมวกล่าง","DEF = m × 0.4 · SP = m × 3"],
+  ["armor","Armor","ชุดเกราะ","DEF = m × 0.9 · HP = m × 6"],["weapon","Weapon","อาวุธ","ATK = m × 2.2"],["shield","Shield","โล่","DEF = m × 0.9 · DEF% = ระดับดาว × 1%"],
+  ["garment","Garment","เสื้อคลุม","DEF = m × 0.5 · HP = m × 5"],["shoes","Shoes","รองเท้า","DEF = m × 0.5 · FLEE = m × 0.6"],["ring","Ring","แหวน","CRIT = m × 0.08 · HIT = m × 0.3"],["bracelet","Bracelet","กำไล","CRIT = m × 0.1 · HP = m × 6"]];
 const SETS={beginner:[["Wanderer","AGI"],["Scout","HIT, FLEE"],["Apprentice","INT"]],fighter:[["Ironclad","DEF%"],["Vanguard","ATK%"],["Warbreaker","CRIT"]],
   ranger:[["Windrunner","FLEE"],["Huntmaster","ATK%"],["Shadowstep","CRIT"]],spellcaster:[["Arcanist","MATK%"],["Stormcaller","HIT"],["Attuned","HP%"]],
   supporter:[["Lightbringer","MATK%, Heal%"],["Sentinel","DEF%"],["Blessed","SP, VIT"]]};
@@ -463,9 +463,11 @@ const SIDEQ=[
 const HUNTS=[
  ["lumite","field1",15,"270","189","120",""],["crawlix","field1",15,"567","405","216",""],["oculoth","field1",15,"1,215","810","408",""],
  ["nebulite","field2",12,"691","454","269",""],["shardback","field2",10,"900","612","328",""],["cryoculus","field2",15,"2,295","1,485","780",""],
- ["glacilite","field3",15,"3,105","2,025","1,176",""],["rimeback","field3",15,"4,455","2,903","1,608",""],["magnoculus","field3",15,"6,345","4,050","2,400",""]
+ ["glacilite","field3",15,"3,105","2,025","1,176",""],["rimeback","field3",15,"4,455","2,903","1,608",""],["magnoculus","field3",15,"6,345","4,050","2,400",""],
+ ["faultcrawler","geo",15,"10,125","6,480","3,600",""],["tidewraith","geo",15,"11,880","7,560","4,200",""],["stratagolem","geo",15,"14,310","9,180","5,160",""],
+ ["cinderling","ruins",15,"16,875","10,800","5,760",""],["magmaback","ruins",15,"19,980","12,690","6,960",""],["ashsentinel","ruins",15,"23,625","14,985","8,280",""]
 ];
-const ELITEQ=[["field1","—","—","—","1 Y"],["field2","—","—","—","1 Y"],["field3","—","—","—","1 Y"]];
+const ELITEQ=[["field1","—","—","—","1 Y"],["field2","—","—","—","1 Y"],["field3","—","—","—","1 Y"],["geo","—","—","—","1 Y"],["ruins","—","—","—","1 Y"]];
 
 /* ================= modal ================= */
 const modal=$("#modal"),mbox=$("#mbox");
@@ -477,10 +479,10 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 function monModal(id){
   const m=monById(id),mp=mapById(m.map),el=EL[m.el],hl=m.boss?"":"";
   const elite=m.boss?"":`<h4 style="margin:18px 0 8px">เวอร์ชัน Elite</h4>
-    <p class="muted" style="margin:0 0 8px">มีวงเวทสีทองใต้เท้า ตัวใหญ่ขึ้น ×1.3 และมี 1 ตัวต่อชนิดในทุกแมพ เกิดใหม่ใน 45–60 วินาที</p>
+    <p class="muted" style="margin:0 0 8px">มีวงเวทสีทองใต้เท้า ตัวใหญ่ขึ้น ×1.3 และมี 2 ตัวต่อชนิดในทุกแมพ เกิดใหม่ใน 45–60 วินาที</p>
     <dl class="kv"><dt>Lv</dt><dd>${m.lv+2}</dd><dt>HP</dt><dd>${fmt(m.hp*5)}</dd><dt>ATK</dt><dd>${Math.round(m.atk*1.6)}</dd>
     <dt>EXP (Base / Job)</dt><dd>${fmt(m.exp[0]*5)} / ${fmt(m.exp[1]*5)}</dd><dt>Scandium</dt><dd>${fmt(m.sc[0]*4)}–${fmt(m.sc[1]*4)}</dd>
-    <dt>ดรอป</dt><dd>วัตถุดิบประจำชนิด ×3 แน่นอน · Elite Core 35%</dd></dl>`;
+    <dt>ดรอป</dt><dd>ตารางดรอปเดิมแต่โอกาส ×1.6 · Refine Ore ×3 · อุปกรณ์ 12%</dd></dl>`;
   const wk=WEAK[m.el];
   const drops=[m.main[0],...m.drops].map((d,i)=>`<button class="mchip" data-item="${d}" type="button"><span class="cell" style="width:36px;height:36px;border-radius:9px;border-width:1.5px">${ITEMS[d].svg.replace("<svg ",'<svg style="width:28px;height:28px" ')}</span><span>${esc(ITEMS[d].n[0])}${i===0?` <b style="color:var(--goldtext)">${m.main[1]}%</b>`:""}</span></button>`).join("");
   openModal(`<div class="mhead" style="--glow:${el.c}"><div class="art"><img src="${monImg(id)}" alt="${esc(m.n)}"></div>
@@ -490,9 +492,9 @@ function monModal(id){
     <div class="grid g2"><dl class="kv"><dt>แมพ</dt><dd>${mp.n} · ${mp.subTh}</dd><dt>ธาตุ</dt><dd><span class="dot" style="background:${el.c}"></span> ${m.el} (${el.th})</dd>
       <dt>HP</dt><dd>${fmt(m.hp)}</dd><dt>ATK</dt><dd>${m.atk}</dd><dt>Hard DEF</dt><dd>${m.hd}%</dd><dt>MDEF</dt><dd>${m.md}%</dd></dl>
     <dl class="kv"><dt>ความเร็วโจมตี</dt><dd>ทุก ${m.as} s</dd><dt>EXP (Base / Job)</dt><dd>${fmt(m.exp[0])} / ${fmt(m.exp[1])}</dd><dt>Scandium</dt><dd>${m.sc[0]}–${fmt(m.sc[1])}</dd>
-      <dt>จำนวนในแมพ</dt><dd>${m.boss?"1 ตัว (บอส)":m.cnt+" + Elite 1"}</dd><dt>จุดอ่อน</dt><dd>${wk[0]} · ${wk[1]}</dd></dl></div>
+      <dt>จำนวนในแมพ</dt><dd>${m.boss?"1 ตัว (บอส)":m.cnt+" + Elite 2"}</dd><dt>จุดอ่อน</dt><dd>${wk[0]} · ${wk[1]}</dd></dl></div>
     <h4 style="margin:18px 0 8px">ไอเท็มที่ดรอป</h4><div style="display:flex;flex-wrap:wrap;gap:8px">${drops}</div>
-    <p class="muted" style="font-size:13px;margin:8px 0 0">${m.boss?"Crystal Heart ×1–2, Elite Core ×3, Gadolinium Ore ×5, Refine Ore ×2–4 และอุปกรณ์ 2 ชิ้น":"ทุกตัวมีโอกาสดรอป Refine Ore 2–6%"+(m.map==="field1"?" และ Gadolinium Ore 8%":"")+" และอุปกรณ์ 3%"}</p>
+    <p class="muted" style="font-size:13px;margin:8px 0 0">${m.boss?"Crystal Heart ×1–2, Elite Core ×3, Gadolinium Ore ×5, Refine Ore ×2–4 และอุปกรณ์ 2 ชิ้น":"ทุกตัวมีโอกาสดรอป Refine Ore 2–10% และอุปกรณ์ 3%"}</p>
     ${elite}</div>`);
   $$("[data-item]",mbox).forEach(b=>b.onclick=()=>itemModal(b.dataset.item));
 }
@@ -550,7 +552,7 @@ P.home=()=>{
     ${tile("t-arch","archetype","","Archetype","4 สายหลัก: Fighter, Ranger, Spellcaster, Supporter",`<div class="collage" style="background:linear-gradient(135deg,#2b3a9a,#101a5c)">${c1}</div>`)}
     ${tile("t-class","class","","Class","แผนผัง 16 Class และ 32 Job",`<div class="collage" style="background:linear-gradient(135deg,#4a2a8a,#101a5c)">${c2}</div>`)}
     ${tile("t-quest","quests","","Quests","เควสต์หลัก เควสต์ข้าง และล่ามอนสเตอร์ซ้ำได้",`<div class="collage" style="background:linear-gradient(135deg,#8a6410,#141831)">${q}<img src="${monImg("gadolith")}" alt="" style="height:84px"></div>`)}
-    ${tile("t-mon","monsters","","Monsters","9 ชนิดในสนาม Elite ทุกแมพ และบอส Gadolith",`<div class="collage" style="background:radial-gradient(circle at 50% 80%,#3a4aa8,#0b1148)">${mons}</div>`)}
+    ${tile("t-mon","monsters","","Monsters","15 ชนิดใน 5 แมพ Elite ทุกแมพ และบอส Gadolith",`<div class="collage" style="background:radial-gradient(circle at 50% 80%,#3a4aa8,#0b1148)">${mons}</div>`)}
     ${tile("t-item","items","","Items","ยา วัตถุดิบ ไอเท็มเควสต์ และอุปกรณ์ครบ 10 ช่อง",`<div class="collage" style="background:linear-gradient(135deg,#1a2780,#0a0f33)">${items}</div>`)}
   </div>
   <section class="sec"><h2>เส้นทางผจญภัย</h2><p class="lead">ไล่เก็บแมพตามลำดับ แต่ละแมพแนะนำ CP ที่ควรมีก่อนเข้า</p>
@@ -597,7 +599,7 @@ P.archetype=()=>{
       <p class="muted" style="font-size:12.5px;margin:6px 0 0">ATK อาวุธโตขึ้น +${a.gr} ต่อเลเวล · DEF เกราะ ${a.def}</p>
       <h4 style="margin:18px 0 6px">แต้มสเตตัสอัตโนมัติ</h4>
       ${a.auto.map(s=>bar(s[0],s[1],6,s[1])).join("")}<p class="muted" style="font-size:12.5px;margin:6px 0 0">ปิดระบบอัตโนมัติแล้วจัดเองได้ในหน้าต่างตัวละคร</p></div>
-    <div class="card"><h3 style="font-size:19px;margin-bottom:4px">สกิลต้นแบบ <span class="th" style="font-weight:400">(Skill Lv 5)</span></h3>
+    <div class="card"><h3 style="font-size:19px;margin-bottom:4px">สกิล <span class="th" style="font-weight:400">(ค่าต้นแบบ Lv 5 · ทุกสกิลเริ่ม Lv 0 และเรียนด้วยแต้มสกิล)</span></h3>
       ${a.skills.map(s=>`<div class="skill"><div><b>${s[0]}</b><div class="muted" style="font-size:13.5px">${s[1]}</div></div><div class="meta"><span class="chip">SP ${s[2]}</span><span class="chip">CD ${s[3]}</span></div></div>`).join("")}
       <h3 style="font-size:19px;margin:16px 0 4px">พาสซีฟ</h3>
       ${a.pas.map(s=>`<div class="skill"><div><b>${s[0]}</b><div class="muted" style="font-size:13.5px">${s[1]}</div></div></div>`).join("")}
@@ -629,7 +631,7 @@ P.class=()=>{
   <div class="route" style="margin-bottom:6px"><span class="n">Beginner · C0 <span class="th">× 1</span></span><i>→</i><span class="n">Archetype · 4 สาย</span><i>→</i><span class="n">Class · C1 <span class="th">× 16</span></span><i>→</i><span class="n">Job · C2 <span class="th">× 32</span></span></div>
   <section class="sec"><h2>แผนผังอาชีพ</h2><div class="tree">${ARCH.map(col).join("")}</div></section>
   <section class="sec"><h2>วิธีเปลี่ยนอาชีพ</h2><div class="tw"><table><thead><tr><th>ขั้น</th><th>เงื่อนไข</th><th>ผลลัพธ์</th></tr></thead><tbody>
-    <tr><td><b>C0 → C1</b></td><td>Job Lv 10 + Basic Skill Lv 10 แล้วทำ Archetype Trial: ปราบ Elite 1 ตัว แล้วกลับไปหา Archetype Helper Sera</td><td>เลือก Archetype 1 สาย (ถาวร) · Job Lv รีเป็น 1 สูงสุด 50 · รับ 500 Base EXP และ 30 Y</td></tr>
+    <tr><td><b>C0 → C1</b></td><td>Job Lv 10 + Basic Skill Lv 10 แล้วทำ Archetype Trial: ปราบ Elite 1 ตัว แล้วกลับไปหา Archetype Helper Sera</td><td>เลือก Archetype 1 สาย (ถาวร) · Job Lv รีเป็น 1 สูงสุด 50 · รับ 500 Base EXP, 30 Y และชุดประจำ Archetype ครบ 10 ชิ้น (Lv 10) สวมให้ทันที</td></tr>
     <tr><td><b>C1 → C2</b></td><td>Base Lv 50 ขึ้นไป และ Job Lv 50 (สูงสุด) พร้อมเควสต์เปลี่ยนอาชีพขั้นสูง</td><td>เป็น Job (C2) · ระบบและเควสต์ ${SOON}</td></tr>
     <tr><td><b>เพดานเลเวล</b></td><td colspan="2">Base Lv สูงสุด 99 · Job Lv สูงสุด: Beginner 10, Archetype 50</td></tr></tbody></table></div></section>
   <section class="sec"><h2>สิ่งที่ยังไม่เปิดเผย</h2><div class="grid g3"><div class="soonbox"><b>Spellcaster 3.2</b>ชื่อ Class และ Job ${SOON}</div><div class="soonbox"><b>Supporter ทั้ง 4 Class</b>รวม 8 Job ${SOON}</div><div class="soonbox"><b>รีเซ็ตอาชีพ</b>ไอเท็มเปลี่ยน Class/Job ${SOON}</div></div></section>
@@ -672,8 +674,8 @@ P.monsters=()=>{
     <div class="grid g2" style="gap:8px 18px;font-size:14px"><div>Lv <b>20</b> · Earth</div><div>HP <b>8,000</b></div><div>ATK <b>58</b></div><div>Hard DEF <b>25%</b> · MDEF 20%</div><div>โจมตีทุก <b>2.6 s</b></div><div>EXP <b>2,600 / 1,700</b></div></div>
     <div class="note" style="margin-top:14px;background:rgba(255,255,255,.08);color:#f2f4ff;border-left-color:#f0505f"><b>Crystal Slam</b> ทุก 9–12 วินาที บอสจะหยุดและขีดวงแดงรัศมี 3.4 ช่อง นาน 1.4 วินาที ถ้าอยู่ในวงตอนระเบิดจะโดน ATK × 1.8 ให้ก้าวออกจากวง · ติดสถานะ Stun และ Freeze ไม่ได้ · เกิดใหม่ใน 120 s (ค่าทดสอบ)</div>
     <button class="pill on" data-mon="gadolith" type="button" style="margin-top:14px">ดูข้อมูลทั้งหมด</button></div></div></section>`:""}
-  <section class="sec"><h2>Elite</h2><div class="grid g2"><div class="card"><ul class="dots"><li>มีวงเวทสีทองหมุนที่เท้า ตัวใหญ่ ×1.3 และชื่อ “★ Elite” สีทอง</li><li>ทุกแมพมี Elite <b>1 ตัวต่อมอนสเตอร์ 1 ชนิด</b> เกิดใหม่ 45–60 วินาที</li><li>Idle จะข้าม Elite เว้นแต่ Base Lv ≥ Lv ของ Elite + 3</li></ul></div>
-    <div class="card"><div class="tw"><table><tbody><tr><td>เลเวล</td><td>+2</td></tr><tr><td>HP / ATK / DEF</td><td>×5 / ×1.6 / +3</td></tr><tr><td>EXP / Scandium</td><td>×5 / ×4</td></tr><tr><td>ดรอป</td><td>วัตถุดิบ ×3 แน่นอน · Elite Core 35% · โอกาสอุปกรณ์ 12%</td></tr></tbody></table></div></div></div></section>
+  <section class="sec"><h2>Elite</h2><div class="grid g2"><div class="card"><ul class="dots"><li>มีวงเวทสีทองหมุนที่เท้า ตัวใหญ่ ×1.3 และชื่อ “★ Elite” สีทอง</li><li>ทุกแมพมี Elite <b>2 ตัวต่อมอนสเตอร์ 1 ชนิด</b> เกิดใหม่ 45–60 วินาที</li><li>Idle จะข้าม Elite เว้นแต่ Base Lv ≥ Lv ของ Elite + 3</li></ul></div>
+    <div class="card"><div class="tw"><table><tbody><tr><td>เลเวล</td><td>+2</td></tr><tr><td>HP / ATK / DEF</td><td>×5 / ×1.6 / +3</td></tr><tr><td>EXP / Scandium</td><td>×5 / ×4</td></tr><tr><td>ดรอป</td><td>ตารางดรอปของชนิดนั้น โอกาส ×1.6 · Refine Ore ×3 · โอกาสอุปกรณ์ 12% (ระดับดาวดีกว่า)</td></tr></tbody></table></div></div></div></section>
   <section class="sec"><h2>ธาตุและจุดอ่อน</h2><div class="grid g4">${Object.entries(WEAK).map(([k,v])=>`<div class="card" style="border-top:4px solid ${EL[k].c}"><b>${k}</b> <span class="th">${EL[k].th}</span><div class="muted" style="font-size:13.5px;margin-top:4px">อ่อนต่อ <b>${v[0]}</b><br>เวทที่ตรง: ${v[1]}</div></div>`).join("")}</div>
     <p class="muted" style="margin-top:10px;font-size:13px">ค่าป้องกันของมอนสเตอร์เป็นค่ารอบแรก อาจปรับในอนาคต · มอนสเตอร์ในแมพใหม่ ${SOON}</p></section>
   <footer class="ft">REO Wiki · คลิกการ์ดเพื่อดูรายละเอียดและไอเท็มที่ดรอป</footer></div>`;
@@ -706,7 +708,7 @@ P.items=()=>{
       <div class="card"><div class="tw"><table><thead><tr><th>ระดับ</th><th>โอกาสสำเร็จ</th></tr></thead><tbody><tr><td>+0 → +3</td><td>100%</td></tr><tr><td>+3 → +6</td><td>70%</td></tr><tr><td>+6 → +9</td><td>40%</td></tr><tr><td>+9 → +10</td><td>20%</td></tr></tbody></table></div></div></div></section>
     <section class="sec"><h2>ดรอปอุปกรณ์</h2><div class="grid g2"><div class="card"><ul class="dots"><li>มอนสเตอร์ปกติ 3% · Elite 12% · บอสดรอป 2 ชิ้นแน่นอน</li><li>Tier ของชิ้นที่ดรอป = เลเวลมอนสเตอร์ปัดลงเป็นหลักสิบ (ต่ำสุด Lv 1)</li></ul></div>
       <div class="card"><div class="tw"><table><thead><tr><th>ระดับ</th><th>ปกติ</th><th>Elite</th><th>บอส</th></tr></thead><tbody>${[["0","70","45","10"],["1","22","30","30"],["2","6","15","35"],["3","1.8","8","20"],["4","0.2","2","5"]].map(r=>`<tr><td><span class="dot" style="background:${RC[r[0]]}"></span> ${RAR[r[0]][0]}</td><td>${r[1]}%</td><td>${r[2]}%</td><td>${r[3]}%</td></tr>`).join("")}</tbody></table></div></div></div></section>
-    <section class="sec"><h2>ช่องเก็บของ</h2><div class="card"><ul class="dots"><li>เริ่มต้น <b>100 ช่อง</b> ขยายได้ครั้งละ +20 ผ่านแพ็ก Inventory Expansion ใน Cash Shop สูงสุด 500 ช่อง</li><li>แท็บ: Consumable → Equipment → Material → Quest · หน้าละ 50 ช่อง</li><li>เรียงของได้ตามชื่อ ความหายาก หรือราคาขาย · มีปุ่มขายรวม และเปรียบเทียบอุปกรณ์ก่อนสวม</li></ul><p class="muted" style="font-size:13px;margin:8px 0 0">ราคาแพ็กขยายช่อง การ์ด และตลาดซื้อขาย ${SOON}</p></div></section>`;
+    <section class="sec"><h2>ช่องเก็บของ</h2><div class="card"><ul class="dots"><li>เริ่มต้น <b>100 ช่อง</b> ขยายได้ครั้งละ +20 ผ่านแพ็ก Inventory Expansion ใน Cash Shop สูงสุด 500 ช่อง</li><li>แท็บ: ใช้ได้ · อุปกรณ์ · อื่น ๆ · เควสต์ · แคช · หน้าละ 30 ช่อง (5 × 6)</li><li>เรียงของได้ตามชื่อ ความหายาก หรือราคาขาย · กดค้างที่ไอเท็มเพื่อเลือกหลายชิ้นแล้วขายรวม · ดับเบิลคลิกเพื่อใช้หรือสวม · เปรียบเทียบอุปกรณ์ก่อนสวม · ล็อกอุปกรณ์กันขายได้</li><li>เก็บของเพิ่มได้ที่ <b>Pocket Dimension</b> 300 ช่อง ผ่าน Narvis (Basic Skill Lv 5)</li></ul><p class="muted" style="font-size:13px;margin:8px 0 0">ราคาแพ็กขยายช่อง การ์ด และตลาดซื้อขาย ${SOON}</p></div></section>`;
   return `<div class="page">${head("Items","Items","ไอเท็มมี 4 ประเภท: Consumable, Material, Quest item และ Equipment (5 อาชีพ × 10 ช่อง × 10 Tier × 5 ระดับ = 2,500 ชิ้น) คลิกไอเท็มเพื่อดูรายละเอียดและแหล่งที่มา",itemTab!=="equipment"?`<div class="search" style="width:260px"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="iq" type="search" placeholder="กรองไอเท็ม..." value="${esc(itemQ)}"></div>`:"")}
   <div class="pills">${tabs.map(t=>`<button class="pill ${itemTab===t[0]?"on":""}" data-it="${t[0]}" type="button">${t[1]}<span class="n">${fmt(t[2])}</span></button>`).join("")}</div>
   ${body}${rest}<footer class="ft">REO Wiki · ภาพไอเท็มและอุปกรณ์วาดโดยโค้ดของเกมจริง</footer></div>`;

@@ -7,7 +7,8 @@
 - A row of round icons with countdown timers sits directly under the player ID card (top-left).
 - Hover (desktop) or tap (phone) shows the name and description.
 - Debuffs get a red border.
-- **v5:** icons are real buffs only: Momentum (stacks), War Cry, Evasive Leap, empowered shot, Blessing, Grace shield (amount), Sanctuary. The earlier mockup icons were removed.
+- Icons are real effects only (`renderFx`): Momentum (stacks), War Cry, Evasive Leap, empowered shot (+60%), **Overload Energy** (v20.6), Blessing, Grace shield (amount), Sanctuary, and the debuffs **Burning** and **Soaked** (v19, red border). The earlier mockup icons were removed.
+- Not shown yet: herb buffs (Glowmoss, Ember Root, Frost Bloom, Sage Leaf) and sitting. They work, but have no icon.
 - Future: buffs/debuffs come from the skill and item system; the row shows max 8 icons, then wraps.
 
 ## 2. Status islands (left of the minimap) — v18.3

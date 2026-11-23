@@ -71,7 +71,7 @@ Stackable items total **46** (12 consumables, 34 materials/ores/quest items; v19
 | Sage Leaf / ใบเซจ | **+50% SP regen**, 60 s | 45 | Rimeback |
 | Aether Dew / น้ำค้างอีเธอร์ | +40% Max SP | 60 | (shop later) |
 
-Herbs and potions use the hotbar/inventory "Use" button. A usable item can also be dragged from the bag onto any hotbar slot (`UI-UX.md` §25); gear, materials and quest items cannot go on the bar. Buffs show as icons under the character card.
+Herbs and potions are used by double-clicking them in the Inventory or from the hotbar. A usable item can also be dragged from the bag onto any hotbar slot (`UI-UX.md` §25); gear, materials and quest items cannot go on the bar. Herb buffs work but do **not** show an icon yet (the effect row shows skill buffs and Burning / Soaked only, `STATUS.md`).
 
 ## 3. Equipment
 
@@ -94,15 +94,21 @@ Total: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500 pieces**.
 ### Stats of a piece
 Let `m = (3 + Lv × 0.8) × rarity multiplier × (1 + 0.04 × refine)` with multipliers ×1, ×1.4, ×2, ×2.8, ×4.
 
-| Slot | Bonus |
+| Slot | Bonus (`gStats`) |
 |---|---|
-| Weapon | ATK = m × 2.2 (Spellcaster staff: weaponMATK = m × 2.2 instead, see `COMBAT-FORMULAS.md` §1) |
+| Top Headgear | DEF = m × 0.6, HP = m × 4, FLEE = m × 0.3 |
+| Mid Headgear | HP = m × 4, SP = m × 2.5 |
+| Lower Headgear | DEF = m × 0.4, SP = m × 3 |
 | Armor | DEF = m × 0.9, HP = m × 6 |
-| Legs | DEF = m × 0.6, HP = m × 3 |
-| Off-hand | DEF = m × 0.7, DEF% = rarity × 1% |
-| Necklace | HP = m × 10, SP = m × 2 |
+| Weapon | ATK = m × 2.2 (Spellcaster staff: weaponMATK = m × 2.2 instead, see `COMBAT-FORMULAS.md` §1) |
+| Shield | DEF = m × 0.9, hard DEF% = rarity × 1% (× refine) |
+| Garment | DEF = m × 0.5, HP = m × 5 |
+| Shoes | DEF = m × 0.5, FLEE = m × 0.6 |
 | Ring | CRIT = m × 0.08, HIT = m × 0.3 |
+| Bracelet | CRIT = m × 0.1, HP = m × 6 |
 | All | Primary stat +m × 0.35 (STR for Fighter and Beginner, DEX for Ranger, INT for Spellcaster and Supporter) |
+
+Legacy slots still in the code for old saves (they equip into Shoes, Shield and Bracelet): Legs DEF m × 0.6, HP m × 3 · Off-hand DEF m × 0.7, DEF% rarity × 1% · Necklace HP m × 10, SP m × 2.
 
 Equipped gear adds to the combat stats (`REOC.derive` with `gear`). Gear counts in **CP**.
 
@@ -121,7 +127,7 @@ Failing requirements show ✗ in the details; the Equip button stays disabled. *
 
 ## 4. Drops
 
-Every monster has a loot table (`LOOT`). Elites roll their table at ×1.6 chance and also have a bigger chance for gear. Bosses have fixed extra rewards.
+Every monster has a loot table (`LOOT`). Elites roll their table at ×1.6 chance and also have a bigger chance for gear. Bosses have fixed extra rewards. Gadolinium Ore and Elite Core only drop from Gadolith now (the old Field 01 8% Ore and Elite 35% Core rolls went away with the loot tables).
 
 | Source | Typical drops |
 |---|---|
@@ -142,7 +148,7 @@ Every monster has a loot table (`LOOT`). Elites roll their table at ×1.6 chance
 | Ashen Sentinel | Scorched Relic, Inferno Shard, Aether Dew |
 | Gadolith (boss) | Crystal Heart (quest), Elite Core ×3, Gadolinium Ore ×5, Refine Ore ×2–4, **2 gear pieces** |
 
-**Refine Ore** drops from every monster (chance 2%–6%, ×3 for Elites). **Gear** drops: normal 3%, Elite 12%, boss 2 pieces.
+**Refine Ore** drops from every monster (chance 2%–10% by monster, `REFINE_CH`; ×3 for Elites; the boss gives 2–4). **Gear** drops: normal 3%, Elite 12%, boss 2 pieces.
 
 Gear rarity odds (normal / Elite / boss): ✪ 70 / 45 / 10, ✪✪ 22 / 30 / 30, ✪✪✪ 6 / 15 / 35, ✪✪✪✪ 1.8 / 8 / 20, ✪✪✪✪✪ 0.2 / 2 / 5.
 A drop's tier = the monster's level rounded down to a multiple of 10 (minimum Lv 1).

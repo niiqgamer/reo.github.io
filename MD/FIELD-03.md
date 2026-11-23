@@ -5,24 +5,24 @@
 ## Travel
 | Portal | Tile | Goes to | You arrive |
 |---|---|---|---|
-| Field 02 upper portal | (19, 2) | Field 03 | next to Field 03's return portal |
-| Field 03 lower portal | (26, 46) | Field 02 | next to Field 02's upper portal |
+| Field 02 north portal | (39, 2) | Field 03 | next to Field 03's south portal |
+| Field 03 south portal | (53, 95) | Field 02 | next to Field 02's north portal |
 
 Arrival always follows the portal rule in `FIELD-01.md` (nearest walkable tile beside the matching portal). Auto-quest knows the whole chain Town → 01 → 02 → 03.
 
 ## Look
-Frosted blue-silver meadow, ice-blue pools, frosted and silver-white trees, pale crystal clusters and blue mushrooms. At the top of the map is the **boss arena**: a 5.6-tile stone circle with a glowing rune circle on the ground. No normal monsters spawn inside it.
+Frosted blue-silver meadow, ice-blue pools, frosted and silver-white trees, pale crystal clusters and blue mushrooms. At the top of the map is the **boss arena**: a stone circle of radius 11.2 tiles centred on (49, 29) (5.6 on the old 49 grid) with a glowing rune circle on the ground. No normal monsters spawn inside it.
 
 ## Monsters (passive until hit)
 Same three sprites as Fields 01–02, recoloured icy, stronger.
 
 | ID | Name (EN / TH) | Sprite | Lv | Element | HP | ATK | Hard DEF | MDEF | Base / Job EXP | Scandium | Drop | Count | Area |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `glacilite` | Glacilite / กลาซิไลต์ | Lumite | 13 | Water | 540 | 44 | 8% | 20% | 230 / 150 | 38–60 | Glacial Gel 40% | 9 + 1 Elite | south-west |
-| `rimeback` | Rimeback / ไรม์แบ็ค | Crawlix | 15 | Earth | 760 | 54 | 28% | 8% | 330 / 215 | 52–82 | Rime Plate 35% | 7 + 1 Elite | south-east |
-| `magnoculus` | Magnoculus / แมกโนคูลัส | Oculoth | 17 | Wind | 1,000 | 66 | 12% | 32% | 470 / 300 | 80–120 | Magnet Lens 30% | 5 + 1 Elite | north |
+| `glacilite` | Glacilite / กลาซิไลต์ | Lumite | 13 | Water | 540 | 44 | 8% | 20% | 230 / 150 | 38–60 | Glacial Gel 40% | 27 + 2 Elites | south-west |
+| `rimeback` | Rimeback / ไรม์แบ็ค | Crawlix | 15 | Earth | 760 | 54 | 28% | 8% | 330 / 215 | 52–82 | Rime Plate 35% | 21 + 2 Elites | south-east |
+| `magnoculus` | Magnoculus / แมกโนคูลัส | Oculoth | 17 | Wind | 1,000 | 66 | 12% | 32% | 470 / 300 | 80–120 | Magnet Lens 30% | 15 + 2 Elites | north |
 
-Elite rules are unchanged (`FIELD-02.md`): ×1.3 size, gold circle, HP ×5, ATK ×1.6, EXP ×5.
+Elite rules are in `FIELD-02.md`: ×1.3 size, gold circle, HP ×5, ATK ×1.6, EXP ×5, 2 per kind.
 
 ## Boss — Gadolith, the Crystal Warden (กาโดลิธ ผู้พิทักษ์คริสตัล)
 
@@ -41,7 +41,7 @@ Elite rules are unchanged (`FIELD-02.md`): ×1.3 size, gold circle, HP ×5, ATK 
 | Respawn | 120 s (**test value**, production should be much longer) |
 | Idle | Idle **never auto-targets the boss**. It is a hands-on fight. Auto-quest will target it if a quest asks for it |
 
-### Balance (from `tests/test_combat.js`)
+### Balance (historical simulator run; the `tests/` folder is no longer in the repo)
 Simulated with auto stats and each archetype's skill AI, no potions and no kiting (the simulator does not model Crystal Slam either):
 
 | CP | Fighter | Ranger | Spellcaster | Supporter |
@@ -60,7 +60,7 @@ Field 03 normals at CP 900: 28–30 kills per 5 min with 0 deaths for every arch
 | `mat_gheart` | Crystal Heart / หัวใจคริสตัล | Gadolith |
 
 ## Quests here
-See `QUESTS.md`: 3 hunts, an Elite hunt, a repeatable boss hunt, and the new main-quest chapters (reach Field 03, defeat Gadolith).
+See `QUESTS.md`: 3 hunts, an Elite hunt, a daily boss hunt, and main-quest chapters 7–8 (reach Field 03, defeat 3 monsters in Field 03). The main quest no longer asks for Gadolith.
 
 ## Open questions
 1. Boss respawn and daily limits (and whether it becomes an instance boss, see `CORE-LOOP.md`).

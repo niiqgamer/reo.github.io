@@ -1,13 +1,13 @@
 # Archetype Prototypes (C1 baseline)
 
-> Part of the REO docs. Formulas: `COMBAT-FORMULAS.md`. Test evidence: `tests/COMBAT-TEST-REPORT.md`.
+> Part of the REO docs. Formulas: `COMBAT-FORMULAS.md`. Test evidence: `COMBAT-TEST-REPORT.md` (historical).
 > These are **baseline prototypes per archetype**, not the final 16 classes. Class names inside each archetype stay as in `JOBS.md`.
-> All skills are prototyped at **skill Lv 5**. Range is in tiles.
+> The numbers below are the **prototype Lv 5 values** of each skill. In the game every skill starts at Lv 0 and is learned with skill points; Fire Bolt (Lv 1–10), Overload Energy (Lv 1–5), Mana Flow (Lv 1–10) and Elemental Attunement (Lv 1–5) have real levels, every other skill has one level with these numbers (`SKILL-SPEC.md` §4). Range is in tiles.
 
 | Archetype | Type | Range | Identity mechanic | Primary stats | Plays like |
 |---|---|---|---|---|---|
 | Fighter | MELEE | 1–3 (1.8) | **Momentum** stacks spent by a finisher | STR > VIT ≈ AGI > DEX | Tank / bruiser: highest effective HP, solid damage |
-| Ranger | RANGED | 1–12 | **Distance bonus** + escape leap | DEX > AGI > LUK | Safest damage dealer: kills before monsters arrive |
+| Ranger | RANGED | 1–12 (9 base, 12 with Eagle Eye) | **Distance bonus** + escape leap | DEX > AGI > LUK | Safest damage dealer: kills before monsters arrive |
 | Spellcaster | MAGIC | 1–7 | **Cast times + elemental weakness**, spells never miss | INT > DEX > VIT | Burst and area damage, must read monster elements |
 | Supporter | SUPPORT | 1–15 (heal/buff), 9 (attack) | **Sustain**: iRO Heal + overheal shield, zone | INT > VIT > DEX | Lowest solo damage, best survival; party glue later |
 
@@ -123,6 +123,6 @@ Players can switch auto-assign off and spend points by hand in the Character win
 
 ## Known gaps / next balancing pass
 1. **Melee travel time:** in live play on Field 01 (Lv 12, 25 s idle), Ranger killed 21 vs Fighter 11. The simulator places melee 2.2 tiles from each target, but real maps make Fighters walk further between targets. Next pass: add travel distance to the simulator, then consider +10–15% Fighter movement speed or a gap-closer.
-2. **Low levels:** before Lv ~8, Spellcaster and Supporter are weak (few INT points). This matches the design (C1 starts at Lv 10) but feels bad if you switch class at Lv 1 in the test picker.
+2. **Low levels:** before Lv ~8, Spellcaster and Supporter are weak (few INT points). This matches the design: the archetype is chosen at Job Lv 10 (the free class picker for tests is gone since v5.1).
 3. Supporter buffs and Guardian Aura are self-only until parties exist.
 4. Monster elements and DEF/MDEF/FLEE values are first-pass (`COMBAT-FORMULAS.md` §5).

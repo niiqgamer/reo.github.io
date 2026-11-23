@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.6. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.7 (docs refresh, see below). Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -39,7 +39,7 @@
 ## UI and tests
 | File | What it covers |
 |---|---|
-| UI-UX.md | Screen layouts and components (not re-checked line by line) |
+| UI-UX.md | Screen layouts and components, in build order (later sections replace earlier ones) |
 | COMBAT-TEST-REPORT.md | Simulator results and balance evidence (historical) |
 
 ## Key numbers (single source)
@@ -48,7 +48,17 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.7 (this update)
+## Changes in the v20.7 docs refresh (this update, no game code changed)
+- **Every coordinate is now on the real 98 × 98 grid.** Town gates (95, 49) east, (2, 49) west, (49, 95) south; warning signs (4, 45) and (45, 93); Field 01 portals (2, 49) and (61, 2); Field 02 (39, 95) and (39, 2); Field 03 (53, 95); Geosyncline (95, 45); Ruins (57, 2); boss arena (49, 29) radius 11.2. NPC tiles after placement: Lumi (55, 43), Bors (59, 36), Veyra (37, 61), Sera (57, 62), Narvis (41, 57). Fixed in `FIELD-*.md`, `GADOLINIUM.md`, `JOBS.md`, `REO-INSTRUCTIONS.md` and the wiki.
+- **Monster counts and Elites:** 3× the old counts and **2 Elites per kind** (e.g. Field 01: 27 + 21 + 15). Safe zone 8 tiles around every portal, leash 16 tiles for every monster. Elite drops are the loot table at ×1.6 with Refine Ore ×3 and 12% gear; the old "×3 material + 35% Elite Core" is gone.
+- **Drops:** Gadolinium Ore and Elite Core only come from Gadolith now (the old Field 01 8% Ore roll is gone). Refine Ore 2–10% by monster.
+- **Gear stats:** `ITEMS.md` §3, `EQUIPMENT-SLOTS.md` §4 and the wiki list the real 10-slot formulas from `gStats` (the old Legs / Off-hand / Necklace rows are kept only as legacy).
+- **Overload** is marked as built (label OVERLOAD! / เกินพิกัด!); the stale duplicate §3b draft in `COMBAT-FORMULAS.md` was removed. Code paths now point at the `REOC` module in `index.html` (the `tests/` folder is gone).
+- `REO-INSTRUCTIONS.md`: NPC table, 9-chapter main quest, ground chunks / `MAPK` / `setCur`, no more "Gold", roadmap (Basic Skill, class set, party).
+- `GADOLINIUM.md`: starter quest section now points at the 9 chapters. `STATUS.md`: current effect icons (Overload Energy, Burning, Soaked; herb buffs have no icon). `LOADING.md`: every device keeps only the current map + the one ahead, ground chunks and pixel budget. `ARCHETYPES.md`, `JOBS.md`, `UI-UX.md` §2, `ACCOUNTS.md` small fixes.
+- Wiki (`wiki.html`, `REO-Wiki.md`): coordinates, counts, Elite and drop rules, Fire Bolt Lv 1–10, gear slot stats, inventory tabs (30 per page, Pocket Dimension), Geosyncline / Ruins hunts and Elite hunts, class-set reward, version v20.7.
+
+## Changes in v20.7
 - **Quests.** Main quest "A New Beginning" is now 9 chapters (3 kills each in Field 01/02/03, then return to Lumi). The Archetype Trial needs 1 Elite and **starts automatically** at Job Lv 10 + Basic Skill Lv 10; it can't be abandoned. Finishing it gives the chosen archetype's **full 10-piece class set** (Lv 10, Common, no random options), equipped at once. The "+10 Elite kills" test button is gone from Settings. Every Normal quest can be done **once per day**; every Elite Hunt pays only 1 Yttrium. See `QUESTS.md`, `JOBS.md` §4.
 
 ## Changes in v20.6
@@ -92,6 +102,7 @@
 - QUESTS: main quest row now reaches the later chapters.
 
 ## Still open
-- UI-UX.md and COMBAT-TEST-REPORT.md were not re-checked line by line against the code.
-- ITEMS.md §3 stat table still lists the legacy Legs / Off-hand / Necklace rows (they remain as aliases).
+- UI-UX.md is a build log: §1–§22 were not re-checked line by line; later sections say what they replace. COMBAT-TEST-REPORT.md is historical (its `tests/` scripts are no longer in the repo).
+- Gadolinium Ore only drops from Gadolith, so the daily **Ore Delivery** quest needs a boss kill. Decide whether Field 01 monsters should drop it again.
+- Herb buffs have no effect icon yet (`STATUS.md`).
 - Lanthanum acquisition, teleport price curve, pack price and Gadolith respawn are placeholders (see each file's Open questions).

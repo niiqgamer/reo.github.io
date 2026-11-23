@@ -36,15 +36,15 @@ The ground texture is drawn in chunks of up to 2048 px (`groundGen` / `groundChu
 
 ## 2. NPCs
 
-| ID | Name (EN / TH) | Anchor tile | Role |
+| ID | Name (EN / TH) | Anchor in code → tile after placement | Role |
 |---|---|---|---|
-| `lumi` | Guide Lumi / ผู้นำทาง ลูมิ | (55, 43), beside the monument | Starter quest giver |
-| `bors` | Bors the Merchant / พ่อค้าบอร์ส | (61, 36), Tool Dealer path | Potions, Scandium shop |
-| `veyra` | Captain Veyra / กัปตันเวย์รา | (37, 62), Forge path | Combat and idle tips |
-| `helper` | Archetype Helper Sera / ผู้แนะแนวอาร์คีไทป์ เซร่า | (57, 63), Inn path | Teaches the 4 archetypes; takes the Archetype Trial turn-in (the trial starts automatically at Job Lv 10 with Basic Skill Lv 10) |
-| `narvis` | Narvis / นาร์วิส (role tag POCKET DIMENSION) | (41, 57), west edge of the plaza (`NARVIS_AT`) | Opens the Pocket Dimension (personal storage) for Basic Skill Lv 5+ (`ITEMS.md` §7). Every main town gets its own Narvis |
+| `lumi` | Guide Lumi / ผู้นำทาง ลูมิ | (55, 43) → (55, 43), beside the monument | Starter quest giver |
+| `bors` | Bors the Merchant / พ่อค้าบอร์ส | (61, 36) → (59, 36), Tool Dealer path | Potions, Scandium shop |
+| `veyra` | Captain Veyra / กัปตันเวย์รา | (37, 62) → (37, 61), Forge path | Combat and idle tips |
+| `helper` | Archetype Helper Sera / ผู้แนะแนวอาร์คีไทป์ เซร่า | (57, 63) → (57, 62), Inn path | Teaches the 4 archetypes; takes the Archetype Trial turn-in (the trial starts automatically at Job Lv 10 with Basic Skill Lv 10) |
+| `narvis` | Narvis / นาร์วิส (role tag POCKET DIMENSION) | (41, 57) → (41, 57), west edge of the plaza (`NARVIS_AT`) | Opens the Pocket Dimension (personal storage) for Basic Skill Lv 5+ (`ITEMS.md` §7). Every main town gets its own Narvis |
 
-`placeTownNpcs` snaps each NPC to the nearest free road or plaza tile.
+`placeTownNpcs` snaps each NPC to the nearest free road or plaza tile where no prop covers it (`TOWN-ALIEN.md` §2), so the final tile can be one off the anchor in `index.html`.
 
 NPCs face the player within 3.5 tiles. Click an NPC → walk to an adjacent tile → dialog opens on arrival.
 
@@ -54,19 +54,14 @@ NPCs face the player within 3.5 tiles. Click an NPC → walk to an adjacent tile
 
 ## 3. Starter quest — “A New Beginning / จุดเริ่มต้นใหม่”
 
-| Stage | Objective | Reward |
-|---|---|---|
-| 0 | Talk to Guide Lumi | +40 Base EXP |
-| 1 | Visit Bors at the Tool Dealer | +5 Red Potions, +60 Base EXP |
-| 2 | Touch the Gadolinium Crystal | Light pillar, +180 Base EXP |
-| 3 | Complete | Leads into the C0 → C1 path |
+The main quest starts here and now has **9 chapters**: Lumi → Bors (+5 Red Potions) → touch the Gadolinium Crystal (light pillar) → 3 kills in Field 01 → reach Field 02 → 3 kills in Field 02 → reach Field 03 → 3 kills in Field 03 → return to Lumi. Rewards per chapter (Base / Job EXP, Yttrium) are in `QUESTS.md`.
 
-The current target shows a bouncing gold **!**. The quest tracker’s **Go** button auto-walks to it.
+The current target shows a bouncing gold **!**. The quest tracker’s **Go** button auto-walks to it, across maps.
 
 ---
 
 ## Open questions
 
-1. Job EXP rewards for the starter quest.
+1. ✅ Job EXP rewards for the starter quest are set per chapter (`QUESTS.md`).
 2. Where each of the 4 archetype change quests starts (all at the Guild, or one NPC per archetype around town?).
 3. Is the Gadolinium Crystal a save/respawn point or teleporter?

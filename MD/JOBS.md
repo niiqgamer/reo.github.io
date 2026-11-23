@@ -112,7 +112,7 @@ supporter: tbd_4_1 … tbd_4_4
 | Step | What happens |
 |---|---|
 | 1 | Every new character is a **Beginner (C0)**, Job Lv cap 10. |
-| 2 | Talk to **Archetype Helper Sera** in Gadolinium plaza (tile 28, 27). She explains the 4 archetypes. Before Job Lv 10 she only teaches and says to come back. |
+| 2 | Talk to **Archetype Helper Sera** in Gadolinium plaza (tile 57, 62, on the Inn path). She explains the 4 archetypes. Before Job Lv 10 she only teaches and says to come back. |
 | 3 | **v20.5: automatic.** The moment the character has both **Job Lv 10** and **Basic Skill Lv 10** (§1b), whichever comes last, the quest **Archetype Trial** starts by itself and is tracked: defeat **1 Elite monster** in any field. No visit to Sera is needed to start it (talking to her still starts it as a fallback). It never appears in the Quests window list and cannot be abandoned. Older saves that already meet both requirements get it when loaded. |
 | 4 | Return to her. A choice window shows the 4 archetypes; the player picks **exactly one** (Choose → Confirm). |
 | 5 | The character becomes that archetype (**C1**). **Job Lv resets to 1** with a new cap of **50**. Reward: 500 Base EXP, 30 Yttrium and the full **10-piece class set** of that archetype (**Lv 10**, Common ✪, no random options), equipped at once; the Beginner pieces go to the bag (v20.7). |
@@ -120,7 +120,7 @@ supporter: tbd_4_1 … tbd_4_4
 
 - Requirement used: **Job Lv 10**. The earlier draft also required Base Lv 10; it was dropped to match the latest direction.
 - The archetype is the C1 tier for now. When each archetype gets its 4 classes, the same trial picks the archetype and a later step picks the class.
-- Elites per field: 1 per monster type (6 total in Fields 01–02), respawn 45–60 s. Expect the trial to take a while; Elites wear a golden circle at their feet.
+- Elites per field: 2 per monster type (6 per map), respawn 45–60 s. Elites wear a golden circle at their feet.
 
 ### C1 → C2 (planned)
 
@@ -139,8 +139,8 @@ Implementation rules:
 
 - v5: one **baseline prototype per archetype** is playable (see `ARCHETYPES.md`). It stands in for that archetype's classes until each class gets its own kit.
 
-- Prototype label **“Novice / ผู้ฝึกหัด”** must become **“Beginner”** (Thai name TBD, see below).
-- The prototype hotbar skills are **placeholders**; real skill lists will be defined per class/job.
+- ✅ The old prototype label “Novice” is gone; the game shows **Beginner** (the same word in Thai; a Thai name is still open, see Open questions 5).
+- The archetype skill kits are **prototypes**; real skill lists will be defined per class/job (`SKILL-SPEC.md`).
 
 ---
 

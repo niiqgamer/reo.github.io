@@ -1,6 +1,6 @@
 # Equipment Slots (10) and the hand-off for new items
 
-> Part of the REO docs. Status (v16): **all 10 slots have items for all 5 classes** (50 pieces: names in EN and TH, a drawing each, stats, drops and set bonuses). The checklist in §3 is kept for future slots.
+> Part of the REO docs. Status (v16, still true in v20.7): **all 10 slots have items for all 5 classes** (50 pieces: names in EN and TH, a drawing each, stats, drops and set bonuses). The checklist in §3 is kept for future slots.
 
 ## 1. The ten slots
 
@@ -46,13 +46,13 @@ An item id is `gear|<class>|<slot>|<tier level>|<rarity 1-5>|<set 0-2>`. The `<s
 
 ## 4. Stat budget guide (existing slots, per piece before roll)
 
-With `m` as above: weapon ATK = m×2.2; armor DEF m×0.9 and HP m×6; shoes (old legs) DEF m×0.6, HP m×3; shield (old off-hand) DEF m×0.7 and a hard-DEF %; bracelet (old necklace) HP m×10, SP m×2; ring CRIT m×0.08, HIT m×0.3; every piece also gives its class's primary stat m×0.35.
-Adding 4 more pieces that each give a normal budget will raise total power. Either lower each piece's share or re-run the balance tests (below) and re-tune.
+With `m` as above (current `gStats`): top headgear DEF m×0.6, HP m×4, FLEE m×0.3; mid headgear HP m×4, SP m×2.5; lower headgear DEF m×0.4, SP m×3; armor DEF m×0.9, HP m×6; weapon ATK m×2.2 (staff: weaponMATK); shield DEF m×0.9 and hard DEF rarity×1%; garment DEF m×0.5, HP m×5; shoes DEF m×0.5, FLEE m×0.6; ring CRIT m×0.08, HIT m×0.3; bracelet CRIT m×0.1, HP m×6; every piece also gives its class's primary stat m×0.35. Legacy pieces keep their old formulas (legs DEF m×0.6, HP m×3; off-hand DEF m×0.7 + hard DEF; necklace HP m×10, SP m×2).
+A new slot that gives a normal budget raises total power. Either lower each piece's share or re-run the balance simulator (`REOC.simulate`) and re-tune.
 
 ## 5. Check list before shipping new items
-- `node tests/test_combat.js` passes (88 checks).
+- The old `tests/test_combat.js` (88 checks) is no longer in the repo; check combat in the browser (`window.__reo.REOC`) and with a Playwright run instead.
 - Equip a new piece: stats appear in Status, CP changes, comparison panel shows differences.
-- Old saves still load (see the migration check in `tests/COMBAT-TEST-REPORT.md`).
+- Old saves still load (see the migration check in `COMBAT-TEST-REPORT.md`).
 - Rarity frames and ★ stars never overlap the +N refine label (top-right).
 
 ## 6. Open questions

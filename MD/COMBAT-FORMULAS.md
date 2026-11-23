@@ -1,7 +1,7 @@
 # Combat Formulas
 
 > Part of the REO docs. Reference: iRO Wiki Classic — Stats (https://irowiki.org/classic/Stats).
-> Code: `tests/combat.js` (same module the game runs). Lines marked **REO** are deliberate changes from classic.
+> Code: the `REOC` module near the top of the first `<script>` in `index.html` (`derive`, `physHit`, `magicHit`, `monHit`, `simulate`, `combatPower`). The old `tests/` folder is no longer in the repo. Lines marked **REO** are deliberate changes from classic.
 
 ## 1. Primary stats → substats
 
@@ -18,7 +18,7 @@
 | Max HP | `baseHP × (1 + VIT/100)` | iRO |
 | Max SP | `baseSP × (1 + INT/100)` | iRO |
 | Soft DEF | `⌊VIT × 0.8⌋` flat | iRO (≈) |
-| Hard DEF | armor % | iRO |
+| Hard DEF | armor % (+ War Cry 20%, Guardian Aura 8%, gear), max 70% | iRO |
 | Soft MDEF | `⌊INT / 2⌋` flat | **REO** (classic ≈ 1 per INT) |
 | Attack delay | `base × (1 − AGI×0.004 − DEX×0.001)`, min 0.2 s; ASPD = `200 − 50 × delay` | iRO (−0.4% / −0.1%), cap 190 |
 | Cast time | `base × (1 − DEX/150)` | iRO |
@@ -48,28 +48,9 @@ MATKroll = U(MATKmin, MATKmax)                                  // MATKmin/max a
 dmg = max(1, ⌊MATKroll × skill% × element × (1 − targetMDEF%) − targetSoftMDEF⌋)     // never misses
 ```
 
-## 3b. Overload (เกินพิกัด): magic critical — DRAFT, not in code or the simulator yet
+## 3b. Overload (เกินพิกัด): magic critical (in the game since v20)
 
-Overload is the magic counterpart of a physical critical hit. Spec from NIIQ; items marked ⚠ are not decided (see the list below).
-
-```
-over_dmg = ⌊(statusMATK + weaponMATK + mastery) × skill% × element × bonus × 1.3⌋     // Overload Damage (ดาเมจเกินพิกัด)
-over%    = CRIT × overMul − targetLUK/5                                              // Overload Chance (อัตราเกินพิกัด)
-```
-- `overMul` (Overload Multiple, ตัวคูณอัตราเกินพิกัด) is set per skill. If a skill does not state it, it is **1**.
-- Rolled **per hit** for True multi-hit skills (see `SKILL-SPEC.md` for hit types). Example: Fire Bolt Lv 10 rolls Overload 10 times per cast.
-- Compare physical: crit = `… × 1.4`, chance `CRIT × critMul − targetLUK/5`.
-
-**⚠ Open items**
-1. `statusMATK`, `weaponMATK` and `mastery` do not exist for magic. Today: `MATKroll = U(MATKmin, MATKmax)` from INT, × (1 + gear MATK%) (§1, §3).
-2. The formula has no `(1 − targetMDEF%)` and no `− targetSoftMDEF`. Does Overload ignore MDEF, as a physical crit ignores DEF?
-3. `overMul` below 1 with a flat `− targetLUK/5`: at `overMul` 0.5 and CRIT 1 the chance is 0 against any monster with LUK ≥ 3 (monster LUK is 5–13).
-4. Default `overMul` = 1 makes every magic skill able to Overload; physical only crits on basic attacks and Piercing Shot.
-5. Does the *Crit damage* ability (+10–30%) apply to Overload? Does Overload use the CRITICAL! floating text, or its own label?
-
-## 3b. Overload (เกินพิกัด): magic critical — DRAFT, not in code yet
-
-Overload is the magic counterpart of a physical critical hit. Spec from NIIQ; items marked ⚠ are assumptions waiting for a yes or no.
+Overload is the magic counterpart of a physical critical hit. Spec from NIIQ; items marked ⚠ are assumptions waiting for a yes or no. It is built in `magicHit` and in the simulator; an Overload hit shows orange floating text with its own label **OVERLOAD! / เกินพิกัด!** (`fctOver`).
 
 ```
 over_dmg = ⌊(statusMATK + weaponMATK + mastery) × skill% × element × bonus × 1.3 × (1 − targetMDEF%) − targetSoftMDEF⌋   // Overload Damage (ดาเมจเกินพิกัด)
@@ -84,7 +65,7 @@ over%    = max(0, CRIT + overBonus − targetLUK/5) × overMul                  
 - Compare physical: crit = `… × 1.4`, ignores DEF and FLEE, chance `CRIT × critMul − targetLUK/5` (§2).
 
 **⚠ Still open**
-1. Does the *Crit damage* ability (+10–30%) apply to Overload? Does Overload use the CRITICAL! floating text or its own label (for example OVERLOAD! / เกินพิกัด!)?
+1. Does the *Crit damage* ability (+10–30%) apply to Overload? (Today: no; `applyHit` only applies it to physical crits.) The label is OVERLOAD! / เกินพิกัด! in orange.
 2. How strong Overload should be. In the draft simulator (Lv 30, full tier-30 ★3 gear, CRIT ≈ 11, Fire Bolt Lv 5) it adds only about +1.0% damage at overMul 0.5 and ×1.3, +1.4% at overMul 1, +3.6% at overMul 2 with ×2.0. Spellcaster CRIT comes only from rings, bracelets and affixes, so it stays low.
 
 ## 4. Heal (iRO Classic)

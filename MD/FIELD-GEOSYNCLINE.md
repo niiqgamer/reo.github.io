@@ -6,31 +6,31 @@
 ## 1. Entry rules
 | Rule | Value |
 |---|---|
-| Gate | Town west gate, tile (2, 24) |
+| Gate | Town west gate, tile (2, 49) |
 | Requirement | Base Lv **25+** AND Combat Power **2,000+**. Both are checked at the portal and for World Map teleport |
 | If not met | The player is pushed back to the tile beside the gate and a toast shows the requirement and the player's own Lv and CP. The portal never opens |
-| Warning sign | Next to the gate: "Monster Lv.25+" with a red WARNING banner |
+| Warning sign | Next to the gate, tile (4, 45): "Monster Lv.25+" with a red WARNING banner |
 | Teleport | Needs a visited map (150 Scandium per map passed) and the same Lv and CP |
 
 ## 2. Travel
 | Portal | Tile | Goes to | You arrive |
 |---|---|---|---|
-| Town west gate | (2, 24) | Path to the Geosyncline | beside the east portal below |
-| Geosyncline east portal | (46, 22) | Gadolinium | beside the town west gate |
+| Town west gate | (2, 49) | Path to the Geosyncline | beside the east portal below |
+| Geosyncline east portal | (95, 45) | Gadolinium | beside the town west gate |
 
-Arrival follows the portal rule in `FIELD-01.md` (nearest walkable tile beside the matching portal). No monster spawns within 7 tiles of the portal, and monsters ignore the player for 3 s after any map change.
+Arrival follows the portal rule in `FIELD-01.md` (nearest walkable tile beside the matching portal). No monster spawns within 8 tiles of the portal, and monsters ignore the player for 3 s after any map change.
 
 ## 3. Look
-98 × 98 tiles (the original 49 × 49 layout scaled 2×; 3× monsters, 2 Elites per kind; portals sit 2 tiles from the map edge). Dark slate-brown ground with grey dead trees. **Fault cracks** (4 glowing teal fissures) are blocked tiles that only break where a road crosses; they never reach the map edge, so no area is cut off. 5 blocked pools of glowing water. **Ancient steles** with pulsing teal glyphs, teal crystals, mossy rocks, and two steles flanking the east portal. Roads: one east–west road (`y = 24 + round(sin(0.2x+1)·3)`) and one north–south road (`x = 22 + round(sin(0.17y)·3)`). Music: `geo` (76 BPM, harmonic minor, soft drums).
+98 × 98 tiles (the original 49 × 49 layout scaled 2×; 3× monsters, 2 Elites per kind; portals sit 2 tiles from the map edge). Dark slate-brown ground with grey dead trees. **Fault cracks** (4 glowing teal fissures) are blocked tiles that only break where a road crosses; they never reach the map edge, so no area is cut off. 5 blocked pools of glowing water. **Ancient steles** with pulsing teal glyphs, teal crystals, mossy rocks, and two steles flanking the east portal. Roads (on the 49 design grid, scaled ×2 in the game): one east–west road (`y = 24 + round(sin(0.2x+1)·3)`) and one north–south road (`x = 22 + round(sin(0.17y)·3)`). Music: `geo` (76 BPM, harmonic minor, soft drums).
 
 ## 4. Monsters (**aggressive**, with skills)
-Aggressive means a monster that sees the player inside its **aggro range** (Elites +1 tile) starts chasing at ×1.6 speed and attacks first, with a red "!" above its head. It gives up beyond 16 tiles. Respawn 8–15 s (Elite 45–60 s). Every type also has 1 Elite (rules in `FIELD-02.md`).
+Aggressive means a monster that sees the player inside its **aggro range** (Elites +1 tile) starts chasing at ×1.6 speed and attacks first, with a red "!" above its head. It gives up beyond 16 tiles. Respawn 8–15 s (Elite 45–60 s). Every type also has 2 Elites (rules in `FIELD-02.md`). Tiles in this file are on the 98 × 98 grid.
 
 | ID | Name (EN / TH) | Lv | Element | HP | ATK | Hard DEF | Soft DEF | MDEF | HIT | FLEE | Base / Job EXP | Scandium | Count | Aggro | Skills |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `faultcrawler` | Faultcrawler / ฟอลต์ครอว์เลอร์ | 25 | Earth | 2,000 | 78 | 22% | 22 | 8% | 90 | 36 | 750 / 480 | 120–180 | 8 + 1 Elite (east part, x 24–45) | 5.5 | tremor |
-| `tidewraith` | Tidewraith / ไทด์เรธ | 27 | Water | 2,300 | 84 | 8% | 16 | 25% | 96 | 44 | 880 / 560 | 140–210 | 7 + 1 Elite (middle, x 10–36) | 6 | undertow |
-| `stratagolem` | Strata Golem / สตราตาโกเลม | 30 | Earth | 3,200 | 100 | 26% | 26 | 12% | 104 | 24 | 1,060 / 680 | 170–260 | 5 + 1 Elite (west, x 3–24) | 4.5 | crust, debris |
+| `faultcrawler` | Faultcrawler / ฟอลต์ครอว์เลอร์ | 25 | Earth | 2,000 | 78 | 22% | 22 | 8% | 90 | 36 | 750 / 480 | 120–180 | 24 + 2 Elites (east part, x 48–90) | 5.5 | tremor |
+| `tidewraith` | Tidewraith / ไทด์เรธ | 27 | Water | 2,300 | 84 | 8% | 16 | 25% | 96 | 44 | 880 / 560 | 140–210 | 21 + 2 Elites (middle, x 20–72) | 6 | undertow |
+| `stratagolem` | Strata Golem / สตราตาโกเลม | 30 | Earth | 3,200 | 100 | 26% | 26 | 12% | 104 | 24 | 1,060 / 680 | 170–260 | 15 + 2 Elites (west, x 6–48) | 4.5 | crust, debris |
 
 ### Monster skills
 A skill puts a **red circle on the ground**; it lands after the wind-up and hits the player for `ATK × multiplier` (armor applies) only if the player is still inside. Move out of the circle to avoid it. A cast stops the monster while it winds up. First cast comes 35–85% of one cooldown after the fight starts.

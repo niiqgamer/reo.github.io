@@ -1,6 +1,7 @@
 # UI / UX
 
 > Part of the REO docs. Rules and glossary live in `REO-INSTRUCTIONS.md`.
+> Sections are in build order: a later section replaces what an earlier one says about the same thing (each says what it replaces). The newest are §23–§25 (v20.1–v20.5).
 
 ---
 
@@ -45,7 +46,7 @@
 | Player card | Portrait, name, **tier + class/job name**, Base Lv badge, **Job Lv**, HP / SP bars, **Base EXP bar, Job EXP bar** |
 | Wallet | Scandium, Yttrium, Lanthanum with icons (see `ECONOMY.md`) |
 | CP | Shown on player card or character window |
-| Idle panel | Auto-hunt switch, session time, defeated count, EXP/h, materials/h, claim offline rewards |
+| Idle panel | Idle button in the hotbar panel (§16), session time, defeated count, EXP, Scandium and materials earned, claim offline rewards |
 | Map banner | Subtitle, map name, coordinates, channel, online count |
 | Minimap | Whole map; dots: player (white/violet), NPC (gold), players (blue); click to walk |
 | Quest tracker | Title, objective, progress (e.g. “Job Lv 7 / 10”), **Go** button |
@@ -57,11 +58,11 @@
 | Toasts | Neutral and gold (level-up, quest complete, job change) |
 
 ### Changes required by the new design
-- Split EXP into **Base EXP** and **Job EXP** bars.
-- Replace “Gold” with the **three-currency wallet**.
-- Show **tier and class/job** instead of the fixed “Novice” label.
-- Character window: add **CP**, refine level and card slots per equipped item.
-- Add a **Dungeons** entry (daily dungeons + instance bosses) to the menu.
+- ✅ Split EXP into **Base EXP** and **Job EXP** bars.
+- ✅ Replace “Gold” with the **three-currency wallet**.
+- ✅ Show **tier and class/job** instead of the fixed “Novice” label.
+- ◐ Character window: **CP** and refine level per equipped item are done; card slots are still open.
+- ☐ Add a **Dungeons** entry (daily dungeons + instance bosses) to the menu (no dungeons yet).
 
 ---
 

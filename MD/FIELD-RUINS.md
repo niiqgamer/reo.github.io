@@ -6,31 +6,31 @@
 ## 1. Entry rules
 | Rule | Value |
 |---|---|
-| Gate | Town south gate, tile (24, 46) |
+| Gate | Town south gate, tile (49, 95) |
 | Requirement | Base Lv **30+** AND Combat Power **3,000+**. Both are checked at the portal and for World Map teleport |
 | If not met | The player is pushed back to the tile beside the gate and a toast shows the requirement and the player's own Lv and CP. The portal never opens |
-| Warning sign | Next to the gate: "Monster Lv.30+" with a red WARNING banner |
+| Warning sign | Next to the gate, tile (45, 93): "Monster Lv.30+" with a red WARNING banner |
 | Teleport | Needs a visited map (150 Scandium per map passed) and the same Lv and CP |
 
 ## 2. Travel
 | Portal | Tile | Goes to | You arrive |
 |---|---|---|---|
-| Town south gate | (24, 46) | Road to the Ruins | beside the north portal below |
-| Ruins north portal | (28, 2) | Gadolinium | beside the town south gate |
+| Town south gate | (49, 95) | Road to the Ruins | beside the north portal below |
+| Ruins north portal | (57, 2) | Gadolinium | beside the town south gate |
 
-Arrival follows the portal rule in `FIELD-01.md` (nearest walkable tile beside the matching portal). No monster spawns within 7 tiles of the portal, and monsters ignore the player for 3 s after any map change.
+Arrival follows the portal rule in `FIELD-01.md` (nearest walkable tile beside the matching portal). No monster spawns within 8 tiles of the portal, and monsters ignore the player for 3 s after any map change.
 
 ## 3. Look
-98 × 98 tiles (the original 49 × 49 layout scaled 2×; 3× monsters, 2 Elites per kind; portals sit 2 tiles from the map edge). Scorched black-red ground with rust-brick roads, charred trees with ember tips, **5 lava pools** (blocked), ember crystals. **Broken columns and burning braziers** line the north–south road in pairs every 5 tiles, plus random ones. Roads: north–south (`x = 24 + round(sin(0.16y+0.8)·4)`) and east–west (`y = 26 + round(sin(0.19x)·3)`). Orange embers float in the air. Music: `ruins` (104 BPM, double harmonic, driving drums, pulsing bass).
+98 × 98 tiles (the original 49 × 49 layout scaled 2×; 3× monsters, 2 Elites per kind; portals sit 2 tiles from the map edge). Scorched black-red ground with rust-brick roads, charred trees with ember tips, **5 lava pools** (blocked), ember crystals. **Broken columns and burning braziers** line the north–south road in pairs every 5 tiles, plus random ones. Roads (on the 49 design grid, scaled ×2 in the game): north–south (`x = 24 + round(sin(0.16y+0.8)·4)`) and east–west (`y = 26 + round(sin(0.19x)·3)`). Orange embers float in the air. Music: `ruins` (104 BPM, double harmonic, driving drums, pulsing bass).
 
 ## 4. Monsters (**aggressive**, with skills)
-Aggressive means a monster that sees the player inside its **aggro range** (Elites +1 tile) starts chasing at ×1.6 speed and attacks first, with a red "!" above its head. It gives up beyond 16 tiles. Respawn 8–15 s (Elite 45–60 s). Every type also has 1 Elite (rules in `FIELD-02.md`).
+Aggressive means a monster that sees the player inside its **aggro range** (Elites +1 tile) starts chasing at ×1.6 speed and attacks first, with a red "!" above its head. It gives up beyond 16 tiles. Respawn 8–15 s (Elite 45–60 s). Every type also has 2 Elites (rules in `FIELD-02.md`). Tiles in this file are on the 98 × 98 grid.
 
 | ID | Name (EN / TH) | Lv | Element | HP | ATK | Hard DEF | Soft DEF | MDEF | HIT | FLEE | Base / Job EXP | Scandium | Count | Aggro | Skills |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `cinderling` | Cinderling / ซินเดอร์ลิง | 32 | Fire | 3,000 | 104 | 10% | 24 | 22% | 112 | 54 | 1,250 / 800 | 190–290 | 8 + 1 Elite (north, y 5–24) | 6.5 | emberburst |
-| `magmaback` | Magmaback / แมกมาแบ็ค | 35 | Fire | 4,000 | 122 | 26% | 34 | 12% | 120 | 40 | 1,480 / 940 | 230–350 | 7 + 1 Elite (middle, y 16–38) | 5.5 | lavaspit |
-| `ashsentinel` | Ashen Sentinel / แอชเชนเซนทิเนล | 38 | Fire | 5,200 | 140 | 24% | 38 | 26% | 128 | 30 | 1,750 / 1,110 | 275–415 | 5 + 1 Elite (south, y 28–45) | 5 | inferno, ashwave |
+| `cinderling` | Cinderling / ซินเดอร์ลิง | 32 | Fire | 3,000 | 104 | 10% | 24 | 22% | 112 | 54 | 1,250 / 800 | 190–290 | 24 + 2 Elites (north, y 10–48) | 6.5 | emberburst |
+| `magmaback` | Magmaback / แมกมาแบ็ค | 35 | Fire | 4,000 | 122 | 26% | 34 | 12% | 120 | 40 | 1,480 / 940 | 230–350 | 21 + 2 Elites (middle, y 32–76) | 5.5 | lavaspit |
+| `ashsentinel` | Ashen Sentinel / แอชเชนเซนทิเนล | 38 | Fire | 5,200 | 140 | 24% | 38 | 26% | 128 | 30 | 1,750 / 1,110 | 275–415 | 15 + 2 Elites (south, y 56–90) | 5 | inferno, ashwave |
 
 ### Monster skills
 A skill puts a **red circle on the ground**; it lands after the wind-up and hits the player for `ATK × multiplier` (armor applies) only if the player is still inside. Move out of the circle to avoid it. A cast stops the monster while it winds up. First cast comes 35–85% of one cooldown after the fight starts.

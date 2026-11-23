@@ -36,7 +36,7 @@ What is done:
 - "Keep me signed in" off = the session lasts for that tab only.
 
 What is **not** secure, because there is no server:
-- Accounts, hashes and saves live in this browser's `localStorage`. Anyone with access to the device and browser tools can read, copy or edit them, including the save (gold, items).
+- Accounts, hashes and saves live in this browser's `localStorage`. Anyone with access to the device and browser tools can read, copy or edit them, including the save (Scandium, Yttrium, items).
 - Accounts do **not** follow the player to another browser or device. Clearing browser data deletes the account and its save.
 - There is **no password reset**: nobody can verify who you are. The only way out of a forgotten password is to delete the data.
 - The lockout can be bypassed by clearing storage.

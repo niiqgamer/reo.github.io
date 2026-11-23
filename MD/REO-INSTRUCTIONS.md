@@ -70,25 +70,21 @@ Every building door is connected to the main road with a cobblestone path.
 
 ### NPCs
 
-| ID | Name (EN / TH) | Tile | Role |
+| ID | Name (EN / TH) | Tile (98 grid, after placement) | Role |
 |---|---|---|---|
-| `lumi` | Guide Lumi / ผู้นำทาง ลูมิ | (26, 21) | Starter quest giver |
-| `bors` | Bors the Merchant / พ่อค้าบอร์ส | (31, 18) | Gives potions, shop |
-| `veyra` | Captain Veyra / กัปตันเวย์รา | (19, 26) | Combat and idle tips |
-| `helper` | Archetype Helper Sera / ผู้แนะแนวอาร์คีไทป์ เซร่า | (28, 27) | Explains the 4 archetypes; Archetype Trial at Job Lv 10 |
+| `lumi` | Guide Lumi / ผู้นำทาง ลูมิ | (55, 43) | Main quest giver |
+| `bors` | Bors the Merchant / พ่อค้าบอร์ส | (59, 36) | Gives potions, shop |
+| `veyra` | Captain Veyra / กัปตันเวย์รา | (37, 61) | Combat and idle tips, side quests |
+| `helper` | Archetype Helper Sera / ผู้แนะแนวอาร์คีไทป์ เซร่า | (57, 62) | Explains the 4 archetypes; Archetype Trial turn-in (the trial starts by itself at Job Lv 10 + Basic Skill Lv 10) |
+| `narvis` | Narvis / นาร์วิส | (41, 57) | Pocket Dimension storage (Basic Skill Lv 5); one in every main town |
 
-NPCs turn to face the player when within 3.5 tiles. Click an NPC → walk to an adjacent tile → open dialog on arrival.
+Anchors and the placement rule: `GADOLINIUM.md` §2. NPCs turn to face the player when within 3.5 tiles. Click an NPC → walk to an adjacent tile → open dialog on arrival.
 
-### Starter quest chain — “A New Beginning / จุดเริ่มต้นใหม่”
+### Main quest — “A New Beginning / จุดเริ่มต้นใหม่”
 
-| Stage | Objective | Reward |
-|---|---|---|
-| 0 | Talk to Guide Lumi | +40 Base EXP |
-| 1 | Visit Bors at the Tool Dealer | +5 Red Potions, +60 Base EXP |
-| 2 | Touch the Gadolinium Crystal | Light pillar effect, +180 Base EXP |
-| 3 | Complete | — |
+9 chapters: Lumi → Bors (+5 Red Potions) → touch the Gadolinium Crystal (light pillar) → 3 kills in Field 01 → reach Field 02 → 3 kills in Field 02 → reach Field 03 → 3 kills in Field 03 → return to Lumi. Rewards are Base EXP, Job EXP and Yttrium per chapter (`QUESTS.md`).
 
-The current target shows a bouncing gold **!** marker. The quest tracker’s **Go** button auto-walks to it.
+The current target shows a bouncing gold **!** marker. The quest tracker’s **Go** button auto-walks to it, across maps.
 
 ---
 
@@ -127,10 +123,10 @@ The current target shows a bouncing gold **!** marker. The quest tracker’s **G
 
 | Component | Contents |
 |---|---|
-| Player card | Chibi portrait, name, job, Lv badge, HP / SP / EXP bars, Gold |
-| Idle panel | Auto-hunt switch, session time, defeated count, EXP/h, Gold/h, claim offline rewards |
+| Player card | Chibi portrait, name, job, Lv badge, HP / SP / Base EXP / Job EXP bars |
+| Idle panel | Idle button inside the hotbar panel, session time, defeated count, EXP and Scandium earned, claim offline rewards (`IDLE.md`, `UI-UX.md` §16) |
 | Map banner | Subtitle, town name, coordinates, channel, online count |
-| Minimap | Whole-map iso view; dots: player (white/violet), NPC (gold), players (blue); click to walk |
+| Minimap | Whole-map iso view; dots: player (white/violet), NPC (gold), players (blue); click to walk; globe button / **M** opens the World Map (`WORLD-MAP.md`) |
 | Status islands | FPS, ping (ms), players online, clock: four islands left of the minimap (portrait: one row at the top). See `STATUS.md` |
 | Quest tracker | Title, objective, Go button |
 | Chat | Tabs All / Party / Guild / System, input (Enter to focus), speech bubbles over heads |
@@ -173,12 +169,12 @@ Skills belong to the archetype, not to a fixed list. The player chooses which sk
 
 - **Single self-contained HTML file**: HTML + CSS + JS inline, Google Fonts only. No build step.
 - **Canvas 2D** for the world; HTML overlay for UI (`#ui`, `pointer-events: none` except panels).
-- **Ground** pre-rendered once to an offscreen canvas at 1.25× scale; each frame draws only the visible source rect.
+- **Ground** drawn in chunks of up to 2048 px to offscreen canvases (`groundGen` / `groundChunk`); the scale is `groundScale(m)` (at most `GS`, lower on big maps to stay inside a memory budget). Only the current map and the one ahead (`AHEAD`) stay in memory. Each frame draws only the visible part.
 - **Draw order per frame:** background → ground → water glints → click marker → depth-sorted objects and characters → effects → labels (signs, names, bubbles, quest marks) → screen-space motes and vignette.
 - **Culling:** skip objects outside the view plus a margin.
-- **Key constants:** `TW=64, TH=32, N=49, GS=1.25`; iso helper `P(x, y, z)`.
-- **Input:** pointer events; sprite hit-test before tile hit-test; wheel and +/− zoom (0.6–1.8×).
-- **State:** single `S` object (level, EXP, HP, SP, gold, potions, quest stage, idle data, settings).
+- **Key constants:** `TW=64, TH=32, N0=49` (the design grid), `MAPK` (2 for every map, so every map is 98 × 98), `N` = size of the **current** map (change maps with `setCur(m)`), `GS=1.25` (1 in Lite mode); iso helper `P(x, y, z)`.
+- **Input:** pointer events; sprite hit-test before tile hit-test; wheel and +/− zoom in 5 steps (`ZL`: 0.6, 0.8, 1, 1.25, 1.55).
+- **State:** single `S` object (levels, EXP, HP, SP, Scandium / Yttrium / Lanthanum, inventory, gear, skills, quests, idle data, settings). Saves carry `mv` (map version, now 2); see `ACCOUNTS.md`.
 
 ### Planned production direction
 
@@ -213,9 +209,9 @@ Skills belong to the archetype, not to a fixed list. The player chooses which sk
 ## 10. Roadmap
 
 1. ✅ **Field maps 01–03** with monsters, Elites and the Gadolith boss
-2. ◐ **Job system:** Archetype Trial done (v5.1); the 16 classes and 32 jobs are still open (`JOBS.md`)
+2. ◐ **Job system:** Basic Skill tree (v20.4) and the automatic Archetype Trial with the class-set reward (v20.7) done; the 16 classes and 32 jobs are still open (`JOBS.md`)
 3. ✅ **Inventory and equipment** (10 slots, compare, multi-sell, refine)
-4. **Party and guild** with real networking
+4. ◐ **Party and guild:** party rules, sharing and the Social window work against simulated players (v20.2–20.3); real networking and guilds are still open
 5. ✅ **Path to the Geosyncline and Road to the Ruins** (v19): gated by Lv and CP, aggressive monsters with skills, no boss yet
 6. **Next regions** named after rare-earth elements (e.g. Neodymium, Europium, Cerium)
 7. ◐ **Sound and music:** generated 8-bit audio done (v18); volume sliders still open (`AUDIO.md`)

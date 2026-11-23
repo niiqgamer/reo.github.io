@@ -19,7 +19,8 @@ Assets load in the background. The player only sees a loading screen when someth
 
 - Each map has a **ground texture** (the expensive asset). It is built in **slices of about 4 ms per frame** in the background, so gameplay keeps running.
 - While someone is waiting (loading screen visible), the build budget rises to about 40 ms per frame.
-- After boot, the **neighbor maps** of the current map are prefetched. On phones (Lite mode), only the **current map and the one map ahead** stay in memory (`AHEAD`: Town→01→02→03, and 03→02); every other ground is freed. That keeps phones at about 39 MB for ground textures. Going back one map can show the loading screen for a moment. Desktops keep the neighbors.
+- **v20 (all devices):** only the **current map and the one map ahead** stay in memory (`AHEAD`: Town→01→02→03, 03→02, Geosyncline→Town, Ruins→Town); every other ground is freed on each map change and the one ahead is queued for a background build. Going back can show the loading screen for a moment.
+- The ground is drawn in **chunks** of up to 2048 px (`groundGen` / `groundChunk`). Its scale per map is `groundScale(m)`: at most 1.25 (1 in Lite mode), lowered on big maps so one ground stays inside a pixel budget (`GROUND_BUDGET`: 40 M px, Lite 24 M px).
 - The loading screen shows a title, a progress bar, and a rotating tip. Tips are in both languages.
 - Clicks are blocked only while the loading screen is visible.
 
@@ -32,4 +33,4 @@ Assets load in the background. The player only sees a loading screen when someth
 ## Open questions
 
 1. In production, which assets are streamed: sprite atlases per map, monster sprites, audio?
-2. Should the loader show a tip about the current map (e.g. Field 02 recommended CP 900)?
+2. Should the loader show a tip about the current map (e.g. Field 02 recommended CP 450)?
