@@ -16,10 +16,12 @@
 | ระยะ | Maximum range in tiles |
 | เงื่อนไขก่อนเรียน | Prerequisite skills. “None” means it can be learned right away |
 | อัตราเกินพิกัด | `overMul` for magic (`COMBAT-FORMULAS.md` §3b). **Not stated = 0: the skill cannot Overload** |
-| คูลดาวน์ (Cooldown) | How long **this same skill** is locked after it is used. Starts when the **cast ends**. 0 s means it can be cast again at once (only the Global Delay still applies) |
-| Global Delay | The delay between this skill and the **next skill** (any skill). Each skill states its own value. ⚠ Assumed to start when the cast ends and to leave basic attacks free |
+| ร่ายแปรผัน (VCT) | Variable cast time in seconds; DEX and INT shorten it (`COMBAT-FORMULAS.md` §2b). Not stated = 0 |
+| ร่ายคงที่ (FCT) | Fixed cast time in seconds; only gear shortens it. Not stated = 0 |
+| คูลดาวน์ (Cooldown) | How long **this same skill** is locked after it is used. Starts when the **cast ends** (in the game since v20.9; before that it started with the cast). Only gear shortens it. 0 s means it can be cast again at once (only the Global Delay still applies) |
+| Global Delay | The delay between this skill and the **next skill** (any skill). Each skill states its own value. Starts when the cast ends and leaves basic attacks free. Only gear shortens it |
 | รายละเอียด | What the skill does, with the % of ATK or MATK |
-| Per level | What changes at each level: hits, SP, cast time |
+| Per level | What changes at each level: hits, SP, VCT / FCT |
 
 ## 2. Hit types
 
@@ -48,7 +50,7 @@ Today’s code already rolls damage per hit (a skill with `hits` loops and calls
 | Global Delay | **1.4 s** before the next skill (any skill) |
 | รายละเอียด | Hits the enemy with fireballs. Each fireball deals Fire-element magic damage equal to **100% MATK** |
 
-| Lv | Fireballs | Total | Gap | Volley length ⚠ | SP | Cast |
+| Lv | Fireballs | Total | Gap | Volley length ⚠ | SP | VCT (FCT 0) |
 |---|---|---|---|---|---|---|
 | 1 | 1 | 100% | – | 0 s | 12 | 0.5 s |
 | 2 | 2 | 200% | 0.3 s | 0.3 s | 14 | 0.8 s |
@@ -61,7 +63,7 @@ Today’s code already rolls damage per hit (a skill with `hits` loops and calls
 | 9 | 9 | 900% | 0.2 s | 1.6 s | 28 | 2.9 s |
 | 10 | 10 | 1,000% | 0.2 s | 1.8 s | 30 | 3.2 s |
 
-Pattern: fireballs = Lv; SP = 12 + 2 × (Lv − 1); cast = 0.5 + 0.3 × (Lv − 1) s (reduced by DEX as before, `× (1 − DEX/150)`).
+Pattern: fireballs = Lv; SP = 12 + 2 × (Lv − 1); VCT = 0.5 + 0.3 × (Lv − 1) s, FCT 0 (VCT is cut by `× (1 − √((DEX × 2 + INT) / 530))`, `COMBAT-FORMULAS.md` §2b).
 
 ⚠ Assumptions (built into the game, not stated by NIIQ): the first fireball is released the moment the cast ends and the next ones follow every gap (so volley length = (fireballs − 1) × gap; Lv 6 is therefore shorter than Lv 5). A fireball takes (gap − 0.02) s to fall (0.28 s at Lv 1–5, 0.18 s at Lv 6–10) and deals its damage when it lands. If the target dies, fireballs not yet released are never released; a fireball already falling just fizzles. The character is free to act while the volley is still falling. SP is not refunded when a volley stops early.
 
@@ -146,7 +148,7 @@ Pattern Lv 1–9: Max SP +Lv%, regen +(8 + 2 × Lv)%, cost −Lv%; Lv 10 is a ju
 | Global Delay | 1 s at every level |
 | รายละเอียด | ตั้งสมาธิอันแน่วแน่ที่จะดึงทุกพลังของจักรวาล มาเพิ่มอัตราเกินพิกัดให้ตัวเองและเพื่อน |
 
-| Lv | Overload Rate | Duration | Cast | SP |
+| Lv | Overload Rate | Duration | VCT (FCT 0) | SP |
 |---|---|---|---|---|
 | 1 | +1% | 20 s | 1.0 s | 50 |
 | 2 | +2% | 40 s | 1.2 s | 65 |
@@ -158,7 +160,7 @@ SP = 35 + 15 × Lv (lowered by Mana Flow like every skill).
 
 How it is built:
 - The bonus is added to the base Overload Rate before the target's LUK and the skill's overMul: `max(0, CRIT + bonus − targetLUK/5) × overMul` (`COMBAT-FORMULAS.md` §3b). It does not raise physical CRIT.
-- Self Cast (NIIQ: the spec's “Instant Cast” meant “press and it casts, no target needed”). The cast time in the table applies, shortened by DEX like every spell; the buff takes effect the moment the cast ends.
+- Self Cast (NIIQ: the spec's “Instant Cast” meant “press and it casts, no target needed”). The VCT in the table applies, shortened by DEX and INT like every spell (FCT 0); the buff takes effect the moment the cast ends.
 - Party members are simulated players (no combat stats yet), so the buff only works on the caster; party members in town within the 12 × 12 area get the visual effect. It will apply to them when party combat exists.
 - Recasting refreshes the duration and replaces the bonus with the new level's.
 - Idle casts it when the target is in range and the buff is not up. The simulator (CP, offline estimate) does the same at Lv 5.
@@ -171,7 +173,7 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 - **Every skill of every archetype, active or passive, is raised by hand by the player.** Nothing is learned for free.
 - When the class changes (Beginner → archetype) Job Lv resets to 1, so the character starts with **no points** and must gain Job Lv first (`JOBS.md`).
 
-**In the game now:** every skill starts at Lv 0 (not learned) and costs 1 point per level. Since v20.9 points are spent in the **Skills Tree** as a draft: tap a skill, plan levels with ◀ ▶, then **Learn** (Reset drops the draft; `UI-UX.md` §26). A skill at Lv 0 cannot be used (a toast says so; Idle skips it; its hotbar slot is greyed). A C1 class (Job Lv cap 50) gets 49 points in total; Beginner (cap 10) gets 9.
+**In the game now:** every skill starts at Lv 0 (not learned) and costs 1 point per level. Since v20.10 points are spent in the **Skills Tree** as a draft: tap a skill, plan levels with ◀ ▶, then **Learn** (Reset drops the draft; `UI-UX.md` §26). A skill at Lv 0 cannot be used (a toast says so; Idle skips it; its hotbar slot is greyed). A C1 class (Job Lv cap 50) gets 49 points in total; Beginner (cap 10) gets 9.
 - **Fire Bolt** has Lv 1–10 (§3).
 - **Overload Energy** has Lv 1–5 (§3d); **Mana Flow** Lv 1–10 and **Elemental Attunement** Lv 1–5 (§3b, §3c): the first passives with levels.
 - **Every other skill has one level** (1 point to learn it, the prototype numbers) until its levels are designed. ⚠ NIIQ has not given per-level effects for them yet.
@@ -181,7 +183,7 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 **⚠ Still open:** points reset (respec), whether unspent points carry over on class change (the answer so far is no, because Job Lv resets), the max level and per-level effect of every skill except Fire Bolt.
 
 ## 5. Hotbar
-The player chooses, for each hotbar slot, **which skill and which level** goes in it. v20.9: in the Skills Tree, ◀ ▶ under a learned skill pick the level and dragging the tile puts that level on the slot (`UI-UX.md` §26). The Hotbar setup drop-downs were removed in v20.9. A slot filled with no level picked uses the highest level learned. A slot uses that level’s own SP cost, cast time and number of hits, and a level above the one learned is not possible. Example: Fire Bolt Lv 3 on slot 1 and Fire Bolt Lv 10 on slot 2. The 10 slots are free: a slot holds a skill or a usable item, dragged from the bag or the Skills Tree (`UI-UX.md` §25). The default layout puts skills on 1–7 and Fly Wing, Red Potion and Blue Potion on 8, 9 and 0. Auto-potion uses the slot that holds Red Potion (HP below 35%) or Blue Potion (SP below 15%); if no slot holds it, it does nothing.
+The player chooses, for each hotbar slot, **which skill and which level** goes in it. v20.10: in the Skills Tree, ◀ ▶ under a learned skill pick the level and dragging the tile puts that level on the slot (`UI-UX.md` §26). The Hotbar setup drop-downs were removed in v20.10. A slot filled with no level picked uses the highest level learned. A slot uses that level’s own SP cost, cast time and number of hits, and a level above the one learned is not possible. Example: Fire Bolt Lv 3 on slot 1 and Fire Bolt Lv 10 on slot 2. The 10 slots are free: a slot holds a skill or a usable item, dragged from the bag or the Skills Tree (`UI-UX.md` §25). The default layout puts skills on 1–7 and Fly Wing, Red Potion and Blue Potion on 8, 9 and 0. Auto-potion uses the slot that holds Red Potion (HP below 35%) or Blue Potion (SP below 15%); if no slot holds it, it does nothing.
 
 **Decided:** Fire Bolt has a 0 s cooldown, so levels do not block each other. After Lv 2 the player can cast Lv 10 straight away; only the Global Delay (1.4 s) has to pass.
 
@@ -201,7 +203,7 @@ New side effect of stopping fireballs when the target dies: CP counts damage dea
 1b. Overload Energy: party members without combat stats (§3d).
 2. Potion and wing slots (§5).
 3. Respec (reset skill points).
-4. Global Delay for the other skills, and whether it really starts when the cast ends (it does in the game).
+4. Global Delay for the other skills (0 for now), and FCT values for every spell (0 for now). Items that lower VCT, FCT or Global Delay are still to be designed.
 5. Fireball timing assumptions and the SP refund (§3).
 6. Overload strength, the *Crit damage* ability (not applied to Overload in the game) and the label (OVERLOAD! / เกินพิกัด!, orange) (`COMBAT-FORMULAS.md` §3b).
 7. Supporter staff: left as it is (+10% MATK, no weaponMATK) until classes are split.

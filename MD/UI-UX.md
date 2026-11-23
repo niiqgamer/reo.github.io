@@ -366,10 +366,10 @@ These three windows, and the **Item Detail** window that opens from them, now us
 | Hit | Perfect Hit |
 | Critical Rate | Critical Damage (`+40%`, the crit multiplier ×1.4) |
 | Overload Rate | Overload Damage (`+30%`, the Overload multiplier ×1.3) |
-| Variable Casting (`−(DEX/150)%`) | Fixed Casting |
+| Variable Casting (`−(1 − vctMul)%`: `√((DEX×2+INT)/530)` and gear) | Fixed Casting (`−%` from gear) |
 | Ignore DEF | Ignore Magic DEF |
 
-- **Placeholders:** Global Delay, Perfect Hit, Fixed Casting, Ignore DEF and Ignore Magic DEF have **no system yet** (nothing raises them), so they show `0%` / `0 sec`; hovering says so. **Overload Rate** shows the base chance (= CRIT); each magic skill multiplies it by its own Overload rate (`COMBAT-FORMULAS.md` 3b).
+- **Placeholders:** Perfect Hit, Ignore DEF and Ignore Magic DEF have **no system yet** (nothing raises them), so they show `0%`; hovering says so. **Fixed Casting** and **Global Delay** show the gear reduction (`−x%`); no item gives it yet, so they read `0%` with the same hover note (v20.9). **Overload Rate** shows the base chance (= CRIT); each magic skill multiplies it by its own Overload rate (`COMBAT-FORMULAS.md` 3b).
 - **Removed from Status:** kills / deaths record, the EXP bars (the player card has them), weapon and armor type rows.
 
 **Inventory (440 px wide)**
@@ -529,7 +529,7 @@ Simulated players: about a quarter already have a party and a third already have
 
 ## 24. Basic Skill and Pocket Dimension windows (v20.4)
 
-**Skills window.** *Replaced in v20.9 by the Skills Tree (§26).* The Basic Skill levels and what each teaches now show in the Basic Skill tile and its detail box.
+**Skills window.** *Replaced in v20.10 by the Skills Tree (§26).* The Basic Skill levels and what each teaches now show in the Basic Skill tile and its detail box.
 
 **Pocket Dimension window** (`storage`, 640 × 380, icon: cube). Hint line, two tabs (Bag · Dimension), a 10 × 3 grid in the light-window cell style, then both capacities ("Bag slots 12/100 · Dimension slots 4/300") and the page arrows. Click a cell to move it to the other side. Rules: `ITEMS.md` §7.
 
@@ -548,7 +548,7 @@ Simulated players: about a quarter already have a party and a third already have
 | Dragged | Result |
 |---|---|
 | Usable item from the bag | Goes on the slot. The bag count does not change. |
-| Active skill of this archetype (or a Basic Skill active) | Goes on the slot at the level picked with the tile’s ◀ ▶ arrows (v20.9); with no pick, at the highest learned level. |
+| Active skill of this archetype (or a Basic Skill active) | Goes on the slot at the level picked with the tile’s ◀ ▶ arrows (v20.10); with no pick, at the highest learned level. |
 | Another hotkey slot | Moves there. If the target has something, the two swap. |
 | Gear, materials, quest or cash items, worn pieces | Refused. Notice: "This item can't be placed here." (ไอเท็มนี้ไม่สามารถวางที่นี่ได้) |
 | Passive skill | Refused. Notice: "Passive skills can't go on the hotkey bar." (สกิลแบบ Passive ใส่บนแถบ hotkey ไม่ได้) |
@@ -563,9 +563,9 @@ While a drag is over the bar, the slot under the pointer shows a **gold** ring w
 
 **Free slots.** A slot is not tied to one skill or item. The same item can sit on more than one slot. On a class change, skills that the new archetype does not have are removed from the bar, the empty skill slots are filled with the new skills (the four archetype skills first, then First Aid and Heavy Strike), and items stay where they are.
 
-**Hotkey setup.** Removed in v20.9: slots are filled only by drag and drop. The level comes from the Skills Tree arrows (§26).
+**Hotkey setup.** Removed in v20.10: slots are filled only by drag and drop. The level comes from the Skills Tree arrows (§26).
 
-## 26. Skills Tree window (v20.9)
+## 26. Skills Tree window (v20.10)
 
 Replaces the old Skills list (§24). Window `skill`, title **Skills Tree / ผังสกิล / スキルツリー** with a sparkle icon, **440 px wide, height fits the content** (the same frame as Status and Bag).
 
@@ -599,12 +599,12 @@ The pill shows the learned level. A learned active with levels (Fire Bolt, Overl
 - the 76 px tile and "**Name Lv.learned/max**" in the line colour; chips: archetype, then Passive, or the targeting (**Self Cast** / **Target Cast**) and the kind (Physical, Magic · element, Heal, Buff, Zone, Movement);
 - the description;
 - **Level 1 … Level max**: what each level gives (Fire Bolt: fireballs, total % MATK, SP; Overload Energy: Overload Rate, duration, SP; Mana Flow / Elemental Attunement: the passive effect; Basic Skill: what the level teaches; a one-level active: SP and range). The learned level is bold, higher levels are faded. One-level passives have no level list;
-- **In details** (actives only): a table Lv | VCT (cast time before DEX) | FCT (fixed cast, no system yet: –) | CD | Delay (Global Delay), the learned row tinted.
+- **In details** (actives only): a table Lv | VCT (Variable Cast, before DEX/INT and gear) | FCT (Fixed Cast; 0 shows as –) | CD | Delay (Global Delay), base values from the skill data (`vct`, `fct`, `cd`, `gd`, `COMBAT-FORMULAS.md` §2b), the learned row tinted. This replaces the old Skills list line "Cast x s (VCT a + FCT b)" from v20.9.
 SP shown is the real cost (after Mana Flow).
 
 **Footer.** "Skill Points : spent / pool" (pool = every point the class can earn: Beginner 9, C1 49), the draft cost while there is one ("Learn uses N"), then **Learn** (blue) and **Reset** (grey). The old Hotbar setup drop-downs are gone (§25).
 
-**Skill icons (v20.9).** Every skill has its own duotone icon (`SKI`, 32 × 32 grid, lines in `currentColor`, class `a` = soft fill). Tiles colour them (white on actives, line colour on passives); the hotkey bar and drag ghost show them white on the line gradient. The element no longer changes the icon colour.
+**Skill icons (v20.10).** Every skill has its own duotone icon (`SKI`, 32 × 32 grid, lines in `currentColor`, class `a` = soft fill). Tiles colour them (white on actives, line colour on passives); the hotkey bar and drag ghost show them white on the line gradient. The element no longer changes the icon colour.
 
 | Line | Skill | Icon |
 |---|---|---|

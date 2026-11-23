@@ -1541,7 +1541,7 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .P .win.lt .inv-fix.sto .inv-grid{gap:4px}
 .win.lt .inv-fix.sto .lt-tabs button.on{background:var(--lb);border-color:var(--lb);color:#fff}
 .inv-fix.sto .inv-row{flex-wrap:wrap;gap:6px 10px}
-/* v20.9 Skills Tree window: a tab per class line, a 5-column grid of skill tiles, the selected skill, Learn / Reset.
+/* v20.10 Skills Tree window: a tab per class line, a 5-column grid of skill tiles, the selected skill, Learn / Reset.
    --ac is the archetype colour, --ag its gradient. Active = colour fill + white icon, passive = white + colour line and icon, not learned = grey */
 #wins .win.lt[data-w=skill]{--wiw:440px;--wih:auto}
 .skt{display:flex;flex-direction:column;gap:8px}
@@ -1787,7 +1787,7 @@ const ARCH={
 
 /* ---------- skills (prototype skill level 5) ----------
  kind: phys | magic | heal | buff | zone | move
- aoe: radius in tiles; at: "self" | "target". range in tiles. cast in seconds (before DEX). */
+ aoe: radius in tiles; at: "self" | "target". range in tiles. vct / fct: variable / fixed cast time in seconds (v20.9; vct is shortened by DEX and INT, fct only by gear). */
 const SK={
  // beginner
  bash:{arch:"beginner",kind:"phys",ratio:2.0,sp:5,cd:5,range:1.6,ic:"sword"},   // v20.4: "Heavy Strike", Basic Skill Lv 4 (JOBS.md §1b): 200% ATK, SP 5, cooldown 5 s, no cast, range 1.6 tiles (= Beginner basic attack)
@@ -1802,15 +1802,15 @@ const SK={
  arrow_shower:{arch:"ranger",kind:"phys",ratio:.9,sp:14,cd:4,range:12,aoe:1.6,at:"target",ranged:true,ic:"rain"},
  piercing_shot:{arch:"ranger",kind:"phys",ratio:3.2,ignoreDef:.5,canCrit:true,critMul:2,sp:18,cd:6,range:12,ranged:true,ic:"pierce"},
  evasive_leap:{arch:"ranger",kind:"move",leap:3,buff:"leap",dur:4,sp:10,cd:10,ic:"wing"},
- // spellcaster — Casting (DEX shortens cast) + elemental weakness; spells never miss
- fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.0,hits:5,sp:20,cd:0,gd:1.4,cast:1.7,gap:.3,range:7,overMul:.5,lv:5,ic:"flame"},   // v20: this is the Lv 5 row; skAt() gives every level (SKILL-SPEC.md)
- frost_nova:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.6,sp:20,cd:5,cast:.6,aoe:2.5,at:"self",freeze:.4,freezeDur:2,ic:"snow"},
- lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:3.8,sp:22,cd:3,cast:1.6,range:7,ic:"bolt"},
- stone_spike:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:2.6,sp:16,cd:2,cast:1.0,range:7,stunChance:.2,stun:1,ic:"spike"},
- overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:120,sp:110,cd:60,gd:1,cast:2,area:6,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 50/65/80/95/110
+ // spellcaster — Casting (DEX and INT shorten the variable cast) + elemental weakness; spells never miss
+ fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.0,hits:5,sp:20,cd:0,gd:1.4,vct:1.7,fct:0,gap:.3,range:7,overMul:.5,lv:5,ic:"flame"},   // v20: this is the Lv 5 row; skAt() gives every level (SKILL-SPEC.md)
+ frost_nova:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.6,sp:20,cd:5,vct:.6,fct:0,aoe:2.5,at:"self",freeze:.4,freezeDur:2,ic:"snow"},
+ lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:3.8,sp:22,cd:3,vct:1.6,fct:0,range:7,ic:"bolt"},
+ stone_spike:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:2.6,sp:16,cd:2,vct:1.0,fct:0,range:7,stunChance:.2,stun:1,ic:"spike"},
+ overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:120,sp:110,cd:60,gd:1,vct:2,fct:0,area:6,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 50/65/80/95/110
  // supporter — Sustain: Heal (classic formula) + overheal turns into a Grace shield; buffs reach 15 tiles
  heal:{arch:"supporter",kind:"heal",lvl:5,sp:13,cd:1,range:15,ic:"plus"},
- holy_light:{arch:"supporter",kind:"magic",elem:"holy",ratio:2.0,sp:15,cd:1.5,cast:.8,range:9,ic:"sun"},
+ holy_light:{arch:"supporter",kind:"magic",elem:"holy",ratio:2.0,sp:15,cd:1.5,vct:.8,fct:0,range:9,ic:"sun"},
  blessing:{arch:"supporter",kind:"buff",buff:"blessing",dur:120,sp:24,cd:30,range:15,ic:"star"},
  sanctuary:{arch:"supporter",kind:"zone",dur:8,radius:2.5,healPct:.04,ratio:.5,elem:"holy",sp:35,cd:18,ic:"halo"}
 };
@@ -1862,13 +1862,16 @@ function derive(p){
   const hardDef=Math.min(.7,A.armor+(b.warCry?.20:0)+(b.guard?.30:0)+(has("guardian_aura")?PASSIVE.guardian_aura.def:0));
   const mdef=Math.min(.6,.05+(has("guardian_aura")?PASSIVE.guardian_aura.mdef:0));
   const softMdef=fl(s.int/2);   // REO: half of classic's ~1 per INT
-  // iRO: cast time x (1 - DEX/150)
-  const castMul=Math.max(0,1-s.dex/150);
+  // v20.9 (iRO Renewal): cast = VCT x vctMul + FCT x fctMul. Stats cut VCT by sqrt((DEX*2+INT)/530) (gone at 530);
+  // FCT, cooldown and Global Delay are cut only by gear abilities (ab.vct / ab.fct / ab.cdr / ab.gd, in %)
+  const GA=(p.gear&&p.gear.ab)||{},cut=v=>Math.max(0,1-(v||0)/100);
+  const vctStat=Math.max(0,1-Math.sqrt((s.dex*2+s.int)/530));
+  const vctMul=vctStat*cut(GA.vct),fctMul=cut(GA.fct),cdMul=cut(GA.cdr),gdMul=cut(GA.gd);
   const range=A.range+(has("eagle_eye")?PASSIVE.eagle_eye.range:0);
   // iRO natural regen (per tick) adapted to per-second: HP = MaxHP/200 + VIT/5 ; SP = MaxSP/100 + INT/6 + 1
   const hpRegen=(maxHP/200+s.vit/5)/4;
   const spRegen=(maxSP/100+s.int/6+1)/2*(1+mf.regen);
-  const d={arch:p.arch,type:A.type,lv:p.lv,s,ranged,statusAtk,watk,mastery,matkMin,matkMax,maxHP,maxSP,hit,flee,crit,pdodge,interval,aspd,softDef,hardDef,mdef,softMdef,castMul,range,hpRegen,spRegen,
+  const d={arch:p.arch,type:A.type,lv:p.lv,s,ranged,statusAtk,watk,mastery,matkMin,matkMax,maxHP,maxSP,hit,flee,crit,pdodge,interval,aspd,softDef,hardDef,mdef,softMdef,vctStat,vctMul,fctMul,cdMul,gdMul,range,hpRegen,spRegen,
     attune:PASSIVE.elemental_attunement.per*pl("elemental_attunement"),perTile:has("steady_aim")?PASSIVE.steady_aim.perTile:0,spCost:1-mf.cost,over:p.over||0,
     healMul:1+(has("divine_grace")?PASSIVE.divine_grace.healPct:0),shieldCap:has("divine_grace")?PASSIVE.divine_grace.shieldCap:0,healRange:A.healRange||A.range};
   // gear: flat bonuses from equipped items (weapon ATK, DEF, HP, ...)
@@ -1955,17 +1958,19 @@ function autoStats(arch,lv,base){
 
 /* ---------- skill levels (v20) ----------
    Skills listed in SKLV have levels; every other skill is still the fixed Lv 5 prototype.
-   Fire Bolt (SKILL-SPEC.md): Lv N = N fireballs of 100% MATK, SP 12+2(N-1), cast 0.5+0.3(N-1) s, 0.3 s apart (0.2 s from Lv 6), cooldown 0, Global Delay 1.4 s. */
+   Fire Bolt (SKILL-SPEC.md): Lv N = N fireballs of 100% MATK, SP 12+2(N-1), cast 0.5+0.3(N-1) s, 0.3 s apart (0.2 s from Lv 6), cooldown 0, Global Delay 1.4 s. The cast is all VCT for now (FCT 0). */
 const SKLV={fire_bolt:{max:10,def:5},overload_energy:{max:5,def:5},mana_flow:{max:10,def:10},elemental_attunement:{max:5,def:5}};   // v20.6: passives with levels too (derive reads them)
-const OE_DUR=[20,40,60,80,120],OE_CAST=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, cast, SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
+const OE_DUR=[20,40,60,80,120],OE_VCT=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, VCT (FCT 0), SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
 const skMax=id=>SKLV[id]?SKLV[id].max:1;   // every other skill is learn-only (one level) until its levels are designed
 function skAt(id,lv){
   const k=SK[id];if(!k||!SKLV[id])return k;
   const L=clamp(Math.floor(lv)||SKLV[id].def,1,SKLV[id].max);
-  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:L,sp:10+2*L,cast:+(.2+.3*L).toFixed(2),gap:L>=6?.2:.3});
-  if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],cast:OE_CAST[L-1],sp:35+15*L});
+  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:L,sp:10+2*L,vct:+(.2+.3*L).toFixed(2),gap:L>=6?.2:.3});
+  if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],vct:OE_VCT[L-1],sp:35+15*L});
   return k;
 }
+// v20.9: real cast time in seconds for skill row k and derived stats d (VCT cut by stats and gear, FCT by gear only)
+const castTime=(k,d)=>(k.vct||0)*d.vctMul+(k.fct||0)*d.fctMul;
 /* ---------- skill AI (used by idle play and by the simulator) ----------
  ctx: {d, hp, sp, cd{}, momentum, buffs{}, dist (to target), near (# targets within 2.5), tgtElem, inZone} */
 function pickSkill(ctx){
@@ -1996,7 +2001,7 @@ function pickSkill(ctx){
     if(!spells.length)return null;
     // prefer the spell the target is weak to, then the biggest hitter
     let best=null,bv=-1;
-    for(const id of spells){const k=skx(id);const v=k.ratio*(k.hits||1)*elemMult(k.elem,ctx.tgtElem,d.attune)/(k.cast||1);if(v>bv){bv=v;best=id}}
+    for(const id of spells){const k=skx(id);const v=k.ratio*(k.hits||1)*elemMult(k.elem,ctx.tgtElem,d.attune)/(castTime(k,d)||1);if(v>bv){bv=v;best=id}}
     if(!reserve&&elemMult(SK[best].elem,ctx.tgtElem,d.attune)<=1)return null;
     return best;}
    case "supporter":
@@ -2028,7 +2033,7 @@ function simulate(arch,lv,monKeys,opt){
   const doBasic=m=>{const b=ARCH[arch].basic;
     if(b.kind==="phys"){const res=physHit(d,m,{ratio:b.ratio,dist:d.ranged?m.dist:0},r);hitMob(m,res);if(arch==="fighter"&&!res.miss){momentum=Math.min(5,momentum+1);momT=5}}
     else hitMob(m,magicHit(d,m,{ratio:b.ratio,elem:b.elem},r))};
-  const doSkill=(id,m)=>{const k=KL(id);sp-=k.sp*d.spCost;cd[id]=k.cd;if(k.gd)gdT=k.gd;
+  const doSkill=(id,m)=>{const k=KL(id);sp-=k.sp*d.spCost;cd[id]=k.cd*d.cdMul;if(k.gd)gdT=k.gd*d.gdMul;
     const targets=k.aoe?mobs.filter(x=>x.hpNow>0&&(k.at==="self"?x.dist<=k.aoe:true)):(m?[m]:[]);
     if(k.kind==="phys"){for(const x of targets)for(let h=0;h<(k.hits||1);h++){
         const ratio=k.ratio+(k.spend?k.perStack*momentum:0);
@@ -2071,7 +2076,7 @@ function simulate(arch,lv,monKeys,opt){
     const near=mobs.filter(x=>x.hpNow>0&&x.dist<=2.5).length;
     const ctx={d,hp,sp,cd,momentum,buffs,dist:m.dist,near:pack>1?mobs.filter(x=>x.hpNow>0).length:1,tgtElem:m.elem,inZone:zone>0,engaged:m.aggro,skLv:opt.skLv,gd:gdT};
     const id=pickSkill(ctx);
-    if(id){const k=KL(id);if(k.cast){casting={id,t:k.cast*d.castMul};continue}doSkill(id,m);continue}
+    if(id){const k=KL(id);{const ct=castTime(k,d);if(ct>.05){casting={id,t:ct};continue}}doSkill(id,m);continue}
     if(swing<=0&&m.dist<=d.range){swing=d.interval;doBasic(m)}
   }
   return {arch,lv,kills,deaths,dealt:Math.round(dealt),taken:Math.round(taken),dps:+(dealt/secs).toFixed(1),hpLeft:hpN?+(hpSum/hpN).toFixed(2):0,maxHP:d.maxHP,stats};
@@ -2097,7 +2102,7 @@ function combatPower(arch,lv,stats,gear){
   const ehp=d.maxHP/(1-d.hardDef)+d.softDef*30;
   const v=Math.round(sim.dps*6+ehp/20);_cpc.set(key,v);return v;
 }
-return {manaFlow,STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax};
+return {manaFlow,STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax,castTime};
 })();
 
 
@@ -2299,7 +2304,7 @@ D2.en.stAutoOn="Auto-assign: on";D2.th.stAutoOn="แจกแต้มอัต�
 D2.en.stAutoOff="Auto-assign: off";D2.th.stAutoOff="แจกแต้มอัตโนมัติ: ปิด";
 D2.en.stReset="Reset stats";D2.th.stReset="รีเซ็ตค่าสถานะ";
 D2.en.substats="Combat stats";D2.th.substats="ค่าต่อสู้";
-D2.en.castLbl="Cast";D2.th.castLbl="ร่าย";
+D2.en.castLbl="Cast";D2.th.castLbl="ร่าย";D2.en.vctLbl="VCT";D2.th.vctLbl="แปรผัน";D2.en.fctLbl="FCT";D2.th.fctLbl="คงที่";
 D2.en.statRef="ATK = status + weapon. FLEE = AGI-based + perfect dodge. DEF/MDEF = % from gear + flat from VIT/INT. Stat rules follow iRO Classic.";D2.th.statRef="ATK = จากค่าสถานะ + อาวุธ · FLEE = จาก AGI + หลบหลีกสมบูรณ์ · DEF/MDEF = % จากอุปกรณ์ + ค่าคงที่จาก VIT/INT · กติกาค่าสถานะอ้างอิง iRO Classic";
 D2.en.actives="Active skills";D2.th.actives="สกิลกดใช้";
 D2.en.passives="Passive skills";D2.th.passives="สกิลติดตัว";
@@ -2316,7 +2321,7 @@ D2.en.st_sim="Ping and player counts are simulated until a game server is connec
 D2.en.mech_beginner="Beginner: raise Basic Skill (Lv 1–10) with your skill points to learn First Aid, Heavy Strike and everyday abilities.";D2.th.mech_beginner="Beginner: ใช้แต้มสกิลอัป Basic Skill (Lv 1–10) เพื่อเรียน First Aid, โจมตีหนักหน่วง และความสามารถพื้นฐาน"
 D2.en.mech_fighter="Momentum: basic hits and Power Strike build up to 5 stacks (lost after 5 s without hitting). Crushing Blow spends them for +50% damage each and stuns at 3+.";D2.th.mech_fighter="Momentum: ตีปกติและ Power Strike สะสมได้สูงสุด 5 สแตก (หายถ้าไม่ตี 5 วิ) Crushing Blow ใช้สแตกทั้งหมด +50% ต่อสแตก และสตันเมื่อมี 3 ขึ้นไป";
 D2.en.mech_ranger="Distance: +2% damage per tile beyond 3 (max +18% at 12 tiles). Evasive Leap jumps away and empowers your next shot.";D2.th.mech_ranger="ระยะห่าง: ดาเมจ +2% ต่อช่องที่เกิน 3 (สูงสุด +18% ที่ 12 ช่อง) Evasive Leap กระโดดหนีและเพิ่มพลังลูกถัดไป";
-D2.en.mech_spellcaster="Casting + elements: spells have cast times (DEX shortens them) and never miss. Hitting an element's weakness deals 150% (up to 175% with Elemental Attunement Lv 5).";D2.th.mech_spellcaster="ร่ายเวท + ธาตุ: เวทมีเวลาร่าย (DEX ลดได้) และไม่มีวันพลาด โจมตีธาตุที่แพ้ได้ 150% (สูงสุด 175% เมื่อ Elemental Attunement Lv 5)";
+D2.en.mech_spellcaster="Casting + elements: spells have a variable cast (DEX and INT shorten it) plus a fixed cast (only gear shortens it) and never miss. Hitting an element's weakness deals 150% (up to 175% with Elemental Attunement Lv 5).";D2.th.mech_spellcaster="ร่ายเวท + ธาตุ: เวทมีเวลาร่ายแปรผัน (DEX และ INT ลดได้) กับเวลาร่ายคงที่ (ลดได้จากไอเท็มเท่านั้น) และไม่มีวันพลาด โจมตีธาตุที่แพ้ได้ 150% (สูงสุด 175% เมื่อ Elemental Attunement Lv 5)";
 D2.en.mech_supporter="Sustain: Heal uses the iRO formula; overhealing becomes a Grace shield (up to 20% Max HP). Buffs reach 15 tiles.";D2.th.mech_supporter="ฟื้นฟูต่อเนื่อง: Heal ใช้สูตร iRO ฮีลเกินเลือดเต็มจะกลายเป็นโล่ Grace (สูงสุด 20% HP) บัฟไกลได้ 15 ช่อง";
 D2.en.sk_bash="Heavy Strike";D2.th.sk_bash="โจมตีหนักหน่วง";
 D2.en.skd_bash="Strike one enemy hard for 200% ATK. Range 1.6 tiles (steps in first if further). No cast time.";D2.th.skd_bash="ฟาดศัตรู 1 ตัวอย่างหนัก 200% ATK ระยะ 1.6 ช่อง (ถ้าไกลกว่านั้นจะเดินเข้าไปก่อน) ไม่มีเวลาร่าย";
@@ -2851,7 +2856,7 @@ Object.assign(D2.th,{m_social:"สังคม",soc_friends:"เพื่อน"
  fr_online:"ออนไลน์",fr_offline:"ออฟไลน์",fr_none:"ยังไม่มีเพื่อน คลิกขวาที่ผู้เล่นคนอื่นเพื่อเพิ่มเป็นเพื่อน",fr_count:"เพื่อน {n}/{m}",fr_del:"ลบ",fr_delSure:"ยืนยัน?",
  wsp_ph:"พิมพ์ข้อความ…",wsp_empty:"ทักทาย {n} ได้เลย แชทนี้เห็นกันแค่สองคน",wsp_new:"{n} กระซิบถึงคุณ"});
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
-/* v20.9 Skills Tree window */
+/* v20.10 Skills Tree window */
 Object.assign(D2.en,{w_skinfo:"Skill Info",si_self:"Self Cast",si_target:"Target Cast",si_k_phys:"Physical",si_k_magic:"Magic",si_k_heal:"Heal",si_k_buff:"Buff",si_k_zone:"Zone",si_k_move:"Movement",
  si_lv:"Level {n}",si_det:"In details",si_delay:"Delay",si_fb:"{a} fireball(s), {b}% MATK in total · SP {c}",si_oe:"Overload Rate +{a}% for {b} seconds · SP {c}",skt_cost:"Learn uses {n}",
  w_skill:"Skills Tree",skt_pts:"Skill Points : {a} / {b}",skt_learn:"Learn",skt_reset:"Reset",skt_active:"Active",skt_passive:"Passive",
@@ -3180,6 +3185,8 @@ D.jp={
   "stReset":"ステータスをリセット",
   "substats":"戦闘ステータス",
   "castLbl":"詠唱",
+  "vctLbl":"変動",
+  "fctLbl":"固定",
   "statRef":"ATK = ステータス + 武器。FLEE = AGI基準 + 完全回避。DEF/MDEF = 装備の％ + VIT/INTによる固定値。ステータスの計算はiRO Classicに準拠。",
   "actives":"アクティブスキル",
   "passives":"パッシブスキル",
@@ -3195,7 +3202,7 @@ D.jp={
   "mech_beginner":"初心者：スキルポイントで基本スキル（Lv 1–10）を上げると、ファーストエイドやヘビーストライクなどの能力を覚えます。",
   "mech_fighter":"勢い：通常攻撃とパワーストライクで勢いが最大5スタックまで溜まります（5秒間攻撃しないと失われます）。クラッシングブローは消費して1スタックにつき与ダメージ+50%、3スタック以上で気絶させます。",
   "mech_ranger":"距離：3マスを超えた分、1マスごとにダメージ+2%（12マスで最大+18%）。回避跳躍で飛び退き、次の一撃を強化します。",
-  "mech_spellcaster":"詠唱と属性：魔法には詠唱時間があり（DEXで短縮）、外れません。モンスターの弱点属性に当てると150%のダメージ（属性習熟Lv5で最大175%）。",
+  "mech_spellcaster":"詠唱と属性：魔法には変動詠唱（DEXとINTで短縮）と固定詠唱（装備でのみ短縮）があり、外れません。モンスターの弱点属性に当てると150%のダメージ（属性習熟Lv5で最大175%）。",
   "mech_supporter":"持続：ヒールはiROの計算式を使い、過剰回復は恩寵のシールドになります（最大HPの20%まで）。バフは15マスまで届きます。",
   "sk_bash":"ヘビーストライク",
   "skd_bash":"敵1体に攻撃力200%の強撃。射程1.6マス（遠ければ先に間合いを詰めます）。詠唱なし。",
@@ -3866,7 +3873,7 @@ D.jp={
 Object.assign(D.jp,{w_skinfo:"スキル情報",si_self:"自己詠唱",si_target:"対象指定",si_k_phys:"物理",si_k_magic:"魔法",si_k_heal:"回復",si_k_buff:"バフ",si_k_zone:"範囲",si_k_move:"移動",
  si_lv:"レベル {n}",si_det:"詳細",si_delay:"ディレイ",si_fb:"火球 {a} 個、合計 MATK {b}% · SP {c}",si_oe:"オーバーロード率 +{a}%、{b} 秒間 · SP {c}",skt_cost:"消費 {n}",
  w_skill:"スキルツリー",skt_pts:"スキルポイント : {a} / {b}",skt_learn:"習得",skt_reset:"リセット",skt_active:"アクティブ",skt_passive:"パッシブ",
- skt_done:"習得：{s}",skt_nopts:"スキルポイントが足りません。"});   // v20.9 Skills Tree
+ skt_done:"習得：{s}",skt_nopts:"スキルポイントが足りません。"});   // v20.10 Skills Tree
 let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
 const t=k=>(D[lang][k]??D.en[k]??k);
 const fmt=(k,o)=>t(k).replace(/\{(\w)\}/g,(_,c)=>o[c]);
@@ -4150,7 +4157,7 @@ const IC={
  note:'<path d="M5 4h9l3 3v4M5 4v16h12v-3"/><path d="M8 9h5M8 12h4M8 15h3"/><path d="M19.5 10.5l1.8 1.8-6.8 6.8-2.6.8.8-2.6z"/>'
 };
 const svg=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]}</svg>`;
-/* v20.9 skill icons: one duotone glyph per skill on a 32 x 32 grid. Lines use currentColor; class "a" is a soft fill of the same colour.
+/* v20.10 skill icons: one duotone glyph per skill on a 32 x 32 grid. Lines use currentColor; class "a" is a soft fill of the same colour.
    The tile sets the colour: white on an active skill (archetype colour behind it), the archetype colour on a passive (white behind it). */
 const SKI={
  basic_skill:'<path class="a" d="M16 18c-1-5-5-8-10-7 0 5 4 8 10 7zM16 15c1-5 5-8 10-7 0 5-4 8-10 7z"/><path d="M16 28V14"/><path d="M16 18c-1-5-5-8-10-7 0 5 4 8 10 7zM16 15c1-5 5-8 10-7 0 5-4 8-10 7z"/><path d="M8 28h16"/>',
@@ -5399,7 +5406,7 @@ function invFind(k){
   const g=S.bag.find(x=>x.uid===key);return g?{k,id:g.id,qty:1,ref:g.ref||0,cat:"gear",uid:key,roll:g.roll,lock:!!g.lock}:null;
 }
 /* what the item-detail window shows: a piece that is worn (picked on the Character window) or something in the bag */
-const detOk=()=>winDet==="skinfo"?!!skSel&&winId==="skill":!!detEntry();   // v20.9: the detail slot holds Item Info or Skill Info
+const detOk=()=>winDet==="skinfo"?!!skSel&&winId==="skill":!!detEntry();   // v20.10: the detail slot holds Item Info or Skill Info
 function detEntry(){
   if(eqSel){const it=S.equip[eqSel];return it?{k:"e:"+eqSel,id:it.id,qty:1,ref:it.ref||0,cat:"gear",uid:it.uid,roll:it.roll,lock:!!it.lock,equipped:true,slot:eqSel}:null}
   return invSel?invFind(invSel):null;
@@ -7031,12 +7038,12 @@ const SKC={bash:"#ffb08a",first_aid:"#8af0b6",power_strike:"#ff8a6a",cleave:"#ff
  double_strafe:"#d8f0a0",arrow_shower:"#b8f08a",piercing_shot:"#f0ffd0",evasive_leap:"#ffffff",
  fire_bolt:ELC.fire,frost_nova:ELC.water,lightning_spear:"#fff36a",stone_spike:ELC.earth,overload_energy:"#c9b8ff",
  heal:"#8af0b6",holy_light:"#ffe9a0",blessing:"#ffd76a",sanctuary:"#fff2b8"};
-/* v20.9: one colour per class line, used by the Skills Tree tabs and tiles and by every skill icon (hotkey bar, drag ghost):
+/* v20.10: one colour per class line, used by the Skills Tree tabs and tiles and by every skill icon (hotkey bar, drag ghost):
    C0 Beginner blue, C1 Fighter red, Ranger green, Spellcaster purple, Supporter yellow */
 const ARC_COL={beginner:"#0a6fc2",fighter:"#d23b34",ranger:"#2e9447",spellcaster:"#7440c8",supporter:"#d69a0c"};
 const SKG={beginner:"linear-gradient(135deg,#5db3f5,#0a5fae)",fighter:"linear-gradient(135deg,#ff8b78,#b52a24)",ranger:"linear-gradient(135deg,#8fdc7c,#237a3a)",
  spellcaster:"linear-gradient(135deg,#b597f5,#5a2fb0)",supporter:"linear-gradient(135deg,#ffd75e,#c4860a)"};
-const skGrad=id=>{const k=REOC.SK[id]||REOC.PASSIVE[id];return SKG[k&&k.arch]||SKG.beginner};   // v20.9: the archetype colour (the element shows in the skill text)
+const skGrad=id=>{const k=REOC.SK[id]||REOC.PASSIVE[id];return SKG[k&&k.arch]||SKG.beginner};   // v20.10: the archetype colour (the element shows in the skill text)
 const ITEMS={wing:{item:"wing",ic:"wing",c:"linear-gradient(135deg,#f0f8ff,#7aa4c4)",cd:3},red:{item:"red",ic:"potion",c:"linear-gradient(135deg,#ffa2ae,#c02843)",cd:.8},blue:{item:"blue",ic:"potion",c:"linear-gradient(135deg,#a2d4ff,#2a5fc0)",cd:.8}};
 let SLOTS=[];
 /* ---- skill levels (v20): 1 Job Lv = 1 skill point, spent by the player. Lv 1 of a levelled skill is free (ASSUMPTION, see SKILL-SPEC.md) ---- */
@@ -7078,7 +7085,7 @@ function skFix(){   // keep every level inside the points the character has (Job
   while(skAvail()<0){let best=null;for(const id of skMine())if(skLvOf(id)>0&&(!best||skLvOf(id)>skLvOf(best)))best=id;if(!best)break;S.skLv[best]--}
 }
 function skRaise(id){if(!skMine().includes(id)||skLvOf(id)>=skMaxOf(id)||skAvail()<=0)return;S.skLv[id]=skLvOf(id)+1;_pdKey="";buildSlots();renderWin();save()}
-/* ---- v20.9 Skills Tree (UI-UX.md §26) ----
+/* ---- v20.10 Skills Tree (UI-UX.md §26) ----
    Tabs: C0 Beginner, then the character's own C1 archetype (C2 / C3 tabs come when those classes exist).
    Every tile has a level cursor skCur[id]. Above the learned level the cursor is a draft: 1 skill point per level, kept only when
    Learn is pressed (Reset drops every draft). At or below the learned level it is the level a drag puts on the hotkey bar.
@@ -7232,8 +7239,8 @@ function useSkill(id,auto,lvArg){
     player.target=tg;faceToward(player,tg.x,tg.y);
   }
   if((k.kind==="phys"||k.kind==="magic")&&k.aoe&&k.at==="self"&&!isField()){if(!auto)toast(t("noTarget"));return false}
-  AUD.sfx("skill");S.sp-=cost;CD[id]=k.cd*(1-((pd().ab&&pd().ab.cdr)||0)/100);
-  if(k.cast){const ct=k.cast*d.castMul;if(ct>.05){player.casting={id,lv,tg,t:ct,total:ct,cost};player.path=[];player.moving=false;return true}}
+  AUD.sfx("skill");S.sp-=cost;   // v20.9: the cooldown starts when the cast ends (finishSkill), as SKILL-SPEC.md says
+  {const ct=REOC.castTime(k,d);if(ct>.05){player.casting={id,lv,tg,t:ct,total:ct,cost};player.path=[];player.moving=false;return true}}
   finishSkill(id,tg,lv);return true;
 }
 function leapAway(n){
@@ -7245,7 +7252,8 @@ function leapAway(n){
 }
 function finishSkill(id,tg,lv){
   const k=lv?REOC.skAt(id,lv):REOC.SK[id],d=pd(),x=player.x,y=player.y,col=SKC[id]||"#fff";
-  if(k.gd){player.gd=k.gd;player.gdMax=k.gd}   // Global Delay starts when the cast ends
+  CD[id]=k.cd*d.cdMul;   // cooldown and Global Delay both start when the cast ends
+  if(k.gd){player.gd=k.gd*d.gdMul;player.gdMax=player.gd}
   if(tg&&!alive(tg))tg=null;
   const area=k.aoe?(k.at==="self"?liveMon().filter(m=>dist(m,player)<=k.aoe):(tg?liveMon().filter(m=>dist(m,tg)<=k.aoe):[])):(tg?[tg]:[]);
   switch(k.kind){
@@ -7720,7 +7728,7 @@ const WIN={
     return `<div class="row arch-card" style="--qc:${SKC[A.actives[0]]}"><span class="dot" style="--c:${SKG[a]}">${skSvg(A.actives[0])}</span><div class="grow"><b>${t("ar_"+a)}</b> <small style="display:inline">${t("ty_"+A.type)}</small><small>${t("mech_"+a)}</small><small>${A.actives.map(id=>t("sk_"+id)).join(" · ")}</small></div>
     <button class="btn sm ${pickArm===a?"danger":"pri"}" data-act="pick" data-v="${a}">${t(pickArm===a?"pick_confirm":"pick_choose")}</button></div>`}).join("")}</div>
    <p class="muted" style="margin-top:8px">${t("pick_note")}</p>`},
- /* v20.9 Skills Tree: helpers next to skTile(). Column 1 = Beginner skills, columns 2-5 = the archetype (skGrid) */
+ /* v20.10 Skills Tree: helpers next to skTile(). Column 1 = Beginner skills, columns 2-5 = the archetype (skGrid) */
  skill:()=>{
   skCurFix();const tab=skTabNow(),G=skGrid(tab),cost=skPendCost();
   const cells=G.map(id=>id?skTile(id):`<div class="skc empty"><span class="skc-n"></span><span class="sk-tile"></span><span class="skc-lv none"></span></div>`).join("");
@@ -7984,17 +7992,17 @@ function statusBody(){
     <div class="st-foot"><button class="lt-btn red" data-act="stReset">${t("lt_reset")}</button><button class="lt-btn${S.autoStat?" blue":""}" data-act="stAuto" title="${t(S.autoStat?"stAutoOn":"stAutoOff")}">${t("lt_auto")}</button><span class="grow"></span><span class="st-left">${t("lt_left")}</span><b class="lt-pill green">${free}</b></div></div>`;
   const none=t("lt_tip_none");
   const cell=(k,v,tip)=>`<div class="sd"${tip?` title="${tip}"`:""}><span>${t(k)}</span><b>${v}</b></div>`;
-  const vcast=Math.round((1-d.castMul)*100);
+  const vcast=Math.round((1-d.vctMul)*100),fcast=Math.round((1-d.fctMul)*100),gdcut=Math.round((1-d.gdMul)*100);
   const det=`<div class="st-det">
     ${cell("lt_atk",num(Math.round(d.statusAtk+d.watk+d.mastery)),`${Math.round(d.statusAtk)} + ${Math.round(d.watk+d.mastery)}`)}${cell("lt_matk",`${num(Math.round(d.matkMin))} ~ ${num(Math.round(d.matkMax))}`)}
     ${cell("lt_def",`${Math.round(d.hardDef*100)}% +${Math.round(d.softDef)}`)}${cell("lt_mdef",`${Math.round(d.mdef*100)}% +${Math.round(d.softMdef)}`)}
     ${cell("lt_hp",num(d.maxHP))}${cell("lt_sp",num(d.maxSP))}
-    ${cell("lt_aspd",`${d.aspd} (${d.interval.toFixed(2)} ${t("lt_sec")})`)}${cell("lt_gd","0%",none)}
+    ${cell("lt_aspd",`${d.aspd} (${d.interval.toFixed(2)} ${t("lt_sec")})`)}${cell("lt_gd",(gdcut?"-":"")+gdcut+"%",gdcut?"":none)}
     ${cell("lt_flee",num(Math.round(d.flee)))}${cell("lt_pdodge",d.pdodge.toFixed(1)+"%")}
     ${cell("lt_hit",num(Math.round(d.hit)))}${cell("lt_phit","0%",none)}
     ${cell("lt_crit",d.crit.toFixed(1)+"%")}${cell("lt_critd","+40%")}
     ${cell("lt_over",(d.crit+(d.over||0)).toFixed(1)+"%",t("lt_tip_over"))}${cell("lt_overd","+30%")}
-    ${cell("lt_vcast",(vcast?"-":"")+vcast+"%")}${cell("lt_fcast","0 "+t("lt_sec"),none)}
+    ${cell("lt_vcast",(vcast?"-":"")+vcast+"%")}${cell("lt_fcast",(fcast?"-":"")+fcast+"%",fcast?"":none)}
     ${cell("lt_idef","0%",none)}${cell("lt_imdef","0%",none)}</div>`;
   return head+ltHr+basic+ltHr+det;
 }
@@ -8002,7 +8010,7 @@ WIN.status=statusBody;
 WIN.inv=invWin;
 WIN.storage=storageWin;
 WIN.itemdet=()=>{const e=detEntry();return e?`<div class="det">${invDetail(e)}</div>`:`<p class="muted">${t("inv_pick")}</p>`};
-/* v20.9 Skill Info: opened by a left click on a Skills Tree tile; sits where Item Info sits (UI-UX.md §26) */
+/* v20.10 Skill Info: opened by a left click on a Skills Tree tile; sits where Item Info sits (UI-UX.md §26) */
 function siLevel(id,n){   // what one level gives
   if(id===BASIC_T){const r=BASIC_ROWS[n-1];return `${t("bs_u_"+r)} · ${t("bs_d_"+r)}`}
   if(!REOC.SK[id])return REOC.SKLV[id]?pasEffAt(id,n):"";
@@ -8020,7 +8028,7 @@ WIN.skinfo=()=>{
   const lvls=pas&&mx<2&&id!==BASIC_T?[]:Array.from({length:mx},(_,i)=>i+1);
   const lvHtml=lvls.map(n=>`<div class="si-lv${n===L?" on":""}${n>L?" dim":""}"><span class="si-tag">${fmt("si_lv",{n})}</span><p>${siLevel(id,n)}</p></div>`).join("");
   const tb=pas?"":`<span class="si-tag">${t("si_det")}</span><table class="si-tb"><thead><tr><th></th><th>VCT</th><th>FCT</th><th>CD</th><th>${t("si_delay")}</th></tr></thead><tbody>${lvls.map(n=>{const k=REOC.SKLV[id]?REOC.skAt(id,n):k0;
-    return `<tr${n===L?' class="on"':""}><td>Lv.${n}</td><td>${k.cast?k.cast+" "+sec:"–"}</td><td>–</td><td>${k.cd?k.cd+" "+sec:"–"}</td><td>${k.gd?k.gd+" "+sec:"–"}</td></tr>`}).join("")}</tbody></table>`;
+    return `<tr${n===L?' class="on"':""}><td>Lv.${n}</td><td>${k.vct?k.vct+" "+sec:"–"}</td><td>${k.fct?k.fct+" "+sec:"–"}</td><td>${k.cd?k.cd+" "+sec:"–"}</td><td>${k.gd?k.gd+" "+sec:"–"}</td></tr>`}).join("")}</tbody></table>`;
   return `<div class="si" style="--ac:${ARC_COL[a]};--ag:${SKG[a]}">
    <div class="si-top"><span class="sk-tile big${pas?" pas":""}${L?"":" off"}">${skSvg(id)}</span><div class="si-head"><b>${name} Lv.${L}/${mx}</b><div class="si-chips">${chips.map((c,i)=>`<span class="skt-chip${i?" pas":""}">${c}</span>`).join("")}</div></div></div>
    <p class="si-desc">${desc}</p>${lvHtml?`<div class="si-lvs">${lvHtml}</div>`:""}${tb}</div>`};
@@ -8204,12 +8212,12 @@ addEventListener("pointerup",lpCancel,true);addEventListener("pointercancel",lpC
    An item or skill is dragged from the bag, the Skills window or a worn slot and dropped on a hotkey slot. A hotkey slot can be moved (drop on another slot) or cleared (drop outside any zone); the bag, the Skills list and the worn piece are never changed by a drop that is refused. Drop zones carry data-drop; a future trade or sell zone adds its entry to DROP_ZONES. */
 const DROP_ZONES={hot:{check:src=>hotCheck(src),drop:(src,el)=>hotDrop(src,+el.dataset.i)}};
 const DND={p:null,pid:0,sx:0,sy:0,x:0,y:0,on:false,moved:false,hold:false,ghost:null,zone:null,timer:0,endT:-1e9};
-const skIcon=id=>`<span class="ic" style="--c:${skGrad(id)}">${skSvg(id)}</span>`;   // v20.9: every skill (passives too) has its own icon in its archetype colour
+const skIcon=id=>`<span class="ic" style="--c:${skGrad(id)}">${skSvg(id)}</span>`;   // v20.10: every skill (passives too) has its own icon in its archetype colour
 function dndSource(k){   // what a drag carries: "i:"/"g:" bag entry, "e:" worn slot, "s:" skill, "h:" hotkey slot
   const p=k.slice(2);
   if(k[0]==="i"||k[0]==="g"){const e=invFind(k);return e?{k,cat:e.cat,id:e.id,html:`<span class="ii-ic">${itemArt(e.id)}</span>`}:null}
   if(k[0]==="e"){const it=S.equip[p];return it?{k,cat:"gear",id:it.id,html:`<span class="ii-ic">${itemArt(it.id)}</span>`}:null}
-  if(k[0]==="s"){const [id,lv]=p.split(":");return {k,cat:"skill",id,lv:+lv||0,html:skIcon(id)}}   // "s:id:lv" (v20.9: lv = the level picked in the Skills Tree, 0 = highest learned). A passive too: hotCheck refuses it, so the player is told why
+  if(k[0]==="s"){const [id,lv]=p.split(":");return {k,cat:"skill",id,lv:+lv||0,html:skIcon(id)}}   // "s:id:lv" (v20.10: lv = the level picked in the Skills Tree, 0 = highest learned). A passive too: hotCheck refuses it, so the player is told why
   if(k[0]==="h"){const sl=SLOTS[+p];if(!sl||!sl.id)return null;return sl.item?{k,cat:"use",id:sl.item,html:`<span class="ic" style="--c:${sl.c}">${itemArt(sl.item)}</span>`}:{k,cat:"skill",id:sl.id,html:skIcon(sl.id)}}
   return null;
 }
