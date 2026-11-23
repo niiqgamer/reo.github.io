@@ -76,7 +76,7 @@ Herbs and potions use the hotbar/inventory "Use" button. A usable item can also 
 ## 3. Equipment
 
 ### Sets
-- **5 class sets:** Beginner, Fighter, Ranger, Spellcaster, Supporter.
+- **5 class sets:** Beginner, Fighter, Ranger, Spellcaster, Supporter. Finishing the Archetype Trial gives the chosen archetype's full 10-piece set (Common, no random options, highest wearable tier) and equips it (`giveClassSet`, see `QUESTS.md`).
 - **10 slots per class:** Top / Mid / Lower Headgear, Armor, Weapon, Shield, Garment, Shoes, Ring, Bracelet. Every slot has items for all 5 classes (50 designs). Legacy Off-hand, Legs and Necklace items map to Shield, Shoes and Bracelet. See `EQUIPMENT-SLOTS.md`.
 - **10 tiers:** Lv **1, 10, 20, 30, 40, 50, 60, 70, 80, 90**. Each piece needs its tier level to equip.
 - **5 rarities (tier stars):**

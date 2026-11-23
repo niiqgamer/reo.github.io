@@ -2356,6 +2356,8 @@ D2.en.q_todayMsg="Already done today. Come back tomorrow.";D2.th.q_todayMsg="ว
 D2.en.lumi_end0="You made it all the way through Field 03 and back. I knew you had it in you.";D2.th.lumi_end0="เจ้าฝ่าไปจนถึงทุ่ง 03 แล้วกลับมาได้ ข้ารู้อยู่แล้วว่าเจ้าทำได้";
 D2.en.lumi_end1="Gadolinium is a little safer thanks to you. Take this, you have earned it.";D2.th.lumi_end1="แกโดลิเนียมปลอดภัยขึ้นเพราะเจ้า รับนี่ไปเถอะ เจ้าสมควรได้รับมัน";
 D2.en.arch_auto="Job Lv 10 and Basic Skill Lv 10! Archetype Trial started: defeat 1 Elite, then see Sera.";D2.th.arch_auto="Job Lv 10 และ Basic Skill Lv 10 แล้ว! เริ่มบททดสอบอาร์คีไทป์: ปราบ Elite 1 ตัว แล้วกลับไปหาเซร่า";
+D2.en.helper_set="Take this {a} set, all 10 pieces (Lv {l}). I have already helped you put it on.";D2.th.helper_set="รับชุด {a} ครบ 10 ชิ้นนี้ไปด้วย (Lv {l}) ข้าช่วยสวมให้เจ้าเรียบร้อยแล้ว";
+D2.en.archSetGear="{a} set equipped (10 pieces)";D2.th.archSetGear="สวมชุด {a} แล้ว (10 ชิ้น)";
 D2.en.qa_title="Archetype Trial";D2.th.qa_title="บททดสอบอาร์คีไทป์";
 D2.en.qt_job="Job";D2.th.qt_job="อาชีพ";
 D2.en.jobMaxC1="Job Lv 50 reached.";D2.th.jobMaxC1="Job Lv ถึง 50 แล้ว";
@@ -5469,11 +5471,19 @@ function narvisTalk(n){
   if(!hasBasic("storage")){openDlg(n.nameK,["narvis_0",{raw:fmt("narvis_need",{n:BASIC_UNLOCK.storage})}],n.pal,null);return}
   openDlg(n.nameK,["narvis_1"],n.pal,()=>{stoTab="bag";openWin("storage")});
 }
+/* v20.7: finishing the Archetype Trial gives the full 10-piece class set, Common, no random options, worn at once.
+   Tier = the highest gear tier the character can wear (Lv 1, 10, 20 ... 90). Beginner pieces were already moved to the bag by reconcileGear. */
+function giveClassSet(a){
+  const L=Math.min(90,tierOf(S.lv));
+  for(const s0 of ITEM_SLOTS){const id=gearId(a,s0,L,1,0),sl=equipSlotOf(id),old=S.equip[sl];
+    if(old)S.bag.push(old);S.equip[sl]={uid:"u"+(S.uidN++),id,ref:0,roll:null}}
+  _pdKey="";S.hp=hpMax();S.sp=spMax();toast(fmt("archSetGear",{a:t("ar_"+a)}),true);afterGearChange();return L;
+}
 function chooseArchetype(a){
   if(S.arch!=="beginner"||!REOC.ARCH[a]||a==="beginner")return;
   const o=curObj("arch");if(!o||!o.choose)return;
-  becomeArch(a);completeStage("arch");closeWin();
-  openDlg("n_helper",[{raw:fmt("helper_chosen",{a:t("ar_"+a)})}],PAL.helper,null);
+  becomeArch(a);const L=giveClassSet(a);completeStage("arch");closeWin();
+  openDlg("n_helper",[{raw:fmt("helper_chosen",{a:t("ar_"+a)})},{raw:fmt("helper_set",{a:t("ar_"+a),l:L})}],PAL.helper,null);
 }
 function touchCrystal(){
   const [tx,ty]=nearestWalk(Math.floor(CRY[0]),Math.floor(CRY[1]+CRY_R+.6),Math.floor(player.x),Math.floor(player.y))||[Math.floor(CRY[0]),Math.floor(CRY[1]+CRY_R+1)];
