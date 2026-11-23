@@ -88,7 +88,8 @@ These will be replaced by real skills per class/job (`JOBS.md`).
 
 ## 4. Localization
 
-- Every string through `t(key)`; both `th` and `en` required.
+- Every string through `t(key)`; `th`, `en` and `jp` required (v20.8: Japanese added as the third language).
+- Pair data (`[en, th]` arrays and `{en, th}` objects: items, gear, abilities, set names, RARN, chat seed lines) takes its Japanese from the `JPX` table, keyed by the English text. Read it with `LP(pair)`, `LO(obj)` or `PT(msg)`, never `[lang=="th"?1:0]`.
 - Swapping language instantly updates HTML UI, canvas labels, chat, dialogs, open windows.
 - Hint text: “Click…” on mouse, “Tap…” on touch.
 - Thai NPC voice: friendly, calls the player “เจ้า”.
@@ -138,7 +139,7 @@ Title "Inventory" / "คลังของ". Full rules in `ITEMS.md` §5. Layou
 ---
 
 ## 8. Login page (v14)
-Full-screen page shown before the game. Dark violet background with floating crystal shards and the Gadolinium crystal as the logo. Three tabs (Login, Register, Guest), a Thai/English switch at the top right, a password strength bar on Register, and a small note that accounts are stored in this browser only. Works on phones (single column, 16 px inputs so iOS does not zoom, scrolls when the form is taller than the screen). Details and rules: `ACCOUNTS.md`.
+Full-screen page shown before the game. Dark violet background with floating crystal shards and the Gadolinium crystal as the logo. Three tabs (Login, Register, Guest), a Thai / EN / 日本語 switch at the top right, a password strength bar on Register, and a small note that accounts are stored in this browser only. Works on phones (single column, 16 px inputs so iOS does not zoom, scrolls when the form is taller than the screen). Details and rules: `ACCOUNTS.md`.
 
 
 ---

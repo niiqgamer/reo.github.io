@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.7 (this update)
+## Changes in v20.8 (this update)
+- **Japanese (日本語) added as a third language.** The language switch now reads ไทย · EN · 日本語 in Settings (Other tab) and on the login page. The browser picks Japanese when its language starts with `ja`. Every key of the dictionary has a `jp` text (`D.jp`, 984 keys) and the login page has `I.jp`. Bilingual data (items, gear, abilities, set names, rarity, chat seed lines) gets its Japanese from the `JPX` table, keyed by the English text, read with `LP` / `LO` / `PT`. Numbers and times use `LOCALE[lang]` (`ja-JP`). Japanese text uses Noto Sans JP. The wiki (`wiki.html`) is Thai-only and is unchanged. See `UI-UX.md` §4, `REO-INSTRUCTIONS.md` (Languages, Localization).
+
+## Changes in v20.7
 - **Quests.** Main quest "A New Beginning" is now 9 chapters (3 kills each in Field 01/02/03, then return to Lumi). The Archetype Trial needs 1 Elite and **starts automatically** at Job Lv 10 + Basic Skill Lv 10; it can't be abandoned. Finishing it gives the chosen archetype's **full 10-piece class set** (Lv 10, Common, no random options), equipped at once. The "+10 Elite kills" test button is gone from Settings. Every Normal quest can be done **once per day**; every Elite Hunt pays only 1 Yttrium. See `QUESTS.md`, `JOBS.md` §4.
 
 ## Changes in v20.6

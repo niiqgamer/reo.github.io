@@ -10,7 +10,7 @@ REO is a **browser-based MMORPG with idle mechanics**. It plays like a classic q
 
 - **Genre:** MMORPG + idle (auto-hunt, offline rewards)
 - **Platform:** Web browser first; must also work as a mobile web app / wrapped app
-- **Languages:** Thai (default) and English, switchable at any time without a reload
+- **Languages:** Thai (default), English and Japanese (日本語, `jp`), switchable at any time without a reload. The browser language picks the start language (`ja` → Japanese, other non-English → Thai).
 - **Starting town:** every new player begins in **Gadolinium (แกโดลิเนียม) — Town of Beginnings (เมืองแห่งการเริ่มต้น)**
 
 ---
@@ -55,7 +55,7 @@ REO is a **browser-based MMORPG with idle mechanics**. It plays like a classic q
 ### Type
 
 - **Kanit** (Google Fonts) for all UI — supports Thai and Latin with one family.
-- Fallbacks: `"Noto Sans Thai", Tahoma, system-ui, sans-serif`.
+- Fallbacks: `"Noto Sans Thai", "Noto Sans JP", Tahoma, system-ui, sans-serif` (Noto Sans JP is loaded from Google Fonts for Japanese text).
 - No all-caps labels. Sentence case. Use typographic apostrophes (’) in English text.
 
 ---
@@ -158,10 +158,10 @@ Skills belong to the archetype, not to a fixed list. The player chooses which sk
 
 ## 7. Localization
 
-- Dictionary `D = { en: {...}, th: {...} }`; lookup `t(key)` falls back to English, then the key.
+- Dictionary `D = { en: {...}, th: {...}, jp: {...} }`; lookup `t(key)` falls back to English, then the key. Every key in `D.en` must also exist in `D.th` and `D.jp`.
 - Placeholders use `{x}` with `fmt(key, {x: ...})`.
-- Numbers use `toLocaleString("th-TH" | "en-US")`.
-- Chat messages store both languages (`{en, th}`) or a key (`{k}`) so the log re-renders on swap. Player-typed text is stored raw.
+- Numbers and times use `LOCALE[lang]` (`th-TH`, `en-US`, `ja-JP`).
+- Chat messages store `{en, th}` (or a key `{k}`) so the log re-renders on swap; Japanese for those lines comes from `JPX` via `PT(msg)`. Player-typed text is stored raw.
 - Hint text differs by input type: “Click…” on mouse, “Tap…” on touch.
 - Thai tone: friendly fantasy-RPG voice; NPCs address the player as “เจ้า”.
 
@@ -196,7 +196,7 @@ Skills belong to the archetype, not to a fixed list. The player chooses which sk
 1. Read this file first.
 2. Keep the prototype a single HTML file until the move to a real engine is decided.
 3. For small changes, edit the existing artifact in place instead of rewriting it.
-4. Every change must keep working in **both languages** and **both layouts**.
+4. Every change must keep working in **all three languages** (Thai, English, Japanese) and **both layouts**.
 5. Test: click-to-walk, NPC dialog, quest chain, idle toggle, language swap mid-dialog, layout swap with a window open.
 6. After adding a feature, update the relevant section of this file.
 
