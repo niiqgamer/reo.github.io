@@ -2372,8 +2372,6 @@ D2.en.pick_choose="Choose";D2.th.pick_choose="เลือก";
 D2.en.pick_confirm="Confirm";D2.th.pick_confirm="ยืนยัน";
 D2.en.pick_note="Permanent. Job Lv restarts at 1 with a new cap of 50.";D2.th.pick_note="เปลี่ยนไม่ได้ Job Lv เริ่มใหม่ที่ 1 และเพิ่มได้ถึง 50";
 D2.en.tJob="Test: set Job Lv 10";D2.th.tJob="ทดสอบ: ตั้ง Job Lv 10";
-D2.en.tElite="Test: +10 Elite kills";D2.th.tElite="ทดสอบ: Elite +10 ตัว";
-D2.en.tEliteNeed="Accept the Archetype Trial first.";D2.th.tEliteNeed="รับบททดสอบอาร์คีไทป์ก่อน";
 D2.en.archSet="You are now a {a}!";D2.th.archSet="ตอนนี้เจ้าคือ {a} แล้ว!";
 D2.en.autoIdleOn="Standing still for 5 minutes: Idle started automatically.";D2.th.autoIdleOn="ยืนเฉย 5 นาที: เปิด Idle อัตโนมัติแล้ว";
 D2.en.set_autoIdle="Auto-idle after 5 min standing still";D2.th.set_autoIdle="เปิด Idle อัตโนมัติเมื่อยืนเฉย 5 นาที";
@@ -5471,10 +5469,11 @@ function narvisTalk(n){
   if(!hasBasic("storage")){openDlg(n.nameK,["narvis_0",{raw:fmt("narvis_need",{n:BASIC_UNLOCK.storage})}],n.pal,null);return}
   openDlg(n.nameK,["narvis_1"],n.pal,()=>{stoTab="bag";openWin("storage")});
 }
-/* v20.7: finishing the Archetype Trial gives the full 10-piece class set, Common, no random options, worn at once.
-   Tier = the highest gear tier the character can wear (Lv 1, 10, 20 ... 90). Beginner pieces were already moved to the bag by reconcileGear. */
+/* v20.7: finishing the Archetype Trial gives the full 10-piece class set: Lv 10, Common, no random options, worn at once.
+   Beginner pieces were already moved to the bag by reconcileGear. */
+const CLASS_SET_LV=10;
 function giveClassSet(a){
-  const L=Math.min(90,tierOf(S.lv));
+  const L=CLASS_SET_LV;
   for(const s0 of ITEM_SLOTS){const id=gearId(a,s0,L,1,0),sl=equipSlotOf(id),old=S.equip[sl];
     if(old)S.bag.push(old);S.equip[sl]={uid:"u"+(S.uidN++),id,ref:0,roll:null}}
   _pdKey="";S.hp=hpMax();S.sp=spMax();toast(fmt("archSetGear",{a:t("ar_"+a)}),true);afterGearChange();return L;
@@ -6745,7 +6744,7 @@ WIN.set=()=>{
     if(S.gm)body+=`<div class="gm-box"><input id="annIn" maxlength="90" placeholder="${t("ann_ph")}" autocomplete="off"><div class="w-dev"><button class="btn pri sm" data-act="annSend">${t("ann_send")}</button><button class="btn sm" data-act="annPrev">${t("ann_prev")}</button></div></div>`;
     body+=`<div class="w-sec">${t("save_sec")}</div><p class="muted" style="margin:0 0 8px">${lastSave?fmt("save_last",{t:new Date(lastSave).toLocaleTimeString(lang==="th"?"th-TH":"en-US")}):t("save_never")}</p>
       <div class="w-dev"><button class="btn sm" data-act="save">${t("save_now")}</button><button class="btn sm danger" data-act="reset">${t(resetArm?"reset_confirm":"reset")}</button></div>
-      <div class="w-sec">${t("set_test")}</div><div class="w-dev"><button class="btn sm" data-act="tJob">${t("tJob")}</button><button class="btn sm" data-act="tElite">${t("tElite")}</button><button class="btn sm" data-act="sim">${t("sim_off")}</button></div>`;
+      <div class="w-sec">${t("set_test")}</div><div class="w-dev"><button class="btn sm" data-act="tJob">${t("tJob")}</button><button class="btn sm" data-act="sim">${t("sim_off")}</button></div>`;
   }else body=`<p class="muted" style="margin:0 0 8px">${AUTH.isGuest?fmt("acc_guest",{n:esc(AUTH.session.name)}):fmt("acc_user",{u:esc(AUTH.session.name),n:esc(AUTH.session.charName)})}</p>
       <div class="w-dev"><button class="btn" data-act="logout">${t("acc_logout")}</button>${AUTH.isGuest?`<button class="btn pri" data-act="accUpgrade">${t("acc_create")}</button>`:`<button class="btn danger" data-act="accDelete">${t(accArm?"acc_del_confirm":"acc_delete")}</button>`}</div>`;
   return tabs+`<div class="set-body">${body}</div>`;
@@ -6827,7 +6826,6 @@ function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[d
   else if(a==="stopage"){stoPage[stoTab]=Math.max(0,(stoPage[stoTab]|0)+ +b.dataset.d);renderWin()}
   else if(a==="stomv")stoMove(b.dataset.k)
   else if(a==="tJob"){S.jlv=10;S.jexp=0;toast("Job Lv 10");renderWin();save();autoArchTrial()}
-  else if(a==="tElite"){const q=S.q.arch,o=curObj("arch");if(q&&o&&o.t==="kill"){q.p=Math.min(o.n,q.p+10);if(q.p>=o.n)completeStage("arch");renderQuest();toast(`${t("qa_title")}: ${q.p}/${o.n}`)}else toast(t("tEliteNeed"));renderWin();save()}
   else if(a==="st")stRaise(b.dataset.k,+(b.dataset.n||1))
   else if(a==="stAuto"){S.autoStat=!S.autoStat;if(S.autoStat)S.stats=REOC.autoStats(S.arch,S.lv);S.hp=Math.min(S.hp,hpMax());S.sp=Math.min(S.sp,spMax());renderWin();save()}
   else if(a==="stReset"){S.stats={str:1,agi:1,vit:1,int:1,dex:1,luk:1};S.autoStat=false;S.hp=Math.min(S.hp,hpMax());S.sp=Math.min(S.sp,spMax());renderWin();save()}
