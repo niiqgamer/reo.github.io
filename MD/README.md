@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.10. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.11. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.10 (this update)
+## Changes in v20.11 (this update)
+- **Hero sprite (test, male only).** The main character is drawn from sprite sheets (`images/hero/male/idle.webp`, `walk.webp`): 8 facing directions, a 4-frame walk, idle bob; sitting and death reuse the idle frame. The player card avatar, Character doll and Status portrait use the front frame. Settings > Graphic > **Character look** switches between New and Classic (the old chibi), saved as `S.look`. The female set is on hold until its clipped frames are redrawn. See `UI-UX.md` §27.
+
+## Changes in v20.10
 - **Fix (Skills Tree on phones):** Basic Skill (and any learned skill that can still be raised) keeps its ◀ ▶ arrows on, so it can be raised after Skill Info closes; ▶ with no points left says "Not enough skill points." instead of doing nothing. See `UI-UX.md` §26.
 - **Skills Tree window** replaces the Skills list. Same frame as Status and Bag (440 px wide). One tab for the current class line: **Beginner** (blue) for a Beginner; after the Archetype choice only the archetype tab (Fighter red, Ranger green, Spellcaster purple, Supporter yellow), which already holds the Beginner skills (C2 / C3 tabs later). A 5 × 5 grid laid out as in the design: column 1 = Basic Skill, First Aid, Heavy Strike; columns 2–5 = the archetype (passives row, actives row; Spellcaster puts Overload Energy on the first row). Tiles: active = colour fill, passive = white with a colour line, not learned = grey. Learning is a draft: tap a skill, plan levels with ◀ ▶, then **Learn**; **Reset** drops the draft. On a learned skill, ◀ ▶ pick the level a drag puts on the hotkey bar. Footer "Skill Points : N" (points not spent yet, drafts included), Learn, Reset. A left click on a skill opens the new **Skill Info** window (Item Info size): name and level, chips, description, every level, and a VCT / FCT / CD / Delay table (base values; it replaces the v20.9 "Cast x s (VCT a + FCT b)" line of the old list). The Hotbar setup drop-downs are removed (skills reach the bar by drag and drop). Every skill has a new duotone icon in its line colour (hotkey bar too); the element no longer colours the icon. See `UI-UX.md` §26 (and §24, §25), `SKILL-SPEC.md` §4–5, `JOBS.md` §1b.
 
