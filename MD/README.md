@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.11. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.12. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.11 (this update)
+## Changes in v20.12 (this update)
+- **Female hero sprite.** New set `images/hero/female/idle.webp` (3-frame idle, 3 fps) and `walk.webp` (3 frames), 8 directions. Settings > Graphic > **Character look** is now Male / Female / Classic (`S.look`; the old `"new"` value reads as Male). Sets load the first time they are drawn. See `UI-UX.md` §27.
+
+## Changes in v20.11
 - **Hero sprite (test, male only).** The main character is drawn from sprite sheets (`images/hero/male/idle.webp`, `walk.webp`): 8 facing directions, a 4-frame walk, idle bob; sitting and death reuse the idle frame. The player card avatar, Character doll and Status portrait use the front frame. Settings > Graphic > **Character look** switches between New and Classic (the old chibi), saved as `S.look`. The female set is on hold until its clipped frames are redrawn. See `UI-UX.md` §27.
 
 ## Changes in v20.10

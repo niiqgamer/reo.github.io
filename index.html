@@ -2733,8 +2733,9 @@ D2.en.set_gfx_d="Lower it on slow devices.";D2.th.set_gfx_d="ลดลงถ้�
 D2.en.set_lay_d="Auto follows your screen.";D2.th.set_lay_d="อัตโนมัติตามหน้าจอ";
 D2.en.set_zoom_d="How close the camera is.";D2.th.set_zoom_d="ระยะของกล้อง";
 D2.en.set_look="Character look";D2.th.set_look="รูปลักษณ์ตัวละคร";
-D2.en.set_look_d="New sprite art (test) or the classic drawing.";D2.th.set_look_d="ภาพสไปรต์ใหม่ (ทดสอบ) หรือแบบวาดเดิม";
-D2.en.look_new="New";D2.th.look_new="ใหม่";
+D2.en.set_look_d="Male or female sprite (test), or the classic drawing.";D2.th.set_look_d="สไปรต์ชายหรือหญิง (ทดสอบ) หรือแบบวาดเดิม";
+D2.en.look_male="Male";D2.th.look_male="ชาย";
+D2.en.look_female="Female";D2.th.look_female="หญิง";
 D2.en.look_classic="Classic";D2.th.look_classic="แบบเดิม";
 D2.en.set_sound_d="Hits, skills and interface.";D2.th.set_sound_d="เสียงต่อสู้ สกิล และ UI";
 D2.en.set_music_d="Background music.";D2.th.set_music_d="เพลงประกอบ";
@@ -3607,8 +3608,9 @@ D.jp={
   "set_lay_d":"自動は画面に合わせて変わります。",
   "set_zoom_d":"カメラの寄り具合です。",
   "set_look":"キャラの見た目",
-  "set_look_d":"新しいスプライト（テスト）か、従来の絵を選べます。",
-  "look_new":"新しい",
+  "set_look_d":"男性・女性のスプライト（テスト）か、従来の絵を選べます。",
+  "look_male":"男性",
+  "look_female":"女性",
   "look_classic":"従来",
   "set_sound_d":"打撃音、スキル、画面の効果音。",
   "set_music_d":"BGMです。",
@@ -5544,7 +5546,7 @@ const SAVE_KEY=AUTH.saveKey,OLD_KEY=AUTH.oldKey;
 const gameState={lv:1,exp:0,jlv:1,jexp:0,hp:420,sp:120,sc:1250,y:0,la:0,arch:"beginner",basicLv:1,stats:REOC.autoStats("beginner",1),autoStat:true,
   inv:{red:3,blue:2,wing:2,apple:8,mat_gel:0,mat_shell:0,mat_lens:0,mat_ore:0,mat_gel2:0,mat_amber:0,mat_frost:0,mat_core:0,mat_gel3:0,mat_rime:0,mat_mag:0,mat_gheart:0},
   q:{main:{s:"active",st:0,p:0,n:0}},pins:["main"],kills:0,deaths:0,idle:false,vip:false,sess:{t:0,kills:0,base:0,job:0,sc:0,mats:0,items:{},gear:0},offline:null,visited:{town:1},uiMode:"system",invPacks:0,menuHide:false,gm:false,
-  sound:true,music:true,gfx:"hi",look:"new",autoIdle:true,bag:[],equip:null,uidN:1,skLv:{},hot:null,hotArch:"",store:{inv:{},bag:[]}};
+  sound:true,music:true,gfx:"hi",look:"male",autoIdle:true,bag:[],equip:null,uidN:1,skLv:{},hot:null,hotArch:"",store:{inv:{},bag:[]}};
 const S=gameState;
 /* ---- combat state: buffs, cooldowns, derived stats (REOC) ---- */
 const BF={overEn:0,overEnV:0,warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0,burn:0,burnDps:0,burnAcc:0,slow:0};
@@ -5990,16 +5992,20 @@ const OL="rgba(42,26,40,.6)";
 /* ================= hero sprite (main character) =================
    Sheets live in images/hero/<set>/: rows = 8 directions (S,SE,E,NE,N,NW,W,SW), columns = frames,
    256px frames with the feet at (128,236). Falls back to drawChibi while loading or when S.look==="classic". */
-const HERO={male:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/male/idle.webp",n:1},walk:{src:"images/hero/male/walk.webp",n:4}}};
-for(const k in HERO)for(const a of ["idle","walk"]){const o=HERO[k][a],im=new Image();im.onload=()=>{o.ok=true;try{drawAvatar();drawDoll()}catch(e){}};im.src=o.src;o.img=im}
+const HERO={
+  male:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/male/idle.webp",n:1,fps:3},walk:{src:"images/hero/male/walk.webp",n:4}},
+  female:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/female/idle.webp",n:3,fps:3},walk:{src:"images/hero/female/walk.webp",n:3}}};
+/* a set's sheets load the first time it is drawn */
+function heroLoad(H){if(H.ld)return;H.ld=1;for(const a of ["idle","walk"]){const o=H[a],im=new Image();im.onload=()=>{o.ok=true;try{drawAvatar();drawDoll()}catch(e){}};im.src=o.src;o.img=im}}
 const DIR8=[2,1,0,7,6,5,4,3];   // screen octant (0=E, clockwise) -> sheet row
 function face8(c,dx,dy){const sx=(dx-dy)*HW,sy=(dx+dy)*HH;if(sx*sx+sy*sy<1e-6)return;c.f8=DIR8[((Math.round(Math.atan2(sy,sx)/(Math.PI/4))%8)+8)%8]}
 const heroOn=()=>S.look!=="classic";
+const heroSet=()=>S.look==="female"?"female":"male";   // old saves may hold "new" = male
 /* draws the hero with its feet at (X,Y); sc is in drawChibi units. Returns false if the sheet is not ready. */
 function drawHero(c,X,Y,sc=1,o={}){
-  const H=HERO.male,sit=!!c.sit&&!c.moving,mv=!!c.moving&&!sit,a=mv?H.walk:H.idle;if(!a.ok)return false;
+  const H=HERO[heroSet()];heroLoad(H);const sit=!!c.sit&&!c.moving,mv=!!c.moving&&!sit,a=mv?H.walk:H.idle;if(!a.ok)return false;
   const row=c.f8!=null?c.f8:(c.back?(c.dir>0?3:5):(c.dir>0?1:7));
-  const fr=mv?Math.floor((c.phase||0)/TAU*a.n)%a.n:0,bob=mv?0:Math.sin(T*2.4+(c.seed||0))*.7,fw=H.fw;
+  const fr=mv?Math.floor((c.phase||0)/TAU*a.n)%a.n:(o.still||a.n<2?0:Math.floor(T*a.fps+(c.seed||0))%a.n),bob=mv||a.n>1?0:Math.sin(T*2.4+(c.seed||0))*.7,fw=H.fw;
   g.save();g.translate(X,Y);g.scale(sc,sc);
   if(!o.noShadow)ell(0,0,sit?15:13,5,"rgba(12,16,28,.3)");
   g.translate(0,bob+(sit?2:0));g.scale(H.sc,H.sc*(sit?.86:1));g.imageSmoothingEnabled=true;g.imageSmoothingQuality="high";
@@ -8118,7 +8124,7 @@ WIN.set=()=>{
     +sRow(t("set_gfx"),t("set_gfx_d"),sSeg([["hi",t("gfx_hi")],["lo",t("gfx_lo")]],S.gfx,"gfx"))
     +sRow(t("layout"),t("set_lay_d"),sSeg([["auto",t("lay_auto")],["h",t("lay_h")],["v",t("lay_v")]],layoutMode,"lay"))
     +sRow(t("set_zoom"),t("set_zoom_d"),sSeg(ZL.map((z,i)=>[i,z+"×"]),zIdx,"zoomL"))
-    +sRow(t("set_look"),t("set_look_d"),sSeg([["new",t("look_new")],["classic",t("look_classic")]],heroOn()?"new":"classic","look"));
+    +sRow(t("set_look"),t("set_look_d"),sSeg([["male",t("look_male")],["female",t("look_female")],["classic",t("look_classic")]],heroOn()?heroSet():"classic","look"));
   else if(setTab==="snd")body=sRow(t("set_sound"),t("set_sound_d"),swTog(S.sound,"snd"))+sRow(t("set_music"),t("set_music_d"),swTog(S.music,"mus"));
   else if(setTab==="oth"){
     body=sRow(t("language"),"",sSeg([["th","ไทย"],["en","EN"],["jp","日本語"]],lang,"lang"))
@@ -8524,7 +8530,7 @@ document.addEventListener("keydown",e=>{
 });
 
 /* ================= avatar ================= */
-function drawAvatar(){const c=$("#av"),a=c.getContext("2d");a.setTransform(1,0,0,1,0,0);a.clearRect(0,0,128,128);const old=g;g=a;if(!(heroOn()&&drawHero({f8:0,moving:false,phase:0,seed:0},64,238,3.3,{noShadow:1})))drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},64,190,3.05);g=old}
+function drawAvatar(){const c=$("#av"),a=c.getContext("2d");a.setTransform(1,0,0,1,0,0);a.clearRect(0,0,128,128);const old=g;g=a;if(!(heroOn()&&drawHero({f8:0,moving:false,phase:0,seed:0},64,238,3.3,{noShadow:1,still:1})))drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},64,190,3.05);g=old}
 
 /* ================= boot ================= */
 let saved=loadSave();
