@@ -33,7 +33,7 @@ REO is a **browser-based MMORPG with idle mechanics**. It plays like a classic q
 
 | Element | Direction |
 |---|---|
-| Characters | Head ≈ 45% of height (~56 px tall at zoom 1). Big glossy eyes with two highlights, blush, spiky bangs, hair "angel ring" shine, thin dark outline `rgba(42,26,40,.6)` |
+| Characters | **v20.11:** the main character uses sprite sheets in `images/hero/` (8 directions, 256 px frames, see `UI-UX.md` §27); other characters still use the canvas chibi below. Head ≈ 45% of height (~56 px tall at zoom 1). Big glossy eyes with two highlights, blush, spiky bangs, hair "angel ring" shine, thin dark outline `rgba(42,26,40,.6)` |
 | Animation | Walk cycle (leg lift + arm swing + body bob), idle breathing bob, cape/ponytail sway |
 | Facing | Front or back view, mirrored left/right from screen-space velocity |
 | Buildings | Half-timbered walls, stone foundation, hip roofs with tile courses, warm lit windows with flower boxes, door awning |

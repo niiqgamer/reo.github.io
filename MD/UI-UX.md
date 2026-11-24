@@ -200,7 +200,7 @@ Every earlier feature is still there; Status is where the old right-hand panel w
 - On phones windows stop above the menu bar, so the menu is always reachable.
 - Esc closes the item detail first, then everything. **M** opens the World Map.
 
-**Settings:** Graphic | Sound | Other | Account. Each setting has a short description and, for switches, an ON/OFF label.
+**Settings:** Graphic | Sound | Other | Account. Each setting has a short description and, for switches, an ON/OFF label. (**v20.11:** Graphic also has Character look, see §27.)
 
 
 ---
@@ -638,3 +638,17 @@ SP shown is the real cost (after Mana Flow).
 | | Guardian Aura (passive) | shield in an aura |
 
 These are placeholders drawn in code; a later art pass can replace any entry of `SKI` without touching the rest.
+
+## 27. Hero sprite for the main character (v20.11, test)
+
+The player is drawn from sprite sheets instead of the canvas chibi. Only the **male** set is in so far; the female set waits for frames whose edges are cut off to be redrawn.
+
+- **Files:** `images/hero/male/idle.webp` (1 frame per direction) and `walk.webp` (4 frames per direction), made from the 256 px PNG sheets and saved as WebP to cut the size (about 460 KB for both). Rows are 8 directions in the order S, SE, E, NE, N, NW, W, SW; columns are frames. Each frame is 256 × 256 with the feet at (128, 236).
+- **Size:** drawn at 0.34 of the sheet (`HERO.male.sc`), so the hero is about as tall as the old chibi (~71 px at zoom 1).
+- **Facing:** 8 directions, taken from the on-screen direction of movement or of the target (`face8`, stored as `c.f8`). It falls back to the old 4-way `dir` / `back` when there is no `f8` yet.
+- **Animation:** walking steps through the 4 frames with the walk phase (one cycle = 2π, about 8 fps at normal speed). Standing uses the idle frame with a small breathing bob. **Sitting** reuses the idle frame pressed down a little (no sit art yet). **Dead** keeps the old tipped-over rotation.
+- **Portraits:** the player card avatar, the Character window doll and the Status portrait use the front (S) frame.
+- **Fallback:** while the sheets load, or if they fail, the old chibi is drawn. Other players and NPCs still use the chibi.
+- **Settings > Graphic > Character look:** New (default) or Classic (the old chibi). Saved as `S.look`.
+- Missing art for later: attack, cast, sit and death poses; the female set.
+

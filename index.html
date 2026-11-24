@@ -2732,6 +2732,10 @@ D2.en.st_off="OFF";D2.th.st_off="ปิด";
 D2.en.set_gfx_d="Lower it on slow devices.";D2.th.set_gfx_d="ลดลงถ้าเครื่องช้า";
 D2.en.set_lay_d="Auto follows your screen.";D2.th.set_lay_d="อัตโนมัติตามหน้าจอ";
 D2.en.set_zoom_d="How close the camera is.";D2.th.set_zoom_d="ระยะของกล้อง";
+D2.en.set_look="Character look";D2.th.set_look="รูปลักษณ์ตัวละคร";
+D2.en.set_look_d="New sprite art (test) or the classic drawing.";D2.th.set_look_d="ภาพสไปรต์ใหม่ (ทดสอบ) หรือแบบวาดเดิม";
+D2.en.look_new="New";D2.th.look_new="ใหม่";
+D2.en.look_classic="Classic";D2.th.look_classic="แบบเดิม";
 D2.en.set_sound_d="Hits, skills and interface.";D2.th.set_sound_d="เสียงต่อสู้ สกิล และ UI";
 D2.en.set_music_d="Background music.";D2.th.set_music_d="เพลงประกอบ";
 D2.en.set_autoIdle_d="Starts Idle after 5 min standing still in a field.";D2.th.set_autoIdle_d="เริ่ม Idle เมื่อยืนนิ่ง 5 นาทีในทุ่ง";
@@ -3602,6 +3606,10 @@ D.jp={
   "set_gfx_d":"動作が遅い端末では下げてください。",
   "set_lay_d":"自動は画面に合わせて変わります。",
   "set_zoom_d":"カメラの寄り具合です。",
+  "set_look":"キャラの見た目",
+  "set_look_d":"新しいスプライト（テスト）か、従来の絵を選べます。",
+  "look_new":"新しい",
+  "look_classic":"従来",
   "set_sound_d":"打撃音、スキル、画面の効果音。",
   "set_music_d":"BGMです。",
   "set_autoIdle_d":"フィールドで5分間立ち止まると放置を開始します。",
@@ -5536,7 +5544,7 @@ const SAVE_KEY=AUTH.saveKey,OLD_KEY=AUTH.oldKey;
 const gameState={lv:1,exp:0,jlv:1,jexp:0,hp:420,sp:120,sc:1250,y:0,la:0,arch:"beginner",basicLv:1,stats:REOC.autoStats("beginner",1),autoStat:true,
   inv:{red:3,blue:2,wing:2,apple:8,mat_gel:0,mat_shell:0,mat_lens:0,mat_ore:0,mat_gel2:0,mat_amber:0,mat_frost:0,mat_core:0,mat_gel3:0,mat_rime:0,mat_mag:0,mat_gheart:0},
   q:{main:{s:"active",st:0,p:0,n:0}},pins:["main"],kills:0,deaths:0,idle:false,vip:false,sess:{t:0,kills:0,base:0,job:0,sc:0,mats:0,items:{},gear:0},offline:null,visited:{town:1},uiMode:"system",invPacks:0,menuHide:false,gm:false,
-  sound:true,music:true,gfx:"hi",autoIdle:true,bag:[],equip:null,uidN:1,skLv:{},hot:null,hotArch:"",store:{inv:{},bag:[]}};
+  sound:true,music:true,gfx:"hi",look:"new",autoIdle:true,bag:[],equip:null,uidN:1,skLv:{},hot:null,hotArch:"",store:{inv:{},bag:[]}};
 const S=gameState;
 /* ---- combat state: buffs, cooldowns, derived stats (REOC) ---- */
 const BF={overEn:0,overEnV:0,warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0,burn:0,burnDps:0,burnAcc:0,slow:0};
@@ -5979,7 +5987,27 @@ function drawCrystal(){
 
 /* ================= chibi ================= */
 const OL="rgba(42,26,40,.6)";
+/* ================= hero sprite (main character) =================
+   Sheets live in images/hero/<set>/: rows = 8 directions (S,SE,E,NE,N,NW,W,SW), columns = frames,
+   256px frames with the feet at (128,236). Falls back to drawChibi while loading or when S.look==="classic". */
+const HERO={male:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/male/idle.webp",n:1},walk:{src:"images/hero/male/walk.webp",n:4}}};
+for(const k in HERO)for(const a of ["idle","walk"]){const o=HERO[k][a],im=new Image();im.onload=()=>{o.ok=true;try{drawAvatar();drawDoll()}catch(e){}};im.src=o.src;o.img=im}
+const DIR8=[2,1,0,7,6,5,4,3];   // screen octant (0=E, clockwise) -> sheet row
+function face8(c,dx,dy){const sx=(dx-dy)*HW,sy=(dx+dy)*HH;if(sx*sx+sy*sy<1e-6)return;c.f8=DIR8[((Math.round(Math.atan2(sy,sx)/(Math.PI/4))%8)+8)%8]}
+const heroOn=()=>S.look!=="classic";
+/* draws the hero with its feet at (X,Y); sc is in drawChibi units. Returns false if the sheet is not ready. */
+function drawHero(c,X,Y,sc=1,o={}){
+  const H=HERO.male,sit=!!c.sit&&!c.moving,mv=!!c.moving&&!sit,a=mv?H.walk:H.idle;if(!a.ok)return false;
+  const row=c.f8!=null?c.f8:(c.back?(c.dir>0?3:5):(c.dir>0?1:7));
+  const fr=mv?Math.floor((c.phase||0)/TAU*a.n)%a.n:0,bob=mv?0:Math.sin(T*2.4+(c.seed||0))*.7,fw=H.fw;
+  g.save();g.translate(X,Y);g.scale(sc,sc);
+  if(!o.noShadow)ell(0,0,sit?15:13,5,"rgba(12,16,28,.3)");
+  g.translate(0,bob+(sit?2:0));g.scale(H.sc,H.sc*(sit?.86:1));g.imageSmoothingEnabled=true;g.imageSmoothingQuality="high";
+  g.drawImage(a.img,fr*fw,row*fw,fw,fw,-H.ax,-H.ay,fw,fw);
+  g.restore();return true;
+}
 function drawChibi(c,X,Y,sc=1){
+  if(c.me&&heroOn()&&drawHero(c,X,Y,sc))return;
   const p=c.pal,d=c.dir||1,back=c.back,mv=c.moving,ph=c.phase,sit=!!c.sit&&!mv;
   g.save();g.translate(X,Y);g.scale(sc,sc);g.lineJoin="round";g.lineCap="round";
   ell(0,0,sit?15:13,5,"rgba(12,16,28,.3)");
@@ -6707,7 +6735,7 @@ function routeTo(dest){const i=(ROUTE[cur.id]||{})[dest];if(i==null)return;const
   if(!player.path.length||player.navPortal!==p){player.navPortal=p;walkTo(player,p.x,p.y)}}
 
 /* ================= NPC + quests ================= */
-function faceToward(c,tx,ty){const dx=tx-c.x,dy=ty-c.y,sdx=dx-dy,sdy=dx+dy;c.dir=sdx>=0?1:-1;c.back=sdy<-.3*Math.abs(sdx)}
+function faceToward(c,tx,ty){const dx=tx-c.x,dy=ty-c.y,sdx=dx-dy,sdy=dx+dy;c.dir=sdx>=0?1:-1;c.back=sdy<-.3*Math.abs(sdx);face8(c,dx,dy)}
 const curObj=id=>{const q=S.q[id];return q&&q.s==="active"?QD[id].stages[q.st]:null};
 const activeIds=()=>Object.keys(S.q).filter(id=>S.q[id].s==="active");
 function talkTo(n){
@@ -7556,7 +7584,7 @@ function render(){
 function moveChar(c,dt){
   if(!c.path.length){c.moving=false;return}
   const [tx,ty]=c.path[0],dx=tx-c.x,dy=ty-c.y,d=Math.hypot(dx,dy),st=c.speed*dt;
-  const sdx=dx-dy,sdy=dx+dy;if(Math.abs(sdx)+Math.abs(sdy)>.01){c.dir=sdx>=0?1:-1;c.back=sdy<-.3*Math.abs(sdx)}
+  const sdx=dx-dy,sdy=dx+dy;if(Math.abs(sdx)+Math.abs(sdy)>.01){c.dir=sdx>=0?1:-1;c.back=sdy<-.3*Math.abs(sdx);face8(c,dx,dy)}
   if(d<=st){c.x=tx;c.y=ty;c.path.shift();if(!c.path.length){c.moving=false;const f=c.onArrive;c.onArrive=null;if(f)f();return}}
   else{c.x+=dx/d*st;c.y+=dy/d*st}
   c.moving=true;c.phase+=dt*c.speed*3.2;
@@ -7715,10 +7743,10 @@ function drawDoll(){
     dg.setTransform(1,0,0,1,0,0);dg.clearRect(0,0,cvs.width,cvs.height);
     dg.fillStyle="rgba(10,111,200,.10)";dg.beginPath();dg.ellipse(130,298,100,28,0,0,TAU);dg.fill();
     dg.fillStyle="rgba(10,111,200,.16)";dg.beginPath();dg.ellipse(130,296,76,20,0,0,TAU);dg.fill();
-    drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},130,292,4.4)}
+    if(!(heroOn()&&drawHero({f8:0,moving:false,phase:0,seed:0},130,300,3.75,{noShadow:1})))drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},130,292,4.4)}
   if(pc){const dg=pc.getContext("2d");g=dg;   // Status portrait: head and shoulders
     dg.setTransform(1,0,0,1,0,0);dg.clearRect(0,0,pc.width,pc.height);
-    drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},100,300,4.6)}
+    if(!(heroOn()&&drawHero({f8:0,moving:false,phase:0,seed:0},100,318,4.4,{noShadow:1})))drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},100,300,4.6)}
   g=old;
 }
 const bsLocked=k=>`<div class="rows"><div class="row"><span class="dot" style="--c:#8a84a8">${svg("lock")}</span><div class="grow"><b>${t("bs_u_"+k)}</b><small>${basicNeed(k)}</small></div></div></div>`;
@@ -7815,7 +7843,7 @@ function winSig(id){
     case "quest":return JSON.stringify(S.q)+"|"+S.pins.join();
     case "social":return socTab+"|"+(S.friends||[]).join()+"|"+frArm+"|"+ptArm+"|"+ptRen+"|"+S.lv+"|"+JSON.stringify(S.party)+"|"+JSON.stringify(S.guild);
     case "shop":return [S.sc,S.y,S.la,shopTab,S.invPacks,SHOP.map(([k])=>S.inv[k]).join()].join("|");
-    case "set":return [S.sound,S.music,S.vip,S.autoIdle,S.gfx,lang,layoutMode,zIdx,S.gm,setTab,Math.floor(lastSave/30000)].join("|");
+    case "set":return [S.sound,S.music,S.vip,S.autoIdle,S.gfx,S.look,lang,layoutMode,zIdx,S.gm,setTab,Math.floor(lastSave/30000)].join("|");
     case "skinfo":return skSel+"|"+(skSel?skLearned(skSel):0)+"|"+S.arch+"|"+lang+"|"+_pdKey;
     case "itemdet":{const e=detEntry();return e?[e.id,e.ref,e.qty,S.inv.refine_ore,JSON.stringify(e.roll)].join("|"):"x"}
     case "worldmap":case "mapinfo":return [S.sc,cur.id,Object.keys(S.visited).join(),mapSel,mapTab,player.dead?1:0,S.log&&0].join("|");
@@ -8089,7 +8117,8 @@ WIN.set=()=>{
   if(setTab==="gfx")body=sRow(t("set_ui"),t("set_ui_d"),sSeg([["system",t("ui_sys")],["light",t("ui_light")],["dim",t("ui_dim")]],S.uiMode,"uimode"))
     +sRow(t("set_gfx"),t("set_gfx_d"),sSeg([["hi",t("gfx_hi")],["lo",t("gfx_lo")]],S.gfx,"gfx"))
     +sRow(t("layout"),t("set_lay_d"),sSeg([["auto",t("lay_auto")],["h",t("lay_h")],["v",t("lay_v")]],layoutMode,"lay"))
-    +sRow(t("set_zoom"),t("set_zoom_d"),sSeg(ZL.map((z,i)=>[i,z+"×"]),zIdx,"zoomL"));
+    +sRow(t("set_zoom"),t("set_zoom_d"),sSeg(ZL.map((z,i)=>[i,z+"×"]),zIdx,"zoomL"))
+    +sRow(t("set_look"),t("set_look_d"),sSeg([["new",t("look_new")],["classic",t("look_classic")]],heroOn()?"new":"classic","look"));
   else if(setTab==="snd")body=sRow(t("set_sound"),t("set_sound_d"),swTog(S.sound,"snd"))+sRow(t("set_music"),t("set_music_d"),swTog(S.music,"mus"));
   else if(setTab==="oth"){
     body=sRow(t("language"),"",sSeg([["th","ไทย"],["en","EN"],["jp","日本語"]],lang,"lang"))
@@ -8139,6 +8168,7 @@ function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[d
   else if(a==="lang")setLang(b.dataset.v);
   else if(a==="lay")setLayout(b.dataset.v);
   else if(a==="gfx"){S.gfx=b.dataset.v;layout();renderWin()}
+  else if(a==="look"){S.look=b.dataset.v;drawAvatar();renderWin();save()}
   else if(a==="snd"){S.sound=!S.sound;AUD.apply();AUD.sfx("click");renderWin()}else if(a==="mus"){S.music=!S.music;AUD.apply();renderWin()}
   else if(a==="mock")toast(t("mock"));
   else if(a==="cview"){charView=b.dataset.v;eqSel=null;renderWin()}
@@ -8494,7 +8524,7 @@ document.addEventListener("keydown",e=>{
 });
 
 /* ================= avatar ================= */
-function drawAvatar(){const c=$("#av"),a=c.getContext("2d");a.setTransform(1,0,0,1,0,0);a.clearRect(0,0,128,128);const old=g;g=a;drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},64,190,3.05);g=old}
+function drawAvatar(){const c=$("#av"),a=c.getContext("2d");a.setTransform(1,0,0,1,0,0);a.clearRect(0,0,128,128);const old=g;g=a;if(!(heroOn()&&drawHero({f8:0,moving:false,phase:0,seed:0},64,238,3.3,{noShadow:1})))drawChibi({pal:PAL.player,dir:1,back:false,moving:false,phase:0,seed:0},64,190,3.05);g=old}
 
 /* ================= boot ================= */
 let saved=loadSave();
