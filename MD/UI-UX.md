@@ -639,16 +639,18 @@ SP shown is the real cost (after Mana Flow).
 
 These are placeholders drawn in code; a later art pass can replace any entry of `SKI` without touching the rest.
 
-## 27. Hero sprite for the main character (v20.11, female set v20.12, test)
+## 27. Hero sprite for the main character (v20.11, female set v20.12, female poses v20.13, test)
 
 The player is drawn from sprite sheets instead of the canvas chibi. Two sets: **male** and **female**.
 
 - **Files:** `images/hero/male/idle.webp` (1 frame per direction) and `walk.webp` (4 frames per direction), about 460 KB together; `images/hero/female/idle.webp` (3 frames, 3 fps) and `walk.webp` (3 frames), about 620 KB together. They are made from the 256 px PNG sheets and saved as WebP to cut the size. A set loads the first time it is drawn (`heroLoad`). The female `run` sheet is not used (the game has one walking speed). Five female idle frames (NE ×2, N ×1, NW ×2) still have a hair tip or headphone slightly cut at the frame edge; it is barely visible in game. Rows are 8 directions in the order S, SE, E, NE, N, NW, W, SW; columns are frames. Each frame is 256 × 256 with the feet at (128, 236).
 - **Size:** drawn at 0.34 of the sheet (`HERO.male.sc`), so the hero is about as tall as the old chibi (~71 px at zoom 1).
 - **Facing:** 8 directions, taken from the on-screen direction of movement or of the target (`face8`, stored as `c.f8`). It falls back to the old 4-way `dir` / `back` when there is no `f8` yet.
+- **Female poses (v20.13):** `sit.webp`, `attack.webp`, `cast.webp`, one frame per direction, same layout (8 rows, 256 px, feet at (128, 236)). Cut from five 4 × 2 pose sheets (back row N, NE, E, SE / front row S, SW, W, NW; the sit sheet runs S, SE, E, NE / N, NW, W, SW). Background noise under alpha 9 removed; pieces were split by connected parts, so the knife and the magic circles stay with their own figure. Scale 0.502 (the standing sheet's height matched to the old idle, 209 px); the sit sheet is drawn 0.8 of that so its head matches the standing head. The standing and run sheets were cut too but are not used (the 3-frame idle and the walk stay).
+- **Pose order (`drawHero`):** casting (`player.casting`) → cast; walking → walk; a short pose flash `player.pose` for `player.poseT` s → attack or cast; sitting → sit; else idle. Basic attack sets the flash for 0.32 s (`attack` for physical, `cast` for magic); a finished skill sets it for 0.36 s (`attack` for physical skills, `cast` for the rest) and turns the hero toward the target. A set without a pose sheet (male) falls back to idle, and sitting without a sit sheet uses the pressed-down idle frame.
 - **Animation:** walking steps through the walk frames with the walk phase (one cycle = 2π; male 4 frames, about 7 fps; female 3 frames). Standing plays the idle frames at their fps (female); a one-frame idle (male) gets a small breathing bob instead. **Sitting** reuses the idle frame pressed down a little (no sit art yet). **Dead** keeps the old tipped-over rotation.
 - **Portraits:** the player card avatar (first idle frame, still), the Character window doll and the Status portrait use the front (S) direction of the chosen set.
 - **Fallback:** while the sheets load, or if they fail, the old chibi is drawn. Other players and NPCs still use the chibi.
 - **Settings > Graphic > Character look:** Male (default), Female or Classic (the old chibi). Saved as `S.look` (`"male"`, `"female"`, `"classic"`; a v20.11 save with `"new"` reads as Male). For testing only; a real gender choice belongs in character creation later.
-- Missing art for later: attack, cast, sit and death poses.
+- Missing art for later: male sit, attack and cast poses; a death pose for both.
 
