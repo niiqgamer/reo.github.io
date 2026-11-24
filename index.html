@@ -5993,7 +5993,8 @@ const OL="rgba(42,26,40,.6)";
    Sheets live in images/hero/<set>/: rows = 8 directions (S,SE,E,NE,N,NW,W,SW), columns = frames,
    256px frames with the feet at (128,236). Falls back to drawChibi while loading or when S.look==="classic". */
 const HERO={
-  male:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/male/idle.webp",n:1,fps:3},walk:{src:"images/hero/male/walk.webp",n:4}},
+  male:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/male/idle.webp",n:1,fps:3},walk:{src:"images/hero/male/walk.webp",n:4},
+    sit:{src:"images/hero/male/sit.webp",n:1},attack:{src:"images/hero/male/attack.webp",n:1},cast:{src:"images/hero/male/cast.webp",n:1}},
   female:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/female/idle.webp",n:3,fps:3},walk:{src:"images/hero/female/walk.webp",n:3},
     sit:{src:"images/hero/female/sit.webp",n:1},attack:{src:"images/hero/female/attack.webp",n:1},cast:{src:"images/hero/female/cast.webp",n:1}}};
 const HERO_ANIMS=["idle","walk","sit","attack","cast"];   // a set may leave out any but idle and walk
