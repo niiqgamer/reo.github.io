@@ -5994,28 +5994,31 @@ const OL="rgba(42,26,40,.6)";
    256px frames with the feet at (128,236). Falls back to drawChibi while loading or when S.look==="classic". */
 const HERO={
   male:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/male/idle.webp",n:1,fps:3},walk:{src:"images/hero/male/walk.webp",n:4},
-    sit:{src:"images/hero/male/sit.webp",n:1},attack:{src:"images/hero/male/attack.webp",n:1},cast:{src:"images/hero/male/cast.webp",n:1}},
+    sit:{src:"images/hero/male/sit.webp",n:1},attack:{src:"images/hero/male/attack.webp",n:1},cast:{src:"images/hero/male/cast.webp",n:1},
+    death:{src:"images/hero/male/death.webp",n:8,fps:10,fw:240,ax:120,ay:222,res:.75}},   // stored at 3/4 size
   female:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/female/idle.webp",n:3,fps:3},walk:{src:"images/hero/female/walk.webp",n:3},
-    sit:{src:"images/hero/female/sit.webp",n:1},attack:{src:"images/hero/female/attack.webp",n:1},cast:{src:"images/hero/female/cast.webp",n:1}}};
-const HERO_ANIMS=["idle","walk","sit","attack","cast"];   // a set may leave out any but idle and walk
+    sit:{src:"images/hero/female/sit.webp",n:1},attack:{src:"images/hero/female/attack.webp",n:1},cast:{src:"images/hero/female/cast.webp",n:1},
+    death:{src:"images/hero/female/death.webp",n:3,fps:5,fw:320,ax:160,ay:296}}};
+const HERO_ANIMS=["idle","walk","sit","attack","cast","death"];   // a set may leave out any but idle and walk; an anim may override fw/ax/ay and store frames at res× size
 /* a set's sheets load the first time it is drawn */
 function heroLoad(H){if(H.ld)return;H.ld=1;for(const a of HERO_ANIMS){const o=H[a];if(!o)continue;const im=new Image();im.onload=()=>{o.ok=true;try{drawAvatar();drawDoll()}catch(e){}};im.src=o.src;o.img=im}}
 const DIR8=[2,1,0,7,6,5,4,3];   // screen octant (0=E, clockwise) -> sheet row
 function face8(c,dx,dy){const sx=(dx-dy)*HW,sy=(dx+dy)*HH;if(sx*sx+sy*sy<1e-6)return;c.f8=DIR8[((Math.round(Math.atan2(sy,sx)/(Math.PI/4))%8)+8)%8]}
 const heroOn=()=>S.look!=="classic";
+const heroDeath=()=>{const d=heroOn()&&HERO[heroSet()].death;return !!(d&&d.ok)};   // the death sheet replaces the tipped-over rotation
 const heroSet=()=>S.look==="female"?"female":"male";   // old saves may hold "new" = male
 /* draws the hero with its feet at (X,Y); sc is in drawChibi units. Returns false if the sheet is not ready. */
 function drawHero(c,X,Y,sc=1,o={}){
   const H=HERO[heroSet()];heroLoad(H);const sit=!!c.sit&&!c.moving,mv=!!c.moving&&!sit,ok=x=>x&&x.ok;
-  /* pose: casting > walking > attack/cast flash (c.pose for c.poseT s) > sitting > idle */
-  let a=ok(H.cast)&&c.casting?H.cast:mv?H.walk:c.poseT>0&&ok(H[c.pose])?H[c.pose]:sit&&ok(H.sit)?H.sit:H.idle;
+  /* pose: dead > casting > walking > attack/cast flash (c.pose for c.poseT s) > sitting > idle */
+  let a=c.dead&&ok(H.death)?H.death:ok(H.cast)&&c.casting?H.cast:mv?H.walk:c.poseT>0&&ok(H[c.pose])?H[c.pose]:sit&&ok(H.sit)?H.sit:H.idle;
   if(!a.ok)return false;const squash=sit&&a===H.idle;
   const row=c.f8!=null?c.f8:(c.back?(c.dir>0?3:5):(c.dir>0?1:7));
-  const fr=a===H.walk?Math.floor((c.phase||0)/TAU*a.n)%a.n:(o.still||a.n<2?0:Math.floor(T*a.fps+(c.seed||0))%a.n),bob=a!==H.idle||a.n>1?0:Math.sin(T*2.4+(c.seed||0))*.7,fw=H.fw;
+  const fr=a===H.death?Math.min(a.n-1,Math.floor(Math.max(0,T-(c.dieAt||0))*a.fps)):a===H.walk?Math.floor((c.phase||0)/TAU*a.n)%a.n:(o.still||a.n<2?0:Math.floor(T*a.fps+(c.seed||0))%a.n),bob=a!==H.idle||a.n>1?0:Math.sin(T*2.4+(c.seed||0))*.7,fw=a.fw||H.fw,ax=a.ax||H.ax,ay=a.ay||H.ay,rs=a.res||1;
   g.save();g.translate(X,Y);g.scale(sc,sc);
   if(!o.noShadow)ell(0,0,sit?15:13,5,"rgba(12,16,28,.3)");
   g.translate(0,bob+(squash?2:0));g.scale(H.sc,H.sc*(squash?.86:1));g.imageSmoothingEnabled=true;g.imageSmoothingQuality="high";
-  g.drawImage(a.img,fr*fw,row*fw,fw,fw,-H.ax,-H.ay,fw,fw);
+  g.drawImage(a.img,fr*fw,row*fw,fw,fw,-ax/rs,-ay/rs,fw/rs,fw/rs);
   g.restore();return true;
 }
 function drawChibi(c,X,Y,sc=1){
@@ -6969,7 +6972,7 @@ function monHit(mo){
   { const th=pd().ab&&pd().ab.th; if(th&&!mo.dead&&mo.dieT<=0){ mo.hp-=Math.max(1,Math.round(res.dmg*th/100)); if(mo.hp<=0)killMon(mo); } }
 }
 function die(){
-  if(player.dead)return;AUD.sfx("death");player.dead=true;deathT=3;S.deaths++;player.path=[];player.target=null;player.casting=null;volleys.length=0;balls.length=0;
+  if(player.dead)return;AUD.sfx("death");player.dead=true;player.dieAt=T;deathT=3;S.deaths++;player.path=[];player.target=null;player.casting=null;volleys.length=0;balls.length=0;
   player.nav=null;if(S.idle)setIdle(false,true);deaggroAll();resetCombatState();
   $("#deathOv").classList.remove("hidden");pushChat({ch:"sys",k:"sys_dead"});
 }
@@ -7564,7 +7567,7 @@ function render(){
       case "mon":drawMon(o.c,o.sx,o.sy);break;
       case "char":{const c=o.c;let sx=o.sx,sy=o.sy;
         if(c.me&&c.lunge>0&&c.target){const [tx,ty]=P(c.target.x,c.target.y),l=Math.sin((1-c.lunge/.2)*Math.PI)*7,d=Math.hypot(tx-sx,ty-sy)||1;sx+=(tx-sx)/d*l;sy+=(ty-sy)/d*l}
-        if(c.me&&c.dead){g.save();g.globalAlpha=.65;g.translate(sx,sy-4);g.rotate(-1.35*c.dir);drawChibi(c,0,0);g.restore()}else drawChibi(c,sx,sy);break}
+        if(c.me&&c.dead&&!heroDeath()){g.save();g.globalAlpha=.65;g.translate(sx,sy-4);g.rotate(-1.35*c.dir);drawChibi(c,0,0);g.restore()}else drawChibi(c,sx,sy);break}
     }
   }
   for(const f of fx)drawFx(f);
