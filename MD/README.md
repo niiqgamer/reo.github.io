@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.12. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.13. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.12 (this update)
+## Changes in v20.13 (this update)
+- **Female hero poses.** New `images/hero/female/sit.webp`, `attack.webp`, `cast.webp` (one frame × 8 directions). Sitting uses the sit pose; casting shows the cast pose for the whole cast; a basic attack or skill flashes the attack pose (physical) or cast pose (magic, buffs) for about 0.3 s and turns the hero to the target. Male still uses the old fallbacks. See `UI-UX.md` §27.
+
+## Changes in v20.12
 - **Female hero sprite.** New set `images/hero/female/idle.webp` (3-frame idle, 3 fps) and `walk.webp` (3 frames), 8 directions. Settings > Graphic > **Character look** is now Male / Female / Classic (`S.look`; the old `"new"` value reads as Male). Sets load the first time they are drawn. See `UI-UX.md` §27.
 
 ## Changes in v20.11

@@ -5994,21 +5994,26 @@ const OL="rgba(42,26,40,.6)";
    256px frames with the feet at (128,236). Falls back to drawChibi while loading or when S.look==="classic". */
 const HERO={
   male:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/male/idle.webp",n:1,fps:3},walk:{src:"images/hero/male/walk.webp",n:4}},
-  female:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/female/idle.webp",n:3,fps:3},walk:{src:"images/hero/female/walk.webp",n:3}}};
+  female:{fw:256,ax:128,ay:236,sc:.34,idle:{src:"images/hero/female/idle.webp",n:3,fps:3},walk:{src:"images/hero/female/walk.webp",n:3},
+    sit:{src:"images/hero/female/sit.webp",n:1},attack:{src:"images/hero/female/attack.webp",n:1},cast:{src:"images/hero/female/cast.webp",n:1}}};
+const HERO_ANIMS=["idle","walk","sit","attack","cast"];   // a set may leave out any but idle and walk
 /* a set's sheets load the first time it is drawn */
-function heroLoad(H){if(H.ld)return;H.ld=1;for(const a of ["idle","walk"]){const o=H[a],im=new Image();im.onload=()=>{o.ok=true;try{drawAvatar();drawDoll()}catch(e){}};im.src=o.src;o.img=im}}
+function heroLoad(H){if(H.ld)return;H.ld=1;for(const a of HERO_ANIMS){const o=H[a];if(!o)continue;const im=new Image();im.onload=()=>{o.ok=true;try{drawAvatar();drawDoll()}catch(e){}};im.src=o.src;o.img=im}}
 const DIR8=[2,1,0,7,6,5,4,3];   // screen octant (0=E, clockwise) -> sheet row
 function face8(c,dx,dy){const sx=(dx-dy)*HW,sy=(dx+dy)*HH;if(sx*sx+sy*sy<1e-6)return;c.f8=DIR8[((Math.round(Math.atan2(sy,sx)/(Math.PI/4))%8)+8)%8]}
 const heroOn=()=>S.look!=="classic";
 const heroSet=()=>S.look==="female"?"female":"male";   // old saves may hold "new" = male
 /* draws the hero with its feet at (X,Y); sc is in drawChibi units. Returns false if the sheet is not ready. */
 function drawHero(c,X,Y,sc=1,o={}){
-  const H=HERO[heroSet()];heroLoad(H);const sit=!!c.sit&&!c.moving,mv=!!c.moving&&!sit,a=mv?H.walk:H.idle;if(!a.ok)return false;
+  const H=HERO[heroSet()];heroLoad(H);const sit=!!c.sit&&!c.moving,mv=!!c.moving&&!sit,ok=x=>x&&x.ok;
+  /* pose: casting > walking > attack/cast flash (c.pose for c.poseT s) > sitting > idle */
+  let a=ok(H.cast)&&c.casting?H.cast:mv?H.walk:c.poseT>0&&ok(H[c.pose])?H[c.pose]:sit&&ok(H.sit)?H.sit:H.idle;
+  if(!a.ok)return false;const squash=sit&&a===H.idle;
   const row=c.f8!=null?c.f8:(c.back?(c.dir>0?3:5):(c.dir>0?1:7));
-  const fr=mv?Math.floor((c.phase||0)/TAU*a.n)%a.n:(o.still||a.n<2?0:Math.floor(T*a.fps+(c.seed||0))%a.n),bob=mv||a.n>1?0:Math.sin(T*2.4+(c.seed||0))*.7,fw=H.fw;
+  const fr=a===H.walk?Math.floor((c.phase||0)/TAU*a.n)%a.n:(o.still||a.n<2?0:Math.floor(T*a.fps+(c.seed||0))%a.n),bob=a!==H.idle||a.n>1?0:Math.sin(T*2.4+(c.seed||0))*.7,fw=H.fw;
   g.save();g.translate(X,Y);g.scale(sc,sc);
   if(!o.noShadow)ell(0,0,sit?15:13,5,"rgba(12,16,28,.3)");
-  g.translate(0,bob+(sit?2:0));g.scale(H.sc,H.sc*(sit?.86:1));g.imageSmoothingEnabled=true;g.imageSmoothingQuality="high";
+  g.translate(0,bob+(squash?2:0));g.scale(H.sc,H.sc*(squash?.86:1));g.imageSmoothingEnabled=true;g.imageSmoothingQuality="high";
   g.drawImage(a.img,fr*fw,row*fw,fw,fw,-H.ax,-H.ay,fw,fw);
   g.restore();return true;
 }
@@ -6916,6 +6921,7 @@ const later=(ms,fn)=>setTimeout(fn,ms);
 const alive=mo=>mo&&!mo.dead&&mo.dieT<=0;
 function basicAttack(mo){
   const b=REOC.ARCH[S.arch].basic,d=pd(),x=player.x,y=player.y;
+  player.pose=b.kind==="phys"?"attack":"cast";player.poseT=.32;   // hero sprite pose
   if(b.kind==="phys"){
     if(d.ranged){fx.push({k:"proj",x,y,tx:mo.x,ty:mo.y,t:0,d:.2,c:"#f3e2b0"});later(190,()=>{if(alive(mo))physAttack(mo,{ratio:b.ratio})})}
     else{player.lunge=.2;const res=physAttack(mo,{ratio:b.ratio});if(S.arch==="fighter"&&!res.miss)addMomentum(1)}
@@ -6986,7 +6992,7 @@ function updateVolleys(dt){
   for(let i=balls.length-1;i>=0;i--){const b=balls[i];b.t+=dt;if(b.t>=b.fall){balls.splice(i,1);landBall(b)}}
 }
 function updateCombat(dt){
-  player.atkCd=Math.max(0,player.atkCd-dt);player.lunge=Math.max(0,player.lunge-dt);player.combatT+=dt;
+  player.atkCd=Math.max(0,player.atkCd-dt);player.lunge=Math.max(0,player.lunge-dt);player.poseT=Math.max(0,(player.poseT||0)-dt);player.combatT+=dt;
   for(const k of ["warCry","blessing","leap","overEn","regen","herbAtk","herbDef","sage"])if(BF[k]>0)BF[k]=Math.max(0,BF[k]-dt);
   if(BF.slow>0)BF.slow=Math.max(0,BF.slow-dt);player.speed=3.6*(BF.slow>0?.65:1);
   if(BF.burn>0&&!player.dead){BF.burn=Math.max(0,BF.burn-dt);BF.burnAcc+=dt;if(BF.burnAcc>=1){BF.burnAcc-=1;damagePlayer(Math.max(1,Math.round(BF.burnDps)),t("fx_burn"))}}
@@ -7290,6 +7296,7 @@ function finishSkill(id,tg,lv){
   CD[id]=k.cd*d.cdMul;   // cooldown and Global Delay both start when the cast ends
   if(k.gd){player.gd=k.gd*d.gdMul;player.gdMax=player.gd}
   if(tg&&!alive(tg))tg=null;
+  player.pose=k.kind==="phys"?"attack":"cast";player.poseT=.36;if(tg)faceToward(player,tg.x,tg.y);   // hero sprite pose
   const area=k.aoe?(k.at==="self"?liveMon().filter(m=>dist(m,player)<=k.aoe):(tg?liveMon().filter(m=>dist(m,tg)<=k.aoe):[])):(tg?[tg]:[]);
   switch(k.kind){
    case "phys":{
