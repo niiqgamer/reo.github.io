@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.13. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.15. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,13 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.13 (this update)
+## Changes in v20.15 (this update)
+- **Hero death animation.** New `images/hero/male/death.webp` (8 frames) and `images/hero/female/death.webp` (3 frames), 8 directions. On death the hero falls once and stays down until respawn, instead of the old tipped-over chibi. Male SW / NW rows are mirrored from SE / NE. See `UI-UX.md` §27.
+
+## Changes in v20.14
+- **Male hero poses.** New `images/hero/male/sit.webp`, `attack.webp`, `cast.webp` (one frame × 8 directions), used the same way as the female poses: sit when sitting, cast while casting, a short attack or cast flash after attacks and skills. See `UI-UX.md` §27.
+
+## Changes in v20.13
 - **Female hero poses.** New `images/hero/female/sit.webp`, `attack.webp`, `cast.webp` (one frame × 8 directions). Sitting uses the sit pose; casting shows the cast pose for the whole cast; a basic attack or skill flashes the attack pose (physical) or cast pose (magic, buffs) for about 0.3 s and turns the hero to the target. Male still uses the old fallbacks. See `UI-UX.md` §27.
 
 ## Changes in v20.12
