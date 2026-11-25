@@ -604,40 +604,40 @@ SP shown is the real cost (after Mana Flow).
 
 **Footer.** "Skill Points : N" = the points **not spent yet**; while there is a draft it already counts the draft (it drops as levels are planned) and the box gets a gold ring. Then **Learn** (blue) and **Reset** (grey). The footer never grows wider than the window (no horizontal scroll). The old Hotbar setup drop-downs are gone (§25).
 
-**Skill icons (v20.10).** Every skill has its own duotone icon (`SKI`, 32 × 32 grid, lines in `currentColor`, class `a` = soft fill). Tiles colour them (white on actives, line colour on passives); the hotkey bar and drag ghost show them white on the line gradient. The element no longer changes the icon colour.
+**Skill icons (v20.16, first set v20.10).** Every skill has its own full-colour illustration (`SKI`, 64 × 64 grid): gradients, light and shade, glow and sparkles, with a dark `#1b2030` outline so it reads on the colour tile of an active and on the white tile of a passive. The gradients (ids `k*`: steel, gold, wood, leaf, fire, ice, lightning, mana, stone, arcane, cloth, glows, element orbs) are defined once in a hidden `<svg id="skdefs">` at the top of `<body>`; `skSvg(id)` wraps a glyph in `<svg class="ski" viewBox="0 0 64 64">` and `svg.ski` forces the outline (so older `.dot svg` / `.dnd-ghost .ic svg` rules do not turn it white). The icon keeps its own colours; the archetype colour stays on the tile, hotkey slot and drag ghost behind it. A skill not learned yet greys the whole picture (`.sk-tile.off svg`: grayscale, faded). Sizes: tile 46 px, Skill Info 64 px, hotkey slot 32 px (28 px compact), drag ghost 32 px, arch card 28 px.
 
 | Line | Skill | Icon |
 |---|---|---|
-| Beginner | Basic Skill | sprout |
-| | First Aid | cross in a rounded square |
-| | Heavy Strike | sword with impact marks |
-| Fighter | Power Strike | burst star |
-| | Whirlwind Cleave | spinning arc |
-| | Crushing Blow | hammer with cracks |
-| | War Cry | horn with sound waves |
-| | Weapon Mastery (passive) | crossed swords |
-| | Iron Body (passive) | cross shield |
-| Ranger | Double Strafe | two arrows |
-| | Arrow Shower | arrows falling on a ring |
-| | Piercing Shot | arrow through a target |
-| | Evasive Leap | wing |
-| | Eagle Eye (passive) | eye |
-| | Steady Aim (passive) | crosshair |
-| Spellcaster | Fire Bolt | falling fireball with trails |
-| | Frost Nova | snowflake |
-| | Lightning Spear | lightning bolt |
-| | Stone Spike | rock spikes |
-| | Overload Energy | four-point sparkle |
-| | Mana Flow (passive) | drop with waves |
-| | Elemental Attunement (passive) | ring with four element points |
-| Supporter | Heal | heart with plus |
-| | Holy Light | sun |
-| | Blessing | star under a halo |
-| | Sanctuary | pillars on a glowing circle |
-| | Divine Grace (passive) | feather |
-| | Guardian Aura (passive) | shield in an aura |
+| Beginner | Basic Skill | sprout with two leaves in soil, gold sparkle |
+| | First Aid | adhesive bandage with a red cross, green plus |
+| | Heavy Strike | sword driven into the ground on a gold impact burst |
+| Fighter | Power Strike | upright sword on a red-gold power burst |
+| | Whirlwind Cleave | axe with a sweeping slash arc |
+| | Crushing Blow | warhammer cracking the ground, 3 fire orbs (stacks) |
+| | War Cry | gold war horn with red sound waves |
+| | Weapon Mastery (passive) | crossed swords on a gold burst |
+| | Iron Body (passive) | steel shield, red band, gold heart |
+| Ranger | Double Strafe | two arrows with light trails |
+| | Arrow Shower | arrows raining on a red target ring |
+| | Piercing Shot | arrow through a cracked stone shield |
+| | Evasive Leap | white-green wing with dash lines |
+| | Eagle Eye (passive) | golden eagle eye under a brow |
+| | Steady Aim (passive) | scope lens with a red reticle |
+| Spellcaster | Fire Bolt | fireball comet (red, orange, white core) |
+| | Frost Nova | ice-crystal snowflake in a frost ring |
+| | Lightning Spear | yellow lightning javelin |
+| | Stone Spike | three stone spikes from cracked ground |
+| | Overload Energy | arcane orb with a star, orbit rings, green up arrow |
+| | Mana Flow (passive) | blue mana drop with a flowing stream |
+| | Elemental Attunement (passive) | four element orbs (fire, water, wind, earth) round a gem |
+| Supporter | Heal | red heart with a white cross |
+| | Holy Light | beam from a sun with a gold star |
+| | Blessing | gold star with white wings and a halo |
+| | Sanctuary | gold cross on a glowing ground ring |
+| | Divine Grace (passive) | white quill feather in a gold light ring |
+| | Guardian Aura (passive) | gold shield with a blue gem in an aura dome |
 
-These are placeholders drawn in code; a later art pass can replace any entry of `SKI` without touching the rest.
+They are drawn in code (no image files); any entry of `SKI` can be redrawn without touching the rest.
 
 ## 27. Hero sprite for the main character (v20.11, female set v20.12, female poses v20.13, male poses v20.14, death v20.15, test)
 
