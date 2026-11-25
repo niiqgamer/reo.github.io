@@ -14,6 +14,8 @@ Arrival always follows the portal rule in `FIELD-01.md` (nearest walkable tile b
 Frosted blue-silver meadow, ice-blue pools, frosted and silver-white trees, pale crystal clusters and blue mushrooms. At the top of the map is the **boss arena**: a 5.6-tile stone circle with a glowing rune circle on the ground. No normal monsters spawn inside it.
 
 ## Monsters (passive until hit)
+
+**Packs (v21c):** besides the scattered monsters, the map has 3 packs, one per kind (Glacilite ×6, Rimeback ×5, Magnoculus ×4, normal monsters, no Elites). Each pack gathers within 2.5 tiles of a centre picked at load inside that kind's zone (at least 8 tiles from portals, 14 tiles from the other packs), wanders only 3 tiles around it and respawns next to it. When one member is hit or spots you, every member within 10 tiles charges too.
 Same three sprites as Fields 01–02, recoloured icy, stronger.
 
 | ID | Name (EN / TH) | Sprite | Lv | Element | HP | ATK | Hard DEF | MDEF | Base / Job EXP | Scandium | Drop | Count | Area |

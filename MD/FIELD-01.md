@@ -22,6 +22,8 @@ First hunting map, reached through the **east gate portal** of Gadolinium.
 
 ## 3. Monsters (passive — they never attack first)
 
+**Packs (v21c):** besides the scattered monsters, the map has 3 packs, one per kind (Lumite ×6, Crawlix ×5, Oculoth ×4, normal monsters, no Elites). Each pack gathers within 2.5 tiles of a centre picked at load inside that kind's zone (at least 8 tiles from portals, 14 tiles from the other packs), wanders only 3 tiles around it and respawns next to it. When one member is hit or spots you, every member within 10 tiles charges too.
+
 | ID | Name (EN / TH) | Lv | HP | ATK | DEF | Atk speed | Base / Job EXP | Scandium | Drop | Count | Zone (x) |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | `lumite` | Lumite / ลูไมต์ — floating three-eyed jelly | 1 | 60 | 10 | 1 | 1.6 s | 20 / 14 | 3–7 | Lumite Gel 45% | 9 | 5–24 |

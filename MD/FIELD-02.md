@@ -11,6 +11,8 @@ The lower-left portal leads to Field 01. The new **upper portal (19, 2)** leads 
 
 ## Monsters (passive)
 
+**Packs (v21c):** besides the scattered monsters, the map has 3 packs, one per kind (Nebulite ×6, Shardback ×5, Cryoculus ×4, normal monsters, no Elites). Each pack gathers within 2.5 tiles of a centre picked at load inside that kind's zone (at least 8 tiles from portals, 14 tiles from the other packs), wanders only 3 tiles around it and respawns next to it. When one member is hit or spots you, every member within 10 tiles charges too.
+
 | ID | Name (EN / TH) | Sprite | Lv | HP | ATK | DEF | Base / Job EXP | Scandium | Drop | Count | Zone (x · y) |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | `nebulite` | Nebulite / เนบิไลต์ | Lumite (blue) | 7 | 170 | 26 | 6 | 64 / 42 | 10–18 | Nebula Gel 40% | 9 + 1 Elite | 4–30 · 28–45 |

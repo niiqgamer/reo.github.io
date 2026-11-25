@@ -4861,11 +4861,22 @@ function spawnPos(m,type){const K=m.K||1,z=MON[type].zone.map(v=>v*K);for(let k=
   if(walkM(m,x,y)&&!m.portals.some(p=>Math.hypot(x-p.x,y-p.y)<8)&&(MON[type].boss||!m.arena||Math.hypot(x+.5-m.arena[0],y+.5-m.arena[1])>m.arena[2]+1))return [x+.5,y+.5]}return [m.N/2,m.N/2]}
 /* v20: fields are 4× the area, so each keeps 3× the monsters and 2 Elites per kind */
 const MON_MULT=3,ELITE_PER=2;
-function newMon(type,elite){const d=MON[type],m=MAPS[d.map],[x,y]=spawnPos(m,type),hp=d.hp*(elite?ELITE.hp:1);
-  return mk({mon:true,type,boss:!!d.boss,slamT:6+Math.random()*3,tele:null,skCd:null,elite:!!elite,x,y,home:[x,y],hp,maxHp:hp,speed:d.speed,wait:Math.random()*3,aggro:false,atkCd:0,hitT:0,dieT:0,dead:false,respawn:0,repath:0,phase:Math.random()*9})}
+/* v21c: besides the scattered monsters, every hunting map has PACK_N packs, one per kind (3 kinds = 3 packs). A pack is a tight group
+   of the same kind around a fixed centre (picked at load inside the kind's zone, at least PACK_GAP tiles from the other packs). Members
+   wander only PACK_WANDER tiles around the centre, respawn next to it, and when one is attacked or spots you the whole pack charges. */
+const PACK_R=2.5,PACK_WANDER=3,PACK_GAP=14,PACK_LINK=10;
+const packSize=d=>d.count>=8?6:d.count>=6?5:4;   // the weakest kind runs in the biggest pack
+function packSpot(m,pk){for(let k=0;k<60;k++){const a=Math.random()*Math.PI*2,r=Math.random()*PACK_R,x=Math.floor(pk.x+Math.cos(a)*r),y=Math.floor(pk.y+Math.sin(a)*r);
+  if(walkM(m,x,y)&&(!m.arena||Math.hypot(x+.5-m.arena[0],y+.5-m.arena[1])>m.arena[2]+1))return [x+.5,y+.5]}return [pk.x,pk.y]}
+function newMon(type,elite,pack){const d=MON[type],m=MAPS[d.map],[x,y]=pack?packSpot(m,pack):spawnPos(m,type),hp=d.hp*(elite?ELITE.hp:1);
+  return mk({mon:true,type,boss:!!d.boss,slamT:6+Math.random()*3,tele:null,skCd:null,elite:!!elite,pack:pack||null,x,y,home:[x,y],hp,maxHp:hp,speed:d.speed,wait:Math.random()*3,aggro:false,atkCd:0,hitT:0,dieT:0,dead:false,respawn:0,repath:0,phase:Math.random()*9})}
 for(const k in MON){const m=MAPS[MON[k].map];if(MON[k].boss){m.monsters.push(newMon(k,false));continue}
-  for(let i=0;i<MON[k].count*MON_MULT;i++)m.monsters.push(newMon(k,false));for(let i=0;i<ELITE_PER;i++)m.monsters.push(newMon(k,true))}
-function respawnMon(mo){Object.assign(mo,newMon(mo.type,mo.elite))}
+  for(let i=0;i<MON[k].count*MON_MULT;i++)m.monsters.push(newMon(k,false));for(let i=0;i<ELITE_PER;i++)m.monsters.push(newMon(k,true));
+  m.packs=m.packs||[];let c=spawnPos(m,k);for(let t=0;t<40&&m.packs.some(p=>Math.hypot(p.x-c[0],p.y-c[1])<PACK_GAP);t++)c=spawnPos(m,k);
+  const pk={x:c[0],y:c[1],type:k};m.packs.push(pk);for(let i=0;i<packSize(MON[k]);i++)m.monsters.push(newMon(k,false,pk))}
+function respawnMon(mo){Object.assign(mo,newMon(mo.type,mo.elite,mo.pack))}
+/* the whole pack joins in once one member is angry */
+function packAggro(mo){if(!mo.pack)return;for(const o of cur.monsters)if(o!==mo&&o.pack===mo.pack&&!o.aggro&&!o.dead&&o.dieT<=0&&Math.hypot(o.x-mo.x,o.y-mo.y)<=PACK_LINK){o.aggro=true;o.speed=MON[o.type].speed*1.6;o.path=[];o.repath=0}}
 const mAtk=mo=>MON[mo.type].atk*(mo.elite?ELITE.atk:1),mDef=mo=>MON[mo.type].def+(mo.elite?ELITE.def:0),mLv=mo=>MON[mo.type].lv+(mo.elite?2:0),mSize=mo=>MON[mo.type].size*(mo.elite?ELITE.size:1);
 
 /* ================= quests ================= */
@@ -7565,7 +7576,7 @@ const mprof=mo=>mo.elite?REOC.eliteOf(REOC.MONC[mo.type]):REOC.MONC[mo.type];
 function nearestMon(max,noElite){let best=null,bd=max||99;for(const m of liveMon()){if(noElite&&(m.boss||(m.elite&&S.lv<mLv(m)+3)))continue;const d=dist(m,player);if(d<bd){bd=d;best=m}}return best}
 function applyHit(mo,res,o){
   if(!mo||mo.dead||mo.dieT>0)return;AUD.sfx(res&&res.miss?"miss":(res&&(res.crit||res.over))?"crit":"hit");
-  player.combatT=0;if(!mo.aggro){mo.aggro=true;mo.speed=MON[mo.type].speed*1.6}
+  player.combatT=0;if(!mo.aggro){mo.aggro=true;mo.speed=MON[mo.type].speed*1.6;packAggro(mo)}
   const h=MON[mo.type].h*mSize(mo);
   if(res.miss){fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:t("miss"),c:"#c8c8d8",ox:(rnd()-.5)*24,h});return}
   { const ab=pd().ab||{}; if(res.crit&&ab.cd)res.dmg=Math.round(res.dmg*(1+ab.cd/100)); mo.hp-=res.dmg; if(ab.ls)S.hp=Math.min(hpMax(),S.hp+res.dmg*ab.ls/100); }
@@ -7719,7 +7730,7 @@ function updateMon(mo,dt){
     AUD.sfx("slam");fx.push({k:"ring",x:tl.x,y:tl.y,t:0,d:.6,c:"#ff9a7a",r:tl.r*55});fx.push({k:"burst",x:tl.x,y:tl.y,t:0,d:.6,c:"#ffd0b0",n:26,z:10});
     if(!player.dead&&Math.hypot(player.x-tl.x,player.y-tl.y)<=tl.r){const raw=mprof(mo).atk*(tl.mult||1.8)*(.9+rnd()*.2);damagePlayer(Math.max(1,Math.round(raw*(1-pd().hardDef)-pd().softDef)),t(tl.nameK||"slam"));if(tl.deb&&!player.dead)applyDeb(tl.deb,mo)}}}
   {const dd=MON[mo.type];   // aggressive monsters (v19) attack first when you come close
-    if(!mo.aggro&&dd.aggr&&!mo.boss&&aggroGrace<=0&&!player.dead&&dist(mo,player)<=dd.aggr+(mo.elite?1:0)){mo.aggro=true;mo.speed=dd.speed*1.6;mo.path=[];mo.repath=0;fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:"!",c:"#ff5a6a",big:true,ox:0,h:dd.h*mSize(mo)+10})}}
+    if(!mo.aggro&&dd.aggr&&!mo.boss&&aggroGrace<=0&&!player.dead&&dist(mo,player)<=dd.aggr+(mo.elite?1:0)){mo.aggro=true;mo.speed=dd.speed*1.6;mo.path=[];mo.repath=0;fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:"!",c:"#ff5a6a",big:true,ox:0,h:dd.h*mSize(mo)+10});packAggro(mo)}}
   if(mo.aggro&&!player.dead){
     const d=dist(mo,player);
     if(mo.tele){mo.path=[];mo.moving=false}
@@ -7729,7 +7740,7 @@ function updateMon(mo,dt){
     else{mo.path=[];mo.moving=false;faceToward(mo,player.x,player.y);if(mo.atkCd<=0){mo.atkCd=MON[mo.type].aspd;monHit(mo)}}
   }else{
     mo.wait-=dt;
-    if(!mo.path.length&&mo.wait<=0){const wr=mo.boss?3:8,tx=Math.floor(mo.home[0]+(Math.random()-.5)*wr),ty=Math.floor(mo.home[1]+(Math.random()-.5)*wr);if(walk(tx,ty))walkTo(mo,tx,ty);mo.wait=(mo.boss?6:2)+Math.random()*5}
+    if(!mo.path.length&&mo.wait<=0){const wr=mo.boss?3:mo.pack?PACK_WANDER*2:8,tx=Math.floor(mo.home[0]+(Math.random()-.5)*wr),ty=Math.floor(mo.home[1]+(Math.random()-.5)*wr);if(walk(tx,ty))walkTo(mo,tx,ty);mo.wait=(mo.boss?6:2)+Math.random()*5}
   }
   moveChar(mo,dt);
 }

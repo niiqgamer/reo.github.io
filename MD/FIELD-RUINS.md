@@ -24,6 +24,8 @@ Arrival follows the portal rule in `FIELD-01.md` (nearest walkable tile beside t
 98 × 98 tiles (the original 49 × 49 layout scaled 2×; 3× monsters, 2 Elites per kind; portals sit 2 tiles from the map edge). Scorched black-red ground with rust-brick roads, charred trees with ember tips, **5 lava pools** (blocked), ember crystals. **Broken columns and burning braziers** line the north–south road in pairs every 5 tiles, plus random ones. Roads: north–south (`x = 24 + round(sin(0.16y+0.8)·4)`) and east–west (`y = 26 + round(sin(0.19x)·3)`). Orange embers float in the air. Music: `ruins` (104 BPM, double harmonic, driving drums, pulsing bass).
 
 ## 4. Monsters (**aggressive**, with skills)
+
+**Packs (v21c):** besides the scattered monsters, the map has 3 packs, one per kind (Cinderling ×6, Magmaback ×5, Ashen Sentinel ×4, normal monsters, no Elites). Each pack gathers within 2.5 tiles of a centre picked at load inside that kind's zone (at least 8 tiles from portals, 14 tiles from the other packs), wanders only 3 tiles around it and respawns next to it. When one member is hit or spots you, every member within 10 tiles charges too.
 Aggressive means a monster that sees the player inside its **aggro range** (Elites +1 tile) starts chasing at ×1.6 speed and attacks first, with a red "!" above its head. It gives up beyond 16 tiles. Respawn 8–15 s (Elite 45–60 s). Every type also has 1 Elite (rules in `FIELD-02.md`).
 
 | ID | Name (EN / TH) | Lv | Element | HP | ATK | Hard DEF | Soft DEF | MDEF | HIT | FLEE | Base / Job EXP | Scandium | Count | Aggro | Skills |
