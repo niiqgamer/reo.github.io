@@ -50,9 +50,9 @@
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
 ## Changes in v22a (this update)
-- **Ranger balance (NIIQ):** Aim Strike VCT 1 → 0.5 s, Global Delay 2 → 1 s, cooldown 2 → 1 s (damage, split and SP unchanged). Aiming Shower cooldown 2 → 1 s.
+- **Ranger balance (NIIQ):** Aim Strike VCT 1 → 0.5 s, Global Delay 2 → 1 s, cooldown 2 → 1 s, **SP 10 at every level** (was 12–20; damage and split unchanged). Aiming Shower cooldown 2 → 1 s.
 - **Ranger AI (Idle built-in choice and simulator):** Aim Strike first only when 2+ monsters are close (splash); against one target Double Strafe comes first (more damage per SP), then Aim Strike.
-- Ranger CP Lv 10 / 20 / 30 = 648 / 1,034 / 1,682 (Fighter 598 / 1,090 / 1,576); Ruins DPS 193 (Fighter 181, Spellcaster 200). `SKILL-SPEC.md` §3m, §3n.
+- Ranger CP Lv 10 / 20 / 30 = 656 / 1,044 / 1,761 (Fighter 598 / 1,090 / 1,576); Ruins DPS 200 (Fighter 181, Spellcaster 200). `SKILL-SPEC.md` §3m, §3n.
 
 ## Changes in v22
 - **New map: Ashfall Ruins / ซากอารยธรรมพรอมีเธีย** (`ashfall`, `FIELD-ASHFALL.md`), through a new **south portal on Road to the Ruins** (Lv 40+ and CP 6,000+, recommended CP 9,000, two "Monster Lv.40+" signs). The ruins of Promethea, buried by a volcanic eruption that also spewed rare earth veins: ash ground, lava fissures (palette-coloured chasm tiles), lava pools, glowing rare earth veins (`vein`), broken columns, a boss arena and the Sealed Caldera Gate (`bgate`). Music `ashfall`.
