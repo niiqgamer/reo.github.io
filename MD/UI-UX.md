@@ -298,6 +298,14 @@ Every hit the player lands on a monster now plays a small pixel-art effect, repl
 
 **Code touched:** `applyHit` (calls `hitFx`), `drawFx` (new `hfx` branch), `update` (hit-stop and shake timers at the top), `render` (shake offset in the world transform; clicks are not affected because `ox/oy` are not modified).
 
+
+### 15b. Death crumble (v21d)
+When a monster dies its body shrinks and fades over 0.45 s while it breaks into shards (replacing the old death `burst`):
+1. **Scatter (0–0.45…0.75 s, per shard):** small rotating rectangles in the monster's colour (`monCol`), with some white and, for Elites gold / bosses ice blue, fly outward and drift up with a slight flutter.
+2. **Home in (0.55 s per shard):** each shard turns into a glowing dot with a short trail and curves (ease-in) into the player's chest. The target is read every frame, so the shards follow you while you move.
+3. **Arrival:** a ring flashes at the player's feet ~0.95 s after the kill.
+
+Shards: normal 22, Elite 38, boss 70 (half on Low graphics). All shards live in one `fx` item (`k:"crumble"`), so the 420-effect cap is not stressed. Code: `crumbleFx` (called from `killMon`), `drawFx` `crumble` branch, `drawMon` (death shrink).
 ---
 
 ## 16. HUD changes in v19.1

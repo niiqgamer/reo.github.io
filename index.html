@@ -7073,7 +7073,7 @@ function eliteCircle(sx,sy,r){
 }
 function drawMon(mo,sx,sy){
   const d=MON[mo.type],sz=mSize(mo);let a=1,sc=1;
-  if(mo.dieT>0){const p=1-mo.dieT/.45;a=1-p;sc=1+p*.35}
+  if(mo.dieT>0){const p=1-mo.dieT/.45;a=1-p*p;sc=1-p*.3}
   if(mo.elite&&mo.dieT<=0)eliteCircle(sx,sy,24*sz);
   if(mo.boss&&mo.dieT<=0)bossAura(sx,sy,34*sz,mo.aggro);
   if(player.target===mo&&mo.dieT<=0){g.save();g.strokeStyle="rgba(255,90,110,.95)";g.lineWidth=2;g.setLineDash([5,4]);g.lineDashOffset=-T*20;g.beginPath();g.ellipse(sx,sy,19*sz,9.5*sz,0,0,TAU);g.stroke();g.restore()}
@@ -7598,6 +7598,17 @@ function basicAttack(mo){
     else{player.lunge=.2;const res=physAttack(mo,{ratio:b.ratio});if(S.arch==="fighter"&&!res.miss)addMomentum(1)}
   }else{fx.push({k:"proj",x,y,tx:mo.x,ty:mo.y,t:0,d:.24,c:ELC[b.elem]||"#c9b8ff"});later(220,()=>{if(alive(mo))magicAttack(mo,{ratio:b.ratio,elem:b.elem,c:b.elem==="holy"?"#ffe9a0":null})})}
 }
+/* v21d: death crumble. The body breaks into shards that scatter and drift up on the wind (0.45-0.75 s), then curve into
+   the player and flash on arrival. One fx item carries every shard; positions are worked out at draw time, so the shards
+   home in on the player even while you move. Normal 22 shards, Elite 38, boss 70 (half on Low graphics). */
+function crumbleFx(mo){
+  const d=MON[mo.type],E=mo.elite,B=mo.boss,sz=mSize(mo),base=monCol(mo.type);
+  const cols=[base,base,"#ffffff",E?"#ffd76a":B?"#bfe8ff":base],n=Math.round((B?70:E?38:22)*(S.gfx==="lo"?.5:1)),ps=[];
+  for(let i=0;i<n;i++)ps.push({a:Math.random()*TAU,R:(18+Math.random()*42)*Math.min(1.8,sz),up:14+Math.random()*34,z0:d.h*sz*(.15+Math.random()*.7),ox:(Math.random()-.5)*16*sz,
+    s:2.6+Math.random()*3*Math.min(1.6,sz),rot:Math.random()*TAU,vr:(Math.random()-.5)*14,c:cols[i%cols.length],t1:.45+Math.random()*.3,fl:Math.random()*TAU,bend:(Math.random()-.5)*90});
+  fx.push({k:"crumble",x:mo.x,y:mo.y,t:0,d:1.45,ps});
+  fx.push({k:"ring",follow:true,t:-.95,d:.35,c:E?"#ffd76a":B?"#bfe8ff":base,r:E||B?70:44});   // flash when the shards reach you
+}
 function killMon(mo){
   const d=MON[mo.type],E=mo.elite,B=mo.boss;AUD.sfx(B?"bossdown":"kill");mo.hp=0;mo.dieT=.45;mo.aggro=false;mo.path=[];mo.stun=0;mo.frz=0;mo.ptr=0;if(player.target===mo)player.target=null;
   const sc0=Math.round((d.sc[0]+Math.floor(Math.random()*(d.sc[1]-d.sc[0]+1)))*(E?ELITE.sc:1)),be0=d.exp[0]*(E?ELITE.exp:1),je0=d.exp[1]*(E?ELITE.exp:1);
@@ -7616,7 +7627,7 @@ function killMon(mo){
   for(const [id,q] of dr.items){if(!lootOk(id)||!ptTake(PR.shI,itemName(id)))continue;if(gainItem(id,q)){got+=q;L.items.push([id,q]);floatText(`+ ${itemName(id)}${q>1?" x"+q:""}`,itemColor(id))}}
   for(const g of dr.gear){if(!lootOk(g.id)||!ptTake(PR.shI,gName(g.id)))continue;if(gainGear(g)){got++;L.gear.push(g);floatText(`+ ${gName(g.id)}`,itemColor(g.id))}}
   floatText(`+${num(be)} EXP`,"#ffd76a");if(sc)floatText(`+${num(sc)} Sc`,"#e9d89a");
-  const P0=MPAL[mo.type];fx.push({k:"burst",x:mo.x,y:mo.y,t:0,d:.6,c:d.sprite==="lumite"?P0.mid:d.sprite==="crawlix"?P0.c[0]:P0.i1,n:E?28:16,z:d.h*.5});
+  crumbleFx(mo);
   if(E)fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:.8,c:"#ffd76a",r:90});
   if(B){fx.push({k:"pillar",x:mo.x,y:mo.y,t:0,d:1.6,c:"#bfe8ff"});fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:1.1,c:"#ffffff",r:170});fx.push({k:"ring",x:mo.x,y:mo.y,t:-.2,d:1.1,c:"#9fd8ff",r:130});toast(t("boss_down"),true);pushChat({ch:"sys",k:"sys_boss"})}
   if(S.idle){const s=S.sess;s.kills++;s.base+=be;s.job+=S.jlv<jcap()?je:0;s.sc+=sc;s.mats+=got;s.items=s.items||{};for(const [id,q] of L.items)s.items[id]=(s.items[id]||0)+q;s.gear=(s.gear||0)+L.gear.length}
@@ -8130,6 +8141,16 @@ function drawFx(f){
   const [x,y]=f.follow?P(player.x,player.y):P(f.x,f.y);
   g.save();g.globalCompositeOperation="lighter";
   if(f.k==="ring"){g.strokeStyle=f.c;g.globalAlpha=1-p;g.lineWidth=4*(1-p)+1;g.beginPath();g.ellipse(x,y,f.r*p,f.r*p*.5,0,0,TAU);g.stroke()}
+  else if(f.k==="crumble"){const [px,py0]=P(player.x,player.y),py=py0-30,tt=f.t,HOME=.55;g.globalCompositeOperation="source-over";   // solid shards keep the monster colour; only the trails glow
+    for(const q of f.ps){
+      const e=Math.min(1,tt/q.t1),ee=1-Math.pow(1-e,3),fl=Math.sin(tt*7+q.fl)*5*ee;   // scatter outward, float up, flutter
+      const sx=x+q.ox+Math.cos(q.a)*q.R*ee+fl,sy=y-q.z0+Math.sin(q.a)*q.R*.5*ee-q.up*ee;
+      if(tt<q.t1){g.globalAlpha=Math.min(1,tt*12);g.fillStyle=q.c;g.save();g.translate(sx,sy);g.rotate(q.rot+q.vr*tt);g.fillRect(-q.s,-q.s*.7,q.s*2,q.s*1.4);g.restore();continue}
+      const h=(tt-q.t1)/HOME;if(h>=1)continue;
+      const pos=u=>{const k=u*u,b=Math.sin(u*Math.PI);return [sx+(px-sx)*k+b*q.bend,sy+(py-sy)*k-b*28]};   // ease-in along a curve
+      const [cx,cy]=pos(h),[jx,jy]=pos(Math.max(0,h-.12)),r=q.s*(1-h*.55);
+      g.globalCompositeOperation="lighter";g.globalAlpha=.6;g.strokeStyle=q.c;g.lineWidth=r*1.1;g.lineCap="round";g.beginPath();g.moveTo(jx,jy);g.lineTo(cx,cy);g.stroke();
+      g.globalCompositeOperation="source-over";g.globalAlpha=1;ell(cx,cy,r,r,q.c);ell(cx,cy,r*.45,r*.45,"#ffffff")}}
   else if(f.k==="burst"){const z=f.z||22;for(let i=0;i<f.n;i++){const a=i/f.n*TAU+i,r=8+p*46*(.6+hash(i,f.n)*.6);ell(x+Math.cos(a)*r,y-z+Math.sin(a)*r*.6-p*14,3.2*(1-p)+.5,3.2*(1-p)+.5,f.c)}}
   else if(f.k==="rise"){for(let i=0;i<8;i++){const ph=Math.min(1,p*1.2+hash(i,3)*.3),xx=x+(hash(i,9)-.5)*34,yy=y-6-ph*58;g.globalAlpha=1-ph;g.strokeStyle=f.c;g.lineWidth=2.4;line([xx-3.5,yy],[xx+3.5,yy]);line([xx,yy-3.5],[xx,yy+3.5])}}
   else if(f.k==="pillar"){const a=Math.sin(p*Math.PI);const gr=g.createLinearGradient(0,y-200,0,y);gr.addColorStop(0,"rgba(255,255,255,0)");gr.addColorStop(1,f.c);g.globalAlpha=a*.75;g.fillStyle=gr;g.fillRect(x-18,y-200,36,200);g.globalAlpha=a;g.strokeStyle=f.c;g.lineWidth=2;g.beginPath();g.ellipse(x,y,22+p*20,(22+p*20)*.5,0,0,TAU);g.stroke()}
