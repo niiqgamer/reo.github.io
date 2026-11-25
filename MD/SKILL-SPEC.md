@@ -249,7 +249,7 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 | 5 | 100% | 75% | 35 |
 
 ## 3h. Freeze, Petrifaction and Burning (status debuffs, v20.18; Burning v21e)
-- A Frozen or Petrified monster **cannot move or attack** until it ends (it takes damage normally; damage does not break it). A **Burning** monster keeps moving and attacking (no damage over time either; only the weakness).
+- A Frozen or Petrified monster **cannot move or attack** until it ends (it takes damage normally; damage does not break it). A **Burning** monster keeps moving and attacking, but **burns for 10% MATK Fire every second** (`STATUS.brn.dot`, no Overload, MDEF and soft MDEF apply as for any magic hit; one last tick when it ends). **A Freeze puts the fire out** (Burning ends, a puff of steam), so Fire Bolt → Freezer trades the burn for the Freeze (NIIQ, v21e).
 - **Freeze:** Wind hits it +50%. **Petrifaction:** Fire hits it +50%. **Burning:** Water hits it +50%. So the spells feed each other: Fire Bolt → Freezer → Lightning Spear, Petrifaction → Fire Bolt. Built as **+0.5 added to the element multiplier** (`COMBAT-FORMULAS.md` §5): for example a Water monster (weak to Wind) that is Frozen takes Wind at 1.5 + 0.5 = 2.0 (+ Attunement).
 - ⚠ **Not given yet, placeholders in the game:**
   - Chance = `skill chance × (1 − target MDEF%) − target LUK / 5` (in % points).
@@ -258,7 +258,7 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 - Looks (v21e, `UI-UX.md` §29): Freeze turns the monster icy blue inside a block of ice crystals with frost on the ground; Petrifaction turns it to grey cracked stone with rubble; Burning tints it orange with flames, embers and smoke; a stun (Crushing Blow) shows stars circling the head. The pose stops while Frozen or Petrified, and the ice / stone shatters when it ends. The text แช่แข็ง! / แข็งเป็นหิน! / ติดไฟ! pops over it.
 
 ### Balance check (simulator, v21e)
-v21e (Fire Bolt splash + Burning, Freezer splash), same method as below, seed 3: **CP Lv 10 / 20 / 30 = 241 / 570 / 966** (v20.18: 236 / 496 / 922). Lv 30 vs Field 03 monsters, 300 s: 51 kills alone (v20.18: 51), **111** in packs of 3 (v20.18: 105). The AI values Burning at a quarter of a Freeze (it does not stop the monster), and a spell that only gives Burning still needs a weakness to be cast outside a pack.
+v21e (Fire Bolt splash + Burning, Freezer splash), same method as below, seed 3: **CP Lv 10 / 20 / 30 = 233 / 546 / 971** with the Burning DoT (v20.18: 236 / 496 / 922). Lv 30 vs Field 03 monsters, 300 s: 50 kills alone (v20.18: 51), **108** in packs of 3 (v20.18: 105). The AI values Burning at a quarter of a Freeze (it does not stop the monster), and a spell that only gives Burning still needs a weakness to be cast outside a pack.
 
 ### Balance check (simulator, v20.18)
 Simulator on the game's combat module, 300 s, 3 seeds, auto stats, every skill and passive learned, no gear. **The simulator now picks the level of each spell itself** (`autoLv`): the hits that can still land on the HP left, per second while SP is above half and per SP below that. Kills · deaths (Fighter for scale).
@@ -308,7 +308,7 @@ New side effect of stopping fireballs when the target dies: CP counts damage dea
 
 ## 7. ⚠ Open items
 1. Max level and per-level effects of the Fighter, Ranger and Supporter skills (one level each). Every Spellcaster skill now has levels.
-1a. Freeze / Petrifaction / Burning time, whether Burning should also burn (damage over time; for now it does not, see §3h), the exact MDEF / LUK resistance, boss immunity (§3h); the meaning of “Overload Damage ×0.5” (§3).
+1a. Freeze / Petrifaction / Burning time, the Burning damage over time (10% MATK/s, §3h; soft MDEF often cuts it to 1 on low-MATK characters), the exact MDEF / LUK resistance, boss immunity (§3h); the meaning of “Overload Damage ×0.5” (§3).
 1c. Spellcaster CP fell about 20% with the v20.18 spells (§3h).
 1b. Overload Energy: party members without combat stats (§3d).
 2. Potion and wing slots (§5).

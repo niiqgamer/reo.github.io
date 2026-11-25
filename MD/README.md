@@ -49,7 +49,7 @@
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
 ## Changes in v21e (this update)
-- **Fire Bolt: splash + Burning.** Every fireball that hits also does 50% of its MATK as Fire to the other monsters in a 3 × 3 square round the target, and each cast has a 30 / 40 / 50 / 60 / 70% chance (by level) to set the target **Burning** (Water hits it +50%; it keeps moving). **Freezer: splash** of 50% MATK Water on a 3 × 3 square while the target is Frozen. New `STATUS.brn`; statuses now say whether they hold the monster (`hold`). Skill text and Skill Info updated in en / th / jp. CP (Lv 10 / 20 / 30): 236 / 496 / 922 → 241 / 570 / 966 (`SKILL-SPEC.md` §3, §3e, §3h; `COMBAT-FORMULAS.md` §5).
+- **Fire Bolt: splash + Burning.** Every fireball that hits also does 50% of its MATK as Fire to the other monsters in a 3 × 3 square round the target, and each cast has a 30 / 40 / 50 / 60 / 70% chance (by level) to set the target **Burning** (burns for 10% MATK Fire every second, Water hits it +50%, it keeps moving; a Freeze puts it out). **Freezer: splash** of 50% MATK Water on a 3 × 3 square while the target is Frozen. New `STATUS.brn`; statuses now say whether they hold the monster (`hold`). Skill text and Skill Info updated in en / th / jp. CP (Lv 10 / 20 / 30): 236 / 496 / 922 → 233 / 546 / 971 (`SKILL-SPEC.md` §3, §3e, §3h; `COMBAT-FORMULAS.md` §5).
 - **Status looks.** Frozen monsters turn icy blue inside ice crystals, Petrified ones turn to cracked grey stone, Burning ones glow orange in flames with embers and smoke, and stunned ones get circling stars. Ice shatters and stone crumbles when the status ends (`UI-UX.md` §29).
 
 ## Changes in v21d

@@ -2026,7 +2026,7 @@ function physHit(d,m,o,r){
 /* v20.18 status debuffs (Freezer, Petrifaction): the monster cannot move or attack, and one element hits it harder
    (Freeze: Wind +50%, Petrifaction: Fire +50%, added to the element multiplier). Chance and time drop with the target's MDEF and LUK.
    ASSUMPTION (not given by NIIQ): chance = skill% x (1 - MDEF%) - LUK/5, time = stDur x (1 - MDEF%); bosses are immune. */
-const STATUS={frz:{elem:"wind",add:.5,hold:true},ptr:{elem:"fire",add:.5,hold:true},brn:{elem:"water",add:.5}};   // v21e: Burning (Fire Bolt) does not hold the monster in place
+const STATUS={frz:{elem:"wind",add:.5,hold:true},ptr:{elem:"fire",add:.5,hold:true},brn:{elem:"water",add:.5,dot:.1}};   // brn.dot: Burning burns for 10% MATK Fire every second (no Overload); a Freeze puts it out   // v21e: Burning (Fire Bolt) does not hold the monster in place
 function stAdd(elem,m){let a=0;if(!m)return 0;for(const k in STATUS)if(m[k]>0&&STATUS[k].elem===elem)a+=STATUS[k].add;return a}
 function stRoll(k,m,r){if(!k.st||!m||m.boss)return 0;const mdef=m.mdef||0,ch=k.stCh*100*(1-mdef)-(m.luk||0)/5;return r()*100<ch?+(k.stDur*(1-mdef)).toFixed(2):0}
 // magic: MATK roll x ratio x element ; then x(1 - MDEF) - soft MDEF ; never misses
@@ -2173,7 +2173,7 @@ function simulate(arch,lv,monKeys,opt){
       if(k.momentum)momentum=Math.min(5,momentum+k.momentum),momT=5;
       if(k.spend){if(momentum>=k.stunAt&&m)m.stun=k.stun;momentum=0}}
     else if(k.kind==="magic"){for(const x of targets)for(let h=0;h<(k.hits||1);h++){if(k.gap)pending.push({t:(k.gap||0)*h+(k.gap?k.gap-.02:0),x,k});else hitMob(x,magicHit(d,x,{ratio:k.ratio,elem:k.elem,overMul:k.overMul},r))};
-      if(k.st)for(const x of targets){if(x.hpNow<=0)continue;const sd=stRoll(k,x,r);if(sd>0){if(STATUS[k.st].hold)x.stun=Math.max(x.stun,sd);x[k.st]=Math.max(x[k.st]||0,sd)}}
+      if(k.st)for(const x of targets){if(x.hpNow<=0)continue;const sd=stRoll(k,x,r);if(sd>0){if(STATUS[k.st].hold)x.stun=Math.max(x.stun,sd);x[k.st]=Math.max(x[k.st]||0,sd);if(k.st==="frz")x.brn=0}}
       // v21e splash: 50% MATK on the others in a 3x3 square round the target (Fire Bolt: every fireball; Freezer: only while the target is frozen). No positions here, so "close" = a similar distance
       if(k.splash&&m&&(!k.splashOn||m[k.splashOn]>0))for(const x of mobs){if(x===m||x.hpNow<=0||Math.abs(x.dist-m.dist)>k.splashR)continue;for(let h=0;h<(k.hits||1);h++)hitMob(x,magicHit(d,x,{ratio:k.ratio*k.splash,elem:k.elem},r))}}
     else if(k.kind==="heal"){const h=healAmount(d,k),over=Math.max(0,hp+h-d.maxHP);hp=Math.min(d.maxHP,hp+h);if(d.shieldCap)shield=Math.min(d.maxHP*d.shieldCap,shield+over)}
@@ -2197,7 +2197,7 @@ function simulate(arch,lv,monKeys,opt){
       const zd=(d.matkMin+d.matkMax)/2*SK.sanctuary.ratio*dt;
       for(const x of mobs)if(x.hpNow>0&&x.dist<=SK.sanctuary.radius+1){const z=zd*(1-x.mdef);x.hpNow-=z;dealt+=z;x.aggro=true}}
     // monsters
-    for(const x of mobs){if(x.frz>0)x.frz-=dt;if(x.ptr>0)x.ptr-=dt;if(x.brn>0)x.brn-=dt;if(x.hpNow<=0||!x.aggro)continue;if(x.stun>0){x.stun-=dt;continue}
+    for(const x of mobs){if(x.frz>0)x.frz-=dt;if(x.ptr>0)x.ptr-=dt;if(x.brn>0&&x.hpNow>0){x.brn-=dt;x.brnAcc=(x.brnAcc||0)+dt;if(x.brnAcc>=1||x.brn<=0){x.brnAcc=0;hitMob(x,magicHit(d,x,{ratio:STATUS.brn.dot,elem:"fire"},r))}}if(x.hpNow<=0||!x.aggro)continue;if(x.stun>0){x.stun-=dt;continue}
       if(x.dist>1.2){x.dist=Math.max(1.2,x.dist-x.speed*1.6*dt);continue}
       x.atkCd-=dt;if(x.atkCd<=0){x.atkCd=x.aspd;const res=monHit(x,d,r);if(!res.miss){let dmg=res.dmg;if(shield>0){const a=Math.min(shield,dmg);shield-=a;dmg-=a}hp-=dmg;taken+=dmg}}}
     if(hp<=0){deaths++;hp=d.maxHP;sp=d.maxSP;momentum=0;shield=0;zone=0;wait=20;casting=null;pending=[];spawn();continue}
@@ -2484,7 +2484,7 @@ D2.en.skd_eagle_eye="+3 range (12 tiles) and +10 HIT.";D2.th.skd_eagle_eye="ร�
 D2.en.sk_steady_aim="Steady Aim";D2.th.sk_steady_aim="Steady Aim";
 D2.en.skd_steady_aim="Distance bonus (+2% per tile beyond 3) and +5% crit.";D2.th.skd_steady_aim="โบนัสระยะ (+2% ต่อช่องที่เกิน 3) และคริติคอล +5%";
 D2.en.sk_fire_bolt="Fire Bolt";D2.th.sk_fire_bolt="Fire Bolt";
-D2.en.skd_fire_bolt="Strikes one enemy with fireballs that fall one by one, 120% MATK Fire magic damage each (1 / 3 / 5 / 7 / 10 fireballs). Each fireball that hits also splashes 50% MATK Fire damage on a 3 × 3 area around the target, and the volley has a 30–70% chance to set it Burning, which cuts its resistance to Water by 50%. Every fireball always falls, even if the target dies first. Can Overload.";D2.th.skd_fire_bolt="โจมตีศัตรูด้วยลูกไฟที่ตกลงมาทีละลูก สร้างความเสียหายทางเวทมนตร์ธาตุ Fire ลูกละ 120% MATK (1 / 3 / 5 / 7 / 10 ลูก) ลูกไฟที่โดนเป้าหมายจะ Splash ธาตุ Fire รอบเป้าหมายกว้าง 3 × 3 ช่องด้วย MATK 50% และมีโอกาส 30–70% ทำให้ติดสถานะ Burning (ติดไฟ) ที่ลดความต้านทานต่อธาตุ Water ลง 50% ลูกไฟตกครบตามจำนวนเสมอ แม้เป้าหมายจะตายก่อน ติด Overload ได้";
+D2.en.skd_fire_bolt="Strikes one enemy with fireballs that fall one by one, 120% MATK Fire magic damage each (1 / 3 / 5 / 7 / 10 fireballs). Each fireball that hits also splashes 50% MATK Fire damage on a 3 × 3 area around the target, and the volley has a 30–70% chance to set it Burning: it burns for 10% MATK Fire every second and its resistance to Water drops by 50% (a Freeze puts the fire out). Every fireball always falls, even if the target dies first. Can Overload.";D2.th.skd_fire_bolt="โจมตีศัตรูด้วยลูกไฟที่ตกลงมาทีละลูก สร้างความเสียหายทางเวทมนตร์ธาตุ Fire ลูกละ 120% MATK (1 / 3 / 5 / 7 / 10 ลูก) ลูกไฟที่โดนเป้าหมายจะ Splash ธาตุ Fire รอบเป้าหมายกว้าง 3 × 3 ช่องด้วย MATK 50% และมีโอกาส 30–70% ทำให้ติดสถานะ Burning (ติดไฟ) ไหม้ 10% MATK ธาตุ Fire ทุกวินาที และลดความต้านทานต่อธาตุ Water ลง 50% (ติด Freeze แล้วไฟจะดับ) ลูกไฟตกครบตามจำนวนเสมอ แม้เป้าหมายจะตายก่อน ติด Overload ได้";
 D2.en.skpLine="Skill points: {n} (1 per Job Lv)";D2.th.skpLine="แต้มสกิล: {n} (1 Job Lv = 1 แต้ม)";
 D2.en.gdLbl="Global Delay";D2.th.gdLbl="ดีเลย์รวม";
 D2.en.fbLbl="Fireballs";D2.th.fbLbl="ลูกไฟ";
@@ -3370,7 +3370,7 @@ D.jp={
   "sk_steady_aim":"狙い澄まし",
   "skd_steady_aim":"距離ボーナス（3マスを超えた分1マスにつき+2%）とクリティカル+5%。",
   "sk_fire_bolt":"ファイアボルト",
-  "skd_fire_bolt":"1体の敵に火球を1つずつ落とし、各火球が火属性の魔法ダメージ（MATK 120%）を与えます（1 / 3 / 5 / 7 / 10個）。命中した火球は対象の周囲3×3マスに火属性のスプラッシュ（MATK 50%）を与え、30–70%の確率で炎上させ、水属性への耐性を50%下げます。対象が先に倒れても、火球はすべて落ちます。オーバーロード可能。",
+  "skd_fire_bolt":"1体の敵に火球を1つずつ落とし、各火球が火属性の魔法ダメージ（MATK 120%）を与えます（1 / 3 / 5 / 7 / 10個）。命中した火球は対象の周囲3×3マスに火属性のスプラッシュ（MATK 50%）を与え、30–70%の確率で炎上させます。炎上中は毎秒MATK 10%の火属性ダメージを受け、水属性への耐性が50%下がります（凍結すると火は消えます）。対象が先に倒れても、火球はすべて落ちます。オーバーロード可能。",
   "skpLine":"スキルポイント：{n}（ジョブLv 1ごとに1）",
   "gdLbl":"グローバルディレイ",
   "fbLbl":"火球",
@@ -7773,6 +7773,8 @@ const volleys=[],balls=[];
 /* v21e status roll (Freeze / Petrifaction hold the monster; Burning does not) and the 3x3 splash (50% MATK on the others round the target) */
 const ST_COL={frz:"#bfefff",ptr:"#d8cbb0",brn:"#ffb070"};
 function applySt(m,k){const sd=REOC.stRoll(k,mprof(m),Math.random);if(!(sd>0)||m.boss)return;
+  if(k.st==="frz"&&m.brn>0){m.brn=0;fx.push({k:"burst",x:m.x,y:m.y,t:0,d:.6,c:"#dfe8ee",n:12,z:MON[m.type].h*mSize(m)*.6})}   // the ice puts the fire out (steam)
+  if(k.st==="brn")m.brnAcc=0;
   if(REOC.STATUS[k.st].hold)m.stun=Math.max(m.stun||0,sd);m[k.st]=Math.max(m[k.st]||0,sd);m[k.st+"0"]=m[k.st];
   fx.push({k:"stin",x:m.x,y:m.y,m,t:0,d:.7,st:k.st});
   fx.push({k:"dmg",x:m.x,y:m.y,t:0,d:.9,txt:t("st_"+k.st),c:ST_COL[k.st],ox:0,h:MON[m.type].h*mSize(m)+14})}
@@ -7852,7 +7854,8 @@ function updateMon(mo,dt){
   if(mo.dieT>0){mo.dieT-=dt;if(mo.dieT<=0){mo.dead=true;mo.tele=null;mo.respawn=mo.boss?120:mo.elite?45+Math.random()*15:8+Math.random()*7}return}
   mo.hitT=Math.max(0,mo.hitT-dt);mo.atkCd=Math.max(0,mo.atkCd-dt);
   if(mo.boss&&mo.stun>0){mo.stun=0;fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:t("immune"),c:"#bfe8ff",ox:0,h:MON[mo.type].h*mSize(mo)})}
-  if(mo.frz>0)mo.frz=Math.max(0,mo.frz-dt);if(mo.ptr>0)mo.ptr=Math.max(0,mo.ptr-dt);if(mo.brn>0)mo.brn=Math.max(0,mo.brn-dt);
+  if(mo.frz>0)mo.frz=Math.max(0,mo.frz-dt);if(mo.ptr>0)mo.ptr=Math.max(0,mo.ptr-dt);if(mo.brn>0){mo.brn=Math.max(0,mo.brn-dt);mo.brnAcc=(mo.brnAcc||0)+dt;   // Burning: 10% MATK Fire every second
+    if(mo.brnAcc>=1||mo.brn<=0){mo.brnAcc=0;magicAttack(mo,{ratio:REOC.STATUS.brn.dot,elem:"fire",c:"#ff8a3a"});if(!alive(mo))return}}
   if(mo.stun>0){mo.stun-=dt;mo.path=[];mo.moving=false;return}
   if(mo.hp<mo.maxHp&&!mo.aggro)mo.hp=Math.min(mo.maxHp,mo.hp+mo.maxHp*(mo.boss?.02:.05)*dt);
   if(mo.boss&&mo.aggro&&!player.dead){mo.slamT-=dt;if(!mo.tele&&mo.slamT<=0){mo.tele={t:1.4,total:1.4,x:mo.x,y:mo.y,r:3.4};AUD.sfx("warn");mo.slamT=9+Math.random()*3;mo.path=[]}}

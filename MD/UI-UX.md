@@ -709,4 +709,5 @@ Status effects on monsters are drawn in `drawMon` (helpers `stRecolor`, `stIceBa
 
 - Frozen and Petrified monsters stop their animation (the pose is kept from when it started, `mo._fT`). In the last 0.6 s they shake.
 - **Start** (`fx` kind `stin`, from `applySt`): Freeze — white flash, ring and ice shards flying out; Petrifaction — dust cloud; Burning — a flare of sparks. The text แช่แข็ง! / แข็งเป็นหิน! / ติดไฟ! pops over it (`st_frz`, `st_ptr`, `st_brn`; `st_stun` is ready for later).
+- A Freeze on a Burning monster puts the fire out with a puff of steam. Burning damage ticks show as orange numbers every second.
 - **End** (`stout`): the ice shatters into falling shards, the stone crumbles into pebbles. Not shown when the monster dies.
