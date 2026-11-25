@@ -8330,7 +8330,7 @@ function idleWants(m){   // may Idle pick this monster by itself? never a boss, 
 }
 function idleFind(max){let best=null,bd=max;for(const m of liveMon()){if(!idleWants(m))continue;const d=dist(m,player);if(d<bd){bd=d;best=m}}return best}
 function idleAttacker(){if(!S.iset.counter)return null;let best=null,bd=4;for(const m of liveMon()){if(!m.aggro||m.boss)continue;const d=dist(m,player);if(d<bd){bd=d;best=m}}return best}
-let potCdT=0,idleNoTgt=0,trip=null,atkPtr=0;   // trip = an automatic town errand while idling: {k:"full"|"dep"|"wing", home, ph:"go"|"back", sess, walk}
+let potCdT=0,idleNoTgt=0,trip=null,atkPtr=0,buffPtr=0;   // trip = an automatic town errand while idling: {k:"full"|"dep"|"wing", home, ph:"go"|"back", sess, walk}
 function idlePots(dt){
   const I=S.iset;potCdT-=dt;if(potCdT>0)return;
   const take=k=>{S.inv[k]--;useItem(k);potCdT=.6;renderHotbar()};
@@ -8363,7 +8363,7 @@ function idleSkills(){
     return useSkill(s.id,true,s.lv||lvFor(s.id))};
   if(I.heal&&S.hp<hpMax()*I.healAt/100)for(const s of I.skHeal){if(s&&REOC.SK[s.id].kind==="zone"&&BF.zone)continue;if(use(s))return}
   if(I.move&&liveMon().some(m=>m.aggro&&dist(m,player)<=2))for(const s of I.skMove)if(use(s))return;
-  if(I.buff)for(const s of I.skBuff){if(!s)continue;const k=REOC.SK[s.id];if(k.buff&&BF[k.buff]>1)continue;if(use(s))return}
+  if(I.buff)for(let j=0;j<9;j++){const i=(buffPtr+j)%9,s=I.skBuff[i];if(!s)continue;const k=REOC.SK[s.id];if(k.buff&&BF[k.buff]>1)continue;if(use(s)){buffPtr=i+1;return}}   // same rotation as the attack set; a buff still running is skipped
   if(I.sk&&tg&&!player.pend)for(let j=0;j<9;j++){const i=(atkPtr+j)%9;if(use(I.skAtk[i])){atkPtr=i+1;return}}   // rotation: after slot i comes slot i+1 (1 → 2 → 1 → 2 …), a skill that is not ready is skipped
 }
 /* town errands: the warp is paid as on the World Map; short on the way to town = walk, short on the way back = stay in town */

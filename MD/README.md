@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v21a. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v21b. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v21a (this update)
+## Changes in v21b (this update)
+- **The Idle buff skill set rotates too**, like the attack set: after slot n comes slot n+1 (wrapping); a buff that is still running (more than 1 s left) is skipped.
+
+## Changes in v21a
 - **Fix: the Idle attack skill set only cast one skill.** The set now rotates (after slot n comes slot n+1, wrapping; a skill that is not ready is skipped), so Petrifaction + Fire Bolt goes Petrifaction > Fire Bolt > Petrifaction … Self-area skills (Petrifaction) were never cast from range because no monster stood inside the area; Idle now walks in first (the pending-skill walk also handles skills without a range).
 
 ## Changes in v21
