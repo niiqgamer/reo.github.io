@@ -218,7 +218,8 @@ Points are spent in the **Skills Tree** window (`UI-UX.md` §26): one tab for th
 2. ◐ **Job system:** Archetype Trial done (v5.1); the 16 classes and 32 jobs are still open (`JOBS.md`)
 3. ✅ **Inventory and equipment** (10 slots, compare, multi-sell, refine)
 4. **Party and guild** with real networking
-5. ✅ **Path to the Geosyncline and Road to the Ruins** (v19): gated by Lv and CP, aggressive monsters with skills, no boss yet
+5. ✅ **Path to the Geosyncline and Road to the Ruins** (v19): gated by Lv and CP, aggressive monsters with skills
+5b. ✅ **Ashfall Ruins** (v22): past the Ruins (Lv 40+ / CP 6,000+), ranged and magic monsters, boss Magma Gatekeeper (`FIELD-ASHFALL.md`)
 6. **Next regions** named after rare-earth elements (e.g. Neodymium, Europium, Cerium)
 7. ◐ **Sound and music:** generated 8-bit audio done (v18); volume sliders still open (`AUDIO.md`)
 8. ◐ **Save system:** local accounts done; server accounts still open (`ACCOUNTS.md`)

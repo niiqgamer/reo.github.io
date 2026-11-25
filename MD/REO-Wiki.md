@@ -310,8 +310,22 @@ Beginner มีสกิลเดียวคือ **Basic Skill** 10 เลเ
 - **CP แนะนำ:** 3,000
 - **ระดับมอนสเตอร์:** Lv 32–38 · ธาตุไฟ · โจมตีก่อน + สกิล · ไม่มีบอส
 - **รายละเอียด:** ถนนสายเพลิงผลาญมุ่งสู่ซากปรักหักพังอันไร้ซึ่งความปรานี ทุกย่างก้าวแผดเผาด้วยเปลวเพลิงทมิฬจากขุมนรก แผ่นดินนี้ถูกหล่อหลอมด้วยอัคคีเดือดระอุ พร้อมมอดไหม้ผู้บุกรุกให้กลายเป็นเถ้าธุลีไปตลอดกาล
-- **พอร์ทัล:** พอร์ทัลเหนือ (28, 2) → Gadolinium
+- **พอร์ทัล:** พอร์ทัลเหนือ (28, 2) → Gadolinium · พอร์ทัลใต้ (28, 46) → Ashfall Ruins (ต้อง Lv 40+ และ CP 6,000+)
 - **มอนสเตอร์:** Cinderling, Magmaback, Ashen Sentinel
+
+### Ashfall Ruins — ซากอารยธรรมพรอมีเธีย
+*Remnants of Promethea* · พอร์ทัลใต้ของ Road to the Ruins มีป้ายเตือน "Monster Lv.40+"
+
+![Ashfall Ruins](images/maps/ashfall.jpg)
+
+![overview](images/maps/ashfall_overview.png)
+
+- **เงื่อนไขเข้า:** Base Lv 40+ **และ** CP 6,000+
+- **CP แนะนำ:** 9,000
+- **ระดับมอนสเตอร์:** Lv 42–48 · ธาตุไฟ · โจมตีก่อน (มองเห็น 6.5–9 ช่อง) · เคลื่อนที่เร็ว · มีนักธนูยิงไกลและนักเวท · บอส Magma Gatekeeper Lv 55
+- **รายละเอียด:** ซากของพรอมีเธีย อารยธรรมที่ถูกฝังกลบในชั่วข้ามคืนเมื่อภูเขาไฟยักษ์ปะทุอย่างรุนแรง ทว่าการระเบิดครั้งนั้นก็พ่นสายแร่หายากขึ้นมาจากใต้พิภพ ทุกสิ่งที่รอดจากเปลวเพลิงเฝ้าปกป้องมันอย่างไร้ความปรานี
+- **พอร์ทัล:** พอร์ทัลเหนือ (26, 2) → Road to the Ruins
+- **มอนสเตอร์:** Scoria Hound, Cinderbow Revenant, Pyroclast Magus · บอส Magma Gatekeeper (รายละเอียดใน `FIELD-ASHFALL.md`)
 
 **สกิลมอนสเตอร์:** วงแดงบนพื้นแล้วค่อยตกกระทบ ก้าวออกจากวงเพื่อหลบ บางสกิลทำให้ติดสถานะ *ไฟลวก* (โดนไฟเผาทุกวินาที) หรือ *เปียกชุ่ม* (เดินช้าลง 35%) รายละเอียดใน `FIELD-GEOSYNCLINE.md` และ `FIELD-RUINS.md`
 
@@ -354,8 +368,12 @@ NPC ตีบวก/การ์ด และผู้ดูแลดันเ�
 | ![cinderling](images/monsters/cinderling.png) | **Cinderling** ซินเดอร์ลิง | Ruins | 32 | Fire | 3,000 | 104 | 10% | 22% | 1,250/800 | 190–290 | Cinder Ash (40%) |
 | ![magmaback](images/monsters/magmaback.png) | **Magmaback** แมกมาแบ็ค | Ruins | 35 | Fire | 4,000 | 122 | 26% | 12% | 1,480/940 | 230–350 | Magma Plate (36%) |
 | ![ashsentinel](images/monsters/ashsentinel.png) | **Ashen Sentinel** แอชเชนเซนทิเนล | Ruins | 38 | Fire | 5,200 | 140 | 24% | 26% | 1,750/1,110 | 275–415 | Scorched Relic (32%) |
+| ![scoriahound](images/monsters/scoriahound.png) | **Scoria Hound** สกอเรียฮาวนด์ | Ashfall | 42 | Fire | 9,000 | 312 | 14% | 14% | 3,750/2,400 | 570–870 | Scoria Fang (40%) |
+| ![cinderbow](images/monsters/cinderbow.png) | **Cinderbow Revenant** ซินเดอร์โบว์ เรเวแนนต์ | Ashfall | 45 | Fire | 12,000 | 366 | 18% | 20% | 4,440/2,820 | 690–1,050 | Revenant Ash (38%) |
+| ![pyromagus](images/monsters/pyromagus.png) | **Pyroclast Magus** ไพโรคลาสต์ เมกัส | Ashfall | 48 | Fire | 15,600 | 420 | 20% | 36% | 5,250/3,330 | 825–1,245 | Pyroclast Glyph (34%) |
+| ![magmagk](images/monsters/magmagk.png) | **Magma Gatekeeper** แมกมา เกทคีปเปอร์ (บอส) | Ashfall | 55 | Fire | 120,000 | 560 | 32% | 30% | 31,500/20,000 | 10,000–16,000 | Caldera Heart (100%) |
 
-> มอนสเตอร์ใน Geosyncline และ Ruins เป็นแบบ **aggressive** (วิ่งเข้าใส่เมื่อเข้าใกล้ 4.5–6.5 ช่อง) และมีสกิลวงแดง
+> มอนสเตอร์ใน Geosyncline และ Ruins เป็นแบบ **aggressive** (วิ่งเข้าใส่เมื่อเข้าใกล้ 4.5–6.5 ช่อง) และมีสกิลวงแดง · มอนสเตอร์ใน Ashfall Ruins มองเห็นไกล 6.5–9 ช่อง วิ่งเร็วกว่าผู้เล่น Cinderbow ยิงไกล 7 ช่อง และ Pyroclast Magus ใช้เวท 6 ช่องที่ไม่มีพลาดและเกราะกันไม่ได้ (ใช้ MDEF)
 
 - **Lumite:** เจลลี่ลอยได้สามตา เป็นมอนสเตอร์ตัวแรกที่ผู้เล่นจะได้เจอ นุ่มและอ่อนที่สุดในเกม
 - **Crawlix:** สัตว์เลื้อยคลานที่มีคริสตัลบนหลัง เคลื่อนที่ไวกว่า Lumite และมีเกราะหนากว่า

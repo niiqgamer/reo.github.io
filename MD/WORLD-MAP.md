@@ -4,14 +4,14 @@
 
 ## 1. World Map
 - Open with the globe button in the minimap header, or press **M**.
-- The chart shows the connected maps: Town → Field 01 → Field 02 → Field 03, plus Town → Path to the Geosyncline (west) and Town → Road to the Ruins (south). Each map is a card with its name, recommended CP, and the teleport cost. "You are here" marks the current map.
+- The chart shows the connected maps: Town → Field 01 → Field 02 → Field 03, plus Town → Path to the Geosyncline (west) and Town → Road to the Ruins (south) → Ashfall Ruins (v22, node to the right of Ruins). Each map is a card with its name, recommended CP, and the teleport cost. "You are here" marks the current map.
 - Tap a map to open **Map Info** beside the chart.
 
 ## 2. Teleport
 | Rule | Value |
 |---|---|
 | Price | **150 Scandium per map passed** (Town → Field 02 = 300; Field 03 → Geosyncline = 600 via Field 02, Field 01, Town). Same map: not allowed |
-| Gate | Geosyncline needs Base Lv 25+ and CP 2,000+; Ruins needs Lv 30+ and CP 3,000+. The teleport button is disabled and says what is missing |
+| Gate | Geosyncline needs Base Lv 25+ and CP 2,000+; Ruins needs Lv 30+ and CP 3,000+; Ashfall Ruins needs Lv 40+ and CP 6,000+. The teleport button is disabled and says what is missing |
 | Where | **Only maps the character has already visited.** Others show `???`, a lock and "Not visited yet" |
 | Arrival | at the entrance that leads back toward town (Town: the plaza) |
 | Minimap Return to town (v21) | costs the same as teleporting to Town (150 Sc per map passed); the button's tooltip shows the price; blocked if Scandium is short |
@@ -23,8 +23,8 @@
 | Tab | Shows |
 |---|---|
 | Map Info | description, recommended CP, monster levels, monster count (+ Elites), boss, connected maps |
-| Monster | name, level, element, HP, EXP (Base / Job), Scandium range; Elite note |
-| Boss | level, HP, element, EXP, Scandium, respawn, mechanics text, reward list |
+| Monster | name, level, element, HP, EXP (Base / Job), Scandium range; aggressive monsters also show Fast (speed ≥ 2), Ranged / Magic with range, and their skills; Elite note |
+| Boss | level, HP, element, EXP, Scandium, respawn, mechanics text, reward list (per boss: its heart item, its fixed drops, gear of its tier) |
 | Item Drop | per monster: each drop with its chance, Refine Ore chance; equipment tier and chance |
 | Quests | quests for that map (hunts, Elite hunt, boss hunt; in Town the main quest), with status or an Accept button |
 

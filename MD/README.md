@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v21g. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v22. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -21,6 +21,7 @@
 | FIELD-03.md | Field 03 (CP 900): monsters and the Gadolith boss |
 | FIELD-GEOSYNCLINE.md | Path to the Geosyncline (town west gate, Lv 25+ / CP 2,000+): aggressive Earth and Water monsters, skills, drops |
 | FIELD-RUINS.md | Road to the Ruins (town south gate, Lv 30+ / CP 3,000+): aggressive Fire monsters, skills, drops |
+| FIELD-ASHFALL.md | Ashfall Ruins (Ruins south portal, Lv 40+ / CP 6,000+, rec. 9,000): fast, far-seeing, ranged and magic Fire monsters, boss Magma Gatekeeper |
 | WORLD-MAP.md | World Map, teleport, Map Info, announcements |
 | LOADING.md | Loading screens and background asset builds |
 
@@ -43,12 +44,19 @@
 | COMBAT-TEST-REPORT.md | Simulator results and balance evidence (historical) |
 
 ## Key numbers (single source)
-- Recommended CP: Field 01 **150**, Field 02 **450**, Field 03 **900**, Path to the Geosyncline **2,000**, Road to the Ruins **3,000**.
-- Gates: Geosyncline needs Base Lv 25+ and CP 2,000+; Ruins needs Base Lv 30+ and CP 3,000+.
+- Recommended CP: Field 01 **150**, Field 02 **450**, Field 03 **900**, Path to the Geosyncline **2,000**, Road to the Ruins **3,000**, Ashfall Ruins **9,000**.
+- Gates: Geosyncline needs Base Lv 25+ and CP 2,000+; Ruins needs Base Lv 30+ and CP 3,000+; Ashfall Ruins needs Base Lv 40+ and CP 6,000+.
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v21g (this update)
+## Changes in v22 (this update)
+- **New map: Ashfall Ruins / ซากอารยธรรมพรอมีเธีย** (`ashfall`, `FIELD-ASHFALL.md`), through a new **south portal on Road to the Ruins** (Lv 40+ and CP 6,000+, recommended CP 9,000, two "Monster Lv.40+" signs). The ruins of Promethea, buried by a volcanic eruption that also spewed rare earth veins: ash ground, lava fissures (palette-coloured chasm tiles), lava pools, glowing rare earth veins (`vein`), broken columns, a boss arena and the Sealed Caldera Gate (`bgate`). Music `ashfall`.
+- **Three aggressive monsters, ~3× Road to the Ruins**, fast (chase 3.2–4.2 tiles/s) and far-seeing (aggro 6.5–8, Elites +1): **Scoria Hound** (Lv 42, melee pack hunter), **Cinderbow Revenant** (Lv 45, **ranged 7 tiles**), **Pyroclast Magus** (Lv 48, **magic 6 tiles**: never misses, armor does not help, MDEF does). Five new monster skills, some magic (`MSK.*.mg`). New monster fields `rng` and `mag`; `monShoot`, `magDmg` (`COMBAT-FORMULAS.md`).
+- **Boss: Magma Gatekeeper** (Lv 55, 120,000 HP): Caldera Slam, Magma Gate, enrage below 30% HP. Boss code is generic now (`slam`, `warnK`, `enrage`, `heart`, `downK`, `sysK`, `col` per boss; boss music on any map with a boss; Map Info Boss tab rewards per boss).
+- 7 new items (rare earth ores Neodymium / Samarium / Promethium, Scoria Fang, Revenant Ash, Pyroclast Glyph, quest item Caldera Heart), 3 hunts, Elite Hunt: Ashfall, Boss Hunt: Magma Gatekeeper. Map Info Monster tab shows Fast / Ranged / Magic. World Map node beside Ruins. Text in en / th / jp.
+- Wiki: new map, monsters, boss section (both bosses), hunts for Geosyncline / Ruins / Ashfall; new images in `images/monsters` and `images/maps`. `window.__reo.monPortrait` renders a monster sprite for wiki images.
+
+## Changes in v21g
 - **Aim Strike is now a Self Cast buff** (new spec from NIIQ, `SKILL-SPEC.md` §3m). For 60–150 s, every basic shot has a 20–38% chance to split in mid-air into 2 / 2 / 3 / 3 / 4 / 4 / 5 / 5 / 6 / 7 arrows of 100–200% ATK each (0.1 s apart, crit chance ×0.5); every arrow splashes 50% on a 3 × 3 area. SP 60–150, FCT 2 s, Global Delay 2 s, cooldown = duration. The v21f burst (a full SP bar in 1 s) is gone. Idle and the simulator keep the buff up; buff icon in the status island; text in en / th / jp.
 - **Balance:** Ranger CP Lv 10 / 20 / 30 = 654 / 1,056 / 1,996 (v21f 640 / 1,065 / 1,614; Fighter 598 / 1,090 / 1,576). ⚠ At Lv 10 a basic shot under the buff averages ~6× a normal shot: Ruins DPS 407 (Fighter 181, Spellcaster 200). Ideas in `SKILL-SPEC.md` §3n balance check.
 

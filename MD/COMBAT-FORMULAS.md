@@ -175,4 +175,7 @@ Kills per hour now come from the same simulator, using the character's real stat
 - **Monster skill:** a red circle marks the ground (around the monster, or on the player's position at cast time). After the wind-up (0.8–1.4 s) a player still inside takes `ATK × mult × U(0.9, 1.1) × (1 − hardDEF) − softDEF`. Skill tables are in `FIELD-GEOSYNCLINE.md` and `FIELD-RUINS.md`. Skills ignore the player's element and cannot miss.
 - **Burning:** `0.10 × monster ATK` per second for 4–6 s (stacks by taking the longer time and the higher damage). **Soaked:** movement speed ×0.65 for 4 s.
 - The simulator (`simulate`) still treats monsters as plain melee, so skills and debuffs are extra danger on top of the numbers in the balance tables.
-- **Entry gates:** Path to the Geosyncline needs Base Lv 25 and CP 2,000; Road to the Ruins needs Lv 30 and CP 3,000 (`combatPower`).
+- **Entry gates:** Path to the Geosyncline needs Base Lv 25 and CP 2,000; Road to the Ruins needs Lv 30 and CP 3,000; Ashfall Ruins needs Lv 40 and CP 6,000 (`combatPower`).
+- **Ranged monsters (v22, `MON.rng`):** stop at `rng` tiles and shoot; the hit (normal `monHit`: HIT vs FLEE, armor) lands when the projectile arrives (0.30 s arrow, 0.38 s orb) if the monster is still alive.
+- **Magic monster damage (v22, `MON.mag`, skills with `mg`):** never misses, ignores hard and soft DEF: `max(1, round(ATK × r × (1 − MDEF) − soft MDEF))`, r = U(0.85, 1.15) for basic hits and `mult × U(0.9, 1.1)` for skills (`magDmg`).
+- **Boss enrage (v22, `MON.enrage`):** below that share of max HP the boss attacks 1.3× faster, its slam cooldown is ×0.6 and its skill cooldowns tick 1.5× faster (Magma Gatekeeper: 30%).

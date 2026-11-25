@@ -17,6 +17,7 @@
 |---|---|---|---|
 | Town south gate | (24, 46) | Road to the Ruins | beside the north portal below |
 | Ruins north portal | (28, 2) | Gadolinium | beside the town south gate |
+| Ruins south portal (v22) | (28, 46) | Ashfall Ruins (Lv 40+ and CP 6,000+, "Monster Lv.40+" signs on both sides) | beside the Ashfall north portal (`FIELD-ASHFALL.md`) |
 
 Arrival follows the portal rule in `FIELD-01.md` (nearest walkable tile beside the matching portal). No monster spawns within 7 tiles of the portal, and monsters ignore the player for 3 s after any map change.
 
@@ -77,6 +78,6 @@ Characters built to the gate CP (gear scaled until `combatPower` ≈ 3,000, 300 
 Kills per 5 min, one monster at a time. Spellcasters at this CP are glass cannons; expect them to need potions and kiting.
 
 ## Open questions
-1. Boss for this map (none yet).
+1. Boss for this map (none yet; the next map, Ashfall Ruins, has the Magma Gatekeeper).
 2. Whether the CP gate should also kick out a character whose CP drops below the gate while inside (today: no).
 3. Spellcaster survival at the gate CP (glass cannon: CP comes mostly from damage).

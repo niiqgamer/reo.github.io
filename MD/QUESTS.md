@@ -13,7 +13,7 @@
 `talk(npc)` · `crystal` · `reach(map)` · `kill(map, mon?, elite?, n)` · `collect(item, n, consume?)`
 
 ## Quests window
-Available quests are **grouped by map** (Field 01, 02, 03, Path to the Geosyncline, Road to the Ruins, General) with the map's recommended CP, and sorted by monster level. Each row shows type, repeatable tag and the monster level.
+Available quests are **grouped by map** (Field 01, 02, 03, Path to the Geosyncline, Road to the Ruins, Ashfall Ruins, General) with the map's recommended CP, and sorted by monster level. Each row shows type, repeatable tag and the monster level.
 
 ## Current quests
 | ID | Type | Title (EN / TH) | Stages | Reward |
@@ -54,6 +54,11 @@ Every monster has one daily **Normal** hunt (15 kills, Hunt Lumite/Nebulite/Shar
 | Hunt: Ashen Sentinel (`qn_ashsentinel`) | Ruins | 15 × Ashen Sentinel | 23,625 | 14,985 | 8,280 |
 | Elite Hunt: Geosyncline (`qe_geo`) | Geosyncline | 3 × Elite | 0 | 0 | 0 (+1 Y) |
 | Elite Hunt: Ruins (`qe_ruins`) | Ruins | 3 × Elite | 0 | 0 | 0 (+1 Y) |
+| Hunt: Scoria Hound (`qn_scoriahound`) | Ashfall | 15 × Scoria Hound | 50,625 | 32,400 | 17,280 |
+| Hunt: Cinderbow Revenant (`qn_cinderbow`) | Ashfall | 15 × Cinderbow Revenant | 59,940 | 38,070 | 20,880 |
+| Hunt: Pyroclast Magus (`qn_pyromagus`) | Ashfall | 15 × Pyroclast Magus | 70,875 | 44,955 | 24,840 |
+| Elite Hunt: Ashfall (`qe_ashfall`) | Ashfall | 3 × Elite | 0 | 0 | 0 (+1 Y) |
+| Boss Hunt: Magma Gatekeeper (`qb_magmagk`) | Ashfall | 1 × Magma Gatekeeper | 30,000 | 19,000 | 25,000 (+40 Y) |
 
 **Daily limit:** every repeatable (Normal) quest can be completed **once per day** (player's local date). After turning one in, the Quests window shows **Done today / ทำแล้ววันนี้** instead of Accept until the next day. The tag on these quests reads **Daily / รายวัน**.
 
