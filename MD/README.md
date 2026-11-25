@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.15. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.16. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.15 (this update)
+## Changes in v20.16 (this update)
+- **Illustrated skill icons.** All 28 skill icons are redrawn as full-colour pictures based on each skill's description (gradients, light, glow, dark outline): e.g. Fire Bolt is a fireball comet, Frost Nova an ice crystal, Crushing Blow a hammer cracking the ground with 3 stack orbs, Elemental Attunement four element orbs. They replace the one-colour duotone set from v20.10 in the Skills Tree, Skill Info, hotkey bar, drag ghost and archetype cards. Locked skills show the picture in grey. Shared gradients live in `<svg id="skdefs">`. See `UI-UX.md` §26.
+
+## Changes in v20.15
 - **Hero death animation.** New `images/hero/male/death.webp` (8 frames) and `images/hero/female/death.webp` (3 frames), 8 directions. On death the hero falls once and stays down until respawn, instead of the old tipped-over chibi. Male SW / NW rows are mirrored from SE / NE. See `UI-UX.md` §27.
 
 ## Changes in v20.14
