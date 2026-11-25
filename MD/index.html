@@ -6364,7 +6364,7 @@ function drawHero8(g,X,Y,sc,o={}){
   const castOrb=()=>{if(fx.type!=="cast")return;const a=arms[1],b=arms[-1],T=fx.t,ox=(a.hx+b.hx)/2+S*22,oy=(a.hy+b.hy)/2-8;
     g.save();g.translate(ox,oy);   // v20.18: a bigger magic circle at the hands (glow, two turning rings, a pentagram, rune ticks)
     g.fillStyle=RG(0,0,0,46,[[0,"rgba(255,255,255,1)"],[.3,"rgba(200,180,255,.9)"],[1,"rgba(140,110,255,0)"]]);g.beginPath();g.arc(0,0,46+Math.sin(T*6)*4,0,TAU);g.fill();
-    g.save();g.translate(S*12,0);g.scale(Math.max(.18,Math.abs(Cc)),1);g.rotate(T*1.5);g.strokeStyle="rgba(230,215,255,.95)";g.lineWidth=2.6;g.setLineDash([8,5]);g.beginPath();g.arc(0,0,42,0,TAU);g.stroke();g.setLineDash([]);
+    g.save();g.translate(S*12,0);g.scale(Math.max(.45,Math.abs(Cc)),1);g.rotate(T*1.5);g.strokeStyle="rgba(230,215,255,.95)";g.lineWidth=2.6;g.setLineDash([8,5]);g.beginPath();g.arc(0,0,42,0,TAU);g.stroke();g.setLineDash([]);
     g.lineWidth=2.2;g.beginPath();g.arc(0,0,33,0,TAU);g.stroke();
     for(let i=0;i<12;i++){const an=i*TAU/12;g.beginPath();g.moveTo(Math.cos(an)*33,Math.sin(an)*33);g.lineTo(Math.cos(an)*38,Math.sin(an)*38);g.stroke()}
     g.strokeStyle="rgba(255,236,170,.95)";g.beginPath();for(let i=0;i<5;i++){const an=-T*3+i*TAU*2/5;g.lineTo(Math.cos(an)*33,Math.sin(an)*33)}g.closePath();g.stroke();g.restore();
