@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v21. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v21b. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,13 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v21 (this update)
+## Changes in v21b (this update)
+- **The Idle buff skill set rotates too**, like the attack set: after slot n comes slot n+1 (wrapping); a buff that is still running (more than 1 s left) is skipped.
+
+## Changes in v21a
+- **Fix: the Idle attack skill set only cast one skill.** The set now rotates (after slot n comes slot n+1, wrapping; a skill that is not ready is skipped), so Petrifaction + Fire Bolt goes Petrifaction > Fire Bolt > Petrifaction … Self-area skills (Petrifaction) were never cast from range because no monster stood inside the area; Idle now walks in first (the pending-skill walk also handles skills without a range).
+
+## Changes in v21
 - **Idle Settings built** (gear badge on the Idle button): six tabs, Target · Combat · Recovery · Warp · Loot · VIP, saved in `S.iset`. Chosen targets (5 slots per map, no bosses, Elites count as their kind), fight back when attacked, stop timer; basic attack switch (forced on when skill attacks are off) and four 9-slot skill sets (attack, buff, healing, movement) with level picks; sit to rest; HP / SP potions with order and 5–95% bars; 5 buff-item slots re-used when the buff ends; Fly Wing when nothing is in sight for 3 s; return to town when full; loot filter (usable, gear by ★ / archetype / level, other; quest items always); VIP auto-buy Fly Wing and auto Pocket Dimension (errands keep Idle running). Teleport skill and auto resurrection are mockups. The boss / Elite switches and the auto-idle row are gone from this window. Offline idle uses the chosen targets and the loot filter. Details: `IDLE.md` "Idle Settings".
 - **Minimap Return to town now costs** the World Map price to Town (150 Sc per map passed); the tooltip shows it.
 
