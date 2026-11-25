@@ -1906,8 +1906,8 @@ const SK={
  evasive_leap:{arch:"ranger",kind:"move",leap:3,buff:"leap",dur:4,sp:10,cd:10,ic:"wing"},
  // v21f Ranger skills from NIIQ (SKILL-SPEC.md §3i-3n). Lv 10 rows; skAt() gives every level. Need No Arrow (SKREQ).
  focusing:{arch:"ranger",kind:"buff",buff:"focus",focus:.12,dur:240,sp:70,cd:0,gd:0,lv:10,ic:"aim"},   // Self Cast: DEX and AGI +3..12% for 60..240 s
- aim_strike:{arch:"ranger",kind:"phys",ratio:2,sp:20,cd:2,gd:2,vct:1,fct:.5,gap:.1,range:12,ranged:true,canCrit:true,critMul:.5,split:3,splitCh:.38,splash:.5,splashR:1.5,lv:10,ic:"aim"},   // v21h: 1 arrow of ratio x ATK in total; splitCh: it splits into `split` arrows (0.1 s apart) that share the ratio; every arrow splashes 50% of its share on a 3x3 square
- aiming_shower:{arch:"ranger",kind:"phys",ratio:2.5,sp:20,cd:2,gd:.1,vct:.5,fct:.5,range:12,ranged:true,knock:2,lv:10,ic:"arrows"},   // 1 arrow, pushes the target 2 tiles back (bosses too), cannot crit. v21h: FCT 0.5, VCT 0.5, GD 0.1, CD 2
+ aim_strike:{arch:"ranger",kind:"phys",ratio:2,sp:10,cd:1,gd:1,vct:.5,fct:.5,gap:.1,range:12,ranged:true,canCrit:true,critMul:.5,split:3,splitCh:.38,splash:.5,splashR:1.5,lv:10,ic:"aim"},   // v21h: 1 arrow of ratio x ATK in total; splitCh: it splits into `split` arrows (0.1 s apart) that share the ratio; every arrow splashes 50% of its share on a 3x3 square
+ aiming_shower:{arch:"ranger",kind:"phys",ratio:2.5,sp:20,cd:1,gd:.1,vct:.5,fct:.5,range:12,ranged:true,knock:2,lv:10,ic:"arrows"},   // 1 arrow, pushes the target 2 tiles back (bosses too), cannot crit. v22a: FCT 0.5, VCT 0.5, GD 0.1, CD 1
  // spellcaster — Casting (DEX and INT shorten the variable cast) + elemental weakness; spells never miss
  fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.2,hits:10,sp:40,cd:0,gd:1,vct:0,fct:1,gap:.2,range:7,overMul:.5,splash:.5,splashR:1.5,st:"brn",stCh:.7,stDur:7,debuff:true,lv:5,ic:"flame"},   // v20.18: Lv 5 row (Lv 1-5); skAt() gives every level (SKILL-SPEC.md §3)
  freezer:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.0,sp:25,cd:0,gd:.5,vct:.64,fct:.16,range:7,st:"frz",stCh:.75,stDur:7,debuff:true,splash:.5,splashR:1.5,splashOn:"frz",lv:5,ic:"snow"},   // v20.18 (was Frost Nova): 1 enemy + Freeze (Wind resistance -50%)
@@ -2086,7 +2086,7 @@ const SKLV={fire_bolt:{max:5,def:5},freezer:{max:5,def:5},lightning_spear:{max:5
 const SKREQ={ranger_mastery:{no_arrow:1},focusing:{no_arrow:3},aim_strike:{no_arrow:5},aiming_shower:{no_arrow:5}};
 const NA_SC=[20,18,15,13,10];                                                                     // No Arrow: Scandium per arrow shot, Lv 1-5
 const FO_P=[.03,.04,.05,.06,.07,.08,.09,.1,.11,.12];                                              // Focusing: DEX / AGI +%, time 40+20*Lv s, SP 20+5*Lv; no cast, GD 0, CD 0
-const AS_R=[1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,2],AS_N=[2,2,2,2,2,3,3,3,3,3],AS_CH=[.2,.22,.24,.26,.28,.3,.32,.34,.36,.38],AS_SP=[12,12,14,14,16,16,18,18,20,20];   // Aim Strike (v21h): ATK in total, arrows when split, split chance, SP; FCT 0.5, VCT 1, GD 2, CD 2
+const AS_R=[1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,2],AS_N=[2,2,2,2,2,3,3,3,3,3],AS_CH=[.2,.22,.24,.26,.28,.3,.32,.34,.36,.38],AS_SP=[10,10,10,10,10,10,10,10,10,10];   // Aim Strike (v21h): ATK in total, arrows when split, split chance, SP (v22a: 10 at every level); FCT 0.5, VCT 0.5, GD 1, CD 1
 const AW_R=[1.6,1.7,1.8,1.9,2,2.1,2.2,2.3,2.4,2.5];                                              // Aiming Shower: SP 20, FCT 0.1, GD 0.1   // v20.6: passives with levels too (derive reads them)
 const OE_DUR=[20,40,60,80,120],OE_VCT=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, VCT (FCT 0), SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
 const FB_N=[1,3,5,7,10],FB_SP=[12,17,22,27,40],FB_GAP=[0,.3,.3,.2,.2],FB_FCT=[.5,.6,.7,.8,1];   // Fire Bolt: 120% MATK per fireball, VCT 0, GD 1 s, CD 0
@@ -2134,10 +2134,10 @@ function pickSkill(ctx){
     if(ctx.dist>d.range)return null;
     if(ctx.dist<=2.5&&ready("aiming_shower"))return "aiming_shower";   // v21f: push a monster that came close back 2 tiles
     if(ready("piercing_shot"))return "piercing_shot";
-    if((reserve||ctx.near>=2)&&ready("aim_strike"))return "aim_strike";
-
+    if(ctx.near>=2&&ready("aim_strike"))return "aim_strike";   // v22a: Aim Strike first on packs (splash); on one target Double Strafe gives more per SP
     if(ctx.near>=2&&ready("arrow_shower"))return "arrow_shower";
-    if(reserve&&ready("double_strafe"))return "double_strafe";return null;
+    if(reserve&&ready("double_strafe"))return "double_strafe";
+    if(reserve&&ready("aim_strike"))return "aim_strike";return null;
    case "spellcaster":{
     if(!ctx.buffs.overEn&&ctx.dist<=d.range&&ready("overload_energy"))return "overload_energy";   // v20.6: keep the Overload Energy buff up while fighting
     if(ctx.dist>d.range)return null;

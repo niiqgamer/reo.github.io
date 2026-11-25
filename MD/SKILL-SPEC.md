@@ -332,27 +332,28 @@ The % multiplies DEX and AGI after Ranger Mastery (rounded down). Recasting refr
 | Skill Form | Active, Target Cast · Type Range (physical) |
 | Target | 1 enemy, Multi-hit (split arrows), Splash Damage |
 | Critical Rate | ×0.5 (built as **crit chance ×0.5**; ⚠) |
-| Gaps 0.1 s · **FCT 0.5 s · VCT 1 s · Global Delay 2 s · Cooldown 2 s** (every level) |
+| Gaps 0.1 s · **FCT 0.5 s · VCT 0.5 s · Global Delay 1 s · Cooldown 1 s** (every level; v22a, v21h had VCT 1 s, GD 2 s, CD 2 s) |
 | Detail | พลังที่จะทำให้ Ranger ง้างธนูได้อย่างอย่างสุดกำลัง และทำให้ปล่อยพลังทั้งหมดไปที่ลูกศรที่พุ่งออกไปได้ ในบางจังหวะ มีโอกาสที่ลูกธนูดอกนั้น จะแยกตัวออกมาสร้างความเสียหายให้เป้าหมายมากกว่า 1 ดอกด้วย และเมื่อยิงถูกเป้าหมาย แรงอัดอากาศทำหน้าที่อีกครั้ง Splash Damage 50% ออกไปอีก 3x3 ช่อง |
 
-| Lv | ATK in total | Split chance | Arrows when split | SP |
+| Lv | ATK in total | Split chance | Arrows when split | SP (v22a: 10 at every level; v21h 12–20) |
 |---|---|---|---|---|
-| 1 | 100% | 20% | 2 | 12 |
-| 2 | 110% | 22% | 2 | 12 |
-| 3 | 120% | 24% | 2 | 14 |
-| 4 | 130% | 26% | 2 | 14 |
-| 5 | 140% | 28% | 2 | 16 |
-| 6 | 150% | 30% | 3 | 16 |
-| 7 | 160% | 32% | 3 | 18 |
-| 8 | 170% | 34% | 3 | 18 |
-| 9 | 180% | 36% | 3 | 20 |
-| 10 | 200% | 38% | 3 | 20 |
+| 1 | 100% | 20% | 2 | 10 |
+| 2 | 110% | 22% | 2 | 10 |
+| 3 | 120% | 24% | 2 | 10 |
+| 4 | 130% | 26% | 2 | 10 |
+| 5 | 140% | 28% | 2 | 10 |
+| 6 | 150% | 30% | 3 | 10 |
+| 7 | 160% | 32% | 3 | 10 |
+| 8 | 170% | 34% | 3 | 10 |
+| 9 | 180% | 36% | 3 | 10 |
+| 10 | 200% | 38% | 3 | 10 |
 
 Built as (`aimStrike`):
 - One arrow of the "ATK in total" %. ⚠ **"in total" is read as shared**: when the arrow splits, the N arrows split that total between them (Lv 10, split into 3: 66.7% ATK each). So a split does not raise the total; it spreads it over more hits (each arrow rolls its own crit at ×0.5 and its own splash). The split is rolled once per cast.
 - **Splash:** every arrow that hits does 50% of its share to every other monster in a 3 × 3 square round the target; splash cannot crit.
 - The text says "ยิงธรรมดามีโอกาส…" but the skill form is Active, so the split is a property of the skill's own arrow, not of the basic shots (⚠).
-- The cast (0.5 s FCT + 1 s VCT, VCT shortened by DEX: about 1.1 s at Lv 30) stops basic attacks while it runs, like any cast.
+- The cast (0.5 s FCT + 0.5 s VCT, VCT shortened by DEX: about 0.8 s at Lv 30) stops basic attacks while it runs, like any cast.
+- Idle / simulator AI (v22a): Aim Strike comes first when 2+ monsters are close (splash); against one target it is used after Double Strafe, which gives more damage per SP (250% against 200% for the same 10 SP, and Double Strafe has no cast).
 - History: v21f attack skill (each arrow full %, GD 0.1 s: ~9,000 damage burst in 1 s); v21g Self Cast buff on basic shots (Lv 10 ≈ 6× a basic shot, Ruins DPS 407). v21h removes both.
 
 ## 3n. Aiming Shower
@@ -363,7 +364,7 @@ Built as (`aimStrike`):
 | Skill Form | Active, Target Cast · Type Range (physical) |
 | Target | 1 enemy |
 | Critical Rate | No |
-| **FCT 0.5 s · VCT 0.5 s · Global Delay 0.1 s · Cooldown 2 s** (v21h; was FCT 0.1, CD 0) · SP 20 (every level) |
+| **FCT 0.5 s · VCT 0.5 s · Global Delay 0.1 s · Cooldown 1 s** (v22a; v21h CD 2 s; v21f FCT 0.1, CD 0) · SP 20 (every level) |
 | Detail | ยิงลูกธนู 1 ดอกออกไปผลักเป้าหมายให้ถอยหลังไป 2 ช่อง (สามารถใช้กับบอสได้) |
 
 | Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
@@ -372,34 +373,34 @@ Built as (`aimStrike`):
 
 The push is straight away from the Ranger, 2 tiles, as a slide (12 tiles/s) that stops at a wall; bosses and Elites too. ⚠ "ATK +160%" read as 160% ATK. Idle (built-in choice) uses it when a monster is within 2.5 tiles.
 
-### Balance check (simulator, v21h)
+### Balance check (simulator, v22a)
 Game combat module in Node, 300 s, seeds 1–3, auto stats, no gear; the simulator counts **every** skill at max level (49 points cannot really buy all of them: the new five need 45). Kills · DPS · deaths. "Old" = v21e Ranger.
 
-| | Fighter | Ranger old | v21f | v21g (buff) | **Ranger v21h** | Spellcaster |
-|---|---|---|---|---|---|---|
-| Lv 10, Field 01 | 59.3 · 46 | 54.0 · 39 | 58.7 · 43 | 58.7 · 44 | 58.0 · 43 | 47.7 · 26 |
-| Lv 20, Field 02 | 53.3 · 75 | 50.0 · 67 | 51.3 · 76 | 50.7 · 80 | 49.7 · 73 | 46.0 · 53 |
-| Lv 30, Field 03 | 42.3 · 130 | 39.7 · 116 | 46.0 · 136 | 49.0 · 148 | **43.0 · 130** | 42.0 · 117 |
-| Lv 20, packs of 3 | 87 · 111 | 69 · 89 · 1 d | 83 · 102 | 83 · 103 | 82 · 101 | 108 · 123 |
-| Lv 30, Geosyncline | 16.3 · 146 | 16.0 · 148 · 2 d | 18.7 · 182 · 1.7 d | 28.7 · 256 · 1 d | **15.7 · 156 · 1.7 d** | 25.0 · 218 · 1 d |
-| Lv 35, Ruins | 12.0 · 181 · 1 d | 13.0 · 192 · 3 d | 15.7 · 237 · 3 d | 28.0 · 407 · 1 d | **10.3 · 185 · 3 d** | 13.7 · 200 · 1 d |
-| **CP Lv 10 / 20 / 30** | 598 / 1,090 / 1,576 | 457 / 861 / 1,354 | 640 / 1,065 / 1,614 | 654 / 1,056 / 1,996 | **637 / 1,023 / 1,708** | 233 / 546 / 971 |
+| | Fighter | Ranger old | v21f | v21g (buff) | v21h | **Ranger v22a** | Spellcaster |
+|---|---|---|---|---|---|---|---|
+| Lv 10, Field 01 | 59.3 · 46 | 54.0 · 39 | 58.7 · 43 | 58.7 · 44 | 58.0 · 43 | 58.7 · 44 | 47.7 · 26 |
+| Lv 20, Field 02 | 53.3 · 75 | 50.0 · 67 | 51.3 · 76 | 50.7 · 80 | 49.7 · 73 | 50.7 · 77 | 46.0 · 53 |
+| Lv 30, Field 03 | 42.3 · 130 | 39.7 · 116 | 46.0 · 136 | 49.0 · 148 | 43.0 · 130 | **44.0 · 136** | 42.0 · 117 |
+| Lv 20, packs of 3 | 87 · 111 | 69 · 89 · 1 d | 83 · 102 | 83 · 103 | 82 · 101 | 84 · 101 | 108 · 123 |
+| Lv 30, Geosyncline | 16.3 · 146 | 16.0 · 148 · 2 d | 18.7 · 182 · 1.7 d | 28.7 · 256 · 1 d | 15.7 · 156 · 1.7 d | **17.7 · 174 · 1.3 d** | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 12.0 · 181 · 1 d | 13.0 · 192 · 3 d | 15.7 · 237 · 3 d | 28.0 · 407 · 1 d | 10.3 · 185 · 3 d | **12.0 · 200 · 3 d** | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 598 / 1,090 / 1,576 | 457 / 861 / 1,354 | 640 / 1,065 / 1,614 | 654 / 1,056 / 1,996 | 637 / 1,023 / 1,708 | **656 / 1,044 / 1,761** | 233 / 546 / 971 |
 
-Gain by skill (Lv 35 Ruins DPS): old 192 → +Ranger Mastery 221 → +Focusing 220 → **+Aim Strike 184** → +Aiming Shower 185.
+Gain by skill (Lv 35 Ruins DPS): old 192 → +Ranger Mastery 221 → +Focusing 220 → **+Aim Strike 215** → +Aiming Shower 200.
 
-**v21h is no longer over.** The Ranger sits level with the Fighter (CP Lv 30 1,708 vs 1,576; the gain is Ranger Mastery and Focusing). Aim Strike Lv 10 now does about 200% ATK per ~3 s cycle (1.1 s cast + 2 s Global Delay, cooldown 2 s), and **against one target it is slightly worse than just shooting**: the cast stops about 1.3 basic shots (≈130% ATK) and SP runs short (20 SP a cast against ~1.9 SP/s regen), so on the Ruins DPS drops from 220 to 184 when the AI uses it. Its value is the splash on packs and the extra crit rolls. If NIIQ wants it to pay off alone: a shorter cast, or "in total" read as each arrow (Lv 10 split into 3 = 600%; average 1.8 arrows ≈ 352% per cast).
+**v22a is balanced.** The Ranger sits level with the Fighter and with the Spellcaster on the Ruins (CP Lv 30 1,761, Ruins DPS 200). The shorter cast and 1 s delay alone barely moved the numbers, because the Ranger runs out of SP before it runs out of time (~1.9 SP/s regen at Lv 30); the AI order (Double Strafe before Aim Strike on one target) and **SP 20 → 10** did. Against one target Aim Strike is now close to just shooting (220 → 215 on the Ruins); it gains on packs through the splash. Aiming Shower costs a little DPS on the Ruins because the AI also spends 20 SP to push back every monster that comes close; that buys safety, not damage.
 
 **⚠ Scandium cost against income** (simulator, 600 s × 3 seeds, kills and arrows per hour; income = average monster Scandium, no drops sold):
 
 | Map (Lv) | Kills/h | Arrows/h (per kill) | Income Sc/h | Net at 10 Sc/arrow (No Arrow 5) | Net at 20 Sc/arrow (No Arrow 1) |
 |---|---|---|---|---|---|
-| Field 01 (10) | 684 | 1,160 (1.7) | 7,068 | **−4,532** | **−16,132** |
-| Field 02 (20) | 584 | 1,644 (2.8) | 13,043 | **−3,397** | **−19,837** |
-| Field 03 (30) | 490 | 2,216 (4.5) | 35,280 | +13,120 | **−9,040** |
-| Geosyncline (30) | 192 | 3,244 (16.9) | 34,560 | +2,120 | **−30,320** |
-| Ruins (35) | 120 | 3,064 (25.5) | 35,000 | +4,360 | **−26,280** |
+| Field 01 (10) | 684 | 1,174 (1.7) | 7,068 | **−4,672** | **−16,412** |
+| Field 02 (20) | 588 | 1,692 (2.9) | 13,132 | **−3,788** | **−20,708** |
+| Field 03 (30) | 494 | 2,300 (4.7) | 35,568 | +12,568 | **−10,432** |
+| Geosyncline (30) | 206 | 3,496 (17.0) | 37,080 | +2,120 | **−32,840** |
+| Ruins (35) | 148 | 3,698 (25.0) | 43,167 | +6,187 | **−30,793** |
 
-(v21h.) So a Ranger with No Arrow loses Scandium on Field 01–02 even at Lv 5, only just breaks even on the Geosyncline and Ruins at Lv 5, and loses on every map at Lv 1. Every other archetype keeps all of it. See `ECONOMY.md`.
+(v22a.) So a Ranger with No Arrow loses Scandium on Field 01–02 even at Lv 5, only just breaks even on the Geosyncline and Ruins at Lv 5, and loses on every map at Lv 1. Every other archetype keeps all of it. See `ECONOMY.md`.
 
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**
