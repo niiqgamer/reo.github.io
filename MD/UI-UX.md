@@ -98,7 +98,7 @@ These will be replaced by real skills per class/job (`JOBS.md`).
 
 ## 5. v3 HUD changes
 - Removed Thai/English and layout buttons from the HUD — they live in **Settings**.
-- **Minimap panel:** header with map name and collapse button; on the map: **Return to town** (fields only) and **zoom + / −** with 5 steps: Very far 0.6 · Far 0.8 · Standard 1.0 · Near 1.25 · Very near 1.55 (mouse wheel steps too; no slider).
+- **Minimap panel:** header with map name and collapse button; on the map: **Return to town** (fields only; since v21 it costs the World Map teleport price to Town) and **zoom + / −** with 5 steps: Very far 0.6 · Far 0.8 · Standard 1.0 · Near 1.25 · Very near 1.55 (mouse wheel steps too; no slider).
 - **Quest tracker:** collapsible, up to 5 tracked quests, color-coded, tap to auto-quest.
 - **Idle:** single prominent button; status panel expands once idle starts (see `IDLE.md`).
 - Banner shows recommended CP in fields.

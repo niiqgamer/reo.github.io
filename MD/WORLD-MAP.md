@@ -14,6 +14,7 @@
 | Gate | Geosyncline needs Base Lv 25+ and CP 2,000+; Ruins needs Lv 30+ and CP 3,000+. The teleport button is disabled and says what is missing |
 | Where | **Only maps the character has already visited.** Others show `???`, a lock and "Not visited yet" |
 | Arrival | at the entrance that leads back toward town (Town: the plaza) |
+| Minimap Return to town (v21) | costs the same as teleporting to Town (150 Sc per map passed); the button's tooltip shows the price; blocked if Scandium is short |
 | Side effects | ends Idle; blocked while dead or while changing map; blocked if Scandium is short (the button says how much is needed) |
 
 **Visited maps** are saved (`visited`). Saves from before this version get a guess from progress: Town always; Field 01 if the character has any kills, level or EXP; Field 02 if the main quest reached chapter 5; Field 03 if it reached chapter 7. The map the character stands in always counts.
