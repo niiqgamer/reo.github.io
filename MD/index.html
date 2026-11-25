@@ -1876,8 +1876,8 @@ const SK={
  piercing_shot:{arch:"ranger",kind:"phys",ratio:3.2,ignoreDef:.5,canCrit:true,critMul:2,sp:18,cd:6,range:12,ranged:true,ic:"pierce"},
  evasive_leap:{arch:"ranger",kind:"move",leap:3,buff:"leap",dur:4,sp:10,cd:10,ic:"wing"},
  // spellcaster — Casting (DEX and INT shorten the variable cast) + elemental weakness; spells never miss
- fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.2,hits:10,sp:40,cd:0,gd:1,vct:0,fct:1,gap:.2,range:7,overMul:.5,lv:5,ic:"flame"},   // v20.18: Lv 5 row (Lv 1-5); skAt() gives every level (SKILL-SPEC.md §3)
- freezer:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.0,sp:25,cd:0,gd:.5,vct:.64,fct:.16,range:7,st:"frz",stCh:.75,stDur:7,debuff:true,lv:5,ic:"snow"},   // v20.18 (was Frost Nova): 1 enemy + Freeze (Wind resistance -50%)
+ fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.2,hits:10,sp:40,cd:0,gd:1,vct:0,fct:1,gap:.2,range:7,overMul:.5,splash:.5,splashR:1.5,st:"brn",stCh:.7,stDur:7,debuff:true,lv:5,ic:"flame"},   // v20.18: Lv 5 row (Lv 1-5); skAt() gives every level (SKILL-SPEC.md §3)
+ freezer:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.0,sp:25,cd:0,gd:.5,vct:.64,fct:.16,range:7,st:"frz",stCh:.75,stDur:7,debuff:true,splash:.5,splashR:1.5,splashOn:"frz",lv:5,ic:"snow"},   // v20.18 (was Frost Nova): 1 enemy + Freeze (Wind resistance -50%)
  lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:1,hits:10,sp:78,cd:0,gd:2,vct:1.8,fct:1.5,gap:.1,range:7,aoe:2.5,at:"target",sq:true,ground:true,overMul:.5,lv:5,ic:"bolt"},   // v20.18: ground magic, spears fall 0.1 s apart on a 5x5 area fixed where the cast started
  petrifaction:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:1,sp:35,cd:0,gd:0,vct:.8,fct:.2,aoe:3.5,at:"self",sq:true,st:"ptr",stCh:.75,stDur:7,debuff:true,lv:5,ic:"rock"},   // v20.18 (was Stone Spike): Self Cast, 7x7 around the caster + Petrifaction (Fire resistance -50%)
  overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:120,sp:110,cd:60,gd:1,vct:2,fct:0,area:6,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 50/65/80/95/110
@@ -1998,7 +1998,7 @@ function physHit(d,m,o,r){
 /* v20.18 status debuffs (Freezer, Petrifaction): the monster cannot move or attack, and one element hits it harder
    (Freeze: Wind +50%, Petrifaction: Fire +50%, added to the element multiplier). Chance and time drop with the target's MDEF and LUK.
    ASSUMPTION (not given by NIIQ): chance = skill% x (1 - MDEF%) - LUK/5, time = stDur x (1 - MDEF%); bosses are immune. */
-const STATUS={frz:{elem:"wind",add:.5},ptr:{elem:"fire",add:.5}};
+const STATUS={frz:{elem:"wind",add:.5,hold:true},ptr:{elem:"fire",add:.5,hold:true},brn:{elem:"water",add:.5}};   // v20.19: Burning (Fire Bolt) does not hold the monster in place
 function stAdd(elem,m){let a=0;if(!m)return 0;for(const k in STATUS)if(m[k]>0&&STATUS[k].elem===elem)a+=STATUS[k].add;return a}
 function stRoll(k,m,r){if(!k.st||!m||m.boss)return 0;const mdef=m.mdef||0,ch=k.stCh*100*(1-mdef)-(m.luk||0)/5;return r()*100<ch?+(k.stDur*(1-mdef)).toFixed(2):0}
 // magic: MATK roll x ratio x element ; then x(1 - MDEF) - soft MDEF ; never misses
@@ -2041,16 +2041,17 @@ function autoStats(arch,lv,base){
 const SKLV={fire_bolt:{max:5,def:5},freezer:{max:5,def:5},lightning_spear:{max:5,def:5},petrifaction:{max:5,def:5},overload_energy:{max:5,def:5},mana_flow:{max:10,def:10},elemental_attunement:{max:5,def:5}};   // v20.6: passives with levels too (derive reads them)
 const OE_DUR=[20,40,60,80,120],OE_VCT=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, VCT (FCT 0), SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
 const FB_N=[1,3,5,7,10],FB_SP=[12,17,22,27,40],FB_GAP=[0,.3,.3,.2,.2],FB_FCT=[.5,.6,.7,.8,1];   // Fire Bolt: 120% MATK per fireball, VCT 0, GD 1 s, CD 0
+const FB_CH=[.3,.4,.5,.6,.7];                                                                    // v20.19 Fire Bolt: Burning chance; each fireball splashes 50% MATK on a 3x3 square around the target
 const FZ_R=[1.1,1.3,1.5,1.7,2],FZ_CH=[.35,.45,.55,.65,.75];                                     // Freezer: SP 25, FCT 0.16, VCT 0.64, GD 0.5 s, CD 0
 const LS_SP=[30,42,54,66,78],LS_VCT=[1,1.2,1.4,1.6,1.8];                                         // Lightning Spear: 2 spears per Lv, 100% MATK each, 0.1 s apart, FCT 1.5, GD 2 s, CD 0
 const PT_R=[.75,.8,.85,.9,1],PT_CH=[.3,.4,.55,.65,.75],PT_SP=[25,27,28,32,35];                   // Petrifaction: FCT 0.2, VCT 0.8, GD 0, CD 0
-const ST_DUR=[3,4,5,6,7];   // ASSUMPTION: Freeze / Petrifaction time by skill level (not given yet), before the target's MDEF
+const ST_DUR=[3,4,5,6,7];   // ASSUMPTION: Burning / Freeze / Petrifaction time by skill level (not given yet), before the target's MDEF
 const skMax=id=>SKLV[id]?SKLV[id].max:1;   // every other skill is learn-only (one level) until its levels are designed
 function skAt(id,lv){
   const k=SK[id];if(!k||!SKLV[id])return k;
   const L=clamp(Math.floor(lv)||SKLV[id].def,1,SKLV[id].max);
   const i=L-1;
-  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:FB_N[i],sp:FB_SP[i],gap:FB_GAP[i],fct:FB_FCT[i]});
+  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:FB_N[i],sp:FB_SP[i],gap:FB_GAP[i],fct:FB_FCT[i],stCh:FB_CH[i],stDur:ST_DUR[i]});
   if(id==="freezer")return Object.assign({},k,{lv:L,ratio:FZ_R[i],stCh:FZ_CH[i],stDur:ST_DUR[i]});
   if(id==="lightning_spear")return Object.assign({},k,{lv:L,hits:2*L,sp:LS_SP[i],vct:LS_VCT[i]});
   if(id==="petrifaction")return Object.assign({},k,{lv:L,ratio:PT_R[i],stCh:PT_CH[i],sp:PT_SP[i],stDur:ST_DUR[i]});
@@ -2099,11 +2100,12 @@ function pickSkill(ctx){
         const em=elemMult(k.elem,ctx.tgtElem,d.attune)+stAdd(k.elem,st),hit=k.ratio*em;
         const hits=ctx.autoLv&&ctx.tgtHp?Math.min(k.hits||1,Math.ceil(ctx.tgtHp/Math.max(1,hit*matk))):(k.hits||1);
         let v=hit*hits*n/(ctx.autoLv&&lowSp?k.sp:Math.max(.5,castTime(k,d)+(k.gd||0)*d.gdMul));
-        if(k.st&&!held&&!ctx.boss)v*=1+k.stCh;
+        if(k.st&&!(STATUS[k.st].hold?held:st[k.st]>0)&&!ctx.boss)v*=1+k.stCh*(STATUS[k.st].hold?1:.25);   // Burning only opens a weakness, it does not stop the monster
+        if(k.splash&&ctx.near>1&&(!k.splashOn||st[k.splashOn]>0||k.st===k.splashOn))v*=1+k.splash*(ctx.near-1)*(k.splashOn?k.stCh:1)*.5;   // splash reaches some of the pack
         if(v>bv){bv=v;best=id;bl=L}}}
     if(!best)return null;
     ctx.pickLv=bl;
-    if(!reserve&&!SK[best].st&&elemMult(SK[best].elem,ctx.tgtElem,d.attune)+stAdd(SK[best].elem,st)<=1)return null;
+    if(!reserve&&!(SK[best].st&&STATUS[SK[best].st].hold)&&elemMult(SK[best].elem,ctx.tgtElem,d.attune)+stAdd(SK[best].elem,st)<=1)return null;
     return best;}
    case "supporter":
     if(hpPct<.55&&ready("heal"))return "heal";
@@ -2143,7 +2145,9 @@ function simulate(arch,lv,monKeys,opt){
       if(k.momentum)momentum=Math.min(5,momentum+k.momentum),momT=5;
       if(k.spend){if(momentum>=k.stunAt&&m)m.stun=k.stun;momentum=0}}
     else if(k.kind==="magic"){for(const x of targets)for(let h=0;h<(k.hits||1);h++){if(k.gap)pending.push({t:(k.gap||0)*h+(k.gap?k.gap-.02:0),x,k});else hitMob(x,magicHit(d,x,{ratio:k.ratio,elem:k.elem,overMul:k.overMul},r))};
-      if(k.st)for(const x of targets){if(x.hpNow<=0)continue;const sd=stRoll(k,x,r);if(sd>0){x.stun=Math.max(x.stun,sd);x[k.st]=Math.max(x[k.st]||0,sd)}}}
+      if(k.st)for(const x of targets){if(x.hpNow<=0)continue;const sd=stRoll(k,x,r);if(sd>0){if(STATUS[k.st].hold)x.stun=Math.max(x.stun,sd);x[k.st]=Math.max(x[k.st]||0,sd)}}
+      // v20.19 splash: 50% MATK on the others in a 3x3 square round the target (Fire Bolt: every fireball; Freezer: only while the target is frozen). No positions here, so "close" = a similar distance
+      if(k.splash&&m&&(!k.splashOn||m[k.splashOn]>0))for(const x of mobs){if(x===m||x.hpNow<=0||Math.abs(x.dist-m.dist)>k.splashR)continue;for(let h=0;h<(k.hits||1);h++)hitMob(x,magicHit(d,x,{ratio:k.ratio*k.splash,elem:k.elem},r))}}
     else if(k.kind==="heal"){const h=healAmount(d,k),over=Math.max(0,hp+h-d.maxHP);hp=Math.min(d.maxHP,hp+h);if(d.shieldCap)shield=Math.min(d.maxHP*d.shieldCap,shield+over)}
     else if(k.kind==="buff"){buffs[k.buff]=k.dur;if(k.over)ovV=k.over;if(k.buff==="blessing"||k.over)d=DV();
       if(k.taunt)mobs.forEach(x=>x.aggro=true)}
@@ -2165,7 +2169,7 @@ function simulate(arch,lv,monKeys,opt){
       const zd=(d.matkMin+d.matkMax)/2*SK.sanctuary.ratio*dt;
       for(const x of mobs)if(x.hpNow>0&&x.dist<=SK.sanctuary.radius+1){const z=zd*(1-x.mdef);x.hpNow-=z;dealt+=z;x.aggro=true}}
     // monsters
-    for(const x of mobs){if(x.frz>0)x.frz-=dt;if(x.ptr>0)x.ptr-=dt;if(x.hpNow<=0||!x.aggro)continue;if(x.stun>0){x.stun-=dt;continue}
+    for(const x of mobs){if(x.frz>0)x.frz-=dt;if(x.ptr>0)x.ptr-=dt;if(x.brn>0)x.brn-=dt;if(x.hpNow<=0||!x.aggro)continue;if(x.stun>0){x.stun-=dt;continue}
       if(x.dist>1.2){x.dist=Math.max(1.2,x.dist-x.speed*1.6*dt);continue}
       x.atkCd-=dt;if(x.atkCd<=0){x.atkCd=x.aspd;const res=monHit(x,d,r);if(!res.miss){let dmg=res.dmg;if(shield>0){const a=Math.min(shield,dmg);shield-=a;dmg-=a}hp-=dmg;taken+=dmg}}}
     if(hp<=0){deaths++;hp=d.maxHP;sp=d.maxSP;momentum=0;shield=0;zone=0;wait=20;casting=null;pending=[];spawn();continue}
@@ -2174,7 +2178,7 @@ function simulate(arch,lv,monKeys,opt){
     if(casting){casting.t-=dt;if(casting.t<=0){const c=casting;casting=null;doSkill(c.id,tgt(),c.lv)}continue}
     swing-=dt;
     const near=mobs.filter(x=>x.hpNow>0&&x.dist<=2.5).length;
-    const ctx={d,hp,sp,cd,momentum,buffs,dist:m.dist,near:pack>1?mobs.filter(x=>x.hpNow>0).length:1,nearMe:mobs.filter(x=>x.hpNow>0&&x.dist<=4).length,tgtSt:{frz:m.frz,ptr:m.ptr,stun:m.stun},boss:!!m.boss,autoLv:!opt.skLv,tgtHp:m.hpNow,tgtMdef:m.mdef,tgtElem:m.elem,inZone:zone>0,engaged:m.aggro,skLv:opt.skLv,gd:gdT};
+    const ctx={d,hp,sp,cd,momentum,buffs,dist:m.dist,near:pack>1?mobs.filter(x=>x.hpNow>0).length:1,nearMe:mobs.filter(x=>x.hpNow>0&&x.dist<=4).length,tgtSt:{frz:m.frz,ptr:m.ptr,brn:m.brn,stun:m.stun},boss:!!m.boss,autoLv:!opt.skLv,tgtHp:m.hpNow,tgtMdef:m.mdef,tgtElem:m.elem,inZone:zone>0,engaged:m.aggro,skLv:opt.skLv,gd:gdT};
     const id=pickSkill(ctx);
     if(id){const L=ctx.pickLv||0,k=L?skAt(id,L):KL(id);{const ct=castTime(k,d);if(ct>.05){casting={id,t:ct,lv:L};continue}}doSkill(id,m,L);continue}
     if(swing<=0&&m.dist<=d.range){swing=d.interval;doBasic(m)}
@@ -2452,7 +2456,7 @@ D2.en.skd_eagle_eye="+3 range (12 tiles) and +10 HIT.";D2.th.skd_eagle_eye="ร�
 D2.en.sk_steady_aim="Steady Aim";D2.th.sk_steady_aim="Steady Aim";
 D2.en.skd_steady_aim="Distance bonus (+2% per tile beyond 3) and +5% crit.";D2.th.skd_steady_aim="โบนัสระยะ (+2% ต่อช่องที่เกิน 3) และคริติคอล +5%";
 D2.en.sk_fire_bolt="Fire Bolt";D2.th.sk_fire_bolt="Fire Bolt";
-D2.en.skd_fire_bolt="Strikes one enemy with fireballs that fall one by one, 120% MATK Fire magic damage each (1 / 3 / 5 / 7 / 10 fireballs). Every fireball always falls, even if the target dies first. Can Overload.";D2.th.skd_fire_bolt="โจมตีศัตรูด้วยลูกไฟที่ตกลงมาทีละลูก สร้างความเสียหายทางเวทมนตร์ธาตุ Fire ลูกละ 120% MATK (1 / 3 / 5 / 7 / 10 ลูก) ลูกไฟตกครบตามจำนวนเสมอ แม้เป้าหมายจะตายไปแล้ว เกินพิกัดได้";
+D2.en.skd_fire_bolt="Strikes one enemy with fireballs that fall one by one, 120% MATK Fire magic damage each (1 / 3 / 5 / 7 / 10 fireballs). Each fireball that hits also splashes 50% MATK Fire damage on a 3 × 3 area around the target, and the volley has a 30–70% chance to set it Burning, which cuts its resistance to Water by 50%. Every fireball always falls, even if the target dies first. Can Overload.";D2.th.skd_fire_bolt="โจมตีศัตรูด้วยลูกไฟที่ตกลงมาทีละลูก สร้างความเสียหายทางเวทมนตร์ธาตุ Fire ลูกละ 120% MATK (1 / 3 / 5 / 7 / 10 ลูก) ลูกไฟที่โดนเป้าหมายจะ Splash ธาตุ Fire รอบเป้าหมายกว้าง 3 × 3 ช่องด้วย MATK 50% และมีโอกาส 30–70% ทำให้ติดสถานะ Burning (ติดไฟ) ที่ลดความต้านทานต่อธาตุ Water ลง 50% ลูกไฟตกครบตามจำนวนเสมอ แม้เป้าหมายจะตายก่อน ติด Overload ได้";
 D2.en.skpLine="Skill points: {n} (1 per Job Lv)";D2.th.skpLine="แต้มสกิล: {n} (1 Job Lv = 1 แต้ม)";
 D2.en.gdLbl="Global Delay";D2.th.gdLbl="ดีเลย์รวม";
 D2.en.fbLbl="Fireballs";D2.th.fbLbl="ลูกไฟ";
@@ -2460,7 +2464,7 @@ D2.en.dnd_item_no="This item can't be placed here.";D2.th.dnd_item_no="\u0e44\u0
 D2.en.skNone="Not learned";D2.th.skNone="ยังไม่ได้เรียน";
 D2.en.skNotLearned="Skill not learned yet. Spend a skill point in the Skills window.";D2.th.skNotLearned="ยังไม่ได้เรียนสกิลนี้ ใช้แต้มสกิลในหน้าสกิล";
 D2.en.sk_freezer="Freezer";D2.th.sk_freezer="Freezer";
-D2.en.skd_freezer="Grips the target with the power of ice: Water magic damage to one enemy and a chance of Freeze, which also cuts its resistance to Wind by 50%. The chance and time of Freeze change with the skill level and the target's MDEF and LUK.";D2.th.skd_freezer="ยึดจับและเหนี่ยวนำด้วยพลังน้ำแข็ง สร้างความเสียหายทางเวทมนตร์ธาตุ Water ต่อศัตรู 1 ตัว และมีโอกาสทำให้ติดสถานะ Freeze (แช่แข็ง) ที่ลดความต้านทานต่อธาตุ Wind ลง 50% เพิ่มเติม โอกาสและระยะเวลาติดสถานะเปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย";
+D2.en.skd_freezer="Grips the target with the power of ice: Water magic damage to one enemy and a chance of Freeze, which also cuts its resistance to Wind by 50%. While the target is frozen, Freezer also splashes 50% MATK Water damage on a 3 × 3 area around it. The chance and time of Freeze change with the skill level and the target's MDEF and LUK.";D2.th.skd_freezer="ยึดจับและเหนี่ยวนำด้วยพลังน้ำแข็ง สร้างความเสียหายทางเวทมนตร์ธาตุ Water ต่อศัตรู 1 ตัว และมีโอกาสทำให้ติดสถานะ Freeze (แช่แข็ง) ที่ลดความต้านทานต่อธาตุ Wind ลง 50% เมื่อเป้าหมายติด Freeze จะ Splash ธาตุ Water รอบเป้าหมายกว้าง 3 × 3 ช่องด้วย MATK 50% โอกาสและระยะเวลาติด Freeze เปลี่ยนตามเลเวลสกิล พลังป้องกันเวทมนตร์ และ LUK ของเป้าหมาย";
 D2.en.sk_lightning_spear="Lightning Spear";D2.th.sk_lightning_spear="Lightning Spear";
 D2.en.skd_lightning_spear="Ground magic: spears of lightning strike a 5 × 5 area one after another (2 per level, 0.1 s apart), each dealing 100% MATK Wind magic damage to every enemy inside. The area is where the target stood when the cast started. Can Overload.";D2.th.skd_lightning_spear="เวทพื้นที่: สร้างหอกแห่งสายฟ้าฟาดลงมาที่พื้นที่ 5×5 ช่องทีละเล่ม (เลเวลละ 2 เล่ม ห่างกัน 0.1 วิ) แต่ละเล่มสร้างความเสียหายทางเวทมนตร์ธาตุ Wind 100% MATK ต่อศัตรูทุกตัวในพื้นที่ พื้นที่คือจุดที่เป้าหมายยืนตอนเริ่มร่าย เกินพิกัดได้";
 D2.en.sk_petrifaction="Petrifaction";D2.th.sk_petrifaction="Petrifaction";
@@ -2963,11 +2967,11 @@ Object.assign(D2.th,{m_social:"สังคม",soc_friends:"เพื่อน"
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 /* v20.10 Skills Tree window */
 Object.assign(D2.en,{w_skinfo:"Skill Info",si_self:"Self Cast",si_target:"Target Cast",si_k_phys:"Physical",si_k_magic:"Magic",si_k_heal:"Heal",si_k_buff:"Buff",si_k_zone:"Zone",si_k_move:"Movement",
- si_lv:"Level {n}",si_det:"In details",si_delay:"Delay",si_fb:"{a} fireball(s), {b}% MATK in total · SP {c}",si_fz:"MATK {a}% · Freeze chance {b}% · SP {c}",si_ls:"{a} spear(s), {b}% MATK each on a 5 × 5 area · SP {c}",si_pt:"MATK {a}% in a 7 × 7 area · Petrifaction chance {b}% · SP {c}",si_k_ground:"Ground Magic",si_debuff:"Debuff",st_frz:"FREEZE",st_ptr:"PETRIFIED",si_oe:"Overload Rate +{a}% for {b} seconds · SP {c}",
+ si_lv:"Level {n}",si_det:"In details",si_delay:"Delay",si_fb:"{a} fireball(s), {b}% MATK in total · Burning chance {d}% · SP {c}",si_fz:"MATK {a}% · Freeze chance {b}% · SP {c}",si_ls:"{a} spear(s), {b}% MATK each on a 5 × 5 area · SP {c}",si_pt:"MATK {a}% in a 7 × 7 area · Petrifaction chance {b}% · SP {c}",si_k_ground:"Ground Magic",si_debuff:"Debuff",st_frz:"FREEZE",st_ptr:"PETRIFIED",st_brn:"BURNING",st_stun:"STUN",si_oe:"Overload Rate +{a}% for {b} seconds · SP {c}",
  w_skill:"Skills Tree",skt_pts:"Skill Points : {n}",skt_learn:"Learn",skt_reset:"Reset",skt_active:"Active",skt_passive:"Passive",
  skt_done:"Learned: {s}",skt_nopts:"Not enough skill points."});
 Object.assign(D2.th,{w_skinfo:"ข้อมูลสกิล",si_self:"ร่ายใส่ตัวเอง",si_target:"เลือกเป้าหมาย",si_k_phys:"กายภาพ",si_k_magic:"เวท",si_k_heal:"ฟื้นฟู",si_k_buff:"บัฟ",si_k_zone:"พื้นที่",si_k_move:"เคลื่อนที่",
- si_lv:"เลเวล {n}",si_det:"รายละเอียด",si_delay:"ดีเลย์",si_fb:"ลูกไฟ {a} ลูก รวม {b}% MATK · SP {c}",si_fz:"MATK {a}% · โอกาสติด Freeze {b}% · SP {c}",si_ls:"หอก {a} เล่ม เล่มละ {b}% MATK ในพื้นที่ 5×5 ช่อง · SP {c}",si_pt:"MATK {a}% ในพื้นที่ 7×7 ช่อง · โอกาสติด Petrifaction {b}% · SP {c}",si_k_ground:"เวทพื้นที่",si_debuff:"ดีบัฟ",st_frz:"แช่แข็ง!",st_ptr:"แข็งเป็นหิน!",si_oe:"เพิ่มอัตราเกินพิกัด +{a}% ระยะเวลา {b} วินาที · SP {c}",
+ si_lv:"เลเวล {n}",si_det:"รายละเอียด",si_delay:"ดีเลย์",si_fb:"ลูกไฟ {a} ลูก รวม {b}% MATK · โอกาสติด Burning {d}% · SP {c}",si_fz:"MATK {a}% · โอกาสติด Freeze {b}% · SP {c}",si_ls:"หอก {a} เล่ม เล่มละ {b}% MATK ในพื้นที่ 5×5 ช่อง · SP {c}",si_pt:"MATK {a}% ในพื้นที่ 7×7 ช่อง · โอกาสติด Petrifaction {b}% · SP {c}",si_k_ground:"เวทพื้นที่",si_debuff:"ดีบัฟ",st_frz:"แช่แข็ง!",st_ptr:"แข็งเป็นหิน!",st_brn:"ติดไฟ!",st_stun:"มึนงง!",si_oe:"เพิ่มอัตราเกินพิกัด +{a}% ระยะเวลา {b} วินาที · SP {c}",
  w_skill:"ผังสกิล",skt_pts:"แต้มสกิล : {n}",skt_learn:"เรียน",skt_reset:"รีเซ็ต",skt_active:"แอคทีฟ",skt_passive:"พาสซีฟ",
  skt_done:"เรียนแล้ว: {s}",skt_nopts:"แต้มสกิลไม่พอ"});
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
@@ -3338,7 +3342,7 @@ D.jp={
   "sk_steady_aim":"狙い澄まし",
   "skd_steady_aim":"距離ボーナス（3マスを超えた分1マスにつき+2%）とクリティカル+5%。",
   "sk_fire_bolt":"ファイアボルト",
-  "skd_fire_bolt":"1体の敵に火球を1つずつ落とし、各火球が火属性の魔法ダメージ（MATK 120%）を与えます（1 / 3 / 5 / 7 / 10個）。対象が先に倒れても、火球はすべて落ちます。オーバーロード可能。",
+  "skd_fire_bolt":"1体の敵に火球を1つずつ落とし、各火球が火属性の魔法ダメージ（MATK 120%）を与えます（1 / 3 / 5 / 7 / 10個）。命中した火球は対象の周囲3×3マスに火属性のスプラッシュ（MATK 50%）を与え、30–70%の確率で炎上させ、水属性への耐性を50%下げます。対象が先に倒れても、火球はすべて落ちます。オーバーロード可能。",
   "skpLine":"スキルポイント：{n}（ジョブLv 1ごとに1）",
   "gdLbl":"グローバルディレイ",
   "fbLbl":"火球",
@@ -3348,7 +3352,7 @@ D.jp={
   "skNone":"未習得",
   "skNotLearned":"まだ習得していません。スキル画面でスキルポイントを使ってください。",
   "sk_freezer":"フリーザー",
-  "skd_freezer":"氷の力で捕らえ、敵1体に水属性の魔法ダメージ。一定確率で凍結させ、さらに風属性への耐性を50%下げます。凍結の確率と時間はスキルLv、対象の魔法防御とLUKで変わります。",
+  "skd_freezer":"氷の力で捕らえ、敵1体に水属性の魔法ダメージ。一定確率で凍結させ、さらに風属性への耐性を50%下げます。対象が凍結している間は周囲3×3マスに水属性のスプラッシュ（MATK 50%）を与えます。凍結の確率と時間はスキルLv、対象の魔法防御とLUKで変わります。",
   "sk_lightning_spear":"ライトニングスピア",
   "skd_lightning_spear":"地面魔法：雷の槍を5×5マスの範囲に1本ずつ落とし（Lvごとに2本、0.1秒間隔）、範囲内の全ての敵に風属性の魔法ダメージ（各 MATK 100%）。範囲は詠唱開始時に対象がいた場所。オーバーロード可能。",
   "sk_petrifaction":"ペトリファクション",
@@ -3981,7 +3985,7 @@ D.jp={
   "lt_sell_hint":"アイテムを長押しすると選択を始められます。"
 };
 Object.assign(D.jp,{w_skinfo:"スキル情報",si_self:"自己詠唱",si_target:"対象指定",si_k_phys:"物理",si_k_magic:"魔法",si_k_heal:"回復",si_k_buff:"バフ",si_k_zone:"範囲",si_k_move:"移動",
- si_lv:"レベル {n}",si_det:"詳細",si_delay:"ディレイ",si_fb:"火球 {a} 個、合計 MATK {b}% · SP {c}",si_fz:"MATK {a}% · 凍結確率 {b}% · SP {c}",si_ls:"槍 {a} 本、各 MATK {b}%（5×5マス） · SP {c}",si_pt:"MATK {a}%（7×7マス） · 石化確率 {b}% · SP {c}",si_k_ground:"地面魔法",si_debuff:"デバフ",st_frz:"凍結！",st_ptr:"石化！",si_oe:"オーバーロード率 +{a}%、{b} 秒間 · SP {c}",
+ si_lv:"レベル {n}",si_det:"詳細",si_delay:"ディレイ",si_fb:"火球 {a} 個、合計 MATK {b}% · 炎上確率 {d}% · SP {c}",si_fz:"MATK {a}% · 凍結確率 {b}% · SP {c}",si_ls:"槍 {a} 本、各 MATK {b}%（5×5マス） · SP {c}",si_pt:"MATK {a}%（7×7マス） · 石化確率 {b}% · SP {c}",si_k_ground:"地面魔法",si_debuff:"デバフ",st_frz:"凍結！",st_ptr:"石化！",st_brn:"炎上！",st_stun:"スタン！",si_oe:"オーバーロード率 +{a}%、{b} 秒間 · SP {c}",
  w_skill:"スキルツリー",skt_pts:"スキルポイント : {n}",skt_learn:"習得",skt_reset:"リセット",skt_active:"アクティブ",skt_passive:"パッシブ",
  skt_done:"習得：{s}",skt_nopts:"スキルポイントが足りません。"});   // v20.10 Skills Tree
 let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
@@ -7031,6 +7035,107 @@ function eliteCircle(sx,sy,r){
   for(let i=0;i<12;i++){const a=i/12*TAU;g.fillStyle="rgba(255,230,160,.9)";g.fillRect(Math.cos(a)*r*.9-1.5,Math.sin(a)*r*.9-1.5,3,3)}
   g.restore();g.restore();
 }
+/* ---- v20.19 status looks (UI-UX.md §28). The monster is redrawn off-screen, recoloured (stone / ice / fire) and masked back to its own
+   shape, then the shell, flames or stars go on top. Everything is drawn in the monster's own space (after drawMon's translate + scale). ---- */
+const stCv=[document.createElement("canvas"),document.createElement("canvas")],stCx=stCv.map(c=>c.getContext("2d"));
+const stR=(mo,i)=>hash(i*7+3,Math.floor((mo.phase||0)*1000));   // steady random per monster
+function stRecolor(mo,d,pal,mode){
+  const tm=g.getTransform(),s=Math.min(3,Math.max(.5,Math.hypot(tm.a,tm.b))),hw=Math.max(d.h,40)*1.2,top=d.h*1.6,bot=16,
+    W=Math.ceil(hw*2*s),Hh=Math.ceil((top+bot)*s);
+  for(const c of stCv){if(c.width<W)c.width=W;if(c.height<Hh)c.height=Hh}
+  const A=stCx[0],B=stCx[1];
+  A.setTransform(1,0,0,1,0,0);A.globalAlpha=1;A.globalCompositeOperation="source-over";A.clearRect(0,0,W,Hh);A.setTransform(s,0,0,s,hw*s,top*s);
+  const g0=g,T0=T;g=A;if(mo._fT!=null)T=mo._fT;try{MDRAW[d.sprite](mo,pal)}finally{g=g0;T=T0}
+  B.setTransform(1,0,0,1,0,0);B.globalCompositeOperation="source-over";B.globalAlpha=1;B.clearRect(0,0,W,Hh);B.drawImage(stCv[0],0,0,W,Hh,0,0,W,Hh);
+  const fill=(op,c,a)=>{B.globalCompositeOperation=op;B.globalAlpha=a==null?1:a;B.fillStyle=c;B.fillRect(0,0,W,Hh)};
+  if(mode==="ptr"){fill("saturation","#808080");fill("multiply","#c4baa8");fill("screen","#3c372f",.55);
+    {const lg=B.createLinearGradient(0,0,0,Hh);lg.addColorStop(0,"rgba(255,250,235,.55)");lg.addColorStop(.6,"rgba(128,128,128,0)");lg.addColorStop(1,"rgba(30,25,20,.6)");B.globalCompositeOperation="overlay";B.globalAlpha=1;B.fillStyle=lg;B.fillRect(0,0,W,Hh)}
+    // stone grain + cracks, clipped to the body by the mask below
+    B.setTransform(s,0,0,s,hw*s,top*s);B.globalCompositeOperation="source-over";B.globalAlpha=.5;
+    for(let i=0;i<40;i++){B.fillStyle=i%2?"#4b443a":"#d8d0c0";B.fillRect((stR(mo,i)-.5)*hw*1.6,-stR(mo,i+50)*d.h*1.3,1.6,1.6)}
+    B.globalAlpha=.8;B.strokeStyle="#3a3128";B.lineWidth=1.1;B.lineJoin="round";
+    for(let c=0;c<4;c++){let x=(stR(mo,c+90)-.5)*d.h*.8,y=-d.h*(.25+stR(mo,c+95)*.75);B.beginPath();B.moveTo(x,y);
+      for(let j=0;j<4;j++){x+=(stR(mo,c*9+j)-.5)*14;y+=6+stR(mo,c*7+j+20)*6;B.lineTo(x,y);if(j===1){B.moveTo(x,y);B.lineTo(x+(stR(mo,c+60)-.5)*16,y+5);B.moveTo(x,y)}}B.stroke()}
+    B.strokeStyle="rgba(255,250,235,.35)";B.lineWidth=.8;B.stroke()}
+  else if(mode==="frz"){fill("color","#86d8ff");fill("screen","#3d8fc8",.6);
+    B.setTransform(s,0,0,s,hw*s,top*s);B.globalCompositeOperation="source-over";B.globalAlpha=.75;B.strokeStyle="#f4fdff";B.lineWidth=1;   // frost veins
+    for(let i=0;i<7;i++){const x=(stR(mo,i)-.5)*d.h*.9,y=-d.h*(.15+stR(mo,i+9)*.85),r=4+stR(mo,i+30)*6;B.beginPath();
+      for(let a=0;a<3;a++){const q=a*Math.PI/3;B.moveTo(x-Math.cos(q)*r,y-Math.sin(q)*r);B.lineTo(x+Math.cos(q)*r,y+Math.sin(q)*r)}B.stroke()}}
+  else{const f=.5+.5*Math.sin(T*11+(mo.phase||0)*9);fill("multiply","#ff8a3c");fill("screen",`rgba(255,110,20,${.4+.25*f})`)}
+  B.setTransform(1,0,0,1,0,0);B.globalCompositeOperation="destination-in";B.globalAlpha=1;B.drawImage(stCv[0],0,0,W,Hh,0,0,W,Hh);
+  B.globalCompositeOperation="source-over";
+  g.drawImage(stCv[1],0,0,W,Hh,-hw,-top,W/s,Hh/s);
+}
+function stCrystal(x,y,w,h,tilt,a){   // a hexagonal ice prism standing at (x,y)
+  g.save();g.translate(x,y);g.rotate(tilt);
+  const pts=[[-w/2,0],[-w/2,-h*.82],[0,-h],[w/2,-h*.82],[w/2,0]];
+  const gr=g.createLinearGradient(-w/2,-h,w/2,0);gr.addColorStop(0,`rgba(235,252,255,${.55*a})`);gr.addColorStop(.5,`rgba(140,215,255,${.28*a})`);gr.addColorStop(1,`rgba(70,160,235,${.45*a})`);
+  g.fillStyle=gr;g.beginPath();pts.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.closePath();g.fill();
+  g.strokeStyle=`rgba(240,252,255,${.9*a})`;g.lineWidth=1.1;g.stroke();
+  g.strokeStyle=`rgba(255,255,255,${.55*a})`;g.beginPath();g.moveTo(0,-h);g.lineTo(-w*.1,-h*.1);g.moveTo(-w/2,-h*.82);g.lineTo(-w*.1,-h*.55);g.stroke();
+  g.restore();
+}
+function stIceBack(mo,d){
+  const w=Math.max(d.h,34)*.75;
+  g.save();const gr=g.createRadialGradient(0,0,2,0,0,w*1.3);gr.addColorStop(0,"rgba(210,245,255,.75)");gr.addColorStop(.6,"rgba(130,205,255,.35)");gr.addColorStop(1,"rgba(130,205,255,0)");
+  g.fillStyle=gr;g.beginPath();g.ellipse(0,0,w*1.3,w*.5,0,0,TAU);g.fill();   // frost on the ground
+  g.strokeStyle="rgba(235,250,255,.7)";g.lineWidth=1;for(let i=0;i<9;i++){const a=stR(mo,i)*TAU,r=w*(.5+stR(mo,i+11)*.7);g.beginPath();g.moveTo(Math.cos(a)*r*.4,Math.sin(a)*r*.16);g.lineTo(Math.cos(a)*r,Math.sin(a)*r*.38);g.stroke()}
+  for(let i=0;i<4;i++)stCrystal((stR(mo,i+40)-.5)*w*1.6,-3-stR(mo,i+44)*4,8+stR(mo,i+48)*7,d.h*(.55+stR(mo,i+52)*.6),(stR(mo,i+56)-.5)*.7,.75);
+  g.restore();
+}
+function stIceFront(mo,d){
+  const w=Math.max(d.h,34)*.75,h=d.h*1.12;
+  g.save();   // the block of ice round the body
+  const gr=g.createLinearGradient(-w,-h,w,0);gr.addColorStop(0,"rgba(240,253,255,.42)");gr.addColorStop(.45,"rgba(150,220,255,.16)");gr.addColorStop(1,"rgba(90,175,240,.36)");
+  g.fillStyle=gr;g.beginPath();const n=9;
+  for(let i=0;i<=n;i++){const a=Math.PI+i/n*Math.PI,r=1+(stR(mo,i+70)-.5)*.22;const px=Math.cos(a)*w*r,py=Math.sin(a)*h*r;i?g.lineTo(px,py):g.moveTo(px,py)}
+  g.lineTo(w*.9,2);g.lineTo(-w*.9,2);g.closePath();g.fill();g.strokeStyle="rgba(235,252,255,.85)";g.lineWidth=1.4;g.stroke();
+  g.strokeStyle="rgba(255,255,255,.7)";g.lineWidth=2.2;g.beginPath();g.moveTo(-w*.55,-h*.7);g.lineTo(-w*.35,-h*.88);g.moveTo(-w*.62,-h*.5);g.lineTo(-w*.55,-h*.58);g.stroke();   // shine
+  if((mo.frz||0)<.6){g.strokeStyle="rgba(255,255,255,.9)";g.lineWidth=1.2;g.beginPath();g.moveTo(-w*.1,-h);g.lineTo(w*.05,-h*.6);g.lineTo(-w*.15,-h*.35);g.lineTo(w*.1,-h*.1);g.moveTo(w*.05,-h*.6);g.lineTo(w*.4,-h*.5);g.stroke()}
+  for(let i=0;i<3;i++)stCrystal((i-1)*w*.75+(stR(mo,i+80)-.5)*6,2,7+stR(mo,i+83)*5,d.h*(.3+stR(mo,i+86)*.3),(i-1)*.45,.9);
+  for(let i=0;i<5;i++){const x=(stR(mo,i+100)-.5)*w*1.4,len=4+stR(mo,i+105)*7,y=-h*(.35+stR(mo,i+110)*.3);   // icicles
+    g.fillStyle="rgba(225,248,255,.8)";g.beginPath();g.moveTo(x-2,y);g.lineTo(x+2,y);g.lineTo(x,y+len);g.closePath();g.fill()}
+  g.globalCompositeOperation="lighter";
+  for(let i=0;i<4;i++){const tw=Math.max(0,Math.sin(T*3+i*1.7+(mo.phase||0)*5));if(tw<.3)continue;const x=(stR(mo,i+120)-.5)*w*1.6,y=-h*(.2+stR(mo,i+125)*.9),r=2+tw*5;   // glints
+    g.strokeStyle=`rgba(255,255,255,${tw})`;g.lineWidth=1.2;g.beginPath();g.moveTo(x-r,y);g.lineTo(x+r,y);g.moveTo(x,y-r);g.lineTo(x,y+r);g.stroke();glow(x,y,r*2,`rgba(180,235,255,${tw*.6})`)}
+  for(let i=0;i<8;i++){const ph=(T*.35+stR(mo,i+130))%1,x=(stR(mo,i+135)-.5)*w*2+Math.sin(T+i)*4,y=-ph*h*1.1;   // cold mist
+    g.fillStyle=`rgba(220,245,255,${.5*(1-ph)})`;g.beginPath();g.arc(x,y,1.2+ph*1.5,0,TAU);g.fill()}
+  g.restore();
+}
+function stStone(mo,d){
+  const w=Math.max(d.h,34)*.75;
+  g.save();g.fillStyle="rgba(70,60,50,.35)";g.beginPath();g.ellipse(0,0,w*1.1,w*.4,0,0,TAU);g.fill();   // stone base and rubble
+  for(let i=0;i<7;i++){const a=stR(mo,i+140)*TAU,r=w*(.6+stR(mo,i+145)*.5),x=Math.cos(a)*r,y=Math.sin(a)*r*.38,sz=2+stR(mo,i+150)*3.5;
+    g.fillStyle=i%2?"#8d8270":"#6d6354";g.strokeStyle="#3a3128";g.lineWidth=.8;g.beginPath();g.moveTo(x-sz,y);g.lineTo(x-sz*.3,y-sz*.9);g.lineTo(x+sz,y-sz*.4);g.lineTo(x+sz*.6,y+sz*.4);g.closePath();g.fill();g.stroke()}
+  for(let i=0;i<3;i++){const ph=(T*.5+i/3+stR(mo,i+160))%1,x=(stR(mo,i+165)-.5)*w*1.4,y=-d.h*(.9-ph*.9);   // sand trickling down
+    g.fillStyle=`rgba(200,185,160,${.7*(1-ph)})`;g.fillRect(x,y,1.6,1.6)}
+  g.restore();
+}
+function stFire(mo,d){
+  const w=Math.max(d.h,30)*.6,h=d.h;
+  g.save();g.globalCompositeOperation="lighter";
+  glow(0,-h*.5,h*.9,`rgba(255,110,30,${.22+.08*Math.sin(T*13)})`);
+  const flame=(x,y,fw,fh,a)=>{const gr=g.createRadialGradient(x,y-fh*.25,1,x,y-fh*.3,fh*.75);
+    gr.addColorStop(0,`rgba(255,250,210,${a})`);gr.addColorStop(.3,`rgba(255,200,70,${a*.9})`);gr.addColorStop(.65,`rgba(255,90,20,${a*.6})`);gr.addColorStop(1,"rgba(200,30,0,0)");
+    g.fillStyle=gr;g.beginPath();g.moveTo(x-fw,y);g.quadraticCurveTo(x-fw*1.1,y-fh*.5,x+Math.sin(T*9+x)*fw*.6,y-fh);g.quadraticCurveTo(x+fw*1.1,y-fh*.5,x+fw,y);g.quadraticCurveTo(x,y+fw*.6,x-fw,y);g.fill()};
+  for(let i=0;i<9;i++){const fl=.75+.35*Math.sin(T*(10+i)+i*2.3),x=(stR(mo,i+170)-.5)*w*2,y=-h*(.05+stR(mo,i+175)*.8);flame(x,y,3+stR(mo,i+180)*3,(10+stR(mo,i+185)*12)*fl,.7)}
+  flame(0,-h*.8,w*.45,h*.5*(.85+.2*Math.sin(T*12)),.7);   // the big one on top
+  for(let i=0;i<10;i++){const ph=(T*.9+stR(mo,i+190))%1,x=(stR(mo,i+195)-.5)*w*2+Math.sin(T*3+i)*5,y=-h*.3-ph*h*1.3;   // embers
+    g.fillStyle=`rgba(255,${150+Math.round(90*(1-ph))},60,${1-ph})`;g.fillRect(x,y,2,2)}
+  g.globalCompositeOperation="source-over";
+  for(let i=0;i<3;i++){const ph=(T*.4+i/3)%1;g.fillStyle=`rgba(40,30,30,${.25*(1-ph)})`;g.beginPath();g.arc(Math.sin(T+i)*6,-h*1.3-ph*h*.6,4+ph*9,0,TAU);g.fill()}   // smoke
+  g.restore();
+}
+function stStar(x,y,r,a){g.beginPath();for(let i=0;i<10;i++){const q=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.45:r;g.lineTo(x+Math.cos(q)*rr,y+Math.sin(q)*rr)}g.closePath();
+  g.fillStyle=`rgba(255,226,80,${a})`;g.fill();g.strokeStyle=`rgba(255,255,230,${a})`;g.lineWidth=1;g.stroke()}
+function stStars(mo,d){   // stun: stars circling over the head
+  const cy=-d.h*1.12,rx=Math.max(14,d.h*.38),ry=rx*.32;
+  g.save();g.strokeStyle="rgba(255,230,120,.35)";g.lineWidth=1;g.setLineDash([3,3]);g.beginPath();g.ellipse(0,cy,rx,ry,0,0,TAU);g.stroke();g.setLineDash([]);
+  const st=[];for(let i=0;i<4;i++){const a=T*4.5+i*TAU/4;st.push([Math.cos(a)*rx,cy+Math.sin(a)*ry,Math.sin(a)])}
+  st.sort((p,q)=>p[2]-q[2]).forEach(q=>{const k=.75+.25*q[2];glow(q[0],q[1],9*k,"rgba(255,220,90,.5)");stStar(q[0],q[1],5.5*k,.6+.4*k)});
+  g.strokeStyle="rgba(255,240,170,.8)";g.lineWidth=1.3;for(let j=0;j<2;j++){const x=(j?1:-1)*rx*.9,y=cy-6;g.beginPath();g.arc(x,y,3.5,T*6,T*6+Math.PI*1.4);g.stroke()}
+  g.restore();
+}
 function drawMon(mo,sx,sy){
   const d=MON[mo.type],sz=mSize(mo);let a=1,sc=1;
   if(mo.dieT>0){const p=1-mo.dieT/.45;a=1-p;sc=1+p*.35}
@@ -7039,14 +7144,16 @@ function drawMon(mo,sx,sy){
   if(player.target===mo&&mo.dieT<=0){g.save();g.strokeStyle="rgba(255,90,110,.95)";g.lineWidth=2;g.setLineDash([5,4]);g.lineDashOffset=-T*20;g.beginPath();g.ellipse(sx,sy,19*sz,9.5*sz,0,0,TAU);g.stroke();g.restore()}
   g.save();g.globalAlpha=a;g.translate(sx+(mo.hitT>0?Math.sin(T*90)*2.2:0),sy);g.scale(sc*sz,sc*sz);
   if(mo.elite)glow(0,-d.h*.5,d.h*.75,`rgba(255,190,90,${.22+Math.sin(T*4)*.08})`);
-  MDRAW[d.sprite](mo,MPAL[mo.type]);
+  const sm=mo.dieT>0?null:mo.ptr>0?"ptr":mo.frz>0?"frz":mo.brn>0?"brn":null;   // v20.19 status looks (UI-UX.md §28)
+  if(mo.ptr>0||mo.frz>0){if(mo._fT==null)mo._fT=T}else mo._fT=null;   // held monsters stop moving: their pose freezes
+  if(mo._ps&&mo._ps!==sm&&mo.dieT<=0&&(mo._ps==="frz"||mo._ps==="ptr"))fx.push({k:"stout",x:mo.x,y:mo.y,t:0,d:.7,st:mo._ps,h:d.h*sz});
+  mo._ps=sm;
+  if((sm==="frz"&&mo.frz<.6)||(sm==="ptr"&&mo.ptr<.6))g.translate(Math.sin(T*70)*1.2,0);   // about to break: it shakes
+  if(sm==="frz")stIceBack(mo,d);
+  if(sm)stRecolor(mo,d,MPAL[mo.type],sm);else MDRAW[d.sprite](mo,MPAL[mo.type]);
   if(mo.hitT>0)glow(0,-d.h*.55,d.h*.55,`rgba(255,255,255,${Math.min(.8,mo.hitT*5)})`);
-  if(mo.ptr>0||mo.frz>0){const p=mo.ptr>0,w=d.h*.95,h=d.h*1.08;   // v20.18 Petrifaction: grey stone shell with cracks; Freeze: a block of ice
-    g.save();g.globalAlpha=.55;g.fillStyle=p?"#8a7f70":"#bfeeff";g.strokeStyle=p?"#4a3c2e":"#3aa8e6";g.lineWidth=1.6;
-    g.beginPath();g.roundRect(-w/2,-h,w,h,p?w*.3:3);g.fill();g.globalAlpha=.95;g.stroke();
-    g.beginPath();if(p){g.moveTo(-w*.2,-h*.9);g.lineTo(-w*.05,-h*.6);g.lineTo(-w*.22,-h*.4);g.moveTo(w*.18,-h*.7);g.lineTo(w*.05,-h*.45)}else{g.strokeStyle="#fff";g.moveTo(-w*.32,-h*.85);g.lineTo(-w*.32,-h*.55);g.moveTo(w*.28,-h*.4);g.lineTo(w*.18,-h*.22)}
-    g.stroke();g.restore()}
-  else if(mo.stun>0)glow(0,-d.h*.5,d.h*.6,"rgba(150,220,255,.45)");
+  if(sm==="frz")stIceFront(mo,d);else if(sm==="ptr")stStone(mo,d);else if(sm==="brn")stFire(mo,d);
+  if(mo.stun>0&&!(mo.frz>0||mo.ptr>0)&&mo.dieT<=0)stStars(mo,d);
   g.restore();
 }
 
@@ -7558,7 +7665,7 @@ function basicAttack(mo){
   }else{fx.push({k:"proj",x,y,tx:mo.x,ty:mo.y,t:0,d:.24,c:ELC[b.elem]||"#c9b8ff"});later(220,()=>{if(alive(mo))magicAttack(mo,{ratio:b.ratio,elem:b.elem,c:b.elem==="holy"?"#ffe9a0":null})})}
 }
 function killMon(mo){
-  const d=MON[mo.type],E=mo.elite,B=mo.boss;AUD.sfx(B?"bossdown":"kill");mo.hp=0;mo.dieT=.45;mo.aggro=false;mo.path=[];mo.stun=0;mo.frz=0;mo.ptr=0;if(player.target===mo)player.target=null;
+  const d=MON[mo.type],E=mo.elite,B=mo.boss;AUD.sfx(B?"bossdown":"kill");mo.hp=0;mo.dieT=.45;mo.aggro=false;mo.path=[];mo.stun=0;mo.frz=0;mo.ptr=0;mo.brn=0;if(player.target===mo)player.target=null;
   const sc0=Math.round((d.sc[0]+Math.floor(Math.random()*(d.sc[1]-d.sc[0]+1)))*(E?ELITE.sc:1)),be0=d.exp[0]*(E?ELITE.exp:1),je0=d.exp[1]*(E?ELITE.exp:1);
   // party: the bonus multiplies what you receive; equal EXP sharing splits the EXP evenly; item sharing rotates the loot (ptTake)
   const PR=ptRewards(),lvM=mLv(mo),kind=B?"boss":E?"elite":"normal";
@@ -7608,13 +7715,22 @@ function addMomentum(n){BF.momentum=Math.min(5,BF.momentum+n);BF.momT=5}
 /* ---- Fire Bolt volley: fireballs are released one at a time (Lv 2-3: 0.3 s apart, Lv 4-5: 0.2 s). v20.18: every fireball always falls,
    even after the target dies (they land on the spot and do nothing). A fireball falls for (gap - 0.02) s and deals its damage when it lands. ---- */
 const volleys=[],balls=[];
+/* v20.19 status roll (Freeze / Petrifaction hold the monster; Burning does not) and the 3x3 splash (50% MATK on the others round the target) */
+const ST_COL={frz:"#bfefff",ptr:"#d8cbb0",brn:"#ffb070"};
+function applySt(m,k){const sd=REOC.stRoll(k,mprof(m),Math.random);if(!(sd>0)||m.boss)return;
+  if(REOC.STATUS[k.st].hold)m.stun=Math.max(m.stun||0,sd);m[k.st]=Math.max(m[k.st]||0,sd);m[k.st+"0"]=m[k.st];
+  fx.push({k:"stin",x:m.x,y:m.y,m,t:0,d:.7,st:k.st});
+  fx.push({k:"dmg",x:m.x,y:m.y,t:0,d:.9,txt:t("st_"+k.st),c:ST_COL[k.st],ox:0,h:MON[m.type].h*mSize(m)+14})}
+function splashAt(m,k,col){const r=k.splashR||1.5,o={ratio:k.ratio*k.splash,elem:k.elem,c:col};
+  fx.push({k:"sqarea",x:m.x,y:m.y,t:0,d:.35,c:col,r});
+  for(const x of liveMon())if(x!==m&&Math.max(Math.abs(x.x-m.x),Math.abs(x.y-m.y))<=r)magicAttack(x,o)}
 function startVolley(m,k,o){volleys.push({m,k,o,n:0,t:0,fall:Math.max(.12,(k.gap||.3)-.02)})}
 function releaseBall(v){
   const m=v.m,h=MON[m.type].h*mSize(m),kk=Math.max(.8,Math.min(1.6,h/36));
   balls.push({m,t:0,fall:v.fall,o:v.o});
   fx.push({k:"fball",x:m.x,y:m.y,m,t:0,d:v.fall,hz:h*.5,kk,sx:(Math.random()<.5?-1:1)*(26+Math.random()*30)});
 }
-function landBall(b){if(alive(b.m))magicAttack(b.m,b.o);else fx.push({k:"burst",x:b.m.x,y:b.m.y,t:0,d:.35,c:"#ff9a4a",n:8,z:4})}
+function landBall(b){if(alive(b.m)){magicAttack(b.m,b.o);const k=b.o.k;if(k){if(!b.o.rolled&&alive(b.m)){b.o.rolled=true;applySt(b.m,k)}splashAt(b.m,k,"#ff8a3a")}}else fx.push({k:"burst",x:b.m.x,y:b.m.y,t:0,d:.35,c:"#ff9a4a",n:8,z:4})}
 function updateVolleys(dt){
   for(let i=volleys.length-1;i>=0;i--){const v=volleys[i];v.t-=dt;
     while(v.t<=0&&v.n<v.k.hits){releaseBall(v);v.n++;v.t+=v.k.gap||0}
@@ -7681,7 +7797,7 @@ function updateMon(mo,dt){
   if(mo.dieT>0){mo.dieT-=dt;if(mo.dieT<=0){mo.dead=true;mo.tele=null;mo.respawn=mo.boss?120:mo.elite?45+Math.random()*15:8+Math.random()*7}return}
   mo.hitT=Math.max(0,mo.hitT-dt);mo.atkCd=Math.max(0,mo.atkCd-dt);
   if(mo.boss&&mo.stun>0){mo.stun=0;fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:t("immune"),c:"#bfe8ff",ox:0,h:MON[mo.type].h*mSize(mo)})}
-  if(mo.frz>0)mo.frz=Math.max(0,mo.frz-dt);if(mo.ptr>0)mo.ptr=Math.max(0,mo.ptr-dt);
+  if(mo.frz>0)mo.frz=Math.max(0,mo.frz-dt);if(mo.ptr>0)mo.ptr=Math.max(0,mo.ptr-dt);if(mo.brn>0)mo.brn=Math.max(0,mo.brn-dt);
   if(mo.stun>0){mo.stun-=dt;mo.path=[];mo.moving=false;return}
   if(mo.hp<mo.maxHp&&!mo.aggro)mo.hp=Math.min(mo.maxHp,mo.hp+mo.maxHp*(mo.boss?.02:.05)*dt);
   if(mo.boss&&mo.aggro&&!player.dead){mo.slamT-=dt;if(!mo.tele&&mo.slamT<=0){mo.tele={t:1.4,total:1.4,x:mo.x,y:mo.y,r:3.4};AUD.sfx("warn");mo.slamT=9+Math.random()*3;mo.path=[]}}
@@ -7960,12 +8076,12 @@ function finishSkill(id,tg,lv,gp){
      if(id==="freezer"&&tg){fx.push({k:"burst",x:tg.x,y:tg.y,t:0,d:.5,c:"#e6f8ff",n:14,z:10});fx.push({k:"ring",x:tg.x,y:tg.y,t:0,d:.45,c:col,r:34})}
      if(id==="petrifaction"){fx.push({k:"sqarea",x,y,t:0,d:.6,c:col,r:k.aoe});fx.push({k:"burst",x,y,t:0,d:.6,c:col,n:18,z:4})}
      if(id==="holy_light"&&tg)fx.push({k:"pillar",x:tg.x,y:tg.y,t:0,d:.6,c:col});
-     if(id==="fire_bolt"){startVolley(tg,k,Object.assign({fire:true,overMul:k.overMul},o));break}   // v20: fireballs fall one at a time
+     if(id==="fire_bolt"){startVolley(tg,k,Object.assign({fire:true,overMul:k.overMul,k},o));break}   // v20: fireballs fall one at a time
      const delay=id==="holy_light"?250:0;
      area.forEach(m=>{for(let h=0;h<(k.hits||1);h++){
        later(delay+h*120,()=>{if(!alive(m))return;magicAttack(m,o);
-         if(k.st&&h===0&&alive(m)){const sd=REOC.stRoll(k,mprof(m),Math.random);if(sd>0&&!m.boss){m.stun=Math.max(m.stun||0,sd);m[k.st]=Math.max(m[k.st]||0,sd);
-           fx.push({k:"dmg",x:m.x,y:m.y,t:0,d:.9,txt:t("st_"+k.st),c:k.st==="frz"?"#bfefff":"#d8cbb0",ox:0,h:MON[m.type].h*mSize(m)+14})}}})}});
+         if(k.st&&h===0&&alive(m))applySt(m,k);
+         if(k.splash&&m===tg&&m[k.splashOn]>0)splashAt(m,k,col)})}});
      break}
    case "heal":{const h=REOC.healAmount(d,k),over=Math.max(0,S.hp+h-hpMax());S.hp=Math.min(hpMax(),S.hp+h);
      if(d.shieldCap&&over>0)BF.shield=Math.min(hpMax()*d.shieldCap,BF.shield+over);
@@ -7986,7 +8102,7 @@ function autoSkill(){
   const tg=alive(player.target)?player.target:null,d=pd();
   const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0,nearMe=liveMon().filter(m=>(m===tg||m.aggro)&&Math.max(Math.abs(m.x-player.x),Math.abs(m.y-player.y))<=3.5).length;
   const id=REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0},
-    dist:tg?dist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
+    dist:tg?dist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,brn:tg.brn,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
   if(id)useSkill(id,true,lvFor(id));
 }
 function becomeArch(a){
@@ -8097,6 +8213,14 @@ function drawFx(f){
   const [x,y]=f.follow?P(player.x,player.y):P(f.x,f.y);
   g.save();g.globalCompositeOperation="lighter";
   if(f.k==="ring"){g.strokeStyle=f.c;g.globalAlpha=1-p;g.lineWidth=4*(1-p)+1;g.beginPath();g.ellipse(x,y,f.r*p,f.r*p*.5,0,0,TAU);g.stroke()}
+  else if(f.k==="stin"||f.k==="stout"){const st=f.st,hh=f.h||(f.m?MON[f.m.type].h*mSize(f.m):40);   // v20.19 status starts / breaks
+    if(st==="frz"){if(f.k==="stin"){g.globalAlpha=1-p;g.strokeStyle="#e8fbff";g.lineWidth=3*(1-p)+1;g.beginPath();g.ellipse(x,y,10+p*46,(10+p*46)*.45,0,0,TAU);g.stroke();glow(x,y-hh*.5,hh*(1-p)*.9,`rgba(200,240,255,${.8*(1-p)})`)}
+      for(let i=0;i<12;i++){const a=hash(i,5)*TAU,sp=f.k==="stin"?(1-Math.pow(1-p,2))*(30+hash(i,6)*30):p*(24+hash(i,6)*28),xx=x+Math.cos(a)*sp,yy=y-hh*.5+Math.sin(a)*sp*.6+(f.k==="stout"?p*p*40:0),r=3+hash(i,7)*4;
+        g.globalAlpha=1-p;g.fillStyle="#d8f6ff";g.beginPath();g.moveTo(xx,yy-r);g.lineTo(xx+r*.5,yy);g.lineTo(xx,yy+r);g.lineTo(xx-r*.5,yy);g.closePath();g.fill()}}
+    else if(st==="ptr"){g.globalCompositeOperation="source-over";for(let i=0;i<10;i++){const a=hash(i,8)*TAU,sp=(f.k==="stin"?1-Math.pow(1-p,2):p)*(20+hash(i,9)*26),xx=x+Math.cos(a)*sp,yy=y-hh*(f.k==="stin"?.15:.5)+Math.sin(a)*sp*.5+(f.k==="stout"?p*p*36:-p*10);
+        g.globalAlpha=(1-p)*.7;g.fillStyle=f.k==="stin"?"#b9ab92":"#7d7262";g.beginPath();g.arc(xx,yy,(f.k==="stin"?6+p*8:2.5),0,TAU);g.fill()}}
+    else{for(let i=0;i<10;i++){const a=-Math.PI/2+(hash(i,4)-.5)*1.6,sp=p*(30+hash(i,3)*30),xx=x+Math.cos(a)*sp,yy=y-hh*.4+Math.sin(a)*sp;g.globalAlpha=1-p;g.fillStyle=i%2?"#ffd25a":"#ff6a20";g.beginPath();g.arc(xx,yy,3*(1-p)+1,0,TAU);g.fill()}
+      glow(x,y-hh*.5,hh*(1-p),`rgba(255,140,40,${.7*(1-p)})`)}}
   else if(f.k==="burst"){const z=f.z||22;for(let i=0;i<f.n;i++){const a=i/f.n*TAU+i,r=8+p*46*(.6+hash(i,f.n)*.6);ell(x+Math.cos(a)*r,y-z+Math.sin(a)*r*.6-p*14,3.2*(1-p)+.5,3.2*(1-p)+.5,f.c)}}
   else if(f.k==="rise"){for(let i=0;i<8;i++){const ph=Math.min(1,p*1.2+hash(i,3)*.3),xx=x+(hash(i,9)-.5)*34,yy=y-6-ph*58;g.globalAlpha=1-ph;g.strokeStyle=f.c;g.lineWidth=2.4;line([xx-3.5,yy],[xx+3.5,yy]);line([xx,yy-3.5],[xx,yy+3.5])}}
   else if(f.k==="pillar"){const a=Math.sin(p*Math.PI);const gr=g.createLinearGradient(0,y-200,0,y);gr.addColorStop(0,"rgba(255,255,255,0)");gr.addColorStop(1,f.c);g.globalAlpha=a*.75;g.fillStyle=gr;g.fillRect(x-18,y-200,36,200);g.globalAlpha=a;g.strokeStyle=f.c;g.lineWidth=2;g.beginPath();g.ellipse(x,y,22+p*20,(22+p*20)*.5,0,0,TAU);g.stroke()}
@@ -8697,7 +8821,7 @@ function siLevel(id,n){   // what one level gives
   if(id===BASIC_T){const r=BASIC_ROWS[n-1];return `${t("bs_u_"+r)} · ${t("bs_d_"+r)}`}
   if(!REOC.SK[id])return REOC.SKLV[id]?pasEffAt(id,n):"";
   const k=REOC.SKLV[id]?REOC.skAt(id,n):REOC.SK[id],d=pd(),sp=Math.ceil(k.sp*d.spCost);
-  if(id==="fire_bolt")return fmt("si_fb",{a:k.hits,b:Math.round(k.hits*k.ratio*100),c:sp});
+  if(id==="fire_bolt")return fmt("si_fb",{a:k.hits,b:Math.round(k.hits*k.ratio*100),c:sp,d:Math.round(k.stCh*100)});
   if(id==="freezer")return fmt("si_fz",{a:Math.round(k.ratio*100),b:Math.round(k.stCh*100),c:sp});
   if(id==="lightning_spear")return fmt("si_ls",{a:k.hits,b:Math.round(k.ratio*100),c:sp});
   if(id==="petrifaction")return fmt("si_pt",{a:Math.round(k.ratio*100),b:Math.round(k.stCh*100),c:sp});

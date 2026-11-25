@@ -688,3 +688,17 @@ The player's own character is now drawn in code (`drawHero8`), with the look cho
 - **Poses** (`heroPose`): idle (breathing, blinking), walk (arm and leg swing, bob; uses the walk phase), attack (sword wind-up, slash and trail), cast (both hands up, orb with a turning rune ring, ground circle), bow (draw, release, arrow flies), sit (legs forward, hands on knees), hit (knocked back, >< eyes, spark), death (falls backwards, × eyes, stays down). Limbs are jointed (`phi` swing forward, `al` spread out), so they foreshorten with the direction.
 - **Game pose order** (`drawHeroApp`): dead → death (from `player.dieAt`) · casting → cast · walking → walk · pose flash (`player.pose` / `poseT`) → cast for magic, bow for Rangers, sword attack for the rest · hurt (`player.hurtT`, 0.4 s after taking damage) → hit · sitting → sit · else idle.
 - Portraits (player card, Character window doll, Status portrait) use the front view, like the sprites. Other players and NPCs still use the chibi.
+
+## 29. Monster status looks (v20.19)
+Status effects on monsters are drawn in `drawMon` (helpers `stRecolor`, `stIceBack`, `stIceFront`, `stStone`, `stFire`, `stStars`). For Freeze, Petrifaction and Burning the monster's own drawing is redrawn off-screen, recoloured with canvas blend modes and masked back to its shape (`stRecolor`: two shared off-screen canvases, so it works with every monster sprite and needs no `ctx.filter`). Shapes use a steady random per monster (`stR`), so crystals and cracks do not jump between frames.
+
+| Status | Body | Around it |
+|---|---|---|
+| **Freeze** (Freezer) | icy blue (`color` + `screen` blend), white frost veins | frost patch with cracks on the ground, ice crystals behind and in front, a clear block of ice with shine, icicles, twinkling glints, cold mist rising |
+| **Petrifaction** (Petrifaction) | grey stone (`saturation` + `screen` + `multiply`), stone grain and dark cracks clipped to the body | stone base, rubble, sand trickling down |
+| **Burning** (Fire Bolt) | charred orange, flickering | orange glow, flame tongues over the body, a big flame on top, embers rising, smoke |
+| **Stun** (Crushing Blow) | unchanged | 4 gold stars circling over the head on a dashed ring (front stars bigger), two dizzy swirls |
+
+- Frozen and Petrified monsters stop their animation (the pose is kept from when it started, `mo._fT`). In the last 0.6 s they shake.
+- **Start** (`fx` kind `stin`, from `applySt`): Freeze — white flash, ring and ice shards flying out; Petrifaction — dust cloud; Burning — a flare of sparks. The text แช่แข็ง! / แข็งเป็นหิน! / ติดไฟ! pops over it (`st_frz`, `st_ptr`, `st_brn`; `st_stun` is ready for later).
+- **End** (`stout`): the ice shatters into falling shards, the stone crumbles into pebbles. Not shown when the monster dies.
