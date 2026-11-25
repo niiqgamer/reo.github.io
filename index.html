@@ -1701,6 +1701,34 @@ svg.ski{fill:none!important;stroke:#1b2030!important;stroke-width:1.6!important;
 .pt-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}.pt-head .grow{flex:1}.pt-head b{display:block;font-size:15px}.pt-head small{color:var(--ink2);font-size:12px}
 .fr-on{display:inline-block;width:8px;height:8px;border-radius:50%;background:#3fc68a;margin-right:5px}
 .win[data-w=social]{--wiw:440px;--wih:440px}
+/* ---- v21 Idle Settings ---- */
+.is-tabs{display:flex;gap:2px;margin-bottom:10px}.is-tabs button{flex:1;padding:6px 2px;font-size:12px;white-space:nowrap}
+.is-blk{padding:8px 10px;border-radius:12px;background:rgba(96,112,214,.12);border:1px solid rgba(96,112,214,.3);margin:-2px 0 8px}
+.is-blk>b{display:block;font-size:12.5px;font-weight:600;margin-bottom:6px}.is-blk>small{display:block;font-size:11px;line-height:1.35;margin-top:6px;color:var(--w-ink2,var(--ink2))}
+.is-slots{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:4px;max-width:100%}
+.is-slots.s5{grid-template-columns:repeat(5,44px)}
+.is-sl{position:relative;aspect-ratio:1;min-width:0;border-radius:9px;border:1.5px dashed rgba(96,112,214,.55);background:rgba(96,112,214,.06);display:grid;place-items:center;padding:0;cursor:pointer;color:var(--w-ink2,var(--ink2));font:inherit;font-size:16px}
+.is-sl.f{border-style:solid;border-color:rgba(96,112,214,.85);background:var(--w-card,#fff)}
+.is-sl.on{outline:2px solid #3fc6a8;outline-offset:1px}
+.is-sl img{width:90%;height:90%;object-fit:contain}.is-sl .ic,.is-sl .ii-ic{width:78%;height:78%;display:grid;place-items:center}.is-sl .ic svg,.is-sl .ii-ic svg{width:100%;height:100%}
+.is-sl .is-n{position:absolute;left:2px;top:0;font-size:8.5px;font-weight:700;opacity:.55}
+.is-sl small{position:absolute;right:-3px;bottom:-5px;font-size:8.5px;font-weight:700;background:#3a4bb5;color:#fff!important;border-radius:6px;padding:0 3px;white-space:nowrap;line-height:1.35}
+.is-sl .m-dot{width:60%;height:60%;border-radius:50%;background:#9aa4d8}
+.is-rng{display:flex;align-items:center;gap:8px;width:170px;max-width:46vw}.is-rng input{flex:1;min-width:0;accent-color:#3fc6a8}.is-rng b{width:38px;text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums}
+.is-num{width:58px;padding:4px 6px;border-radius:8px;border:1px solid var(--w-line,var(--line));background:var(--w-card,var(--panel2));color:var(--w-ink,var(--ink));font:inherit;font-size:12.5px;text-align:right}
+.is-sub{margin-left:12px}
+.srow.stack{flex-direction:column;align-items:stretch;gap:6px}.srow.stack .sctl{justify-content:flex-start}.srow.stack .seg{justify-content:flex-start}
+.is-sl img{transform:scale(1.45)}.is-it img.is-mi{transform:scale(1.5)}
+.is-note{font-size:11.5px;margin:4px 2px 0}
+.is-pick .is-ph{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.is-pick .is-ph b{font-size:13.5px}
+.is-list{display:flex;flex-direction:column;gap:5px}
+.is-it{display:flex;align-items:center;gap:9px;padding:6px 9px;border-radius:11px;border:1.5px solid transparent;background:var(--w-card,rgba(96,112,214,.18));color:var(--w-ink,var(--ink));font:inherit;text-align:left;cursor:pointer}
+.is-it .grow{flex:1;min-width:0}.is-it b{display:block;font-size:13px}.is-it small{display:block;font-size:11px;color:var(--w-ink2,var(--ink2))}
+.is-it.on{border-color:#3fc6a8;background:rgba(63,198,168,.16)}.is-it.off{opacity:.45;cursor:default}
+.is-it .ic,.is-it .is-mi{width:34px;height:34px;flex:none;object-fit:contain;display:grid;place-items:center}.is-it .ic svg,.is-it .is-mi svg{width:100%;height:100%}
+.is-lv{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}.is-lv i{font-style:normal;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:600;background:rgba(96,112,214,.15)}.is-lv i.on{background:#3fc6a8;color:#04261d}
+.P .is-tabs button{font-size:11px;padding:6px 1px}
+.P .is-sub{margin-left:0}.P .win[data-w=idleset] .srow:has(.seg){flex-direction:column;align-items:stretch;gap:6px}.P .win[data-w=idleset] .srow:has(.seg) .sctl,.P .win[data-w=idleset] .srow .seg{justify-content:flex-start}
 </style>
 </head>
 <body>
@@ -5696,7 +5724,8 @@ function loadSave(){try{
   return null}catch(e){return null}}
 /* Offline idle (VIP): based on ATK (time-to-kill) and CP vs the map's recommended CP */
 function offlineCalc(mapId,secs){
-  const m=MAPS[mapId],types=Object.keys(MON).filter(k=>MON[k].map===mapId&&!MON[k].boss);if(!types.length)return null;
+  const m=MAPS[mapId];let types=Object.keys(MON).filter(k=>MON[k].map===mapId&&!MON[k].boss);if(!types.length)return null;   // bosses never count offline
+  if(S.iset&&S.iset.tgt==="sel"){const L=(S.iset.mons[mapId]||[]).filter(k=>k&&types.includes(k));if(L.length)types=L}   // v21: Chosen targets
   const avg=f=>types.reduce((a,k)=>a+f(MON[k]),0)/types.length;
   const sim=REOC.killsPerHour(S.arch,S.lv,effStats(),types,gearMods());   // simulated with this character's real stats, gear, skills
   const kills=Math.floor(secs/3600*sim.kph);
@@ -5704,7 +5733,7 @@ function offlineCalc(mapId,secs){
   const items={},share=kills/types.length;
   for(const k of types)for(const [id,ch,mn,mx] of LOOT[k]||[])items[id]=(items[id]||0)+share*Math.min(1,ch)*(mn+mx)/2;
   let refine=0;for(const k of types)refine+=share*(REFINE_CH[k]||.02);items.refine_ore=refine;
-  for(const k in items)items[k]=Math.round(items[k]);
+  for(const k in items)items[k]=lootOk(k)?Math.round(items[k]):0;   // v21: the loot filter applies offline too
   const gearN=Math.round(kills*.03);
   const maxLv=Math.max(...types.map(k=>MON[k].lv));
   return {map:mapId,secs,kills,kph:sim.kph,eff,tier:tierOf(maxLv),gearN,
@@ -7366,6 +7395,7 @@ function applyMap(id,ax,ay){
   queueBuild(MAPS[AHEAD[id]],false);
   $("#fade").classList.remove("on");warping=false;
   if(wantIdle){wantIdle=false;setIdle(true)}
+  if(trip&&trip.ph==="back"&&id===trip.home){const s=trip.sess;trip=null;setIdle(true,true);S.sess=s;toast(t("is_trip_back"))}   // v21: a town errand does not end Idle
   showHint(isField()?"hintField":"hint");
 }
 function warpTown(){if(player.dead||warping)return;if(cur===town){toast(t("inTown"));return}player.nav=null;fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:.5,c:"#cfc4ff"});
@@ -7572,8 +7602,8 @@ function killMon(mo){
     if(Math.random()<PR.mul-1)dr.gear.push(rollDropGear(tierOf(lvM),kind));
   }
   let got=0;
-  for(const [id,q] of dr.items){if(!ptTake(PR.shI,itemName(id)))continue;if(gainItem(id,q)){got+=q;L.items.push([id,q]);floatText(`+ ${itemName(id)}${q>1?" x"+q:""}`,itemColor(id))}}
-  for(const g of dr.gear){if(!ptTake(PR.shI,gName(g.id)))continue;if(gainGear(g)){got++;L.gear.push(g);floatText(`+ ${gName(g.id)}`,itemColor(g.id))}}
+  for(const [id,q] of dr.items){if(!lootOk(id)||!ptTake(PR.shI,itemName(id)))continue;if(gainItem(id,q)){got+=q;L.items.push([id,q]);floatText(`+ ${itemName(id)}${q>1?" x"+q:""}`,itemColor(id))}}
+  for(const g of dr.gear){if(!lootOk(g.id)||!ptTake(PR.shI,gName(g.id)))continue;if(gainGear(g)){got++;L.gear.push(g);floatText(`+ ${gName(g.id)}`,itemColor(g.id))}}
   floatText(`+${num(be)} EXP`,"#ffd76a");if(sc)floatText(`+${num(sc)} Sc`,"#e9d89a");
   const P0=MPAL[mo.type];fx.push({k:"burst",x:mo.x,y:mo.y,t:0,d:.6,c:d.sprite==="lumite"?P0.mid:d.sprite==="crawlix"?P0.c[0]:P0.i1,n:E?28:16,z:d.h*.5});
   if(E)fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:.8,c:"#ffd76a",r:90});
@@ -7643,7 +7673,7 @@ function updateCombat(dt){
     else{R=Math.min(R,k.range+.3);if(dist(player,tg)<=R){player.pend=null;player.path=[];player.moving=false;useSkill(pe.id,true,pe.lv);return}}}
   const d=dist(player,tg);
   if(d>R){player.chaseT-=dt;if(player.chaseT<=0||!player.path.length){player.chaseT=.35;walkTo(player,Math.floor(tg.x),Math.floor(tg.y))}}
-  else{player.path=[];player.moving=false;faceToward(player,tg.x,tg.y);if(player.atkCd<=0){player.atkCd=pd().interval;basicAttack(tg)}}
+  else{player.path=[];player.moving=false;faceToward(player,tg.x,tg.y);if(player.atkCd<=0&&!(S.idle&&!S.iset.atk)){player.atkCd=pd().interval;basicAttack(tg)}}
 }
 /* ---- v19 monster skills: a red circle on the ground (around the monster, or on the player) that lands after a short wind-up; some leave Burning or Slow ---- */
 const MSK={
@@ -7981,14 +8011,6 @@ function finishSkill(id,tg,lv,gp){
    case "zone":{BF.zone={x,y,t:k.dur,map:cur.id,acc:0};fx.push({k:"pillar",x,y,t:0,d:.7,c:col});break}
   }
 }
-function autoSkill(){
-  if(player.casting||player.dead)return;
-  const tg=alive(player.target)?player.target:null,d=pd();
-  const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0,nearMe=liveMon().filter(m=>(m===tg||m.aggro)&&Math.max(Math.abs(m.x-player.x),Math.abs(m.y-player.y))<=3.5).length;
-  const id=REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0},
-    dist:tg?dist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
-  if(id)useSkill(id,true,lvFor(id));
-}
 function becomeArch(a){
   S.arch=a;S.jlv=1;S.jexp=0;S.skLv={};skFix();resetCombatState();player.casting=null;reconcileGear();
   if(S.autoStat)S.stats=REOC.autoStats(a,S.lv);
@@ -8268,15 +8290,138 @@ function updateStill(dt){
   stillT+=dt;
   if(stillT>=AUTO_IDLE_SECS){stillT=0;setIdle(true);toast(t("autoIdleOn"),true)}
 }
+/* ---- v21 Idle settings (S.iset): see IDLE.md "Idle Settings" ---- */
+const ISET_DEF=()=>({tgt:"all",mons:{},counter:true,timer:0,
+ atk:true,sk:true,skAtk:Array(9).fill(null),buff:true,skBuff:Array(9).fill(null),heal:true,skHeal:Array(9).fill(null),healAt:60,move:true,skMove:Array(9).fill(null),sit:false,sitAt:40,
+ hp:true,hpOrd:"small",hpAt:35,sp:true,spOrd:"small",spAt:15,use:false,items:Array(5).fill(null),
+ wing:false,full:false,
+ loot:"all",lUse:true,lGear:true,lStar:0,lArch:[],lLv:1,lOther:true,
+ vWing:false,vWingN:50,vDep:false});
+function isetFix(o){
+  const d=ISET_DEF();if(!o||typeof o!=="object"||Array.isArray(o))return d;
+  for(const k in d)if(o[k]===null||typeof o[k]!==typeof d[k]||Array.isArray(o[k])!==Array.isArray(d[k]))o[k]=d[k];
+  for(const k of ["skAtk","skBuff","skHeal","skMove","items"]){const n=d[k].length;o[k]=o[k].slice(0,n).map(v=>v||null);while(o[k].length<n)o[k].push(null)}
+  for(const g of ["skAtk","skBuff","skHeal","skMove"])o[g]=o[g].map(s=>s&&REOC.SK[s.id]&&IS_GRP[g].includes(REOC.SK[s.id].kind)?{id:s.id,lv:Math.max(0,s.lv|0)}:null);
+  o.items=o.items.map(k=>HERB_BF[k]?k:null);
+  for(const m in o.mons)o.mons[m]=Array.isArray(o.mons[m])?o.mons[m].slice(0,5).map(k=>MON[k]&&!MON[k].boss&&MON[k].map===m?k:null):[];
+  for(const k of ["healAt","sitAt","hpAt","spAt"])o[k]=Math.max(5,Math.min(95,Math.round(o[k]/5)*5||d[k]));
+  if(!["all","sel"].includes(o.tgt))o.tgt="all";if(!["all","flt"].includes(o.loot))o.loot="all";
+  if(!["small","big"].includes(o.hpOrd))o.hpOrd="small";if(!["small","big"].includes(o.spOrd))o.spOrd="small";
+  if(![0,30,60,120,240].includes(o.timer))o.timer=0;if(![0,1,2,3,4,5].includes(o.lStar))o.lStar=0;if(![1,10,20,30,40,50].includes(o.lLv))o.lLv=1;
+  o.lArch=o.lArch.filter(a=>REOC.ARCH[a]);o.vWingN=Math.max(1,Math.min(999,o.vWingN|0||50));
+  if(!o.sk)o.atk=true;   // basic attack is never off while skill attacks are off
+  return o;
+}
+const HERB_BF={herb_glow:"regen",herb_ember:"herbAtk",herb_frost:"herbDef",herb_sage:"sage"};   // buff items Idle may re-use, and the buff each one gives
+const POT_HP=["apple","red_s","red","red_l"],POT_SP=["blue","blue_l","herb_dew"];
+function potAmt(id){const d=pd();return {apple:30,red_s:80,red:120*(1+d.s.vit*.02),red_l:400,blue:60*(1+d.s.int*.01),blue_l:200,herb_dew:spMax()*.4}[id]||0}
+function pickPot(list,ord){const h=list.filter(k=>S.inv[k]>0).sort((a,b)=>potAmt(a)-potAmt(b));return ord==="big"?h[h.length-1]:h[0]}
+/* loot filter: quest items always; equipment passes every condition that is set (★ 0 / no archetype / Lv 1+ = not checked) */
+function lootOk(id){
+  const I=S.iset;if(I.loot!=="flt")return true;
+  if(isGear(id)){if(!I.lGear)return false;const p=gParse(id);return p.r>=I.lStar&&(!I.lArch.length||I.lArch.includes(p.arch))&&p.L>=I.lLv}
+  const d=ITEMDB[id];if(d&&d.q)return true;
+  return d&&d.t==="use"?I.lUse:I.lOther;
+}
+function idleWants(m){   // may Idle pick this monster by itself? never a boss, never an Elite that is too strong; in Chosen mode only the kinds in the slots
+  if(m.boss||(m.elite&&S.lv<mLv(m)+3))return false;
+  if(S.iset.tgt==="sel"){const L=(S.iset.mons[cur.id]||[]).filter(Boolean);if(L.length&&!L.includes(m.type))return false}
+  return true;
+}
+function idleFind(max){let best=null,bd=max;for(const m of liveMon()){if(!idleWants(m))continue;const d=dist(m,player);if(d<bd){bd=d;best=m}}return best}
+function idleAttacker(){if(!S.iset.counter)return null;let best=null,bd=4;for(const m of liveMon()){if(!m.aggro||m.boss)continue;const d=dist(m,player);if(d<bd){bd=d;best=m}}return best}
+let potCdT=0,idleNoTgt=0,trip=null;   // trip = an automatic town errand while idling: {k:"full"|"dep"|"wing", home, ph:"go"|"back", sess, walk}
+function idlePots(dt){
+  const I=S.iset;potCdT-=dt;if(potCdT>0)return;
+  const take=k=>{S.inv[k]--;useItem(k);potCdT=.6;renderHotbar()};
+  if(I.hp&&S.hp<hpMax()*I.hpAt/100){const k=pickPot(POT_HP,I.hpOrd);if(k){take(k);return}}
+  if(I.sp&&S.sp<spMax()*I.spAt/100){const k=pickPot(POT_SP,I.spOrd);if(k){take(k);return}}
+  if(I.use)for(const k of I.items)if(k&&S.inv[k]>0&&BF[HERB_BF[k]]<=0){take(k);return}
+}
+function idleSit(){
+  const I=S.iset;if(!I.sit||!hasBasic("sit"))return false;
+  const threat=liveMon().some(m=>m.aggro&&dist(m,player)<=8);
+  if(player.sit){if(threat||(S.hp>=hpMax()*.95&&S.sp>=spMax()*.95)){standUp();return false}return true}
+  if(!threat&&!player.casting&&(S.hp<hpMax()*I.sitAt/100||S.sp<spMax()*I.sitAt/100)){player.path=[];player.target=null;player.pend=null;player.moving=false;player.sit=true;return true}
+  return false;
+}
+function autoPickId(){   // the built-in skill choice (used when every skill set is empty)
+  const tg=alive(player.target)?player.target:null,d=pd();
+  const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0,nearMe=liveMon().filter(m=>(m===tg||m.aggro)&&Math.max(Math.abs(m.x-player.x),Math.abs(m.y-player.y))<=3.5).length;
+  return REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0},
+    dist:tg?dist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
+}
+const isGrpOf=id=>{const k=REOC.SK[id];if(!k)return null;for(const g in IS_GRP)if(IS_GRP[g].includes(k.kind))return g;return null};
+function idleSkills(){
+  if(player.casting||player.dead)return;const I=S.iset;
+  if(!["skAtk","skBuff","skHeal","skMove"].some(g=>I[g].some(Boolean))){const id=autoPickId(),g=id&&isGrpOf(id);if(g&&I[IS_TOG[g]])useSkill(id,true,lvFor(id));return}
+  const d=pd(),tg=alive(player.target)?player.target:null;
+  const use=s=>{if(!s||skLvOf(s.id)<1)return false;const k=REOC.SK[s.id];
+    if((k.kind==="phys"||k.kind==="magic")&&!(k.aoe&&k.at==="self")){if(!tg)return false;if(dist(tg,player)>skillTargetRange(k,d)+.3&&(k.kind!=="phys"||k.ranged))return false}
+    if((k.kind==="phys"||k.kind==="magic")&&k.aoe&&k.at==="self"&&!liveMon().some(m=>dist(m,player)<=k.aoe))return false;
+    return useSkill(s.id,true,s.lv||lvFor(s.id))};
+  if(I.heal&&S.hp<hpMax()*I.healAt/100)for(const s of I.skHeal){if(s&&REOC.SK[s.id].kind==="zone"&&BF.zone)continue;if(use(s))return}
+  if(I.move&&liveMon().some(m=>m.aggro&&dist(m,player)<=2))for(const s of I.skMove)if(use(s))return;
+  if(I.buff)for(const s of I.skBuff){if(!s)continue;const k=REOC.SK[s.id];if(k.buff&&BF[k.buff]>1)continue;if(use(s))return}
+  if(I.sk&&tg)for(const s of I.skAtk)if(use(s))return;
+}
+/* town errands: the warp is paid as on the World Map; short on the way to town = walk, short on the way back = stay in town */
+function tripStart(k){
+  trip={k,home:cur.id,ph:"go",sess:S.sess,walk:false};
+  setIdle(false,true);player.casting=null;player.pend=null;toast(t("is_trip_"+k));
+  const c=tpCost("town");
+  if(S.sc>=c){S.sc-=c;fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:.5,c:"#cfc4ff"});setTimeout(()=>goMap("town",TOWN_SPAWN[0],TOWN_SPAWN[1]),250)}
+  else{trip.walk=true;toast(t("is_trip_walk"))}
+  renderIdle();save();return true;
+}
+function tripEnd(msgK,o){if(!trip)return;lastSess=Object.assign({},trip.sess,{items:Object.assign({},trip.sess.items||{})});trip=null;toast(fmt(msgK,o||{}));renderIdle();openWin("idlesum");save()}
+function autoDeposit(){   // materials and unlocked gear go to the Pocket Dimension; potions, herbs, wings and quest items stay in the bag
+  const T=S.store;let n=0;
+  for(const id of Object.keys(S.inv)){const d=ITEMDB[id],q=S.inv[id]|0;if(q<=0||!d||d.t==="use"||d.q)continue;
+    if(!(T.inv[id]>0)&&stoSlots()>=STORE_MAX)continue;T.inv[id]=(T.inv[id]|0)+q;S.inv[id]=0;n++}
+  for(let i=S.bag.length-1;i>=0;i--){const g=S.bag[i];if(g.lock||stoSlots()>=STORE_MAX)continue;T.bag.push(S.bag.splice(i,1)[0]);n++}
+  return n;
+}
+function tripTown(){
+  const k=trip.k;
+  if(k==="full"){tripEnd("idleStopped");return}
+  if(k==="dep"){const n=autoDeposit();toast(fmt("is_dep_done",{n}));if(invSlots()>=invMax()){tripEnd("is_trip_stuck");return}}
+  if(k==="wing"){const p=(SHOP.find(s=>s[0]==="wing")||[0,60])[1],n=Math.min(S.iset.vWingN,Math.floor((S.sc-tpCost(trip.home))/p));
+    if(n<=0){tripEnd("is_trip_nosc",{c:num(tpCost(trip.home)+p)});return}
+    S.sc-=n*p;S.inv.wing=(S.inv.wing|0)+n;AUD.sfx("coin");toast(fmt("is_buy_done",{n}));renderHotbar()}
+  const c=tpCost(trip.home);if(S.sc<c){tripEnd("is_trip_nosc",{c:num(c)});return}
+  S.sc-=c;trip.ph="back";const home=trip.home,[ax,ay]=tpArrive(home);
+  setTimeout(()=>goMap(home,ax,ay),250);save();
+}
+function updateTrip(){
+  if(player.dead){trip=null;renderIdle();return}
+  if(warping||dlg||trip.ph!=="go")return;
+  if(cur!==town){if(trip.walk&&!player.target)routeTo("town");return}
+  tripTown();
+}
+function idleTripCheck(){
+  const I=S.iset,full=invSlots()>=invMax(),dep=S.vip&&I.vDep;
+  if(full&&dep&&hasBasic("storage"))return tripStart("dep");
+  if(full&&I.full&&!dep)return tripStart("full");
+  if(I.wing&&!(S.inv.wing>0)&&S.vip&&I.vWing)return tripStart("wing");
+  return false;
+}
 function updateIdle(dt){
+  if(trip){updateTrip();return}
   if(!S.idle||player.dead||warping||dlg)return;
   if(!isField()){setIdle(false,true);return}
-  S.sess.t+=dt;
-  if(S.hp<hpMax()*.35&&S.inv.red>0)useSlot(hotItemAt("red"),true);
-  if(S.sp<spMax()*.15&&S.inv.blue>0)useSlot(hotItemAt("blue"),true);
+  const I=S.iset;S.sess.t+=dt;
+  if(I.timer&&S.sess.t>=I.timer*60){stopIdle();toast(t("is_timer_done"));return}
+  idlePots(dt);
+  if(idleTripCheck())return;
+  if(idleSit())return;
   player.manualT=Math.max(0,player.manualT-dt);
-  if(!player.nav&&!player.target&&player.manualT<=0){const m=nearestMon(40,true);if(m){player.target=m;player.chaseT=0}}
-  autoSkill();
+  if(!player.nav&&player.manualT<=0){
+    const atk=idleAttacker();if(atk&&atk!==player.target&&!(alive(player.target)&&player.target.aggro)){player.target=atk;player.chaseT=0}
+    if(!player.target){const m=idleFind(I.wing&&S.inv.wing>0?12:40);if(m){player.target=m;player.chaseT=0}}
+  }
+  if(!player.target&&!player.nav&&I.wing&&S.inv.wing>0){idleNoTgt+=dt;if(idleNoTgt>=3){idleNoTgt=0;S.inv.wing--;useItem("wing");renderHotbar()}}else idleNoTgt=0;
+  idleSkills();
 }
 function update(dt){
   hsCd-=dt;if(hitStopT>0){hitStopT-=dt;return}
@@ -8285,7 +8430,7 @@ function update(dt){
   if(player.dead){deathT-=dt;if(deathT<=0)respawn()}
   if(holding&&lastHold&&!player.dead){holdTimer+=dt;if(holdTimer>.3){holdTimer=0;const [wx,wy]=toWorld(lastHold.x,lastHold.y),[tx,ty]=isoToTile(wx,wy),a=Math.floor(tx),b=Math.floor(ty);if(!player.target&&inb(a,b)&&walk(a,b)&&walkTo(player,a,b))setMarker(a+.5,b+.5)}}
   if((winId==="storage"||winSide==="storage")&&(cur!==town||Math.hypot(player.x-NARVIS_AT[0],player.y-NARVIS_AT[1])>5))closeWin();   // v20.4: the Pocket Dimension closes when you walk away from Narvis
-  if(player.sit&&(player.path.length||player.target||player.casting||player.nav||S.idle||player.dead||warping))standUp();
+  if(player.sit&&(player.path.length||player.target||player.casting||player.nav||(S.idle&&!S.iset.sit)||player.dead||warping))standUp();
   if(!player.dead){updateCombat(dt);moveChar(player,dt)}
   if(!warping&&!player.dead)for(const p of cur.portals)if(Math.hypot(player.x-p.x-.5,player.y-p.y-.5)<.6){const gk=gateCheck(p.to);if(!gk.ok){blockGate(p,gk);break}const a=arriveAt(p.to,cur.id);goMap(p.to,a[0],a[1]);break}
   if(marker){marker.t+=dt*1.6;if(!player.path.length&&marker.t>1.2)marker=null}
@@ -8497,6 +8642,7 @@ function winSig(id){
     case "social":return socTab+"|"+(S.friends||[]).join()+"|"+frArm+"|"+ptArm+"|"+ptRen+"|"+S.lv+"|"+JSON.stringify(S.party)+"|"+JSON.stringify(S.guild);
     case "shop":return [S.sc,S.y,S.la,shopTab,S.invPacks,SHOP.map(([k])=>S.inv[k]).join()].join("|");
     case "set":return [S.sound,S.music,S.vip,S.autoIdle,S.gfx,S.look,lang,layoutMode,zIdx,S.gm,setTab,Math.floor(lastSave/30000)].join("|");
+    case "idleset":return [S.vip,S.arch,lang,cur.id,basicLv(),isTab,JSON.stringify(isPick)].join("|");
     case "skinfo":return skSel+"|"+(skSel?skLearned(skSel):0)+"|"+S.arch+"|"+lang+"|"+_pdKey;
     case "itemdet":{const e=detEntry();return e?[e.id,e.ref,e.qty,S.inv.refine_ore,JSON.stringify(e.roll)].join("|"):"x"}
     case "worldmap":case "mapinfo":return [S.sc,cur.id,Object.keys(S.visited).join(),mapSel,mapTab,player.dead?1:0,S.log&&0].join("|");
@@ -8506,7 +8652,7 @@ function winSig(id){
 const LIGHT_W={has:()=>true},W_IC={char:"person",status:"pillars",inv:"backpack",itemdet:"note",storage:"vault",skill:"sparkle",skinfo:"note"};   // v19.6: every window uses the new frame
 function drawSlot(sl,id,portrait){
   const el=$("#"+sl.el),B=$("#"+sl.b);el.classList.remove("hidden");el.dataset.w=id;
-  const key=id+"|"+(id==="char"?charView:id==="itemdet"?(eqSel||invSel||""):id==="skinfo"?skSel:id==="mapinfo"?mapSel+"|"+mapTab:""),top=B.scrollTop;
+  const key=id+"|"+(id==="char"?charView:id==="itemdet"?(eqSel||invSel||""):id==="skinfo"?skSel:id==="mapinfo"?mapSel+"|"+mapTab:id==="idleset"?isTab+"|"+(isPick?isPick.g+isPick.i:""):""),top=B.scrollTop;
   const lt=LIGHT_W.has(id);el.classList.toggle("lt",lt);   // v19.2: light windows with an icon in the title
   $("#"+sl.t).innerHTML=(lt&&W_IC[id]?`<i class="wt-ic">${svg(W_IC[id])}</i>`:"")+esc(winTitle(id));
   B.innerHTML=WIN[id]();B.scrollTop=_wkey[sl.k]===key?top:0;_wkey[sl.k]=key;   // a new page starts at the top, the same page keeps its place
@@ -8733,15 +8879,162 @@ WIN.idlesum=()=>{
 const swTog=(on,act,x)=>`<button class="tog ${on?"on":""}" data-act="${act}" ${x||""} aria-pressed="${on?"true":"false"}"><i></i></button><span class="tst ${on?"on":""}">${t(on?"st_on":"st_off")}</span>`;
 const sRow=(l,d,ctl,cls)=>`<div class="srow ${cls||""}"><div class="sl"><b>${l}</b>${d?`<small>${d}</small>`:""}</div><div class="sctl">${ctl}</div></div>`;
 const sSeg=(arr,cur,act)=>`<div class="seg">${arr.map(([v,l])=>`<button data-act="${act}" data-v="${v}" class="${String(cur)===String(v)?"on":""}">${l}</button>`).join("")}</div>`;
+/* ---------- v21 Idle Settings: Target | Combat | Recovery | Warp | Loot | VIP (IDLE.md "Idle Settings") ---------- */
+{const L={
+ is_t_tgt:["Target","เป้าหมาย","ターゲット"],is_t_cmb:["Combat","ต่อสู้","戦闘"],is_t_heal:["Recovery","ฟื้นฟู","回復"],is_t_tp:["Warp","วาร์ป","ワープ"],is_t_loot:["Loot","เก็บของ","拾得"],is_t_vip:["VIP","VIP","VIP"],
+ is_mode:["Target mode","โหมดเป้าหมาย","ターゲット方式"],is_mode_d:["All: every monster on the map. Chosen: only the ones in the slots.","ทั้งหมด = สู้ทุกตัวในแผนที่ · เลือก = สู้เฉพาะในช่อง","すべて：マップの全モンスター。選択：枠のモンスターだけ。"],
+ is_all:["All","ทั้งหมด","すべて"],is_sel:["Chosen","เลือกเป้าหมาย","選択"],
+ is_mons:["Monsters to fight · {m}","มอนสเตอร์ที่จะโจมตี · {m}","戦うモンスター・{m}"],
+ is_mons_d:["Tap a slot to pick from this map's monsters. Elites count as their kind; bosses are never listed. All slots empty = fight all.","กดช่องเพื่อเลือกจากมอนในแผนที่นี้ · Elite นับเป็นชนิดเดียวกับตัวธรรมดา · ไม่มีบอสในรายการ · ช่องว่างทั้งหมด = สู้ทุกตัว","枠をタップしてこのマップのモンスターから選びます。エリートは同じ種類として扱い、ボスは出ません。全部空なら全モンスターと戦います。"],
+ is_mons_town:["Open this on a hunting map to pick its monsters.","เปิดหน้านี้ในแผนที่ล่ามอนเพื่อเลือกมอนของแผนที่นั้น","狩り場でこの画面を開くと、そのマップのモンスターを選べます。"],
+ is_counter:["Fight back when attacked","ตีกลับเมื่อถูกโจมตี","攻撃されたら反撃"],is_counter_d:["Also fights monsters outside the list that attack you.","สู้มอนนอกรายการที่เข้ามาตีเรา","リスト外でも攻撃してきたモンスターと戦います。"],
+ is_timer:["Stop Idle after","หยุด Idle หลังจาก","次の時間で放置を停止"],is_timer_d:["Idle stops by itself after this long.","หยุด Idle เองเมื่อครบเวลา","この時間が経つと放置を自動で止めます。"],
+ is_atk:["Basic attack","โจมตีปกติ","通常攻撃"],is_atk_d:["Turns back on by itself when skill attacks are off.","ถ้าปิดโจมตีด้วยสกิล จะเปิดกลับเอง","スキル攻撃をオフにすると自動でオンに戻ります。"],
+ is_atk_need:["Basic attack stays on while skill attacks are off.","ต้องเปิดโจมตีปกติไว้ เมื่อปิดโจมตีด้วยสกิล","スキル攻撃がオフの間、通常攻撃はオフにできません。"],
+ is_sk:["Skill attacks","โจมตีด้วยสกิล","スキル攻撃"],is_sk_d:["Uses the attack skills in slot order, 1 → 9.","ใช้สกิลโจมตีตามลำดับช่อง 1 → 9","攻撃スキルを枠の順（1 → 9）に使います。"],
+ is_set_atk:["Attack skill set","ชุดสกิลโจมตี","攻撃スキルセット"],
+ is_buff:["Buff skills","สกิลบัฟ","バフスキル"],is_buff_d:["Casts again when the buff runs out.","ร่ายใหม่เมื่อบัฟหมด","バフが切れたらかけ直します。"],is_set_buff:["Buff skill set","ชุดสกิลบัฟ","バフスキルセット"],
+ is_heal:["Healing skills","สกิลรักษา","回復スキル"],is_heal_d:["Used when HP drops below the bar.","ใช้เมื่อ HP ต่ำกว่าแถบที่ตั้ง","HPが設定値を下回ると使います。"],is_set_heal:["Healing skill set","ชุดสกิลรักษา","回復スキルセット"],
+ is_heal_at:["Heal when HP is below","รักษาเมื่อ HP ต่ำกว่า","HPがこの値未満で回復"],
+ is_move:["Movement skills","สกิลการเคลื่อนตัว","移動スキル"],is_move_d:["Used to get away when a monster comes within 2 tiles.","ใช้หลบเมื่อมอนเข้าใกล้ภายใน 2 ช่อง","モンスターが2マス以内に来たら離れるために使います。"],is_set_move:["Movement skill set","ชุดสกิลการเคลื่อนตัว","移動スキルセット"],
+ is_sets_d:["Tap a slot to choose a skill and its level. All sets empty = Idle picks the skills by itself.","กดช่องเพื่อเลือกสกิลและเลเวล · ถ้าทุกชุดว่าง Idle จะเลือกสกิลเอง","枠をタップしてスキルとレベルを選びます。全セットが空なら放置が自分で選びます。"],
+ is_sit:["Sit to rest","นั่งพัก","座って休む"],is_sit_d:["Sits when HP or SP is below the bar and no monster is near; stands up at 95%.","นั่งเมื่อ HP หรือ SP ต่ำกว่าแถบและไม่มีมอนใกล้ ลุกเมื่อถึง 95%","HPかSPが設定値未満で近くに敵がいないと座り、95%で立ちます。"],
+ is_sit_at:["Rest when below","นั่งเมื่อต่ำกว่า","この値未満で休む"],
+ is_hp:["Auto HP potion","เติม HP อัตโนมัติ","HP自動回復"],is_sp:["Auto SP potion","เติม SP อัตโนมัติ","SP自動回復"],
+ is_ord:["Potion order","ชนิดยา","ポーションの順番"],is_small:["Smallest first","ขวดเล็กก่อน","小さい順"],is_big:["Biggest first","ขวดใหญ่ก่อน","大きい順"],
+ is_hp_at:["Use when HP is below","เติมเมื่อ HP ต่ำกว่า","HPがこの値未満で使用"],is_sp_at:["Use when SP is below","เติมเมื่อ SP ต่ำกว่า","SPがこの値未満で使用"],
+ is_use_sec:["Buff items","ไอเท็มบัฟ (Usable)","バフアイテム"],is_use:["Use buff items","เปิดใช้งาน","バフアイテムを使う"],is_use_d:["Uses each item again when its buff ends.","ใช้ซ้ำเองเมื่อบัฟหมด","バフが切れたら同じアイテムをまた使います。"],
+ is_items:["Items · 5 slots","ไอเท็ม · 5 ช่อง","アイテム・5枠"],is_items_d:["Tap a slot to pick a buff item from your bag. Potions and Fly Wings are set elsewhere.","กดช่องเพื่อเลือกไอเท็มบัฟในกระเป๋า · ยาและ Fly Wing ตั้งค่าที่อื่น","枠をタップしてバッグのバフアイテムを選びます。ポーションとフライウィングは別の場所で設定します。"],
+ is_wing:["Warp with Fly Wing","วาร์ปด้วย Fly Wing","フライウィングでワープ"],is_wing_d:["No monster in sight (12 tiles) for 3 s → uses a Fly Wing.","ไม่เจอมอนในระยะมองเห็น (12 ช่อง) เกิน 3 วิ → ใช้ Fly Wing","視界（12マス）に3秒モンスターがいないとフライウィングを使います。"],
+ is_tps:["Warp with Teleport skill","วาร์ปด้วยสกิล Teleport","テレポートスキルでワープ"],is_tps_d:["Supporter only. The skill is not in the game yet.","เฉพาะ Supporter · สกิลนี้ยังไม่มีในเกม","サポーター専用。スキルはまだありません。"],
+ is_full:["Return to town when full","กลับเมืองเมื่อกระเป๋าเต็ม","いっぱいになったら町に戻る"],is_full_d:["Warps to town (walks if Scandium is short) and ends Idle there.","วาร์ปกลับเมือง (Scandium ไม่พอจะเดินกลับ) แล้วจบ Idle ที่เมือง","町にワープし（スカンジウム不足なら歩いて）、そこで放置を終えます。"],
+ is_off:["Off","ปิด","オフ"],is_min:["{n} min","{n} นาที","{n}分"],is_h:["{n} h","{n} ชม.","{n}時間"],
+ is_loot:["Pick up","การเก็บของ","拾うもの"],is_loot_d:["Quest items are always picked up.","ไอเท็มเควสต์เก็บเสมอ","クエストアイテムは常に拾います。"],
+ is_lall:["All","เก็บทั้งหมด","すべて"],is_lflt:["Filter","ตัวกรอง","フィルター"],
+ is_luse:["Usable items","ไอเท็ม Usable","消耗品"],is_lgear:["Equipment","อุปกรณ์","装備"],is_lstar:["Equipment by ★","อุปกรณ์ตาม ★","★で装備を選ぶ"],
+ is_larch:["Equipment by archetype","อุปกรณ์ตาม Archetype","アーキタイプで装備を選ぶ"],is_larch_d:["None chosen = any archetype.","ไม่เลือก = ทุก Archetype","未選択ならすべて。"],
+ is_llv:["Equipment by level","อุปกรณ์ตามเลเวล","レベルで装備を選ぶ"],is_lother:["Other items","ไอเท็มอื่น (วัตถุดิบ ฯลฯ)","その他のアイテム"],
+ is_lnote:["Equipment is kept when it passes every condition you set. Off / none / Lv 1+ means that condition is not checked.","อุปกรณ์จะถูกเก็บเมื่อผ่านทุกเงื่อนไขที่ตั้ง · ปิด / ไม่เลือก / Lv 1+ = ไม่สนเงื่อนไขนั้น","装備は設定したすべての条件を満たすと拾います。オフ／未選択／Lv 1+ はその条件を見ません。"],
+ is_vbuy:["[VIP] Auto-buy Fly Wing","[VIP] ซื้อ Fly Wing อัตโนมัติ","[VIP] フライウィング自動購入"],is_vbuy_d:["Out of Fly Wings → warps to town, buys this many, warps back.","Fly Wing หมด → วาร์ปเข้าเมือง ซื้อตามจำนวนนี้ แล้ววาร์ปกลับ","なくなると町にワープしてこの数だけ買い、戻ります。"],
+ is_vdep:["[VIP] Auto Pocket Dimension","[VIP] ฝากของอัตโนมัติ","[VIP] 自動ポケットディメンション"],is_vdep_d:["Bag full → warps to town, stores materials and gear, warps back. Replaces “Return to town when full”.","กระเป๋าเต็ม → วาร์ปเข้าเมือง ฝากวัตถุดิบและอุปกรณ์ แล้ววาร์ปกลับ · ใช้แทน “กลับเมืองเมื่อกระเป๋าเต็ม”","いっぱいになると町にワープし、素材と装備を預けて戻ります。「いっぱいになったら町に戻る」の代わりです。"],
+ is_vdep_need:["Needs Basic Skill Lv 5 (Pocket Dimension).","ต้องมี Basic Skill Lv 5 (Pocket Dimension)","基本スキルLv 5（ポケットディメンション）が必要です。"],
+ is_vres:["[VIP] Auto resurrection","[VIP] ฟื้นคืนชีพอัตโนมัติ","[VIP] 自動復活"],is_vres_d:["Uses a Resurrection Particle. The item is not in the game yet.","ใช้ Resurrection Particle · ไอเท็มนี้ยังไม่มีในเกม","復活の粒子を使います。アイテムはまだありません。"],
+ is_vnote:["Warps cost Scandium as usual. Short on the way to town: walks. Short on the way back: stays in town.","วาร์ปคิด Scandium ตามปกติ · ไม่พอขาไปเมือง = เดินกลับ · ไม่พอขากลับ = อยู่ในเมือง","ワープは通常どおりスカンジウムがかかります。町へ行く分が足りなければ歩き、戻る分が足りなければ町に残ります。"],
+ is_pick_mon:["Choose a monster · slot {n}","เลือกมอนสเตอร์ · ช่องที่ {n}","モンスターを選ぶ・枠{n}"],is_pick_sk:["Choose a skill · slot {n}","เลือกสกิล · ช่องที่ {n}","スキルを選ぶ・枠{n}"],is_pick_it:["Choose an item · slot {n}","เลือกไอเท็ม · ช่องที่ {n}","アイテムを選ぶ・枠{n}"],
+ is_pick_tap:["Tap once to choose, tap again to put it in the slot.","กดครั้งแรก = เลือก · กดอีกครั้ง = ใส่ช่อง","1回タップで選び、もう1回で枠に入れます。"],
+ is_pick_clear:["Clear slot","ล้างช่อง","枠を空にする"],is_pick_back:["Back","กลับ","戻る"],is_pick_none:["Nothing to choose.","ไม่มีให้เลือก","選べるものがありません。"],
+ is_in_slot:["In slot {n}","อยู่ในช่อง {n} แล้ว","枠{n}に入っています"],is_not_learned:["Not learned","ยังไม่ได้เรียน","未習得"],
+ is_trip_full:["Bag full: going back to town.","กระเป๋าเต็ม: กลับเมือง","バッグがいっぱい：町に戻ります。"],is_trip_dep:["Bag full: going to store items.","กระเป๋าเต็ม: ไปฝากของ","バッグがいっぱい：預けに行きます。"],
+ is_trip_wing:["Out of Fly Wings: going to buy more.","Fly Wing หมด: ไปซื้อเพิ่ม","フライウィング切れ：買いに行きます。"],is_trip_walk:["Not enough Scandium to warp: walking to town.","Scandium ไม่พอวาร์ป: เดินกลับเมือง","ワープ代が足りません：町まで歩きます。"],
+ is_trip_back:["Back on the map. Idle continues.","กลับมาที่แผนที่แล้ว Idle ทำงานต่อ","マップに戻りました。放置を続けます。"],is_trip_nosc:["Not enough Scandium to warp back ({c} Sc). Idle ended.","Scandium ไม่พอวาร์ปกลับ ({c} Sc) จบ Idle","戻るワープ代（{c} Sc）が足りません。放置を終えました。"],
+ is_trip_stuck:["The town errand could not be done. Idle ended.","ทำธุระในเมืองไม่สำเร็จ จบ Idle","町での用事ができませんでした。放置を終えました。"],is_trip_cancel:["Town errand cancelled.","ยกเลิกการกลับเมืองอัตโนมัติ","町への自動移動を取り消しました。"],
+ is_dep_done:["Stored {n} stacks in the Pocket Dimension.","ฝากของเข้า Pocket Dimension {n} ช่อง","ポケットディメンションに{n}枠預けました。"],is_buy_done:["Bought {n} Fly Wings.","ซื้อ Fly Wing {n} ชิ้น","フライウィングを{n}個買いました。"],
+ is_timer_done:["Idle timer reached. Idle stopped.","ครบเวลาที่ตั้ง หยุด Idle แล้ว","設定時間になったので放置を止めました。"],
+ mmHome_c:["Return to town · {c} Sc","วาปกลับเมือง · {c} Sc","町に戻る・{c} Sc"]
+};for(const k in L){D.en[k]=L[k][0];D.th[k]=L[k][1];D.jp[k]=L[k][2]}}
+let isTab="tgt",isPick=null;   // isPick = {g, i, sel, lv:{}} while a slot picker is open
+const IS_GRP={skAtk:["phys","magic"],skBuff:["buff"],skHeal:["heal","zone"],skMove:["move"]},IS_TOG={skAtk:"sk",skBuff:"buff",skHeal:"heal",skMove:"move"};
+const isMap=()=>isField()?cur.id:null;
+const isMons=id=>{const I=S.iset,a=(I.mons[id]||[]).slice(0,5);while(a.length<5)a.push(null);return a};
+const isPct=(k,lab)=>`<div class="is-rng"><input type="range" min="5" max="95" step="5" value="${S.iset[k]}" data-isr="${k}" aria-label="${esc(lab)}"><b>${S.iset[k]}%</b></div>`;
+const isT=(k,x)=>swTog(!!S.iset[k],"is",`data-k="${k}" ${x||""}`);
+const isSeg=(k,arr)=>`<div class="seg">${arr.map(([v,l])=>`<button data-act="isv" data-k="${k}" data-v="${v}" class="${String(S.iset[k])===String(v)?"on":""}">${l}</button>`).join("")}</div>`;
+const isSoon=`<span class="et-soon">${t("soon")}</span>`;
+function isSlot(g,i,v){
+  let inner="+",tag="",fill=false;
+  if(v&&g==="mons"){fill=true;inner=`<img src="images/monsters/${v}.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'m-dot'}))">`}
+  else if(v&&g==="items"){fill=true;inner=`<span class="ii-ic">${itemArt(v)}</span>`;tag=`<small>x${num(S.inv[v]|0)}</small>`}
+  else if(v){fill=true;inner=skIcon(v.id);if(v.lv)tag=`<small>Lv ${v.lv}</small>`}
+  const nm=v?(g==="mons"?t(MON[v].nameK):g==="items"?itemName(v):t("sk_"+v.id)):"";
+  return `<button class="is-sl${fill?" f":""}${isPick&&isPick.g===g&&isPick.i===i?" on":""}" data-act="isslot" data-g="${g}" data-i="${i}" title="${esc(nm)}"><b class="is-n">${i+1}</b>${inner}${tag}</button>`;
+}
+const isSlots=(g,arr)=>`<div class="is-slots${arr.length===5?" s5":""}">${arr.map((v,i)=>isSlot(g,i,v)).join("")}</div>`;
+const isBlk=(h,body,d)=>`<div class="is-blk"><b>${h}</b>${body}${d?`<small>${d}</small>`:""}</div>`;
+function isPicker(){
+  const p=isPick,I=S.iset;let head="",list="";
+  const row=(key,ic,nm,sub,ok,extra)=>`<button class="is-it${p.sel===key?" on":""}${ok?"":" off"}" ${ok?`data-act="ispick" data-v="${key}"`:"disabled"}>${ic}<span class="grow"><b>${nm}</b>${sub?`<small>${sub}</small>`:""}${extra||""}</span></button>`;
+  if(p.g==="mons"){head=fmt("is_pick_mon",{n:p.i+1});const m=isMap(),L=isMons(m);
+    list=(m?mapMons(m):[]).map(k=>{const at=L.indexOf(k),d=MON[k];return row(k,`<img class="is-mi" src="images/monsters/${k}.png" alt="">`,t(d.nameK),`Lv ${d.lv} · HP ${num(d.hp)}${at>=0&&at!==p.i?" · "+fmt("is_in_slot",{n:at+1}):""}`,at<0||at===p.i)}).join("")}
+  else if(p.g==="items"){head=fmt("is_pick_it",{n:p.i+1});
+    list=Object.keys(HERB_BF).filter(k=>S.inv[k]>0||I.items.includes(k)).map(k=>{const at=I.items.indexOf(k);return row(k,`<span class="ii-ic is-mi">${itemArt(k)}</span>`,itemName(k),(at>=0&&at!==p.i?fmt("is_in_slot",{n:at+1})+" · ":"")+"x"+num(S.inv[k]|0),at<0||at===p.i)}).join("")}
+  else{head=fmt("is_pick_sk",{n:p.i+1});const arr=I[p.g];
+    list=actList().filter(id=>REOC.SK[id]&&IS_GRP[p.g].includes(REOC.SK[id].kind)).map(id=>{
+      const L=skLvOf(id),max=REOC.SKLV[id]?L:0,at=arr.findIndex(s=>s&&s.id===id),lv=Math.min(max,p.lv[id]||max);
+      const chips=max>1?`<span class="is-lv">${Array.from({length:max},(_,j)=>`<i data-act="ispicklv" data-id="${id}" data-v="${j+1}" class="${j+1===lv?"on":""}">${j+1}</i>`).join("")}</span>`:"";
+      return row(id,skIcon(id),t("sk_"+id),!L?t("is_not_learned"):at>=0&&at!==p.i?fmt("is_in_slot",{n:at+1}):"",L>0&&(at<0||at===p.i),L?chips:"")}).join("")}
+  const has=p.g==="mons"?isMons(isMap())[p.i]:I[p.g][p.i];
+  return `<div class="is-pick"><div class="is-ph"><b>${head}</b><button class="btn sm" data-act="ispickx">${t("is_pick_back")}</button></div>
+   <div class="is-list">${list||`<p class="muted">${t("is_pick_none")}</p>`}</div>
+   <p class="muted" style="margin:8px 0 0">${t("is_pick_tap")}</p>${has?`<div class="w-dev"><button class="btn sm danger" data-act="ispickclr">${t("is_pick_clear")}</button></div>`:""}</div>`;
+}
 WIN.idleset=()=>{
-  const fake=v=>`<span class="fake">${v}</span>`,soon=`<span class="et-soon">${t("soon")}</span>`;
-  return `<div class="soon-banner">${svg("lock")}<span>${t("iset_note")}</span></div>
-   ${sRow(t("iset_hp"),t("iset_hp_d"),fake("50%")+soon,"dim")}${sRow(t("iset_sp"),t("iset_sp_d"),fake("30%")+soon,"dim")}
-   ${sRow(t("iset_skill"),t("iset_skill_d"),fake(t("iset_skill_v"))+soon,"dim")}${sRow(t("iset_loot"),t("iset_loot_d"),fake("★ 2+")+soon,"dim")}
-   ${sRow(t("iset_town"),t("iset_town_d"),`<button class="tog" disabled><i></i></button>`+soon,"dim")}${sRow(t("iset_stop"),t("iset_stop_d"),fake("60 "+t("min"))+soon,"dim")}
-   <div class="w-sec">${t("iset_now")}</div>
-   ${sRow(t("set_autoIdle"),t("iset_auto_d"),swTog(S.autoIdle,"autoIdle"))}`;
+  const I=S.iset,tabs=[["tgt","is_t_tgt"],["cmb","is_t_cmb"],["heal","is_t_heal"],["tp","is_t_tp"],["loot","is_t_loot"]];if(S.vip)tabs.push(["vip","is_t_vip"]);
+  if(isTab==="vip"&&!S.vip)isTab="tgt";
+  const head=`<div class="seg is-tabs">${tabs.map(([k,n])=>`<button class="${isTab===k?"on":""}" data-act="istab" data-v="${k}">${t(n)}</button>`).join("")}</div>`;
+  if(isPick)return head+isPicker();
+  let b="";
+  if(isTab==="tgt"){const m=isMap();
+    b=sRow(t("is_mode"),t("is_mode_d"),isSeg("tgt",[["all",t("is_all")],["sel",t("is_sel")]]))
+     +(I.tgt==="sel"?(m?isBlk(fmt("is_mons",{m:t(MAPS[m].nameK)}),isSlots("mons",isMons(m)),t("is_mons_d")):isBlk(t("is_sel"),"",t("is_mons_town"))):"")
+     +sRow(t("is_counter"),t("is_counter_d"),isT("counter"))
+     +sRow(t("is_timer"),t("is_timer_d"),isSeg("timer",[[0,t("is_off")],[30,fmt("is_min",{n:30})],[60,fmt("is_h",{n:1})],[120,fmt("is_h",{n:2})],[240,fmt("is_h",{n:4})]]));
+  }else if(isTab==="cmb"){
+    b=sRow(t("is_atk"),t("is_atk_d"),isT("atk"))
+     +sRow(t("is_sk"),t("is_sk_d"),isT("sk"))+isBlk(t("is_set_atk"),isSlots("skAtk",I.skAtk))
+     +sRow(t("is_buff"),t("is_buff_d"),isT("buff"))+isBlk(t("is_set_buff"),isSlots("skBuff",I.skBuff))
+     +sRow(t("is_heal"),t("is_heal_d"),isT("heal"))+isBlk(t("is_set_heal"),isSlots("skHeal",I.skHeal))+sRow(t("is_heal_at"),"",isPct("healAt",t("is_heal_at")))
+     +sRow(t("is_move"),t("is_move_d"),isT("move"))+isBlk(t("is_set_move"),isSlots("skMove",I.skMove),t("is_sets_d"))
+     +sRow(t("is_sit"),hasBasic("sit")?t("is_sit_d"):basicNeed("sit"),isT("sit"))+sRow(t("is_sit_at"),"",isPct("sitAt",t("is_sit_at")));
+  }else if(isTab==="heal"){
+    const ord=k=>isSeg(k,[["small",t("is_small")],["big",t("is_big")]]);
+    b=`<div class="w-sec">HP</div>`+sRow(t("is_hp"),"",isT("hp"))+sRow(t("is_ord"),"",ord("hpOrd"))+sRow(t("is_hp_at"),"",isPct("hpAt",t("is_hp_at")))
+     +`<div class="w-sec">SP</div>`+sRow(t("is_sp"),"",isT("sp"))+sRow(t("is_ord"),"",ord("spOrd"))+sRow(t("is_sp_at"),"",isPct("spAt",t("is_sp_at")))
+     +`<div class="w-sec">${t("is_use_sec")}</div>`+sRow(t("is_use"),t("is_use_d"),isT("use"))+isBlk(t("is_items"),isSlots("items",I.items),t("is_items_d"));
+  }else if(isTab==="tp"){
+    b=sRow(t("is_wing"),t("is_wing_d"),`<span class="fake">x ${num(S.inv.wing|0)}</span>`+isT("wing"))
+     +(S.arch==="supporter"?sRow(t("is_tps"),t("is_tps_d"),`<button class="tog" disabled><i></i></button>`+isSoon,"dim"):"")
+     +(S.vip&&I.vDep?"":sRow(t("is_full"),t("is_full_d"),isT("full")));
+  }else if(isTab==="loot"){
+    b=sRow(t("is_loot"),t("is_loot_d"),isSeg("loot",[["all",t("is_lall")],["flt",t("is_lflt")]]));
+    if(I.loot==="flt"){const AR=["beginner","fighter","ranger","spellcaster","supporter"];
+      b+=`<div class="is-sub">`+sRow(t("is_luse"),"",isT("lUse"))+sRow(t("is_lgear"),"",isT("lGear"))
+       +(I.lGear?`<div class="is-sub">`+sRow(t("is_lstar"),"",isSeg("lStar",[[0,t("is_off")],...[1,2,3,4,5].map(n=>[n,"★"+n+"+"])]),"stack")
+        +sRow(t("is_larch"),t("is_larch_d"),`<div class="seg">${AR.map(a=>`<button data-act="isarch" data-v="${a}" class="${I.lArch.includes(a)?"on":""}">${t("ar_"+a)}</button>`).join("")}</div>`,"stack")
+        +sRow(t("is_llv"),"",isSeg("lLv",[1,10,20,30,40,50].map(n=>[n,"Lv "+n+"+"])),"stack")+`</div>`:"")
+       +sRow(t("is_lother"),"",isT("lOther"))+`</div><div class="is-blk"><small style="margin:0">${t("is_lnote")}</small></div>`}
+  }else if(isTab==="vip"){
+    b=sRow(t("is_vbuy"),t("is_vbuy_d"),`<input class="is-num" type="number" min="1" max="999" value="${I.vWingN}" data-isn="vWingN" aria-label="${esc(t("is_vbuy"))}">`+isT("vWing"))
+     +sRow(t("is_vdep"),hasBasic("storage")?t("is_vdep_d"):t("is_vdep_need"),isT("vDep"))
+     +sRow(t("is_vres"),t("is_vres_d"),`<button class="tog" disabled><i></i></button>`+isSoon,"dim")
+     +`<p class="muted is-note">${t("is_vnote")}</p>`;
+  }
+  return head+b;
 };
+function isClick(a,b){   // clicks inside the Idle Settings window
+  const I=S.iset,k=b.dataset.k;
+  if(a==="istab"){isTab=b.dataset.v;isPick=null}
+  else if(a==="is"){
+    if(k==="atk"&&I.atk&&!I.sk){AUD.sfx("err");toast(t("is_atk_need"));return}
+    I[k]=!I[k];if(k==="sk"&&!I.sk)I.atk=true;
+  }
+  else if(a==="isv"){const v=b.dataset.v;I[k]=/^\d+$/.test(v)?+v:v}
+  else if(a==="isarch"){const v=b.dataset.v,j=I.lArch.indexOf(v);if(j<0)I.lArch.push(v);else I.lArch.splice(j,1)}
+  else if(a==="isslot"){const g=b.dataset.g;if(g==="mons"&&!isMap())return;isPick={g,i:+b.dataset.i,sel:null,lv:{}}}
+  else if(a==="ispickx")isPick=null;
+  else if(a==="ispicklv"){isPick.lv[b.dataset.id]=+b.dataset.v;isPick.sel=b.dataset.id}
+  else if(a==="ispickclr"){if(isPick.g==="mons"){const m=isMap(),L=isMons(m);L[isPick.i]=null;I.mons[m]=L}else I[isPick.g][isPick.i]=null;isPick=null}
+  else if(a==="ispick"){const v=b.dataset.v,p=isPick;
+    if(p.sel!==v){p.sel=v}
+    else{if(p.g==="mons"){const m=isMap(),L=isMons(m);L[p.i]=v;I.mons[m]=L}
+      else if(p.g==="items")I.items[p.i]=v;
+      else{const L=skLvOf(v),max=REOC.SKLV[v]?L:0;I[p.g][p.i]={id:v,lv:max?Math.min(max,p.lv[v]||max):0}}
+      isPick=null;AUD.sfx("click")}
+  }
+  renderWin();save();
+}
+/* sliders and the number box change S.iset without redrawing the window (a redraw would end the drag) */
+document.addEventListener("input",e=>{const r=e.target;if(!r||!r.dataset||!r.dataset.isr)return;S.iset[r.dataset.isr]=+r.value;const o=r.nextElementSibling;if(o)o.textContent=r.value+"%"});
+document.addEventListener("change",e=>{const r=e.target;if(!r||!r.dataset)return;if(r.dataset.isr)save();if(r.dataset.isn){const v=Math.max(1,Math.min(999,Math.floor(+r.value)||1));S.iset[r.dataset.isn]=v;r.value=v;save()}});
 
 /* ---------- Shop: Scandium shop + Cash Shop (inventory expansion) ---------- */
 const PACK={slots:20,y:40,la:8};   // placeholder prices: to be reviewed
@@ -8795,6 +9088,7 @@ WIN.set=()=>{
 function winClick(e){if(_lpEat){_lpEat=false;return}const b=e.target.closest("[data-act]");
   /* v19.4 double-click: the second click of a double-click may land on whatever slid under the pointer (an empty cell, another window) when a window opened or moved */
   if(_dblK&&!invMulti&&(!b||(b.dataset.act!=="invsel"&&b.dataset.act!=="infdbl"))&&performance.now()-_dblT<380&&_dblXY&&Math.hypot(e.clientX-_dblXY[0],e.clientY-_dblXY[1])<8){const k=_dblK;_dblT=0;if(k[0]!=="e"){invSel=k;eqSel=null;winDet="itemdet";invDouble(k)}return}if(!b)return;const a=b.dataset.act;
+  if(/^is(tab|v|arch|slot|pick|pickx|picklv|pickclr)?$/.test(a)){isClick(a,b);return}
   if(a==="uimode"){S.uiMode=b.dataset.v;applyUiMode();renderWin();save()}
   else if(a==="nav")navTo(b.dataset.w);
   else if(a==="invpage"){invPage[invTab]=Math.max(0,(invPage[invTab]|0)+ +b.dataset.d);renderWin()}
@@ -9015,6 +9309,7 @@ function stopIdle(){
 }
 $("#idleBtn").addEventListener("click",()=>{
   if(player.dead)return;
+  if(trip){trip=null;player.path=[];toast(t("is_trip_cancel"));renderIdle();return}
   if(S.idle){stopIdle();return}
   if(wantIdle){wantIdle=false;renderIdle();return}
   if(!isField()){player.nav=null;wantIdle=true;routeTo("field1");setMarker(town.portals[0].x+.5,town.portals[0].y+.5);toast(t("idleWalk"));renderIdle();return}
@@ -9124,7 +9419,7 @@ function grantIdle(f,mult){
   S.sc+=Math.round(f.sc*mult);S.kills+=Math.round(f.kills*mult);
   gainBase(Math.round(f.base*mult));gainJob(Math.round(f.job*mult));
   for(const k in f.items){const q=Math.round(f.items[k]*mult);if(q>0)gainItem(k,q)}
-  for(let i=0;i<Math.round((f.gearN||0)*mult);i++)gainGear(rollDropGear(f.tier||1,"normal"));
+  for(let i=0;i<Math.round((f.gearN||0)*mult);i++){const g=rollDropGear(f.tier||1,"normal");if(lootOk(g.id))gainGear(g)}
   checkInstant();renderHotbar();
 }
 /* up=true: pay Yttrium (1 per hour, rounded up) to upgrade. VIP 100%→120%, others 80%→100%. */
@@ -9168,11 +9463,11 @@ function setLayout(m){layoutMode=m;layout();renderWin();toast(fmt("layoutSet",{m
 function updateLayoutBtn(){}
 function setZoom(i){zIdx=Math.max(0,Math.min(ZL.length-1,i));renderMM();save()}
 function renderMM(){$("#zOut").disabled=zIdx===0;$("#zIn").disabled=zIdx===ZL.length-1;
-  $("#zIn").title=t("zoomIn")+" ("+t("z"+zIdx)+")";$("#zOut").title=t("zoomOut")+" ("+t("z"+zIdx)+")";$("#mmWorld").title=t("w_worldmap")+" (M)";$("#mmHome").title=t("mmHome");$("#mmTog").title=t("mmToggle");$("#mmWrap").classList.toggle("closed",!mmOpen);
+  $("#zIn").title=t("zoomIn")+" ("+t("z"+zIdx)+")";$("#zOut").title=t("zoomOut")+" ("+t("z"+zIdx)+")";$("#mmWorld").title=t("w_worldmap")+" (M)";$("#mmHome").title=isField()?fmt("mmHome_c",{c:num(tpCost("town"))}):t("mmHome");$("#mmTog").title=t("mmToggle");$("#mmWrap").classList.toggle("closed",!mmOpen);
   $("#mmHome").classList.toggle("hidden",!isField())}
 $("#zIn").addEventListener("click",()=>setZoom(zIdx+1));
 $("#zOut").addEventListener("click",()=>setZoom(zIdx-1));
-$("#mmHome").addEventListener("click",warpTown);
+$("#mmHome").addEventListener("click",()=>{if(player.dead||warping)return;if(cur===town){toast(t("inTown"));return}const c=tpCost("town");if(S.sc<c){AUD.sfx("err");toast(fmt("tp_need",{c:num(c)}));return}S.sc-=c;warpTown();save()});   // v21: same price as the World Map
 $("#mmTog").addEventListener("click",()=>{mmOpen=!mmOpen;renderMM();save();if(mmOpen)requestAnimationFrame(sizeMM)});
 document.addEventListener("keydown",e=>{
   if(e.target.tagName==="INPUT")return;
@@ -9237,6 +9532,7 @@ skFix();
     if(secs>=60)processAway(away.map,away.vip,secs);else if(wasIdle&&isField())S.idle=true}
   lastSave=saved.savedAt;
 }}catch(e){saved=null;setCur(town);player.x=TOWN_SPAWN[0];player.y=TOWN_SPAWN[1];S.idle=false;S.pending=null;S.away=null;S.q={main:{s:"active",st:0,p:0,n:0}};S.pins=["main"]}
+S.iset=isetFix(S.iset);   // v21 Idle Settings (new characters too)
 if(!S.equip)S.equip=starterEquip();
 if(!Array.isArray(S.friends))S.friends=[];
 if(S.party&&!(typeof S.party.name==="string"&&Array.isArray(S.party.members)))S.party=null;if(S.party===undefined)S.party=null;
