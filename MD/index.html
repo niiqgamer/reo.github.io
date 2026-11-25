@@ -1906,8 +1906,8 @@ const SK={
  evasive_leap:{arch:"ranger",kind:"move",leap:3,buff:"leap",dur:4,sp:10,cd:10,ic:"wing"},
  // v21f Ranger skills from NIIQ (SKILL-SPEC.md §3i-3n). Lv 10 rows; skAt() gives every level. Need No Arrow (SKREQ).
  focusing:{arch:"ranger",kind:"buff",buff:"focus",focus:.12,dur:240,sp:70,cd:0,gd:0,lv:10,ic:"aim"},   // Self Cast: DEX and AGI +3..12% for 60..240 s
- aim_strike:{arch:"ranger",kind:"buff",buff:"aimS",dur:150,sp:150,cd:150,gd:2,vct:0,fct:2,gap:.1,ratio:2,critMul:.5,split:7,splitCh:.38,splash:.5,splashR:1.5,lv:10,ic:"aim"},   // v21g: Self Cast buff. While it runs, each basic shot may split (splitCh) into `split` arrows of ratio x ATK each (0.1 s apart, crit chance x0.5); every arrow splashes 50% on a 3x3 square
- aiming_shower:{arch:"ranger",kind:"phys",ratio:2.5,sp:20,cd:0,gd:.1,vct:0,fct:.1,range:12,ranged:true,knock:2,lv:10,ic:"arrows"},   // 1 arrow, pushes the target 2 tiles back (bosses too), cannot crit
+ aim_strike:{arch:"ranger",kind:"phys",ratio:2,sp:20,cd:2,gd:2,vct:1,fct:.5,gap:.1,range:12,ranged:true,canCrit:true,critMul:.5,split:3,splitCh:.38,splash:.5,splashR:1.5,lv:10,ic:"aim"},   // v21h: 1 arrow of ratio x ATK in total; splitCh: it splits into `split` arrows (0.1 s apart) that share the ratio; every arrow splashes 50% of its share on a 3x3 square
+ aiming_shower:{arch:"ranger",kind:"phys",ratio:2.5,sp:20,cd:2,gd:.1,vct:.5,fct:.5,range:12,ranged:true,knock:2,lv:10,ic:"arrows"},   // 1 arrow, pushes the target 2 tiles back (bosses too), cannot crit. v21h: FCT 0.5, VCT 0.5, GD 0.1, CD 2
  // spellcaster — Casting (DEX and INT shorten the variable cast) + elemental weakness; spells never miss
  fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.2,hits:10,sp:40,cd:0,gd:1,vct:0,fct:1,gap:.2,range:7,overMul:.5,splash:.5,splashR:1.5,st:"brn",stCh:.7,stDur:7,debuff:true,lv:5,ic:"flame"},   // v20.18: Lv 5 row (Lv 1-5); skAt() gives every level (SKILL-SPEC.md §3)
  freezer:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.0,sp:25,cd:0,gd:.5,vct:.64,fct:.16,range:7,st:"frz",stCh:.75,stDur:7,debuff:true,splash:.5,splashR:1.5,splashOn:"frz",lv:5,ic:"snow"},   // v20.18 (was Frost Nova): 1 enemy + Freeze (Wind resistance -50%)
@@ -2086,7 +2086,7 @@ const SKLV={fire_bolt:{max:5,def:5},freezer:{max:5,def:5},lightning_spear:{max:5
 const SKREQ={ranger_mastery:{no_arrow:1},focusing:{no_arrow:3},aim_strike:{no_arrow:5},aiming_shower:{no_arrow:5}};
 const NA_SC=[20,18,15,13,10];                                                                     // No Arrow: Scandium per arrow shot, Lv 1-5
 const FO_P=[.03,.04,.05,.06,.07,.08,.09,.1,.11,.12];                                              // Focusing: DEX / AGI +%, time 40+20*Lv s, SP 20+5*Lv; no cast, GD 0, CD 0
-const AS_R=[1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,2],AS_N=[2,2,3,3,4,4,5,5,6,7],AS_CH=[.2,.22,.24,.26,.28,.3,.32,.34,.36,.38];   // Aim Strike (v21g buff): ATK per split arrow, arrows, split chance; time = SP = cooldown = 50 + 10 x Lv; FCT 2, GD 2
+const AS_R=[1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,2],AS_N=[2,2,2,2,2,3,3,3,3,3],AS_CH=[.2,.22,.24,.26,.28,.3,.32,.34,.36,.38],AS_SP=[12,12,14,14,16,16,18,18,20,20];   // Aim Strike (v21h): ATK in total, arrows when split, split chance, SP; FCT 0.5, VCT 1, GD 2, CD 2
 const AW_R=[1.6,1.7,1.8,1.9,2,2.1,2.2,2.3,2.4,2.5];                                              // Aiming Shower: SP 20, FCT 0.1, GD 0.1   // v20.6: passives with levels too (derive reads them)
 const OE_DUR=[20,40,60,80,120],OE_VCT=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, VCT (FCT 0), SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
 const FB_N=[1,3,5,7,10],FB_SP=[12,17,22,27,40],FB_GAP=[0,.3,.3,.2,.2],FB_FCT=[.5,.6,.7,.8,1];   // Fire Bolt: 120% MATK per fireball, VCT 0, GD 1 s, CD 0
@@ -2106,7 +2106,7 @@ function skAt(id,lv){
   if(id==="petrifaction")return Object.assign({},k,{lv:L,ratio:PT_R[i],stCh:PT_CH[i],sp:PT_SP[i],stDur:ST_DUR[i]});
   if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],vct:OE_VCT[L-1],sp:35+15*L});
   if(id==="focusing")return Object.assign({},k,{lv:L,focus:FO_P[i],dur:40+20*L,sp:20+5*L});
-  if(id==="aim_strike")return Object.assign({},k,{lv:L,ratio:AS_R[i],split:AS_N[i],splitCh:AS_CH[i],dur:50+10*L,sp:50+10*L,cd:50+10*L});
+  if(id==="aim_strike")return Object.assign({},k,{lv:L,ratio:AS_R[i],split:AS_N[i],splitCh:AS_CH[i],sp:AS_SP[i]});
   if(id==="aiming_shower")return Object.assign({},k,{lv:L,ratio:AW_R[i]});
   return k;
 }
@@ -2130,11 +2130,11 @@ function pickSkill(ctx){
     if(reserve&&ready("power_strike"))return "power_strike";return null;
    case "ranger":
     if(!ctx.buffs.focus&&ctx.dist<=d.range+3&&ready("focusing"))return "focusing";   // v21f: keep Focusing up while fighting
-    if(!ctx.buffs.aimS&&ctx.dist<=d.range+3&&ready("aim_strike"))return "aim_strike";   // v21g: Aim Strike is a buff on the basic shots
     if(ctx.dist<=1.6&&ready("evasive_leap"))return "evasive_leap";
     if(ctx.dist>d.range)return null;
     if(ctx.dist<=2.5&&ready("aiming_shower"))return "aiming_shower";   // v21f: push a monster that came close back 2 tiles
     if(ready("piercing_shot"))return "piercing_shot";
+    if((reserve||ctx.near>=2)&&ready("aim_strike"))return "aim_strike";
 
     if(ctx.near>=2&&ready("arrow_shower"))return "arrow_shower";
     if(reserve&&ready("double_strafe"))return "double_strafe";return null;
@@ -2179,7 +2179,7 @@ function pickSkill(ctx){
 function simulate(arch,lv,monKeys,opt){
   opt=opt||{};const KL=id=>skAt(id,(opt.skLv||{})[id]||0);const r=rngOf(opt.seed||7),secs=opt.secs||300,pack=opt.pack||1,dt=.05,travel=opt.travel??4;
   const stats=opt.stats||autoStats(arch,lv);
-  const buffs={},cd={};let zone=0,shield=0,momentum=0,momT=0,ovV=0,focV=0,arrows=0,aimK=null;   // arrows: arrows shot (v21f No Arrow costs Scandium per arrow)
+  const buffs={},cd={};let zone=0,shield=0,momentum=0,momT=0,ovV=0,focV=0,arrows=0;   // arrows: arrows shot (v21f No Arrow costs Scandium per arrow)
   const DV=()=>derive({arch,lv,stats,buffs,gear:opt.gear,over:buffs.overEn>0?ovV:0,focus:buffs.focus>0?focV:0});
   let d=DV();
   let hp=d.maxHP,sp=d.maxSP,t=0,kills=0,deaths=0,dealt=0,taken=0,hpSum=0,hpN=0,casting=null,swing=0,mi=0,wait=0;
@@ -2190,14 +2190,14 @@ function simulate(arch,lv,monKeys,opt){
   const tgt=()=>mobs.find(m=>m.hpNow>0);
   const hitMob=(m,res)=>{if(res.miss)return;m.hpNow-=res.dmg;dealt+=res.dmg;if(pack>1)mobs.forEach(x=>x.aggro=true);else m.aggro=true};
   const doBasic=m=>{const b=ARCH[arch].basic;
-    if(b.kind==="phys"&&d.ranged&&buffs.aimS>0&&aimK){arrows++;const k=aimK,sp=r()<k.splitCh;   // v21g Aim Strike buff: the shot may split; every arrow splashes 50% on the others nearby
-      for(let h=0;h<(sp?k.split:1)&&m.hpNow>0;h++){const o=sp?{ratio:k.ratio,critMul:k.critMul}:{ratio:b.ratio},res=physHit(d,m,Object.assign({dist:m.dist},o),r);hitMob(m,res);
-        if(!res.miss)for(const x of mobs){if(x===m||x.hpNow<=0||Math.abs(x.dist-m.dist)>k.splashR)continue;hitMob(x,physHit(d,x,{ratio:o.ratio*k.splash,canCrit:false,dist:x.dist},r))}}}
-    else if(b.kind==="phys"){if(d.ranged)arrows++;const res=physHit(d,m,{ratio:b.ratio,dist:d.ranged?m.dist:0},r);hitMob(m,res);if(arch==="fighter"&&!res.miss){momentum=Math.min(5,momentum+1);momT=5}}
+    if(b.kind==="phys"){if(d.ranged)arrows++;const res=physHit(d,m,{ratio:b.ratio,dist:d.ranged?m.dist:0},r);hitMob(m,res);if(arch==="fighter"&&!res.miss){momentum=Math.min(5,momentum+1);momT=5}}
     else hitMob(m,magicHit(d,m,{ratio:b.ratio,elem:b.elem},r))};
   const doSkill=(id,m,L)=>{const k=L?skAt(id,L):KL(id);sp-=k.sp*d.spCost;cd[id]=k.cd*d.cdMul;if(k.gd)gdT=k.gd*d.gdMul;
     const targets=k.aoe?mobs.filter(x=>x.hpNow>0&&(k.at==="self"?x.dist<=k.aoe+.5:true)):(m?[m]:[]);
-    if(k.kind==="phys"&&k.knock){arrows++;if(m){hitMob(m,physHit(d,m,{ratio:k.ratio,canCrit:false,dist:m.dist},r));m.dist=Math.min(d.range,m.dist+k.knock)}}   // v21f Aiming Shower: push back 2 tiles
+    if(k.kind==="phys"&&k.split){arrows++;   // v21h Aim Strike: one arrow of k.ratio in total; when it splits the arrows share it; each arrow splashes 50% of its share
+      const n=r()<k.splitCh?k.split:1,per=k.ratio/n;for(let h=0;h<n&&m&&m.hpNow>0;h++){const res=physHit(d,m,{ratio:per,canCrit:true,critMul:k.critMul,dist:m.dist},r);hitMob(m,res);
+        if(!res.miss)for(const x of mobs){if(x===m||x.hpNow<=0||Math.abs(x.dist-m.dist)>k.splashR)continue;hitMob(x,physHit(d,x,{ratio:per*k.splash,canCrit:false,dist:x.dist},r))}}}
+    else if(k.kind==="phys"&&k.knock){arrows++;if(m){hitMob(m,physHit(d,m,{ratio:k.ratio,canCrit:false,dist:m.dist},r));m.dist=Math.min(d.range,m.dist+k.knock)}}   // v21f Aiming Shower: push back 2 tiles
     else if(k.kind==="phys"){if(k.ranged)arrows+=(k.hits||1)*targets.length;for(const x of targets)for(let h=0;h<(k.hits||1);h++){
         const ratio=k.ratio+(k.spend?k.perStack*momentum:0);
         const res=physHit(d,x,{ratio,ignoreDef:k.ignoreDef,canCrit:!!k.canCrit,critMul:k.critMul,dist:k.ranged?x.dist:0,bonus:buffs.leapShot?1.6:1},r);hitMob(x,res)}
@@ -2209,7 +2209,7 @@ function simulate(arch,lv,monKeys,opt){
       // v21e splash: 50% MATK on the others in a 3x3 square round the target (Fire Bolt: every fireball; Freezer: only while the target is frozen). No positions here, so "close" = a similar distance
       if(k.splash&&m&&(!k.splashOn||m[k.splashOn]>0))for(const x of mobs){if(x===m||x.hpNow<=0||Math.abs(x.dist-m.dist)>k.splashR)continue;for(let h=0;h<(k.hits||1);h++)hitMob(x,magicHit(d,x,{ratio:k.ratio*k.splash,elem:k.elem},r))}}
     else if(k.kind==="heal"){const h=healAmount(d,k),over=Math.max(0,hp+h-d.maxHP);hp=Math.min(d.maxHP,hp+h);if(d.shieldCap)shield=Math.min(d.maxHP*d.shieldCap,shield+over)}
-    else if(k.kind==="buff"){buffs[k.buff]=k.dur;if(k.over)ovV=k.over;if(k.focus)focV=k.focus;if(k.split)aimK=k;if(k.buff==="blessing"||k.over||k.focus)d=DV();
+    else if(k.kind==="buff"){buffs[k.buff]=k.dur;if(k.over)ovV=k.over;if(k.focus)focV=k.focus;if(k.buff==="blessing"||k.over||k.focus)d=DV();
       if(k.taunt)mobs.forEach(x=>x.aggro=true)}
     else if(k.kind==="move"){for(const x of mobs)x.dist+=k.leap;buffs.leap=k.dur;buffs.leapShot=1;d=DV()}
     else if(k.kind==="zone"){zone=k.dur}};
@@ -4094,11 +4094,10 @@ let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
  si_fo:["DEX and AGI +{a}% for {b} seconds · SP {c}","DEX, AGI +{a}% ระยะเวลา {b} วินาที · SP {c}","DEX・AGI +{a}%、{b} 秒間 · SP {c}"],
  fx_focus_d:["DEX and AGI raised.","DEX และ AGI เพิ่มขึ้น","DEXとAGIが上昇。"],
  sk_aim_strike:["Aim Strike","Aim Strike","エイムストライク"],
- skd_aim_strike:["A power that lets the Ranger draw the bow with full strength and pour everything into each arrow. While it lasts, a basic shot sometimes splits in mid-air into several arrows that all strike the target, 0.1 s apart, each with its own ATK %. Every arrow that hits also sends a blast of air over a 3 × 3 area round the target for 50% of its damage. Split arrows can crit (crit chance ×0.5). Self Cast, fixed cast 2 s, Global Delay 2 s; the cooldown equals the time it lasts.",
-  "พลังที่จะทำให้ Ranger ง้างธนูได้อย่างสุดกำลัง และทำให้ปล่อยพลังทั้งหมดไปที่ลูกศรที่พุ่งออกไปได้ ระหว่างที่บัฟทำงาน ยิงธรรมดามีโอกาสที่ลูกธนูดอกนั้นจะแยกตัวออกมาสร้างความเสียหายให้เป้าหมายมากกว่า 1 ดอก (ห่างกัน 0.1 วินาที ดอกละ ATK ตามเลเวล) และเมื่อยิงถูกเป้าหมาย แรงอัดอากาศทำหน้าที่อีกครั้ง Splash Damage 50% ออกไปอีก 3x3 ช่อง ลูกที่แยกติดคริติคอลได้ (โอกาสคริ ×0.5) ร่ายใส่ตัวเอง ร่ายคงที่ 2 วินาที ดีเลย์รวม 2 วินาที คูลดาวน์เท่ากับระยะเวลาบัฟ",
-  "レンジャーが弓を全力で引き絞り、矢に全ての力を込められるようにする力。効果中、通常攻撃の矢が時々空中で分かれ、複数の矢となって0.1秒間隔で対象に命中します（1本ごとにLvに応じた攻撃力%）。命中した矢は空気の衝撃で対象の周囲3×3マスにダメージの50%を与えます。分かれた矢はクリティカル可能（確率×0.5）。自己詠唱、固定詠唱2秒、ディレイ2秒、クールダウンは効果時間と同じ。"],
- si_as:["Basic shots: {b}% chance to split into {a} arrows, {c}% ATK each · {e} seconds · SP {d}","ยิงธรรมดามีโอกาส {b}% แยกเป็น {a} ดอก ดอกละ ATK {c}% · ระยะเวลา {e} วินาที · SP {d}","通常攻撃：{b}% の確率で {a} 本に分裂、各 攻撃力 {c}% · {e} 秒間 · SP {d}"],
- fx_aim_d:["Basic shots may split into several arrows.","ยิงธรรมดามีโอกาสแยกเป็นหลายดอก","通常攻撃の矢が分裂することがあります。"],
+ skd_aim_strike:["A power that lets the Ranger draw the bow with full strength and pour everything into the arrow. Sometimes the arrow splits in mid-air into several arrows that strike the target 0.1 s apart and share the damage. Every arrow that hits also sends a blast of air over a 3 × 3 area round the target for 50% of its damage. Can crit (crit chance ×0.5).",
+  "พลังที่จะทำให้ Ranger ง้างธนูได้อย่างสุดกำลัง และทำให้ปล่อยพลังทั้งหมดไปที่ลูกศรที่พุ่งออกไปได้ ในบางจังหวะ มีโอกาสที่ลูกธนูดอกนั้น จะแยกตัวออกมาสร้างความเสียหายให้เป้าหมายมากกว่า 1 ดอก (ห่างกัน 0.1 วินาที แบ่งดาเมจรวมกัน) และเมื่อยิงถูกเป้าหมาย แรงอัดอากาศทำหน้าที่อีกครั้ง Splash Damage 50% ออกไปอีก 3x3 ช่อง ติดคริติคอลได้ (โอกาสคริ ×0.5)",
+  "レンジャーが弓を全力で引き絞り、矢に全ての力を込めて放つ力。時に矢は空中で分かれ、複数の矢となって0.1秒間隔で対象に命中し、ダメージを分け合います。命中した矢は空気の衝撃で対象の周囲3×3マスにダメージの50%を与えます。クリティカル可能（確率×0.5）。"],
+ si_as:["ATK {c}% in total · {b}% chance to split into {a} arrows · SP {d}","ATK รวม {c}% · โอกาสแยกเป็น {a} ดอก {b}% · SP {d}","合計 攻撃力 {c}% · {b}% の確率で {a} 本に分裂 · SP {d}"],
  as_split:["SPLIT ×{n}","แยก ×{n}","分裂 ×{n}"],
  sk_aiming_shower:["Aiming Shower","Aiming Shower","エイミングシャワー"],
  skd_aiming_shower:["Shoot one heavy arrow that pushes the target 2 tiles back (bosses too). Cannot crit.","ยิงลูกธนู 1 ดอกออกไปผลักเป้าหมายให้ถอยหลังไป 2 ช่อง (สามารถใช้กับบอสได้) ติดคริติคอลไม่ได้","重い矢を1本放ち、対象を2マス押し戻します（ボスにも有効）。クリティカルなし。"],
@@ -5861,7 +5860,7 @@ const gameState={lv:1,exp:0,jlv:1,jexp:0,hp:420,sp:120,sc:1250,y:0,la:0,arch:"be
   sound:true,music:true,gfx:"hi",look:"custom",app:null,autoIdle:true,bag:[],equip:null,uidN:1,skLv:{},hot:null,hotArch:"",store:{inv:{},bag:[]}};
 const S=gameState;
 /* ---- combat state: buffs, cooldowns, derived stats (REOC) ---- */
-const BF={aimS:0,aimSK:null,focus:0,focusV:0,overEn:0,overEnV:0,warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0,burn:0,burnDps:0,burnAcc:0,slow:0};
+const BF={focus:0,focusV:0,overEn:0,overEnV:0,warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0,burn:0,burnDps:0,burnAcc:0,slow:0};
 /* v19: gates of the two new maps (Base Lv and Combat Power both needed) */
 let gateT=0,aggroGrace=0;
 const CD={};
@@ -8049,7 +8048,6 @@ function basicAttack(mo){
   player.pose=b.kind==="phys"?"attack":"cast";player.poseT=.32;   // hero sprite pose
   if(b.kind==="phys"){
     if(d.ranged){if(!payArrows(1))return;
-      if(BF.aimS>0&&BF.aimSK){aimStrike(mo,BF.aimSK,SKC.aim_strike);return}   // v21g Aim Strike buff: the shot may split, every arrow splashes
       shootArrow(mo,.2);later(190,()=>{if(alive(mo))physAttack(mo,{ratio:b.ratio})})}   // v21f: an arrow (No Arrow: Scandium arrow)
     else{player.lunge=.2;const res=physAttack(mo,{ratio:b.ratio});if(S.arch==="fighter"&&!res.miss)addMomentum(1)}
   }else{fx.push({k:"proj",x,y,tx:mo.x,ty:mo.y,t:0,d:.24,c:ELC[b.elem]||"#c9b8ff"});later(220,()=>{if(alive(mo))magicAttack(mo,{ratio:b.ratio,elem:b.elem,c:b.elem==="holy"?"#ffe9a0":null})})}
@@ -8115,7 +8113,7 @@ function die(){
   $("#deathOv").classList.remove("hidden");pushChat({ch:"sys",k:"sys_dead"});
 }
 function respawn(){player.dead=false;S.hp=hpMax();S.sp=spMax();$("#deathOv").classList.add("hidden");goMap("town",TOWN_SPAWN[0],TOWN_SPAWN[1])}
-function resetCombatState(){volleys.length=0;balls.length=0;player.gd=0;BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=BF.overEn=BF.overEnV=BF.focus=BF.focusV=BF.aimS=0;BF.aimSK=null;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
+function resetCombatState(){volleys.length=0;balls.length=0;player.gd=0;BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=BF.overEn=BF.overEnV=BF.focus=BF.focusV=0;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
 function addMomentum(n){BF.momentum=Math.min(5,BF.momentum+n);BF.momT=5}
 /* ---- Fire Bolt volley: fireballs are released one at a time (Lv 2-3: 0.3 s apart, Lv 4-5: 0.2 s). v20.18: every fireball always falls,
    even after the target dies (they land on the spot and do nothing). A fireball falls for (gap - 0.02) s and deals its damage when it lands. ---- */
@@ -8146,7 +8144,7 @@ function updateVolleys(dt){
 }
 function updateCombat(dt){
   player.atkCd=Math.max(0,player.atkCd-dt);player.lunge=Math.max(0,player.lunge-dt);player.poseT=Math.max(0,(player.poseT||0)-dt);player.hurtT=Math.max(0,(player.hurtT||0)-dt);player.combatT+=dt;
-  for(const k of ["warCry","blessing","leap","overEn","focus","aimS","regen","herbAtk","herbDef","sage"])if(BF[k]>0)BF[k]=Math.max(0,BF[k]-dt);
+  for(const k of ["warCry","blessing","leap","overEn","focus","regen","herbAtk","herbDef","sage"])if(BF[k]>0)BF[k]=Math.max(0,BF[k]-dt);
   if(BF.slow>0)BF.slow=Math.max(0,BF.slow-dt);player.speed=3.6*(BF.slow>0?.65:1);
   if(BF.burn>0&&!player.dead){BF.burn=Math.max(0,BF.burn-dt);BF.burnAcc+=dt;if(BF.burnAcc>=1){BF.burnAcc-=1;damagePlayer(Math.max(1,Math.round(BF.burnDps)),t("fx_burn"))}}
   if(BF.momT>0){BF.momT-=dt;if(BF.momT<=0)BF.momentum=0}
@@ -8475,12 +8473,12 @@ function leapAway(n){
   for(let r=n;r>=1;r-=.5){const tx=player.x+dx*r,ty=player.y+dy*r;if(walk(Math.floor(tx),Math.floor(ty))&&los(player.x,player.y,tx,ty)){player.x=tx;player.y=ty;break}}
   player.path=[];
 }
-/* v21g Aim Strike buff (SKILL-SPEC.md §3m): while it runs, every basic shot has chance splitCh to split in mid-air into k.split
-   arrows that land 0.1 s apart, each k.ratio x ATK (crit chance x0.5). A shot that does not split is a normal basic shot.
-   Every arrow that hits splashes 50% of its ATK % on every other monster in a 3x3 square round the target. Arrows that land
-   after the target died hit nothing. One arrow leaves the bow, so No Arrow charges one arrow. */
+/* v21h Aim Strike (SKILL-SPEC.md §3m): one arrow of k.ratio x ATK in total. With chance splitCh it splits in mid-air into k.split
+   arrows that land 0.1 s apart and SHARE that total (each k.ratio / n), crit chance x0.5. Every arrow that hits splashes 50% of
+   its share on every other monster in a 3x3 square round the target. Arrows that land after the target died hit nothing.
+   One arrow leaves the bow, so No Arrow charges one arrow. */
 function aimStrike(tg,k,col){
-  const n=Math.random()<k.splitCh?k.split:1,fly=.24,o=n>1?{ratio:k.ratio,critMul:k.critMul,c:col}:{ratio:1},mid=[(player.x+tg.x)/2,(player.y+tg.y)/2],gap=k.gap||.1;let sq=0;
+  const n=Math.random()<k.splitCh?k.split:1,fly=.24,o={ratio:k.ratio/n,canCrit:true,critMul:k.critMul,c:col},mid=[(player.x+tg.x)/2,(player.y+tg.y)/2],gap=k.gap||.1;let sq=0;
   const land=()=>{if(!alive(tg)){fx.push({k:"burst",x:tg.x,y:tg.y,t:0,d:.3,c:"#fff3c0",n:6,z:4});return}
     physAttack(tg,o);if(!sq++)fx.push({k:"sqarea",x:tg.x,y:tg.y,t:0,d:.25+n*gap,c:col,r:k.splashR});   // the 3x3 splash square, drawn once per cast
     for(const m of liveMon())if(m!==tg&&Math.max(Math.abs(m.x-tg.x),Math.abs(m.y-tg.y))<=k.splashR)physAttack(m,{ratio:o.ratio*k.splash,canCrit:false,c:col})};
@@ -8509,6 +8507,7 @@ function finishSkill(id,tg,lv,gp){
      const o={ratio,ignoreDef:k.ignoreDef,canCrit:!!k.canCrit,critMul:k.critMul,bonus,c:col};
      if(k.ranged){
        if(!payArrows(k.hits||1))break;   // v21f No Arrow: Scandium per arrow that leaves the bow
+       if(k.split&&tg){aimStrike(tg,k,col);break}   // v21h Aim Strike
        if(k.knock&&tg){shootArrow(tg,.2,{c:col});later(190,()=>{if(alive(tg)){physAttack(tg,o);if(alive(tg))knockBack(tg,k.knock)}});break}   // v21f Aiming Shower
        if(k.aoe&&tg){fx.push({k:"burst",x:tg.x,y:tg.y,t:0,d:.6,c:col,n:20,z:8});fx.push({k:"ring",x:tg.x,y:tg.y,t:0,d:.5,c:col,r:k.aoe*48})}
        area.forEach(m=>{for(let h=0;h<(k.hits||1);h++){shootArrow(m,.18,{t0:h*.09,c:col});later(170+h*90,()=>{if(alive(m))physAttack(m,o)})}});
@@ -8544,7 +8543,6 @@ function finishSkill(id,tg,lv,gp){
      fx.push({k:"rise",x,y,t:0,d:1,c:col,follow:true});floatText("+"+num(h)+" HP",col);break}
    case "buff":{BF[k.buff]=k.dur;
      if(k.focus){BF.focusV=k.focus;_pdKey="";fx.push({k:"ring",x,y,t:0,d:.7,c:col,r:56})}   // v21f Focusing: DEX and AGI +%
-     if(k.split){BF.aimSK=k;fx.push({k:"ring",x,y,t:0,d:.7,c:col,r:56})}   // v21g Aim Strike: the basic shots use this level
      if(k.over){BF.overEnV=k.over;_pdKey="";   // v20.6 Overload Energy: self + party members within 6 tiles (a 12x12 square). Party members are simulated (no combat stats yet), so on them it is only shown
        fx.push({k:"ring",x,y,t:0,d:.8,c:col,r:k.area*48});
        if(S.party&&cur===town)for(const m of S.party.members){const w=findPlayer(m.name);if(w&&Math.abs(w.x-x)<=k.area&&Math.abs(w.y-y)<=k.area)fx.push({k:"rise",x:w.x,y:w.y,t:0,d:1.1,c:col})}}
@@ -8750,7 +8748,6 @@ function renderFx(){
   const list=[];
   if(BF.momentum>0)list.push({ic:"flame",c:SKG.fighter,nk:"fx_momentum",dk:"fx_momentum_d",val:"×"+BF.momentum});
   if(BF.warCry>0)list.push({ic:"shout",c:SKG.fighter,nk:"sk_war_cry",dk:"fx_warcry_d",val:fmtSec(BF.warCry)});
-  if(BF.aimS>0)list.push({ic:"aim",c:SKG.ranger,nk:"sk_aim_strike",dk:"fx_aim_d",val:fmtSec(BF.aimS)});
   if(BF.focus>0)list.push({ic:"aim",c:SKG.ranger,nk:"sk_focusing",dk:"fx_focus_d",val:fmtSec(BF.focus)});
   if(BF.leap>0)list.push({ic:"wing",c:SKG.ranger,nk:"sk_evasive_leap",dk:"fx_leap_d",val:fmtSec(BF.leap)});
   if(BF.leapShot)list.push({ic:"pierce",c:SKG.ranger,nk:"fx_leapshot",dk:"fx_leapshot_d",val:"+60%"});
@@ -8930,7 +8927,7 @@ function idleSit(){
 function autoPickId(){   // the built-in skill choice (used when every skill set is empty)
   const tg=alive(player.target)?player.target:null,d=pd();
   const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0,nearMe=liveMon().filter(m=>(m===tg||m.aggro)&&Math.max(Math.abs(m.x-player.x),Math.abs(m.y-player.y))<=3.5).length;
-  return REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0,focus:BF.focus>0,aimS:BF.aimS>0},
+  return REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0,focus:BF.focus>0},
     dist:tg?dist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,brn:tg.brn,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
 }
 const isGrpOf=id=>{const k=REOC.SK[id];if(!k)return null;for(const g in IS_GRP)if(IS_GRP[g].includes(k.kind))return g;return null};
@@ -9432,7 +9429,7 @@ function siLevel(id,n){   // what one level gives
   if(id==="petrifaction")return fmt("si_pt",{a:Math.round(k.ratio*100),b:Math.round(k.stCh*100),c:sp});
   if(id==="overload_energy")return fmt("si_oe",{a:k.over,b:k.dur,c:sp});
   if(id==="focusing")return fmt("si_fo",{a:Math.round(k.focus*100),b:k.dur,c:sp});
-  if(id==="aim_strike")return fmt("si_as",{a:k.split,b:Math.round(k.splitCh*100),c:Math.round(k.ratio*100),d:sp,e:k.dur});
+  if(id==="aim_strike")return fmt("si_as",{a:k.split,b:Math.round(k.splitCh*100),c:Math.round(k.ratio*100),d:sp});
   if(id==="aiming_shower")return fmt("si_aw",{a:Math.round(k.ratio*100),c:sp});
   const rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"";
   return `SP ${sp}${rg}`}
