@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.19. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v21e. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,9 +48,25 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.19 (this update)
+## Changes in v21e (this update)
 - **Fire Bolt: splash + Burning.** Every fireball that hits also does 50% of its MATK as Fire to the other monsters in a 3 × 3 square round the target, and each cast has a 30 / 40 / 50 / 60 / 70% chance (by level) to set the target **Burning** (Water hits it +50%; it keeps moving). **Freezer: splash** of 50% MATK Water on a 3 × 3 square while the target is Frozen. New `STATUS.brn`; statuses now say whether they hold the monster (`hold`). Skill text and Skill Info updated in en / th / jp. CP (Lv 10 / 20 / 30): 236 / 496 / 922 → 241 / 570 / 966 (`SKILL-SPEC.md` §3, §3e, §3h; `COMBAT-FORMULAS.md` §5).
 - **Status looks.** Frozen monsters turn icy blue inside ice crystals, Petrified ones turn to cracked grey stone, Burning ones glow orange in flames with embers and smoke, and stunned ones get circling stars. Ice shatters and stone crumbles when the status ends (`UI-UX.md` §29).
+
+## Changes in v21d
+- **Death crumble effect.** A dying monster breaks into shards in its colour that scatter and float up, then curve into the player with glowing trails and flash on arrival (~1 s). Normal 22 shards, Elite 38, boss 70 (half on Low graphics). A soft whoosh + rising sparkle (`absorb`, bigger `absorbbig` for Elites and bosses) plays as the shards arrive. See `UI-UX.md` §15b, `AUDIO.md`.
+
+## Changes in v21c
+- **Monster packs.** Every hunting map (Field 01–03, Geosyncline, Ruins) keeps its scattered monsters and now also has 3 packs, one per kind: 6 of the weakest kind, 5 of the middle, 4 of the strongest. A pack stays within 2.5 tiles of its centre (wanders 3 tiles), respawns there, and the whole pack (within 10 tiles) charges when one member is hit or spots you. Code: `PACK_*`, `packSize`, `packSpot`, `packAggro` next to `newMon`. Docs: the five `FIELD-*.md` files, wiki Monsters.
+
+## Changes in v21b
+- **The Idle buff skill set rotates too**, like the attack set: after slot n comes slot n+1 (wrapping); a buff that is still running (more than 1 s left) is skipped.
+
+## Changes in v21a
+- **Fix: the Idle attack skill set only cast one skill.** The set now rotates (after slot n comes slot n+1, wrapping; a skill that is not ready is skipped), so Petrifaction + Fire Bolt goes Petrifaction > Fire Bolt > Petrifaction … Self-area skills (Petrifaction) were never cast from range because no monster stood inside the area; Idle now walks in first (the pending-skill walk also handles skills without a range).
+
+## Changes in v21
+- **Idle Settings built** (gear badge on the Idle button): six tabs, Target · Combat · Recovery · Warp · Loot · VIP, saved in `S.iset`. Chosen targets (5 slots per map, no bosses, Elites count as their kind), fight back when attacked, stop timer; basic attack switch (forced on when skill attacks are off) and four 9-slot skill sets (attack, buff, healing, movement) with level picks; sit to rest; HP / SP potions with order and 5–95% bars; 5 buff-item slots re-used when the buff ends; Fly Wing when nothing is in sight for 3 s; return to town when full; loot filter (usable, gear by ★ / archetype / level, other; quest items always); VIP auto-buy Fly Wing and auto Pocket Dimension (errands keep Idle running). Teleport skill and auto resurrection are mockups. The boss / Elite switches and the auto-idle row are gone from this window. Offline idle uses the chosen targets and the loot filter. Details: `IDLE.md` "Idle Settings".
+- **Minimap Return to town now costs** the World Map price to Town (150 Sc per map passed); the tooltip shows it.
 
 ## Changes in v20.18
 - **Spellcaster spells rebalanced, all Lv 1–5.** **Fire Bolt** 1 / 3 / 5 / 7 / 10 fireballs of 120% MATK, SP 12 / 17 / 22 / 27 / 40, FCT 0.5–1.0 s (VCT 0), Global Delay 1 s; every fireball always falls even after the target dies, and no basic-attack bolt leaves the hand as a spell goes off. **Frost Nova → Freezer** (1 enemy, 110–200% MATK Water, Freeze 35–75%). **Lightning Spear** is ground magic: 2–10 spears of 100% MATK Wind on a 5 × 5 area, FCT 1.5 + VCT 1.0–1.8 s, GD 2 s. **Stone Spike → Petrifaction** (Self Cast, 7 × 7 around the caster, 75–100% MATK Earth, Petrifaction 30–75%). New status debuffs: Freeze (Wind +50%) and Petrifaction (Fire +50%) stop the monster; time, resistance and boss immunity are placeholders (⚠). New icons for the four spells. Old saves keep their levels (Fire Bolt above 5 drops to 5, points come back). The simulator now picks spell levels itself; Spellcaster CP at Lv 30 without gear 1,158 → 922. Bigger casting circles: a magic circle under the feet and a larger one at the hands while casting (`UI-UX.md` §27). See `SKILL-SPEC.md` §3, §3e–3h, `ARCHETYPES.md`, `COMBAT-FORMULAS.md` §5, `UI-UX.md`.

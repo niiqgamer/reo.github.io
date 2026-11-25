@@ -24,6 +24,8 @@ Arrival follows the portal rule in `FIELD-01.md` (nearest walkable tile beside t
 98 × 98 tiles (the original 49 × 49 layout scaled 2×; 3× monsters, 2 Elites per kind; portals sit 2 tiles from the map edge). Dark slate-brown ground with grey dead trees. **Fault cracks** (4 glowing teal fissures) are blocked tiles that only break where a road crosses; they never reach the map edge, so no area is cut off. 5 blocked pools of glowing water. **Ancient steles** with pulsing teal glyphs, teal crystals, mossy rocks, and two steles flanking the east portal. Roads: one east–west road (`y = 24 + round(sin(0.2x+1)·3)`) and one north–south road (`x = 22 + round(sin(0.17y)·3)`). Music: `geo` (76 BPM, harmonic minor, soft drums).
 
 ## 4. Monsters (**aggressive**, with skills)
+
+**Packs (v21c):** besides the scattered monsters, the map has 3 packs, one per kind (Faultcrawler ×6, Tidewraith ×5, Strata Golem ×4, normal monsters, no Elites). Each pack gathers within 2.5 tiles of a centre picked at load inside that kind's zone (at least 8 tiles from portals, 14 tiles from the other packs), wanders only 3 tiles around it and respawns next to it. When one member is hit or spots you, every member within 10 tiles charges too.
 Aggressive means a monster that sees the player inside its **aggro range** (Elites +1 tile) starts chasing at ×1.6 speed and attacks first, with a red "!" above its head. It gives up beyond 16 tiles. Respawn 8–15 s (Elite 45–60 s). Every type also has 1 Elite (rules in `FIELD-02.md`).
 
 | ID | Name (EN / TH) | Lv | Element | HP | ATK | Hard DEF | Soft DEF | MDEF | HIT | FLEE | Base / Job EXP | Scandium | Count | Aggro | Skills |

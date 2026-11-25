@@ -36,7 +36,7 @@ v20.18: NIIQ now writes the fields in English. They map to the rows above: **Ski
 
 Today’s code already rolls damage per hit (a skill with `hits` loops and calls the damage function once per hit), but it resolves all hits at the same instant. Fire Bolt will be the first skill with a gap between hits.
 
-## 3. Fire Bolt (v20.18, from NIIQ: Lv 1–5; splash + Burning v20.19)
+## 3. Fire Bolt (v20.18, from NIIQ: Lv 1–5; splash + Burning v21e)
 
 | | |
 |---|---|
@@ -44,8 +44,8 @@ Today’s code already rolls damage per hit (a skill with `hits` loops and calls
 | Skill Requirement | – |
 | Skill Form | Active, Target Cast |
 | Type | Magic |
-| Target | 1 enemy, **True multi-hit**, fireballs dropped **one at a time**, **Splash Damage** (v20.19) |
-| Type (v20.19) | Magic, Debuff (Burning) |
+| Target | 1 enemy, **True multi-hit**, fireballs dropped **one at a time**, **Splash Damage** (v21e) |
+| Type (v21e) | Magic, Debuff (Burning) |
 | Elements | Fire |
 | Overload Rate | True (⚠ the game keeps `overMul` 0.5 on the chance, see below) |
 | Overload Damage | ×0.5 (⚠ see below) |
@@ -62,8 +62,8 @@ Today’s code already rolls damage per hit (a skill with `hits` loops and calls
 | 4 | 7 | 840% | 60% | 0.2 s | 0.8 s | 0 s | 27 |
 | 5 | 10 | 1,200% | 70% | 0.2 s | 1.0 s | 0 s | 40 |
 
-- **Splash (v20.19):** every fireball that hits a live target also hits every *other* monster in a 3 × 3 square round it (1.5 tiles each way) for 50% of the fireball's MATK (60% MATK), Fire, no Overload. Fireballs that land after the target died do not splash.
-- **Burning (v20.19):** rolled **once per cast**, on the first fireball that hits (Lv 1–5: 30–70%). See §3h. Burning is rolled once per cast, not per fireball (confirmed by NIIQ).
+- **Splash (v21e):** every fireball that hits a live target also hits every *other* monster in a 3 × 3 square round it (1.5 tiles each way) for 50% of the fireball's MATK (60% MATK), Fire, no Overload. Fireballs that land after the target died do not splash.
+- **Burning (v21e):** rolled **once per cast**, on the first fireball that hits (Lv 1–5: 30–70%). See §3h. It is rolled once per cast, not per fireball (confirmed by NIIQ).
 
 - The cast is all **FCT**, so DEX and INT do not shorten it (only gear `fct` does).
 - **Every fireball always falls**, even if the target dies first (NIIQ, v20.18). Fireballs that land after the target died hit nothing (a small burst on the spot). SP is not refunded.
@@ -179,7 +179,7 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 | Skill Requirement | – |
 | Skill Form | Active, Target Cast |
 | Type | Magic, Debuff |
-| Target | 1 enemy, **Splash Damage** while it is Frozen (v20.19) |
+| Target | 1 enemy, **Splash Damage** while it is Frozen (v21e) |
 | Elements | Water |
 | Overload Rate | False (cannot Overload) |
 | ระยะ | 7 tiles |
@@ -196,7 +196,7 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 | 4 | 170% | 65% |
 | 5 | 200% | 75% |
 
-- **Splash (v20.19):** when the target is Frozen after the hit (newly, or still frozen from before), every *other* monster in a 3 × 3 square round it takes 50% of Freezer's MATK as Water (Lv 5: 100% MATK).
+- **Splash (v21e):** when the target is Frozen after the hit (newly, or still frozen from before), every *other* monster in a 3 × 3 square round it takes 50% of Freezer's MATK as Water (Lv 5: 100% MATK).
 
 ## 3f. Lightning Spear (v20.18, from NIIQ)
 
@@ -248,17 +248,17 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 | 4 | 90% | 65% | 32 |
 | 5 | 100% | 75% | 35 |
 
-## 3h. Freeze, Petrifaction and Burning (status debuffs, v20.18; Burning v20.19)
+## 3h. Freeze, Petrifaction and Burning (status debuffs, v20.18; Burning v21e)
 - A Frozen or Petrified monster **cannot move or attack** until it ends (it takes damage normally; damage does not break it). A **Burning** monster keeps moving and attacking (no damage over time either; only the weakness).
 - **Freeze:** Wind hits it +50%. **Petrifaction:** Fire hits it +50%. **Burning:** Water hits it +50%. So the spells feed each other: Fire Bolt → Freezer → Lightning Spear, Petrifaction → Fire Bolt. Built as **+0.5 added to the element multiplier** (`COMBAT-FORMULAS.md` §5): for example a Water monster (weak to Wind) that is Frozen takes Wind at 1.5 + 0.5 = 2.0 (+ Attunement).
 - ⚠ **Not given yet, placeholders in the game:**
   - Chance = `skill chance × (1 − target MDEF%) − target LUK / 5` (in % points).
   - Time = `3 / 4 / 5 / 6 / 7 s` by skill level (Burning too), `× (1 − target MDEF%)`.
   - Bosses are immune (as they already are to stun). Elites are not.
-- Looks (v20.19, `UI-UX.md` §29): Freeze turns the monster icy blue inside a block of ice crystals with frost on the ground; Petrifaction turns it to grey cracked stone with rubble; Burning tints it orange with flames, embers and smoke; a stun (Crushing Blow) shows stars circling the head. The pose stops while Frozen or Petrified, and the ice / stone shatters when it ends. The text แช่แข็ง! / แข็งเป็นหิน! / ติดไฟ! pops over it.
+- Looks (v21e, `UI-UX.md` §29): Freeze turns the monster icy blue inside a block of ice crystals with frost on the ground; Petrifaction turns it to grey cracked stone with rubble; Burning tints it orange with flames, embers and smoke; a stun (Crushing Blow) shows stars circling the head. The pose stops while Frozen or Petrified, and the ice / stone shatters when it ends. The text แช่แข็ง! / แข็งเป็นหิน! / ติดไฟ! pops over it.
 
-### Balance check (simulator, v20.19)
-v20.19 (Fire Bolt splash + Burning, Freezer splash), same method as below, seed 3: **CP Lv 10 / 20 / 30 = 241 / 570 / 966** (v20.18: 236 / 496 / 922). Lv 30 vs Field 03 monsters, 300 s: 51 kills alone (v20.18: 51), **111** in packs of 3 (v20.18: 105). The AI values Burning at a quarter of a Freeze (it does not stop the monster), and a spell that only gives Burning still needs a weakness to be cast outside a pack.
+### Balance check (simulator, v21e)
+v21e (Fire Bolt splash + Burning, Freezer splash), same method as below, seed 3: **CP Lv 10 / 20 / 30 = 241 / 570 / 966** (v20.18: 236 / 496 / 922). Lv 30 vs Field 03 monsters, 300 s: 51 kills alone (v20.18: 51), **111** in packs of 3 (v20.18: 105). The AI values Burning at a quarter of a Freeze (it does not stop the monster), and a spell that only gives Burning still needs a weakness to be cast outside a pack.
 
 ### Balance check (simulator, v20.18)
 Simulator on the game's combat module, 300 s, 3 seeds, auto stats, every skill and passive learned, no gear. **The simulator now picks the level of each spell itself** (`autoLv`): the hits that can still land on the HP left, per second while SP is above half and per SP below that. Kills · deaths (Fighter for scale).

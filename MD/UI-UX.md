@@ -98,7 +98,7 @@ These will be replaced by real skills per class/job (`JOBS.md`).
 
 ## 5. v3 HUD changes
 - Removed Thai/English and layout buttons from the HUD — they live in **Settings**.
-- **Minimap panel:** header with map name and collapse button; on the map: **Return to town** (fields only) and **zoom + / −** with 5 steps: Very far 0.6 · Far 0.8 · Standard 1.0 · Near 1.25 · Very near 1.55 (mouse wheel steps too; no slider).
+- **Minimap panel:** header with map name and collapse button; on the map: **Return to town** (fields only; since v21 it costs the World Map teleport price to Town) and **zoom + / −** with 5 steps: Very far 0.6 · Far 0.8 · Standard 1.0 · Near 1.25 · Very near 1.55 (mouse wheel steps too; no slider).
 - **Quest tracker:** collapsible, up to 5 tracked quests, color-coded, tap to auto-quest.
 - **Idle:** single prominent button; status panel expands once idle starts (see `IDLE.md`).
 - Banner shows recommended CP in fields.
@@ -298,6 +298,14 @@ Every hit the player lands on a monster now plays a small pixel-art effect, repl
 
 **Code touched:** `applyHit` (calls `hitFx`), `drawFx` (new `hfx` branch), `update` (hit-stop and shake timers at the top), `render` (shake offset in the world transform; clicks are not affected because `ox/oy` are not modified).
 
+
+### 15b. Death crumble (v21d)
+When a monster dies its body shrinks and fades over 0.45 s while it breaks into shards (replacing the old death `burst`):
+1. **Scatter (0–0.45…0.75 s, per shard):** small rotating rectangles in the monster's colour (`monCol`), with some white and, for Elites gold / bosses ice blue, fly outward and drift up with a slight flutter.
+2. **Home in (0.55 s per shard):** each shard turns into a glowing dot with a short trail and curves (ease-in) into the player's chest. The target is read every frame, so the shards follow you while you move.
+3. **Arrival:** a ring flashes at the player's feet ~0.95 s after the kill, with the `absorb` sound (`absorbbig` for Elites and bosses; see `AUDIO.md`).
+
+Shards: normal 22, Elite 38, boss 70 (half on Low graphics). All shards live in one `fx` item (`k:"crumble"`), so the 420-effect cap is not stressed. Code: `crumbleFx` (called from `killMon`), `drawFx` `crumble` branch, `drawMon` (death shrink).
 ---
 
 ## 16. HUD changes in v19.1
@@ -689,7 +697,7 @@ The player's own character is now drawn in code (`drawHero8`), with the look cho
 - **Game pose order** (`drawHeroApp`): dead → death (from `player.dieAt`) · casting → cast · walking → walk · pose flash (`player.pose` / `poseT`) → cast for magic, bow for Rangers, sword attack for the rest · hurt (`player.hurtT`, 0.4 s after taking damage) → hit · sitting → sit · else idle.
 - Portraits (player card, Character window doll, Status portrait) use the front view, like the sprites. Other players and NPCs still use the chibi.
 
-## 29. Monster status looks (v20.19)
+## 29. Monster status looks (v21e)
 Status effects on monsters are drawn in `drawMon` (helpers `stRecolor`, `stIceBack`, `stIceFront`, `stStone`, `stFire`, `stStars`). For Freeze, Petrifaction and Burning the monster's own drawing is redrawn off-screen, recoloured with canvas blend modes and masked back to its shape (`stRecolor`: two shared off-screen canvases, so it works with every monster sprite and needs no `ctx.filter`). Shapes use a steady random per monster (`stR`), so crystals and cracks do not jump between frames.
 
 | Status | Body | Around it |
