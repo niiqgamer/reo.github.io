@@ -52,7 +52,7 @@ Today’s code already rolls damage per hit (a skill with `hits` loops and calls
 | ระยะ | 7 tiles |
 | Global Delay | **1 s** at every level |
 | Skill Cooldown | **0 s** at every level |
-| Detail | โจมตีศัตรูด้วยลูกไฟ สร้างความเสียหายทางเวทมนตร์ธาตุ Fire เท่ากับ MATK 100% (game: 120% MATK per fireball, from the per-level totals) เมื่อลูกไฟโดนเป้าหมายจะ Splash Damage Fire รอบเป้าหมายกว้าง 3x3 ช่อง ด้วย MATK 50% และสร้างผลทำให้ติดสถานะ **Burning (ติดไฟ)** ที่ลดความต้านทานต่อธาตุ Water ลง 50% เพิ่มเติม โอกาสและระยะเวลาติดสถานะ Burning เปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย |
+| Detail | โจมตีศัตรูด้วยลูกไฟ สร้างความเสียหายทางเวทมนตร์ธาตุ Fire เท่ากับ MATK 100% → **120% MATK per fireball** (NIIQ: the level table is right, "100%" was a typo) เมื่อลูกไฟโดนเป้าหมายจะ Splash Damage Fire รอบเป้าหมายกว้าง 3x3 ช่อง ด้วย MATK 50% และสร้างผลทำให้ติดสถานะ **Burning (ติดไฟ)** ที่ลดความต้านทานต่อธาตุ Water ลง 50% เพิ่มเติม โอกาสและระยะเวลาติดสถานะ Burning เปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย |
 
 | Lv | Fireballs | MATK in total | Burning chance | Gaps | FCT | VCT | SP |
 |---|---|---|---|---|---|---|---|
@@ -63,7 +63,7 @@ Today’s code already rolls damage per hit (a skill with `hits` loops and calls
 | 5 | 10 | 1,200% | 70% | 0.2 s | 1.0 s | 0 s | 40 |
 
 - **Splash (v20.19):** every fireball that hits a live target also hits every *other* monster in a 3 × 3 square round it (1.5 tiles each way) for 50% of the fireball's MATK (60% MATK), Fire, no Overload. Fireballs that land after the target died do not splash.
-- **Burning (v20.19):** rolled **once per cast**, on the first fireball that hits (Lv 1–5: 30–70%). See §3h. ⚠ "MATK 100%" in the detail text vs 120% per fireball in the level table: the game keeps the table.
+- **Burning (v20.19):** rolled **once per cast**, on the first fireball that hits (Lv 1–5: 30–70%). See §3h. Burning is rolled once per cast, not per fireball (confirmed by NIIQ).
 
 - The cast is all **FCT**, so DEX and INT do not shorten it (only gear `fct` does).
 - **Every fireball always falls**, even if the target dies first (NIIQ, v20.18). Fireballs that land after the target died hit nothing (a small burst on the spot). SP is not refunded.
@@ -308,7 +308,7 @@ New side effect of stopping fireballs when the target dies: CP counts damage dea
 
 ## 7. ⚠ Open items
 1. Max level and per-level effects of the Fighter, Ranger and Supporter skills (one level each). Every Spellcaster skill now has levels.
-1a. Freeze / Petrifaction / Burning time, whether Burning should also burn (damage over time), the exact MDEF / LUK resistance, boss immunity (§3h); the meaning of “Overload Damage ×0.5” (§3).
+1a. Freeze / Petrifaction / Burning time, whether Burning should also burn (damage over time; for now it does not, see §3h), the exact MDEF / LUK resistance, boss immunity (§3h); the meaning of “Overload Damage ×0.5” (§3).
 1c. Spellcaster CP fell about 20% with the v20.18 spells (§3h).
 1b. Overload Energy: party members without combat stats (§3d).
 2. Potion and wing slots (§5).
