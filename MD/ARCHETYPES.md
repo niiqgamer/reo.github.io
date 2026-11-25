@@ -38,7 +38,7 @@ v21f adds five skills from NIIQ (full tables: `SKILL-SPEC.md` §3i–3n). They a
 | No Arrow (passive, Lv 1–5) | Shoot Scandium arrows: every arrow shot costs 20 / 18 / 15 / 13 / 10 Sc. Not enough Sc = no shot | – | – |
 | Ranger Mastery (passive, Lv 1–10) | DEX +Lv, HIT +Lv, AGI +Lv | – | No Arrow 1 |
 | Focusing (Self Cast, Lv 1–10) | DEX and AGI +3–12% for 60–240 s | 25–70 | No Arrow 3 |
-| Aim Strike (Lv 1–10) | 1 arrow of 100–200% ATK; 20–40% chance to split into 2–7 arrows (0.1 s apart); each splashes 50% on a 3 × 3 area; can crit (×0.5). GD 0.1 s | 12–25 | No Arrow 5 |
+| Aim Strike (Self Cast buff, Lv 1–10) | For 60–150 s, each basic shot has a 20–38% chance to split into 2–7 arrows of 100–200% ATK each (0.1 s apart, crit chance ×0.5); every arrow splashes 50% on a 3 × 3 area. FCT 2 s, GD 2 s, cooldown = duration | 60–150 | No Arrow 5 |
 | Aiming Shower (Lv 1–10) | 1 arrow of 160–250% ATK, pushes the target 2 tiles back (bosses too); no crit. FCT 0.1 s, GD 0.1 s | 20 | No Arrow 5 |
 
 Points: the five new skills cost 45 points at max, the old six 6 points; a C1 Ranger has 49.

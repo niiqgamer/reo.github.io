@@ -35,7 +35,7 @@ Stat points: 48 at creation, `⌊lv/5⌋ + 3` per level (1,273 total at Lv 99). 
 
 ```
 hit%   = clamp(80 + HIT − targetFLEE, 5, 95)                       // iRO
-crit%  = CRIT × critMul − targetLUK/5   (basic attacks; among skills only Piercing Shot (×2) and Aim Strike (×0.5, v21f))
+crit%  = CRIT × critMul − targetLUK/5   (basic attacks; among skills only Piercing Shot (×2); the split arrows of the Aim Strike buff use ×0.5 (v21g))
 weaponRoll = weaponATK × U(lo, 1),  lo = min(1, 0.5 + DEX×0.005)    // DEX narrows the roll; DEX 100 = always max
 raw    = (statusATK + weaponRoll + masteryATK) × skill% × element × bonus
 bonus  = distance (Ranger) × leap shot (+60%) …

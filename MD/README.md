@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v21f. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v21g. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,11 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v21f (this update)
+## Changes in v21g (this update)
+- **Aim Strike is now a Self Cast buff** (new spec from NIIQ, `SKILL-SPEC.md` §3m). For 60–150 s, every basic shot has a 20–38% chance to split in mid-air into 2 / 2 / 3 / 3 / 4 / 4 / 5 / 5 / 6 / 7 arrows of 100–200% ATK each (0.1 s apart, crit chance ×0.5); every arrow splashes 50% on a 3 × 3 area. SP 60–150, FCT 2 s, Global Delay 2 s, cooldown = duration. The v21f burst (a full SP bar in 1 s) is gone. Idle and the simulator keep the buff up; buff icon in the status island; text in en / th / jp.
+- **Balance:** Ranger CP Lv 10 / 20 / 30 = 654 / 1,056 / 1,996 (v21f 640 / 1,065 / 1,614; Fighter 598 / 1,090 / 1,576). ⚠ At Lv 10 a basic shot under the buff averages ~6× a normal shot: Ruins DPS 407 (Fighter 181, Spellcaster 200). Ideas in `SKILL-SPEC.md` §3n balance check.
+
+## Changes in v21f
 - **Five new Ranger skills** (from NIIQ, `SKILL-SPEC.md` §3i–3n; the old Ranger prototype skills stay): **No Arrow** (passive Lv 1–5: Scandium arrows, 20 / 18 / 15 / 13 / 10 Sc per arrow shot, no Scandium = no shot), **Ranger Mastery** (passive Lv 1–10: DEX, HIT, AGI +Lv), **Focusing** (Self Cast Lv 1–10: DEX and AGI +3–12% for 60–240 s, SP 25–70), **Aim Strike** (Lv 1–10: 100–200% ATK arrow, 20–40% chance to split into 2–7 arrows 0.1 s apart, 50% splash on 3 × 3, crit chance ×0.5, SP 12–25, GD 0.1 s), **Aiming Shower** (Lv 1–10: 160–250% ATK, pushes the target 2 tiles back incl. bosses, SP 20, FCT 0.1 s, GD 0.1 s). New **skill requirements** (`SKREQ`): the four need No Arrow Lv 1 / 3 / 5 / 5; locked tiles show what they need, Skill Info has a Requires line. Text in en / th / jp.
 - **Fix: the Status window showed no bonus from Ranger Mastery / Focusing.** The green "+N" next to each base stat counted only gear and Blessing; it now shows everything on top of the base stat (gear, Blessing, Ranger Mastery, Focusing), read from the derived stats. The bonuses always applied in combat.
 - **Arrows look like arrows** (`arrowDraw`): every Ranger shot is an arrow turned along its arc; Scandium arrows glow pale gold with a sparkling trail (`UI-UX.md` §30). New icons for the five skills.
