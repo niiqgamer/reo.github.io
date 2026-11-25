@@ -5515,7 +5515,7 @@ function invWin(){
 /* sort toggle: Name > Rarity (Equipment tab only) > Sell price. Each press switches the mode and sorts. */
 function sortInventory(mode){
   mode=mode||"name";const rank=id=>isGear(id)?0:(ITEMDB[id]&&ITEMDB[id].q)?3:(ITEMDB[id]&&ITEMDB[id].t==="use")?1:2;
-  const star=id=>isGear(id)?gParse(id).r:0,nm=(a,b)=>itemName(a.id).localeCompare(itemName(b.id),loc,{numeric:true}),sl=id=>isGear(id)?EQ_SLOTS.indexOf(equipSlotOf(id)):0;
+  const loc=lang==="jp"?"ja":lang,star=id=>isGear(id)?gParse(id).r:0,nm=(a,b)=>itemName(a.id).localeCompare(itemName(b.id),loc,{numeric:true}),sl=id=>isGear(id)?EQ_SLOTS.indexOf(equipSlotOf(id)):0;
   const cmp=(a,b)=>{
     if(rank(a.id)!==rank(b.id))return rank(a.id)-rank(b.id);
     if(mode==="rarity"){if(star(a.id)!==star(b.id))return star(b.id)-star(a.id);if(sl(a.id)!==sl(b.id))return sl(a.id)-sl(b.id);return nm(a,b)||itemPrice(b.id,b.ref)-itemPrice(a.id,a.ref)}
