@@ -79,3 +79,6 @@ Applies to monster kills (`killMon`). Idle and offline rewards are not changed y
 5. Exchange between currencies (e.g. La → Y, or none)?
 6. What does each shop sell (NPC, Yttrium shop, premium shop)?
 7. Thai display names for the three currencies.
+
+## 5. Scandium sink: No Arrow (v21f)
+A Ranger who learned **No Arrow** pays Scandium for every arrow shot: 20 / 18 / 15 / 13 / 10 Sc by skill level (`SKILL-SPEC.md` §3j). With too little Scandium the bow does not shoot. Offline idle subtracts the arrows too (the net can be negative; the wallet stops at 0). Simulated net per hour at Lv 5: Field 01 −4.7k, Field 02 −3.2k, Field 03 +14.9k, Geosyncline +7.5k, Ruins +17.9k; at Lv 1 every map is negative (table in `SKILL-SPEC.md` §3n). ⚠ Open: this is the first big Scandium sink tied to fighting, and it hits one archetype only.

@@ -1667,6 +1667,7 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .si-head>b{font-size:17px;font-weight:700;line-height:1.2;color:var(--ac)}
 .si-chips{display:flex;flex-wrap:wrap;gap:4px}
 .si-desc{margin:0;padding-bottom:6px;border-bottom:2px solid var(--w-line);font-size:12.5px;line-height:1.5}
+.si-req{font-size:12px;color:var(--ac)}.si-req.no{color:#c0392b}
 .si-lvs{display:flex;flex-direction:column;gap:5px;padding-bottom:8px;border-bottom:2px solid var(--w-line)}
 .si-lv p{margin:1px 0 0;font-size:12px;line-height:1.4}
 .si-lv.dim{opacity:.6}
@@ -1732,7 +1733,7 @@ svg.ski{fill:none!important;stroke:#1b2030!important;stroke-width:1.6!important;
 </style>
 </head>
 <body>
-<svg id="skdefs" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="kSteel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#dfe6ef"/><stop offset="1" stop-color="#7f8ba0"/></linearGradient><linearGradient id="kSteelD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c7d0dc"/><stop offset="1" stop-color="#55617a"/></linearGradient><linearGradient id="kGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".45" stop-color="#ffcf3f"/><stop offset="1" stop-color="#b9780a"/></linearGradient><linearGradient id="kWood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dba46a"/><stop offset="1" stop-color="#7c4723"/></linearGradient><linearGradient id="kLeaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6ffb8"/><stop offset=".5" stop-color="#78cc4c"/><stop offset="1" stop-color="#2c8530"/></linearGradient><linearGradient id="kRed" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb3a6"/><stop offset=".5" stop-color="#ef463c"/><stop offset="1" stop-color="#9c1418"/></linearGradient><linearGradient id="kIce" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#c6f3ff"/><stop offset="1" stop-color="#3aa8e6"/></linearGradient><linearGradient id="kElec" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#fff37a"/><stop offset="1" stop-color="#ffaa00"/></linearGradient><linearGradient id="kMana" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e4f5ff"/><stop offset=".5" stop-color="#5aaeff"/><stop offset="1" stop-color="#1f45c0"/></linearGradient><linearGradient id="kStone" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0e4cf"/><stop offset=".5" stop-color="#ab977b"/><stop offset="1" stop-color="#5f4f3e"/></linearGradient><linearGradient id="kStoneD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9a8569"/><stop offset="1" stop-color="#4a3c2e"/></linearGradient><linearGradient id="kArc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0ff"/><stop offset=".45" stop-color="#d49bff"/><stop offset="1" stop-color="#6d2bd6"/></linearGradient><linearGradient id="kCloth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#eef1f6"/><stop offset="1" stop-color="#b3bdcc"/></linearGradient><linearGradient id="kSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0dc"/><stop offset="1" stop-color="#e2ad7e"/></linearGradient><linearGradient id="kSoil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b1814f"/><stop offset="1" stop-color="#5a3a20"/></linearGradient><linearGradient id="kFireO" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a1f" stop-opacity="0"/><stop offset=".45" stop-color="#ff5a1a"/><stop offset="1" stop-color="#b81e0e"/></linearGradient><linearGradient id="kFireM" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc23a" stop-opacity="0"/><stop offset=".5" stop-color="#ffa62a"/><stop offset="1" stop-color="#ff7a1f"/></linearGradient><linearGradient id="kFireC" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0" stop-opacity="0"/><stop offset=".6" stop-color="#fff3a8"/><stop offset="1" stop-color="#fff"/></linearGradient><linearGradient id="kSlash" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".6" stop-color="#ffd9cf"/><stop offset="1" stop-color="#fff"/></linearGradient><linearGradient id="kBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#ffe98a" stop-opacity=".85"/><stop offset="1" stop-color="#ffd23a" stop-opacity=".25"/></linearGradient><linearGradient id="kTrailG" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#b6ff8a" stop-opacity="0"/><stop offset="1" stop-color="#eaffd2"/></linearGradient><radialGradient id="kGlowW"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><radialGradient id="kGlowY"><stop offset="0" stop-color="#fff3a0" stop-opacity=".95"/><stop offset="1" stop-color="#ffd23a" stop-opacity="0"/></radialGradient><radialGradient id="kGlowF"><stop offset="0" stop-color="#ffd27a" stop-opacity=".95"/><stop offset="1" stop-color="#ff6a1f" stop-opacity="0"/></radialGradient><radialGradient id="kGlowB"><stop offset="0" stop-color="#d6f6ff" stop-opacity=".95"/><stop offset="1" stop-color="#5ac8ff" stop-opacity="0"/></radialGradient><radialGradient id="kGlowP"><stop offset="0" stop-color="#f3dcff" stop-opacity=".95"/><stop offset="1" stop-color="#b56bff" stop-opacity="0"/></radialGradient><radialGradient id="kGlowG"><stop offset="0" stop-color="#eaffc8" stop-opacity=".95"/><stop offset="1" stop-color="#7ad04c" stop-opacity="0"/></radialGradient><radialGradient id="kOrbF" cx=".35" cy=".35"><stop offset="0" stop-color="#fff3c0"/><stop offset=".5" stop-color="#ff7a2a"/><stop offset="1" stop-color="#b81e0e"/></radialGradient><radialGradient id="kOrbW" cx=".35" cy=".35"><stop offset="0" stop-color="#e6fbff"/><stop offset=".5" stop-color="#4fb4ff"/><stop offset="1" stop-color="#1a48b8"/></radialGradient><radialGradient id="kOrbA" cx=".35" cy=".35"><stop offset="0" stop-color="#f0ffe0"/><stop offset=".5" stop-color="#6fd36a"/><stop offset="1" stop-color="#1e7d3a"/></radialGradient><radialGradient id="kOrbE" cx=".35" cy=".35"><stop offset="0" stop-color="#fbeed6"/><stop offset=".5" stop-color="#c08a52"/><stop offset="1" stop-color="#6a4322"/></radialGradient><radialGradient id="kOrbP" cx=".35" cy=".35"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#e2b8ff"/><stop offset="1" stop-color="#7a35e0"/></radialGradient><radialGradient id="kOrbH" cx=".4" cy=".35"><stop offset="0" stop-color="#fffef0"/><stop offset=".5" stop-color="#ffe27a"/><stop offset="1" stop-color="#e6a10c"/></radialGradient><radialGradient id="kLens" cx=".35" cy=".3"><stop offset="0" stop-color="#d8f6ff"/><stop offset=".55" stop-color="#2f7fb8"/><stop offset="1" stop-color="#0d2a4a"/></radialGradient></defs></svg>
+<svg id="skdefs" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="kSteel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#dfe6ef"/><stop offset="1" stop-color="#7f8ba0"/></linearGradient><linearGradient id="kSteelD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c7d0dc"/><stop offset="1" stop-color="#55617a"/></linearGradient><linearGradient id="kGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".45" stop-color="#ffcf3f"/><stop offset="1" stop-color="#b9780a"/></linearGradient><linearGradient id="kWood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dba46a"/><stop offset="1" stop-color="#7c4723"/></linearGradient><linearGradient id="kLeaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6ffb8"/><stop offset=".5" stop-color="#78cc4c"/><stop offset="1" stop-color="#2c8530"/></linearGradient><linearGradient id="kRed" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb3a6"/><stop offset=".5" stop-color="#ef463c"/><stop offset="1" stop-color="#9c1418"/></linearGradient><linearGradient id="kIce" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#c6f3ff"/><stop offset="1" stop-color="#3aa8e6"/></linearGradient><linearGradient id="kElec" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#fff37a"/><stop offset="1" stop-color="#ffaa00"/></linearGradient><linearGradient id="kMana" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e4f5ff"/><stop offset=".5" stop-color="#5aaeff"/><stop offset="1" stop-color="#1f45c0"/></linearGradient><linearGradient id="kStone" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0e4cf"/><stop offset=".5" stop-color="#ab977b"/><stop offset="1" stop-color="#5f4f3e"/></linearGradient><linearGradient id="kStoneD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9a8569"/><stop offset="1" stop-color="#4a3c2e"/></linearGradient><linearGradient id="kArc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0ff"/><stop offset=".45" stop-color="#d49bff"/><stop offset="1" stop-color="#6d2bd6"/></linearGradient><linearGradient id="kCloth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#eef1f6"/><stop offset="1" stop-color="#b3bdcc"/></linearGradient><linearGradient id="kSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0dc"/><stop offset="1" stop-color="#e2ad7e"/></linearGradient><linearGradient id="kSoil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b1814f"/><stop offset="1" stop-color="#5a3a20"/></linearGradient><linearGradient id="kFireO" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a1f" stop-opacity="0"/><stop offset=".45" stop-color="#ff5a1a"/><stop offset="1" stop-color="#b81e0e"/></linearGradient><linearGradient id="kFireM" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc23a" stop-opacity="0"/><stop offset=".5" stop-color="#ffa62a"/><stop offset="1" stop-color="#ff7a1f"/></linearGradient><linearGradient id="kFireC" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0" stop-opacity="0"/><stop offset=".6" stop-color="#fff3a8"/><stop offset="1" stop-color="#fff"/></linearGradient><linearGradient id="kSlash" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".6" stop-color="#ffd9cf"/><stop offset="1" stop-color="#fff"/></linearGradient><linearGradient id="kBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#ffe98a" stop-opacity=".85"/><stop offset="1" stop-color="#ffd23a" stop-opacity=".25"/></linearGradient><linearGradient id="kTrailG" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#b6ff8a" stop-opacity="0"/><stop offset="1" stop-color="#eaffd2"/></linearGradient><radialGradient id="kGlowW"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><radialGradient id="kGlowY"><stop offset="0" stop-color="#fff3a0" stop-opacity=".95"/><stop offset="1" stop-color="#ffd23a" stop-opacity="0"/></radialGradient><radialGradient id="kGlowF"><stop offset="0" stop-color="#ffd27a" stop-opacity=".95"/><stop offset="1" stop-color="#ff6a1f" stop-opacity="0"/></radialGradient><radialGradient id="kGlowB"><stop offset="0" stop-color="#d6f6ff" stop-opacity=".95"/><stop offset="1" stop-color="#5ac8ff" stop-opacity="0"/></radialGradient><radialGradient id="kGlowP"><stop offset="0" stop-color="#f3dcff" stop-opacity=".95"/><stop offset="1" stop-color="#b56bff" stop-opacity="0"/></radialGradient><radialGradient id="kGlowG"><stop offset="0" stop-color="#eaffc8" stop-opacity=".95"/><stop offset="1" stop-color="#7ad04c" stop-opacity="0"/></radialGradient><radialGradient id="kOrbF" cx=".35" cy=".35"><stop offset="0" stop-color="#fff3c0"/><stop offset=".5" stop-color="#ff7a2a"/><stop offset="1" stop-color="#b81e0e"/></radialGradient><radialGradient id="kOrbW" cx=".35" cy=".35"><stop offset="0" stop-color="#e6fbff"/><stop offset=".5" stop-color="#4fb4ff"/><stop offset="1" stop-color="#1a48b8"/></radialGradient><radialGradient id="kOrbA" cx=".35" cy=".35"><stop offset="0" stop-color="#f0ffe0"/><stop offset=".5" stop-color="#6fd36a"/><stop offset="1" stop-color="#1e7d3a"/></radialGradient><radialGradient id="kOrbE" cx=".35" cy=".35"><stop offset="0" stop-color="#fbeed6"/><stop offset=".5" stop-color="#c08a52"/><stop offset="1" stop-color="#6a4322"/></radialGradient><radialGradient id="kOrbP" cx=".35" cy=".35"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#e2b8ff"/><stop offset="1" stop-color="#7a35e0"/></radialGradient><radialGradient id="kOrbH" cx=".4" cy=".35"><stop offset="0" stop-color="#fffef0"/><stop offset=".5" stop-color="#ffe27a"/><stop offset="1" stop-color="#e6a10c"/></radialGradient><linearGradient id="kScan" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffdf0"/><stop offset=".45" stop-color="#ecdca0"/><stop offset="1" stop-color="#9a8648"/></linearGradient><radialGradient id="kGlowS"><stop offset="0" stop-color="#fff8d8" stop-opacity=".95"/><stop offset="1" stop-color="#d9c27a" stop-opacity="0"/></radialGradient><radialGradient id="kSpace" cx=".5" cy=".5"><stop offset="0" stop-color="#5a4bb8"/><stop offset=".55" stop-color="#21195a"/><stop offset="1" stop-color="#0a0b22"/></radialGradient><radialGradient id="kLens" cx=".35" cy=".3"><stop offset="0" stop-color="#d8f6ff"/><stop offset=".55" stop-color="#2f7fb8"/><stop offset="1" stop-color="#0d2a4a"/></radialGradient></defs></svg>
 <div id="app">
   <div id="stage" class="L">
     <canvas id="cv" aria-label="Game world"></canvas>
@@ -1877,7 +1878,7 @@ const ARCH={
    actives:["power_strike","cleave","crushing_blow","war_cry"],passives:["weapon_mastery","iron_body"]},
  ranger:{type:"RANGED",range:9,hpLv:38,spLv:6,aspd:1.0,weapon:{atk:34,lvAtk:2.2,ranged:true},armor:.10,
    tpl:{str:0,agi:4,vit:1,int:0,dex:6,luk:2},basic:{kind:"phys",ratio:1},
-   actives:["double_strafe","arrow_shower","piercing_shot","evasive_leap"],passives:["eagle_eye","steady_aim"]},
+   actives:["focusing","aim_strike","aiming_shower","double_strafe","arrow_shower","piercing_shot","evasive_leap"],passives:["no_arrow","ranger_mastery","eagle_eye","steady_aim"]},
  spellcaster:{type:"MAGIC",range:7,hpLv:30,spLv:11,aspd:1.3,weapon:{atk:12,lvAtk:1,ranged:false,matkBase:2,matkLv:.65},armor:.05,
    tpl:{str:0,agi:0,vit:2,int:6,dex:4,luk:0},basic:{kind:"magic",ratio:.7,elem:"neutral"},
    actives:["fire_bolt","freezer","lightning_spear","petrifaction","overload_energy"],passives:["mana_flow","elemental_attunement"]},
@@ -1903,6 +1904,10 @@ const SK={
  arrow_shower:{arch:"ranger",kind:"phys",ratio:.9,sp:14,cd:4,range:12,aoe:1.6,at:"target",ranged:true,ic:"rain"},
  piercing_shot:{arch:"ranger",kind:"phys",ratio:3.2,ignoreDef:.5,canCrit:true,critMul:2,sp:18,cd:6,range:12,ranged:true,ic:"pierce"},
  evasive_leap:{arch:"ranger",kind:"move",leap:3,buff:"leap",dur:4,sp:10,cd:10,ic:"wing"},
+ // v21f Ranger skills from NIIQ (SKILL-SPEC.md §3i-3n). Lv 10 rows; skAt() gives every level. Need No Arrow (SKREQ).
+ focusing:{arch:"ranger",kind:"buff",buff:"focus",focus:.12,dur:240,sp:70,cd:0,gd:0,lv:10,ic:"aim"},   // Self Cast: DEX and AGI +3..12% for 60..240 s
+ aim_strike:{arch:"ranger",kind:"phys",ratio:2,sp:25,cd:0,gd:.1,vct:0,fct:0,gap:.1,range:12,ranged:true,canCrit:true,critMul:.5,split:7,splitCh:.4,splash:.5,splashR:1.5,lv:10,ic:"aim"},   // 1 arrow of ratio x ATK; splitCh: it splits into `split` arrows (0.1 s apart); every arrow splashes 50% on a 3x3 square
+ aiming_shower:{arch:"ranger",kind:"phys",ratio:2.5,sp:20,cd:0,gd:.1,vct:0,fct:.1,range:12,ranged:true,knock:2,lv:10,ic:"arrows"},   // 1 arrow, pushes the target 2 tiles back (bosses too), cannot crit
  // spellcaster — Casting (DEX and INT shorten the variable cast) + elemental weakness; spells never miss
  fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.2,hits:10,sp:40,cd:0,gd:1,vct:0,fct:1,gap:.2,range:7,overMul:.5,splash:.5,splashR:1.5,st:"brn",stCh:.7,stDur:7,debuff:true,lv:5,ic:"flame"},   // v20.18: Lv 5 row (Lv 1-5); skAt() gives every level (SKILL-SPEC.md §3)
  freezer:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.0,sp:25,cd:0,gd:.5,vct:.64,fct:.16,range:7,st:"frz",stCh:.75,stDur:7,debuff:true,splash:.5,splashR:1.5,splashOn:"frz",lv:5,ic:"snow"},   // v20.18 (was Frost Nova): 1 enemy + Freeze (Wind resistance -50%)
@@ -1920,6 +1925,8 @@ const PASSIVE={
  iron_body:{arch:"fighter",hpPct:.15,softDefMul:1.5},
  eagle_eye:{arch:"ranger",range:3,hit:10},
  steady_aim:{arch:"ranger",perTile:.02,crit:5},
+ no_arrow:{arch:"ranger"},          // v21f: Lv 1-5, every arrow shot costs NA_SC Scandium (handled by the game, not by derive)
+ ranger_mastery:{arch:"ranger"},    // v21f: Lv 1-10, DEX +Lv, HIT +Lv, AGI +Lv
  mana_flow:{arch:"spellcaster"},              // v20.6: Lv 1-10, see manaFlow()
  elemental_attunement:{arch:"spellcaster",per:.05},   // v20.6: Lv 1-5, +5% weakness bonus per level
  divine_grace:{arch:"supporter",healPct:.2,shieldCap:.2},
@@ -1935,6 +1942,8 @@ function derive(p){
   if(b.blessing){s.str+=8;s.int+=8;s.dex+=8}
   // v20.6: p.pasLv (game only) = {passive: level learned}; the simulator leaves it out = every passive at its max level
   const pl=k=>A.passives.includes(k)?(p.pasLv?(p.pasLv[k]|0):skMax(k)):0,has=k=>pl(k)>0;
+  const rm=pl("ranger_mastery");if(rm){s.dex+=rm;s.agi+=rm}   // v21f Ranger Mastery: DEX +Lv, AGI +Lv (HIT +Lv below)
+  if(p.focus>0){s.dex=fl(s.dex*(1+p.focus));s.agi=fl(s.agi*(1+p.focus))}   // v21f Focusing: DEX and AGI +3..12%
   const mf=manaFlow(pl("mana_flow"));
   const ranged=A.weapon.ranged;
   // iRO: melee status ATK = STR + [STR/10]^2 + [DEX/5] + [LUK/5]; ranged swaps STR and DEX
@@ -1951,7 +1960,7 @@ function derive(p){
   const maxHP=fl(baseHP*(1+s.vit/100)*(has("iron_body")?1+PASSIVE.iron_body.hpPct:1));
   const maxSP=fl(baseSP*(1+s.int/100)*(1+mf.sp));
   // iRO: HIT = DEX + BaseLv ; FLEE = AGI + BaseLv ; CRIT = 1 + LUK*0.3 ; perfect dodge = 1 + LUK*0.1
-  const hit=s.dex+p.lv+(has("weapon_mastery")?PASSIVE.weapon_mastery.hit:0)+(has("eagle_eye")?PASSIVE.eagle_eye.hit:0);
+  const hit=s.dex+p.lv+(has("weapon_mastery")?PASSIVE.weapon_mastery.hit:0)+(has("eagle_eye")?PASSIVE.eagle_eye.hit:0)+rm;
   const flee=s.agi+p.lv+(b.leap?30:0);
   const crit=1+s.luk*.3+(has("steady_aim")?PASSIVE.steady_aim.crit:0);
   const pdodge=1+s.luk*.1;
@@ -2066,7 +2075,14 @@ function autoStats(arch,lv,base){
 /* ---------- skill levels (v20) ----------
    Skills listed in SKLV have levels; every other skill is still the fixed Lv 5 prototype.
    v20.18 Spellcaster spells, Lv 1-5 each (SKILL-SPEC.md §3, §3e-3g). */
-const SKLV={fire_bolt:{max:5,def:5},freezer:{max:5,def:5},lightning_spear:{max:5,def:5},petrifaction:{max:5,def:5},overload_energy:{max:5,def:5},mana_flow:{max:10,def:10},elemental_attunement:{max:5,def:5}};   // v20.6: passives with levels too (derive reads them)
+const SKLV={fire_bolt:{max:5,def:5},freezer:{max:5,def:5},lightning_spear:{max:5,def:5},petrifaction:{max:5,def:5},overload_energy:{max:5,def:5},mana_flow:{max:10,def:10},elemental_attunement:{max:5,def:5},
+  no_arrow:{max:5,def:5},ranger_mastery:{max:10,def:10},focusing:{max:10,def:10},aim_strike:{max:10,def:10},aiming_shower:{max:10,def:10}};   // v21f Ranger
+/* v21f skill requirements: {skill: {needed skill: level}} (Skills Tree locks the tile until they are met) */
+const SKREQ={ranger_mastery:{no_arrow:1},focusing:{no_arrow:3},aim_strike:{no_arrow:5},aiming_shower:{no_arrow:5}};
+const NA_SC=[20,18,15,13,10];                                                                     // No Arrow: Scandium per arrow shot, Lv 1-5
+const FO_P=[.03,.04,.05,.06,.07,.08,.09,.1,.11,.12];                                              // Focusing: DEX / AGI +%, time 40+20*Lv s, SP 20+5*Lv; no cast, GD 0, CD 0
+const AS_R=[1,1.1,1.2,1.3,1.4,1.6,1.7,1.8,1.9,2],AS_N=[2,2,3,3,4,4,5,5,7,7],AS_CH=[.2,.22,.24,.26,.28,.3,.32,.34,.36,.4],AS_SP=[12,13,14,15,16,17,18,19,20,25];   // Aim Strike
+const AW_R=[1.6,1.7,1.8,1.9,2,2.1,2.2,2.3,2.4,2.5];                                              // Aiming Shower: SP 20, FCT 0.1, GD 0.1   // v20.6: passives with levels too (derive reads them)
 const OE_DUR=[20,40,60,80,120],OE_VCT=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, VCT (FCT 0), SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
 const FB_N=[1,3,5,7,10],FB_SP=[12,17,22,27,40],FB_GAP=[0,.3,.3,.2,.2],FB_FCT=[.5,.6,.7,.8,1];   // Fire Bolt: 120% MATK per fireball, VCT 0, GD 1 s, CD 0
 const FB_CH=[.3,.4,.5,.6,.7];                                                                    // v21e Fire Bolt: Burning chance; each fireball splashes 50% MATK on a 3x3 square around the target
@@ -2084,6 +2100,9 @@ function skAt(id,lv){
   if(id==="lightning_spear")return Object.assign({},k,{lv:L,hits:2*L,sp:LS_SP[i],vct:LS_VCT[i]});
   if(id==="petrifaction")return Object.assign({},k,{lv:L,ratio:PT_R[i],stCh:PT_CH[i],sp:PT_SP[i],stDur:ST_DUR[i]});
   if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],vct:OE_VCT[L-1],sp:35+15*L});
+  if(id==="focusing")return Object.assign({},k,{lv:L,focus:FO_P[i],dur:40+20*L,sp:20+5*L});
+  if(id==="aim_strike")return Object.assign({},k,{lv:L,ratio:AS_R[i],split:AS_N[i],splitCh:AS_CH[i],sp:AS_SP[i]});
+  if(id==="aiming_shower")return Object.assign({},k,{lv:L,ratio:AW_R[i]});
   return k;
 }
 // v20.9: real cast time in seconds for skill row k and derived stats d (VCT cut by stats and gear, FCT by gear only)
@@ -2105,9 +2124,12 @@ function pickSkill(ctx){
     if(ctx.near>=2&&ready("cleave"))return "cleave";
     if(reserve&&ready("power_strike"))return "power_strike";return null;
    case "ranger":
+    if(!ctx.buffs.focus&&ctx.dist<=d.range+3&&ready("focusing"))return "focusing";   // v21f: keep Focusing up while fighting
     if(ctx.dist<=1.6&&ready("evasive_leap"))return "evasive_leap";
     if(ctx.dist>d.range)return null;
+    if(ctx.dist<=2.5&&ready("aiming_shower"))return "aiming_shower";   // v21f: push a monster that came close back 2 tiles
     if(ready("piercing_shot"))return "piercing_shot";
+    if((reserve||ctx.near>=2)&&ready("aim_strike"))return "aim_strike";
     if(ctx.near>=2&&ready("arrow_shower"))return "arrow_shower";
     if(reserve&&ready("double_strafe"))return "double_strafe";return null;
    case "spellcaster":{
@@ -2151,8 +2173,8 @@ function pickSkill(ctx){
 function simulate(arch,lv,monKeys,opt){
   opt=opt||{};const KL=id=>skAt(id,(opt.skLv||{})[id]||0);const r=rngOf(opt.seed||7),secs=opt.secs||300,pack=opt.pack||1,dt=.05,travel=opt.travel??4;
   const stats=opt.stats||autoStats(arch,lv);
-  const buffs={},cd={};let zone=0,shield=0,momentum=0,momT=0,ovV=0;
-  const DV=()=>derive({arch,lv,stats,buffs,gear:opt.gear,over:buffs.overEn>0?ovV:0});
+  const buffs={},cd={};let zone=0,shield=0,momentum=0,momT=0,ovV=0,focV=0,arrows=0;   // arrows: arrows shot (v21f No Arrow costs Scandium per arrow)
+  const DV=()=>derive({arch,lv,stats,buffs,gear:opt.gear,over:buffs.overEn>0?ovV:0,focus:buffs.focus>0?focV:0});
   let d=DV();
   let hp=d.maxHP,sp=d.maxSP,t=0,kills=0,deaths=0,dealt=0,taken=0,hpSum=0,hpN=0,casting=null,swing=0,mi=0,wait=0;
   let mobs=[],pending=[],gdT=0;
@@ -2162,11 +2184,15 @@ function simulate(arch,lv,monKeys,opt){
   const tgt=()=>mobs.find(m=>m.hpNow>0);
   const hitMob=(m,res)=>{if(res.miss)return;m.hpNow-=res.dmg;dealt+=res.dmg;if(pack>1)mobs.forEach(x=>x.aggro=true);else m.aggro=true};
   const doBasic=m=>{const b=ARCH[arch].basic;
-    if(b.kind==="phys"){const res=physHit(d,m,{ratio:b.ratio,dist:d.ranged?m.dist:0},r);hitMob(m,res);if(arch==="fighter"&&!res.miss){momentum=Math.min(5,momentum+1);momT=5}}
+    if(b.kind==="phys"){if(d.ranged)arrows++;const res=physHit(d,m,{ratio:b.ratio,dist:d.ranged?m.dist:0},r);hitMob(m,res);if(arch==="fighter"&&!res.miss){momentum=Math.min(5,momentum+1);momT=5}}
     else hitMob(m,magicHit(d,m,{ratio:b.ratio,elem:b.elem},r))};
   const doSkill=(id,m,L)=>{const k=L?skAt(id,L):KL(id);sp-=k.sp*d.spCost;cd[id]=k.cd*d.cdMul;if(k.gd)gdT=k.gd*d.gdMul;
     const targets=k.aoe?mobs.filter(x=>x.hpNow>0&&(k.at==="self"?x.dist<=k.aoe+.5:true)):(m?[m]:[]);
-    if(k.kind==="phys"){for(const x of targets)for(let h=0;h<(k.hits||1);h++){
+    if(k.kind==="phys"&&k.split){arrows++;   // v21f Aim Strike: one arrow, sometimes split into k.split arrows; each arrow splashes 50% on the others nearby
+      const n=r()<k.splitCh?k.split:1;for(let h=0;h<n&&m&&m.hpNow>0;h++){hitMob(m,physHit(d,m,{ratio:k.ratio,canCrit:true,critMul:k.critMul,dist:m.dist},r));
+        for(const x of mobs){if(x===m||x.hpNow<=0||Math.abs(x.dist-m.dist)>k.splashR)continue;hitMob(x,physHit(d,x,{ratio:k.ratio*k.splash,canCrit:false,dist:x.dist},r))}}}
+    else if(k.kind==="phys"&&k.knock){arrows++;if(m){hitMob(m,physHit(d,m,{ratio:k.ratio,canCrit:false,dist:m.dist},r));m.dist=Math.min(d.range,m.dist+k.knock)}}   // v21f Aiming Shower: push back 2 tiles
+    else if(k.kind==="phys"){if(k.ranged)arrows+=(k.hits||1)*targets.length;for(const x of targets)for(let h=0;h<(k.hits||1);h++){
         const ratio=k.ratio+(k.spend?k.perStack*momentum:0);
         const res=physHit(d,x,{ratio,ignoreDef:k.ignoreDef,canCrit:!!k.canCrit,critMul:k.critMul,dist:k.ranged?x.dist:0,bonus:buffs.leapShot?1.6:1},r);hitMob(x,res)}
       if(buffs.leapShot&&k.ranged)buffs.leapShot=0;
@@ -2177,7 +2203,7 @@ function simulate(arch,lv,monKeys,opt){
       // v21e splash: 50% MATK on the others in a 3x3 square round the target (Fire Bolt: every fireball; Freezer: only while the target is frozen). No positions here, so "close" = a similar distance
       if(k.splash&&m&&(!k.splashOn||m[k.splashOn]>0))for(const x of mobs){if(x===m||x.hpNow<=0||Math.abs(x.dist-m.dist)>k.splashR)continue;for(let h=0;h<(k.hits||1);h++)hitMob(x,magicHit(d,x,{ratio:k.ratio*k.splash,elem:k.elem},r))}}
     else if(k.kind==="heal"){const h=healAmount(d,k),over=Math.max(0,hp+h-d.maxHP);hp=Math.min(d.maxHP,hp+h);if(d.shieldCap)shield=Math.min(d.maxHP*d.shieldCap,shield+over)}
-    else if(k.kind==="buff"){buffs[k.buff]=k.dur;if(k.over)ovV=k.over;if(k.buff==="blessing"||k.over)d=DV();
+    else if(k.kind==="buff"){buffs[k.buff]=k.dur;if(k.over)ovV=k.over;if(k.focus)focV=k.focus;if(k.buff==="blessing"||k.over||k.focus)d=DV();
       if(k.taunt)mobs.forEach(x=>x.aggro=true)}
     else if(k.kind==="move"){for(const x of mobs)x.dist+=k.leap;buffs.leap=k.dur;buffs.leapShot=1;d=DV()}
     else if(k.kind==="zone"){zone=k.dur}};
@@ -2211,7 +2237,7 @@ function simulate(arch,lv,monKeys,opt){
     if(id){const L=ctx.pickLv||0,k=L?skAt(id,L):KL(id);{const ct=castTime(k,d);if(ct>.05){casting={id,t:ct,lv:L};continue}}doSkill(id,m,L);continue}
     if(swing<=0&&m.dist<=d.range){swing=d.interval;doBasic(m)}
   }
-  return {arch,lv,kills,deaths,dealt:Math.round(dealt),taken:Math.round(taken),dps:+(dealt/secs).toFixed(1),hpLeft:hpN?+(hpSum/hpN).toFixed(2):0,maxHP:d.maxHP,stats};
+  return {arch,lv,kills,deaths,arrows,dealt:Math.round(dealt),taken:Math.round(taken),dps:+(dealt/secs).toFixed(1),hpLeft:hpN?+(hpSum/hpN).toFixed(2):0,maxHP:d.maxHP,stats};
 }
 
 /* idle estimate: kills per hour on a map, using the simulator once and caching by inputs */
@@ -2220,7 +2246,7 @@ function killsPerHour(arch,lv,stats,monKeys,gear){
   const key=arch+"|"+lv+"|"+JSON.stringify(stats)+"|"+JSON.stringify(gear||{})+"|"+monKeys.join(",");
   if(_cache.has(key))return _cache.get(key);
   const res=simulate(arch,lv,monKeys,{stats,secs:600,seed:11,gear});
-  const v={kph:Math.round(res.kills*6),deathsPerHour:res.deaths*6,dps:res.dps};
+  const v={kph:Math.round(res.kills*6),deathsPerHour:res.deaths*6,dps:res.dps,aph:res.arrows*6};   // aph: arrows shot per hour (No Arrow)
   _cache.set(key,v);return v;
 }
 /* Combat Power: offense = DPS from a short simulation that uses the archetype's skills against a reference mix
@@ -2234,7 +2260,7 @@ function combatPower(arch,lv,stats,gear){
   const ehp=d.maxHP/(1-d.hardDef)+d.softDef*30;
   const v=Math.round(sim.dps*6+ehp/20);_cpc.set(key,v);return v;
 }
-return {manaFlow,STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax,castTime,stRoll,stAdd,STATUS};
+return {manaFlow,STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax,castTime,stRoll,stAdd,STATUS,SKREQ,NA_SC};
 })();
 
 
@@ -4017,6 +4043,32 @@ Object.assign(D.jp,{w_skinfo:"スキル情報",si_self:"自己詠唱",si_target:
  w_skill:"スキルツリー",skt_pts:"スキルポイント : {n}",skt_learn:"習得",skt_reset:"リセット",skt_active:"アクティブ",skt_passive:"パッシブ",
  skt_done:"習得：{s}",skt_nopts:"スキルポイントが足りません。"});   // v20.10 Skills Tree
 let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
+/* v21f Ranger skills (SKILL-SPEC.md §3i-3n): names, descriptions, Skill Info lines, messages */
+{const L={
+ sk_no_arrow:["No Arrow","No Arrow","ノーアロー"],
+ skd_no_arrow:["Arrows made of Rare Earth ore are rarer than rare, so the Ranger ancestors turned to alchemy until they found how to loose every arrow without holding a single one: they shoot arrows of Scandium. Every arrow shot costs Scandium (20 / 18 / 15 / 13 / 10 Sc by level); with too little Scandium the bow stays silent. Needed for every other new Ranger skill.",
+  "ลูกธนูที่ทำมาจากแร่ Rare Earth นั้นหายากยิ่ง เหล่าบรรพบุรุษแห่ง Ranger จึงได้เล่นแร่แปรธาตุ จนเจอวิธีการที่จะยิงลูกธนูแต่ละดอกออกไป โดยไม่ต้องถือลูกธนูเลยสักดอก นั่นคือการยิงออกไปด้วยลูกธนู Scandium ทุกลูกธนูที่ยิงออกไปเสีย Scandium (20 / 18 / 15 / 13 / 10 Sc ตามเลเวล) ถ้า Scandium ไม่พอจะยิงไม่ได้ เป็นสกิลพื้นฐานของสกิล Ranger ชุดใหม่ทั้งหมด",
+  "レアアース鉱石の矢は希少中の希少。レンジャーの祖先は錬金術を重ね、矢を1本も持たずに射る方法にたどり着きました――スカンジウムの矢を射るのです。矢を1本射るごとにスカンジウムを消費します（Lvにより20 / 18 / 15 / 13 / 10 Sc）。足りないと射てません。新しいレンジャースキルすべての前提です。"],
+ pe_na:["{a} Scandium per arrow","ลูกธนูละ {a} Scandium","矢1本につき {a} スカンジウム"],
+ sk_ranger_mastery:["Ranger Mastery","Ranger Mastery","レンジャーマスタリー"],
+ skd_ranger_mastery:["Learn the instincts of the hunter: more skill with the bow, better aim and better dodging. DEX, HIT and AGI +1 per level.","เรียนรู้สัญชาตญาณแห่งนักล่า เพิ่มความเชี่ยวชาญในการถือธนู ความแม่นยำ และการหลบหลีก DEX, HIT และ AGI +1 ต่อเลเวล","狩人の本能を身につけ、弓の扱い・命中・回避を高めます。LvごとにDEX・HIT・AGI +1。"],
+ pe_rm:["DEX +{a}, HIT +{a}, AGI +{a}","DEX +{a}, HIT +{a}, AGI +{a}","DEX +{a}、HIT +{a}、AGI +{a}"],
+ sk_focusing:["Focusing","Focusing","フォーカシング"],
+ skd_focusing:["Steady the mind and push your senses through the mass of space to raise your own abilities: DEX and AGI +3–12% for 60–240 s. Self Cast, no cast time.","ตั้งสมาธิให้แน่วแน่ เพ่งกระแสจิตทะลุมวลอวกาศ เพื่อเพิ่มความสามารถให้ตัวเอง DEX และ AGI +3–12% นาน 60–240 วินาที ร่ายใส่ตัวเอง ไม่มีเวลาร่าย","心を研ぎ澄まし、宇宙の質量を貫くほど意識を集中して自分の力を高めます。DEXとAGI +3–12%（60–240秒）。自己詠唱、詠唱なし。"],
+ si_fo:["DEX and AGI +{a}% for {b} seconds · SP {c}","DEX, AGI +{a}% ระยะเวลา {b} วินาที · SP {c}","DEX・AGI +{a}%、{b} 秒間 · SP {c}"],
+ fx_focus_d:["DEX and AGI raised.","DEX และ AGI เพิ่มขึ้น","DEXとAGIが上昇。"],
+ sk_aim_strike:["Aim Strike","Aim Strike","エイムストライク"],
+ skd_aim_strike:["Draw the bow with all your strength and pour everything into the arrow. Sometimes the arrow splits in mid-air into several arrows that all strike the target, 0.1 s apart. Every arrow that hits also sends a blast of air over a 3 × 3 area round the target for 50% of its damage. Can crit (crit chance ×0.5).","ง้างธนูอย่างสุดกำลัง และปล่อยพลังทั้งหมดไปที่ลูกศรที่พุ่งออกไป ในบางจังหวะ มีโอกาสที่ลูกธนูดอกนั้น จะแยกตัวออกมาสร้างความเสียหายให้เป้าหมายมากกว่า 1 ดอก (ห่างกัน 0.1 วินาที) และเมื่อยิงถูกเป้าหมาย แรงอัดอากาศทำหน้าที่อีกครั้ง Splash Damage 50% ออกไปอีก 3x3 ช่อง ติดคริติคอลได้ (โอกาสคริ ×0.5)","弓を力いっぱい引き絞り、全ての力を矢に込めて放ちます。時に矢は空中で分かれ、複数の矢となって0.1秒間隔で対象に命中します。命中した矢は空気の衝撃で対象の周囲3×3マスにダメージの50%を与えます。クリティカル可能（確率×0.5）。"],
+ si_as:["{c}% ATK per arrow · {b}% chance to split into {a} arrows · SP {d}","ATK {c}% ต่อดอก · โอกาสแยกเป็น {a} ดอก {b}% · SP {d}","矢1本ごとに攻撃力 {c}% · {b}% の確率で {a} 本に分裂 · SP {d}"],
+ as_split:["SPLIT ×{n}","แยก ×{n}","分裂 ×{n}"],
+ sk_aiming_shower:["Aiming Shower","Aiming Shower","エイミングシャワー"],
+ skd_aiming_shower:["Shoot one heavy arrow that pushes the target 2 tiles back (bosses too). Cannot crit.","ยิงลูกธนู 1 ดอกออกไปผลักเป้าหมายให้ถอยหลังไป 2 ช่อง (สามารถใช้กับบอสได้) ติดคริติคอลไม่ได้","重い矢を1本放ち、対象を2マス押し戻します（ボスにも有効）。クリティカルなし。"],
+ si_aw:["ATK {a}% · push back 2 tiles · SP {c}","ATK {a}% · ผลักถอย 2 ช่อง · SP {c}","攻撃力 {a}% · 2マス押し戻し · SP {c}"],
+ skt_req:["Learn {s} first.","ต้องเรียน {s} ก่อน","先に {s} を習得してください。"],
+ skt_reqL:["Requires:","เงื่อนไข:","必要条件："],
+ na_nosc:["Not enough Scandium for an arrow ({c} Sc).","Scandium ไม่พอยิงธนู ({c} Sc)","矢を射るスカンジウムが足りません（{c} Sc）。"],
+ off_arrows:["Scandium arrows: −{c} Sc","ค่าลูกธนู Scandium: −{c} Sc","スカンジウムの矢：−{c} Sc"]
+};for(const k in L){D.en[k]=L[k][0];D.th[k]=L[k][1];D.jp[k]=L[k][2]}}
 const t=k=>(D[lang][k]??D.en[k]??k);
 const fmt=(k,o)=>t(k).replace(/\{(\w)\}/g,(_,c)=>o[c]);
 /* v20.8 Japanese for pair data (items, gear, abilities, set names, chat seed lines), keyed by the English text */
@@ -4318,6 +4370,11 @@ const SKI={
  evasive_leap:'<path d="M2 48h12M4 56h18M8 40h6" stroke="#fff" stroke-width="3" stroke-opacity=".85"/><path fill="url(#kCloth)" d="M12 52C16 30 32 14 60 8c-2 9-7 15-14 18 4 0 7-1 10-2-4 9-11 15-20 18 3 0 6 0 8-1-7 7-17 11-32 11z"/><path fill="url(#kLeaf)" d="M20 46C26 32 38 22 54 16c-3 7-8 11-14 13 3 1 6 0 8 0-5 6-12 10-20 12 3 1 5 1 7 0-5 3-10 5-15 5z"/><path d="M14 50C26 36 40 24 56 12" stroke="#fff" stroke-width="2" fill="none"/><path fill="#fff" stroke="none" d="M54 40.5C54.525 43.475 54.525 43.475 57.5 44C54.525 44.525 54.525 44.525 54 47.5C53.475 44.525 53.475 44.525 50.5 44C53.475 43.475 53.475 43.475 54 40.5z"/><path fill="#fff" stroke="none" d="M44 51.5C44.375 53.625 44.375 53.625 46.5 54C44.375 54.375 44.375 54.375 44 56.5C43.625 54.375 43.625 54.375 41.5 54C43.625 53.625 43.625 53.625 44 51.5z"/>',
  eagle_eye:'<circle cx="32" cy="32" r="26" fill="url(#kGlowY)" stroke="none"/><path fill="url(#kCloth)" d="M3 34C12 20 22 15 32 15s20 5 29 19c-9 12-19 16-29 16S12 46 3 34z"/><circle cx="32" cy="33" r="13" fill="url(#kOrbH)"/><ellipse cx="32" cy="33" rx="3.6" ry="10" fill="#1b2030" stroke="none"/><circle cx="27" cy="28" r="3" fill="#fff" stroke="none"/><path fill="url(#kWood)" d="M2 26C12 14 24 8 36 9c10 1 19 6 26 14-8-4-17-5-26-4-12 1-23 4-34 7z"/><path d="M32 52v9M32 3v4" stroke="#fff" stroke-width="2.6"/>',
  steady_aim:'<circle cx="32" cy="32" r="27" fill="url(#kSteelD)"/><circle cx="32" cy="32" r="21" fill="url(#kLens)"/><path d="M32 13v13M32 38v13M13 32h13M38 32h13" stroke="#ff4a3a" stroke-width="2.4"/><circle cx="32" cy="32" r="12" fill="none" stroke="#ff4a3a" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="32" cy="32" r="3" fill="#ff4a3a" stroke="#fff" stroke-width="1"/><path d="M19 22a16 16 0 0 1 10-8" stroke="#fff" stroke-opacity=".85" stroke-width="2.6" fill="none"/><rect x="30" y="2" width="4" height="7" rx="1" fill="url(#kGold)" transform="rotate(0 32 32)"/><rect x="30" y="2" width="4" height="7" rx="1" fill="url(#kGold)" transform="rotate(90 32 32)"/><rect x="30" y="2" width="4" height="7" rx="1" fill="url(#kGold)" transform="rotate(180 32 32)"/><rect x="30" y="2" width="4" height="7" rx="1" fill="url(#kGold)" transform="rotate(270 32 32)"/>',
+ no_arrow:'<circle cx="32" cy="30" r="30" fill="url(#kGlowS)" stroke="none"/><circle cx="32" cy="30" r="24" fill="none" stroke="#c9a43c" stroke-width="2.2" stroke-dasharray="5 3"/><circle cx="32" cy="30" r="18" fill="none" stroke="#fff3c0" stroke-width="1.3"/><path d="M32 12L47.6 39H16.4z" fill="none" stroke="#c9a43c" stroke-width="1.4"/><path d="M32 48L16.4 21H47.6z" fill="none" stroke="#c9a43c" stroke-width="1" stroke-opacity=".7"/><g transform="rotate(-28 14 48)"><rect x="7" y="35" width="14" height="25" rx="3.5" fill="url(#kWood)"/><path d="M7 41h14M7 53h14" stroke="#5a3418" stroke-width="1.4"/><ellipse cx="14" cy="35.5" rx="7" ry="2.8" fill="#2e1c0e"/></g><g transform="translate(33 27) rotate(-42)"><path d="M-20 0H13" stroke="#1b2030" stroke-width="4.6"/><path d="M-20 0H13" stroke="#f1e3a6" stroke-width="2.4"/><path fill="url(#kSteel)" d="M22 0L10 -6 12.5 0 10 6z"/><path fill="url(#kGold)" d="M-11 0l-10-6.5 2.5 6.5-2.5 6.5z"/><path fill="#fff" stroke="none" d="M-13 -.6l-6-3.8 1.4 3.8z"/></g><path fill="#fff" stroke="none" d="M18 10C18.72 13.28 18.72 13.28 22 14C18.72 14.72 18.72 14.72 18 18C17.28 14.72 17.28 14.72 14 14C17.28 13.28 17.28 13.28 18 10z"/><path fill="#fff6c8" stroke="none" d="M48 7C48.54 9.46 48.54 9.46 51 10C48.54 10.54 48.54 10.54 48 13C47.46 10.54 47.46 10.54 45 10C47.46 9.46 47.46 9.46 48 7z"/><path fill="#fff" stroke="none" d="M52 27.4C52.468 29.532 52.468 29.532 54.6 30C52.468 30.468 52.468 30.468 52 32.6C51.532 30.468 51.532 30.468 49.4 30C51.532 29.532 51.532 29.532 52 27.4z"/><path fill="#fff6c8" stroke="none" d="M24 37.6C24.432 39.568 24.432 39.568 26.4 40C24.432 40.432 24.432 40.432 24 42.4C23.568 40.432 23.568 40.432 21.6 40C23.568 39.568 23.568 39.568 24 37.6z"/><rect x="42" y="42" width="20" height="20" rx="3.5" fill="url(#kScan)"/><text x="52" y="57.5" font-size="11" font-weight="800" text-anchor="middle" fill="#4a3c10" stroke="none" font-family="sans-serif">Sc</text><text x="44.6" y="47.6" font-size="4.6" font-weight="700" fill="#4a3c10" stroke="none" font-family="sans-serif">21</text>',
+ ranger_mastery:'<circle cx="34" cy="30" r="28" fill="url(#kGlowG)" stroke="none"/><path d="M15 58C5 48 4 30 13 18" stroke="#2c6e24" stroke-width="2.2" fill="none"/><ellipse cx="7" cy="46" rx="5.2" ry="2.3" transform="rotate(-70 7 46)" fill="url(#kLeaf)" stroke-width="1"/><ellipse cx="6" cy="36" rx="5.2" ry="2.3" transform="rotate(-90 6 36)" fill="url(#kLeaf)" stroke-width="1"/><ellipse cx="9" cy="26" rx="5.2" ry="2.3" transform="rotate(-115 9 26)" fill="url(#kLeaf)" stroke-width="1"/><ellipse cx="13" cy="53" rx="5.2" ry="2.3" transform="rotate(-45 13 53)" fill="url(#kLeaf)" stroke-width="1"/><ellipse cx="15" cy="40" rx="5.2" ry="2.3" transform="rotate(-20 15 40)" fill="url(#kLeaf)" stroke-width="1"/><ellipse cx="14" cy="29" rx="5.2" ry="2.3" transform="rotate(-35 14 29)" fill="url(#kLeaf)" stroke-width="1"/><path d="M22 5C40 11 47 21 47 31S40 51 22 57" stroke="#1b2030" stroke-width="7" fill="none"/><path d="M22 5C40 11 47 21 47 31S40 51 22 57" stroke="url(#kWood)" stroke-width="4" fill="none"/><path d="M23 8.5C33 12 38 16 41 21" stroke="#ffe7c0" stroke-width="1.3" fill="none"/><path d="M22 5c-3-1-5 0-5 2.5M22 57c-3 1-5 0-5-2.5" stroke="#1b2030" stroke-width="2.4" fill="none"/><path d="M22 5L22 57" stroke="#fff8e0" stroke-width="1.4"/><rect x="43" y="26" width="7.5" height="11" rx="2" fill="url(#kGold)"/><g transform="translate(38 31)"><path d="M-20 0H13" stroke="#1b2030" stroke-width="4.6"/><path d="M-20 0H13" stroke="#d29a5a" stroke-width="2.4"/><path fill="url(#kSteel)" d="M22 0L10 -6 12.5 0 10 6z"/><path fill="#ef463c" d="M-11 0l-10-6.5 2.5 6.5-2.5 6.5z"/><path fill="#fff" stroke="none" d="M-13 -.6l-6-3.8 1.4 3.8z"/></g><path fill="url(#kGold)" d="M53 41l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/><path d="M27 16l4-4 4 4M27 22l4-4 4 4" stroke="#2c8530" stroke-width="2.4" fill="none"/>',
+ focusing:'<circle cx="32" cy="32" r="30" fill="url(#kSpace)"/><circle cx="12" cy="14" r="1.1" fill="#fff" stroke="none" opacity="0.9"/><circle cx="50" cy="9" r="0.9" fill="#fff" stroke="none" opacity="0.8"/><circle cx="56" cy="22" r="1.2" fill="#fff" stroke="none" opacity="0.9"/><circle cx="9" cy="40" r="0.8" fill="#fff" stroke="none" opacity="0.7"/><circle cx="18" cy="54" r="1" fill="#fff" stroke="none" opacity="0.8"/><circle cx="48" cy="52" r="0.9" fill="#fff" stroke="none" opacity="0.8"/><circle cx="40" cy="6" r="0.7" fill="#fff" stroke="none" opacity="0.6"/><circle cx="26" cy="8" r="0.8" fill="#fff" stroke="none" opacity="0.7"/><circle cx="58" cy="44" r="0.7" fill="#fff" stroke="none" opacity="0.6"/><g stroke="#9fe6ff" stroke-width="1.4" stroke-opacity=".75" fill="none"><path d="M4 32h9M51 32h9M32 4v8M32 52v8M12 12l6 6M52 12l-6 6M12 52l6-6M52 52l-6-6" stroke-dasharray="2 2.5"/></g><circle cx="32" cy="32" r="20" fill="none" stroke="#7af0ff" stroke-width="1.6" stroke-dasharray="3 3"/><path fill="url(#kCloth)" d="M9 32C16 22 24 18 32 18s16 4 23 14c-7 10-15 14-23 14S16 42 9 32z"/><circle cx="32" cy="32" r="10.5" fill="url(#kOrbA)"/><circle cx="32" cy="32" r="6.5" fill="none" stroke="#eaffc8" stroke-width="1"/><ellipse cx="32" cy="32" rx="2.8" ry="6.5" fill="#0c1a12" stroke="none"/><circle cx="28.4" cy="28" r="2.6" fill="#fff" stroke="none"/><path d="M32 15v4M32 45v4M15 32h4M45 32h4" stroke="#ff4a3a" stroke-width="2"/><path d="M13 20c5-5 11-8 19-8" stroke="#fff" stroke-opacity=".6" stroke-width="1.6" fill="none"/><path fill="#c9f6ff" stroke="none" d="M52 10.4C52.648 13.352 52.648 13.352 55.6 14C52.648 14.648 52.648 14.648 52 17.6C51.352 14.648 51.352 14.648 48.4 14C51.352 13.352 51.352 13.352 52 10.4z"/><path fill="#eaffc8" stroke="none" d="M12 45C12.54 47.46 12.54 47.46 15 48C12.54 48.54 12.54 48.54 12 51C11.46 48.54 11.46 48.54 9 48C11.46 47.46 11.46 47.46 12 45z"/>',
+ aim_strike:'<circle cx="51" cy="32" r="14" fill="url(#kGlowY)" stroke="none"/><rect x="41" y="22" width="20" height="20" rx="2" fill="#fff3c0" fill-opacity=".35" stroke="#e0a82a" stroke-width="1.6" stroke-dasharray="3 2.2"/><path d="M12 4C27 13 27 51 12 60" stroke="#1b2030" stroke-width="6.5" fill="none"/><path d="M12 4C27 13 27 51 12 60" stroke="url(#kWood)" stroke-width="3.6" fill="none"/><path d="M12 4L3 32L12 60" stroke="#fff8e0" stroke-width="1.4" fill="none"/><path d="M5 29h20M5 35h18" stroke="#fff" stroke-opacity=".7" stroke-width="1.6"/><g transform="translate(16 32) scale(.62)"><path d="M-20 0H13" stroke="#1b2030" stroke-width="4.6"/><path d="M-20 0H13" stroke="#f1e3a6" stroke-width="2.4"/><path fill="url(#kSteel)" d="M22 0L10 -6 12.5 0 10 6z"/><path fill="#ef463c" d="M-11 0l-10-6.5 2.5 6.5-2.5 6.5z"/><path fill="#fff" stroke="none" d="M-13 -.6l-6-3.8 1.4 3.8z"/></g><circle cx="31" cy="32" r="6" fill="url(#kGlowW)" stroke="none"/><path fill="#fff" stroke="none" d="M31 26.5C31.99 31.01 31.99 31.01 36.5 32C31.99 32.99 31.99 32.99 31 37.5C30.01 32.99 30.01 32.99 25.5 32C30.01 31.01 30.01 31.01 31 26.5z"/><g transform="translate(43 24) rotate(-22) scale(.5)"><path d="M-20 0H13" stroke="#1b2030" stroke-width="4.6"/><path d="M-20 0H13" stroke="#f1e3a6" stroke-width="2.4"/><path fill="url(#kSteel)" d="M22 0L10 -6 12.5 0 10 6z"/><path fill="#ef463c" d="M-11 0l-10-6.5 2.5 6.5-2.5 6.5z"/><path fill="#fff" stroke="none" d="M-13 -.6l-6-3.8 1.4 3.8z"/></g><g transform="translate(45 32) scale(.5)"><path d="M-20 0H13" stroke="#1b2030" stroke-width="4.6"/><path d="M-20 0H13" stroke="#f1e3a6" stroke-width="2.4"/><path fill="url(#kSteel)" d="M22 0L10 -6 12.5 0 10 6z"/><path fill="#ef463c" d="M-11 0l-10-6.5 2.5 6.5-2.5 6.5z"/><path fill="#fff" stroke="none" d="M-13 -.6l-6-3.8 1.4 3.8z"/></g><g transform="translate(43 40) rotate(22) scale(.5)"><path d="M-20 0H13" stroke="#1b2030" stroke-width="4.6"/><path d="M-20 0H13" stroke="#f1e3a6" stroke-width="2.4"/><path fill="url(#kSteel)" d="M22 0L10 -6 12.5 0 10 6z"/><path fill="#ef463c" d="M-11 0l-10-6.5 2.5 6.5-2.5 6.5z"/><path fill="#fff" stroke="none" d="M-13 -.6l-6-3.8 1.4 3.8z"/></g><path fill="#fff6c8" stroke="none" d="M58 17C58.54 19.46 58.54 19.46 61 20C58.54 20.54 58.54 20.54 58 23C57.46 20.54 57.46 20.54 55 20C57.46 19.46 57.46 19.46 58 17z"/><path fill="#fff6c8" stroke="none" d="M58 43.4C58.468 45.532 58.468 45.532 60.6 46C58.468 46.468 58.468 46.468 58 48.6C57.532 46.468 57.532 46.468 55.4 46C57.532 45.532 57.532 45.532 58 43.4z"/>',
+ aiming_shower:'<circle cx="44" cy="30" r="20" fill="url(#kGlowF)" stroke="none" opacity=".7"/><path d="M18 12h12M14 20h10M16 44h12M20 52h10" stroke="#fff" stroke-width="2.6" stroke-opacity=".85"/><ellipse cx="44" cy="30" rx="12" ry="18" fill="url(#kCloth)"/><ellipse cx="44" cy="30" rx="8.6" ry="13" fill="url(#kRed)"/><ellipse cx="44" cy="30" rx="5.4" ry="8.2" fill="#fff"/><ellipse cx="44" cy="30" rx="2.6" ry="4" fill="url(#kRed)"/><g transform="translate(22 30) scale(.9)"><path d="M-20 0H13" stroke="#1b2030" stroke-width="4.6"/><path d="M-20 0H13" stroke="#f1e3a6" stroke-width="2.4"/><path fill="url(#kSteel)" d="M22 0L10 -6 12.5 0 10 6z"/><path fill="#ef463c" d="M-11 0l-10-6.5 2.5 6.5-2.5 6.5z"/><path fill="#fff" stroke="none" d="M-13 -.6l-6-3.8 1.4 3.8z"/></g><circle cx="44" cy="30" r="4" fill="url(#kGlowW)" stroke="none"/><g fill="#e8dcc0" stroke="#8a7a5a" stroke-width="1"><circle cx="34" cy="53" r="4"/><circle cx="40" cy="55" r="3"/><circle cx="29" cy="56" r="2.6"/></g><path d="M44 58l6-5-6-5M52 58l6-5-6-5" stroke="#1b2030" stroke-width="5" fill="none"/><path d="M44 58l6-5-6-5M52 58l6-5-6-5" stroke="#ffcf3f" stroke-width="2.6" fill="none"/><path fill="#fff6c8" stroke="none" d="M58 9C58.54 11.46 58.54 11.46 61 12C58.54 12.54 58.54 12.54 58 15C57.46 12.54 57.46 12.54 55 12C57.46 11.46 57.46 11.46 58 9z"/>',
  fire_bolt:'<ellipse cx="26" cy="54" rx="25" ry="8" fill="url(#kGlowF)" stroke="none"/><ellipse cx="26" cy="55" rx="20" ry="5" fill="#ffb347" fill-opacity=".55" stroke="#7a1008" stroke-width="1.3"/><path d="M6 51l-3-3M46 51l3-3" stroke="#ffd27a" stroke-width="2"/><g transform="translate(22.0 6.0) scale(0.38)"><path fill="url(#kFireO)" stroke="#7a1008" stroke-width="4.2" d="M10 30L62 2 34 54A16 16 0 0 1 10 30z"/><path fill="url(#kFireM)" stroke="none" d="M13 33L52 10 31 49A12 12 0 0 1 13 33z"/><path fill="url(#kFireC)" stroke="none" d="M16 37L40 22 27 46A7 7 0 0 1 16 37z"/><circle cx="21" cy="42" r="5" fill="#fff" stroke="none"/></g><g transform="translate(30.3 26.7) scale(0.46)"><path fill="url(#kFireO)" stroke="#7a1008" stroke-width="3.5" d="M10 30L62 2 34 54A16 16 0 0 1 10 30z"/><path fill="url(#kFireM)" stroke="none" d="M13 33L52 10 31 49A12 12 0 0 1 13 33z"/><path fill="url(#kFireC)" stroke="none" d="M16 37L40 22 27 46A7 7 0 0 1 16 37z"/><circle cx="21" cy="42" r="5" fill="#fff" stroke="none"/></g><g transform="translate(3.2 23.5) scale(0.56)"><path fill="url(#kFireO)" stroke="#7a1008" stroke-width="2.9" d="M10 30L62 2 34 54A16 16 0 0 1 10 30z"/><path fill="url(#kFireM)" stroke="none" d="M13 33L52 10 31 49A12 12 0 0 1 13 33z"/><path fill="url(#kFireC)" stroke="none" d="M16 37L40 22 27 46A7 7 0 0 1 16 37z"/><circle cx="21" cy="42" r="5" fill="#fff" stroke="none"/></g><path fill="#ffe27a" stroke="none" d="M56 5C56.36 7.64 56.36 7.64 59 8C56.36 8.36 56.36 8.36 56 11C55.64 8.36 55.64 8.36 53 8C55.64 7.64 55.64 7.64 56 5z"/><path fill="#ffe27a" stroke="none" d="M7 21.4C7.312 23.688 7.312 23.688 9.6 24C7.312 24.312 7.312 24.312 7 26.6C6.688 24.312 6.688 24.312 4.4 24C6.688 23.688 6.688 23.688 7 21.4z"/><path fill="#ffe27a" stroke="none" d="M56 27.8C56.264 29.736 56.264 29.736 58.2 30C56.264 30.264 56.264 30.264 56 32.2C55.736 30.264 55.736 30.264 53.8 30C55.736 29.736 55.736 29.736 56 27.8z"/>',
  freezer:'<circle cx="32" cy="34" r="29" fill="url(#kGlowB)" stroke="none"/><ellipse cx="32" cy="57" rx="22" ry="5" fill="#bfefff" fill-opacity=".55" stroke="none"/><path fill="#5a3fc8" d="M20 50c0-11 5-19 12-19s12 8 12 19z"/><circle cx="27.5" cy="40" r="2.6" fill="#fff" stroke="none"/><circle cx="36.5" cy="40" r="2.6" fill="#fff" stroke="none"/><circle cx="28" cy="40.5" r="1.1" fill="#1b2030" stroke="none"/><circle cx="37" cy="40.5" r="1.1" fill="#1b2030" stroke="none"/><path fill="url(#kIce)" fill-opacity=".62" stroke="#1d5f8a" d="M12 22l20-9 20 9v28l-20 8-20-8z"/><path fill="#fff" fill-opacity=".5" stroke="#1d5f8a" d="M12 22l20-9 20 9-20 8z"/><path d="M32 30v28" stroke="#1d5f8a" stroke-width="1.3"/><path d="M16 26l4 2M16 31v8M47 28l-3 6M46 40l-2 5" stroke="#fff" stroke-width="2" stroke-opacity=".9"/><path fill="url(#kIce)" stroke="#1d5f8a" stroke-width="1.2" d="M6 14l3-6 3 6-3 4zM55 12l2.5-5 2.5 5-2.5 3.5zM4 44l2.5-4 2.5 4-2.5 3zM58 40l2.5-4 2.5 4-2.5 3z"/><path fill="#fff" stroke="none" d="M48 3.4C48.312 5.688 48.312 5.688 50.6 6C48.312 6.312 48.312 6.312 48 8.6C47.688 6.312 47.688 6.312 45.4 6C47.688 5.688 47.688 5.688 48 3.4z"/><path fill="#fff" stroke="none" d="M14 55.8C14.264 57.736 14.264 57.736 16.2 58C14.264 58.264 14.264 58.264 14 60.2C13.736 58.264 13.736 58.264 11.8 58C13.736 57.736 13.736 57.736 14 55.8z"/>',
  lightning_spear:'<circle cx="32" cy="22" r="22" fill="url(#kGlowP)" stroke="none"/><path fill="#fff37a" fill-opacity=".35" stroke="#c9a400" stroke-width="1.6" stroke-dasharray="4 3" d="M32 42l26 9-26 9-26-9z"/><ellipse cx="32" cy="51" rx="22" ry="7" fill="url(#kGlowY)" stroke="none"/><g transform="rotate(-14 18 50)"><path fill="url(#kElec)" stroke="#6b3b00" stroke-width="1.3" d="M16 10h4v32l3 0-5 8-5-8h3z"/><path d="M18 12l-2 6 3 3-3 7 2 3" stroke="#fff" stroke-width="1.3" fill="none"/></g><g transform="rotate(14 46 49)"><path fill="url(#kElec)" stroke="#6b3b00" stroke-width="1.3" d="M44 8h4v33l3 0-5 8-5-8h3z"/><path d="M46 10l-2 6 3 3-3 7 2 3" stroke="#fff" stroke-width="1.3" fill="none"/></g><g transform="rotate(0 32 54)"><path fill="url(#kElec)" stroke="#6b3b00" stroke-width="1.3" d="M30 2h4v44l3 0-5 8-5-8h3z"/><path d="M32 4l-2 6 3 3-3 7 2 3" stroke="#fff" stroke-width="1.3" fill="none"/></g><path d="M14 52l-4-3M50 51l4-3M30 58l-3 3M34 58l3 3" stroke="#fff37a" stroke-width="2"/><path fill="#fff37a" stroke="none" d="M8 9.2C8.336 11.664 8.336 11.664 10.8 12C8.336 12.336 8.336 12.336 8 14.8C7.664 12.336 7.664 12.336 5.2 12C7.664 11.664 7.664 11.664 8 9.2z"/><path fill="#fff37a" stroke="none" d="M57 23.6C57.288 25.712 57.288 25.712 59.4 26C57.288 26.288 57.288 26.288 57 28.4C56.712 26.288 56.712 26.288 54.6 26C56.712 25.712 56.712 25.712 57 23.6z"/>',
@@ -5695,17 +5752,17 @@ const gameState={lv:1,exp:0,jlv:1,jexp:0,hp:420,sp:120,sc:1250,y:0,la:0,arch:"be
   sound:true,music:true,gfx:"hi",look:"custom",app:null,autoIdle:true,bag:[],equip:null,uidN:1,skLv:{},hot:null,hotArch:"",store:{inv:{},bag:[]}};
 const S=gameState;
 /* ---- combat state: buffs, cooldowns, derived stats (REOC) ---- */
-const BF={overEn:0,overEnV:0,warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0,burn:0,burnDps:0,burnAcc:0,slow:0};
+const BF={focus:0,focusV:0,overEn:0,overEnV:0,warCry:0,blessing:0,leap:0,leapShot:false,shield:0,momentum:0,momT:0,zone:null,regen:0,herbAtk:0,herbDef:0,sage:0,burn:0,burnDps:0,burnAcc:0,slow:0};
 /* v19: gates of the two new maps (Base Lv and Combat Power both needed) */
 let gateT=0,aggroGrace=0;
 const CD={};
 let _pd=null,_pdKey="";
 /* derived stats = base stats + equipped gear + herb buffs (combat math lives in REOC) */
 function pd(){
-  const b=BF,k=S.arch+"|"+S.lv+"|"+JSON.stringify(S.stats)+"|"+eqKey()+"|"+learnedPas().map(i=>i+skLvOf(i)).join()+"|"+(b.overEn>0?b.overEnV:0)+(b.warCry>0?1:0)+(b.blessing>0?1:0)+(b.leap>0?1:0)+(b.herbAtk>0?1:0)+(b.herbDef>0?1:0)+(b.sage>0?1:0);
+  const b=BF,k=S.arch+"|"+S.lv+"|"+JSON.stringify(S.stats)+"|"+eqKey()+"|"+learnedPas().map(i=>i+skLvOf(i)).join()+"|"+(b.overEn>0?b.overEnV:0)+"f"+(b.focus>0?b.focusV:0)+(b.warCry>0?1:0)+(b.blessing>0?1:0)+(b.leap>0?1:0)+(b.herbAtk>0?1:0)+(b.herbDef>0?1:0)+(b.sage>0?1:0);
   if(k!==_pdKey){
     _pdKey=k;const m=gearMods();
-    const d=REOC.derive({pasLv:Object.fromEntries(learnedPas().map(i=>[i,skLvOf(i)])),over:b.overEn>0?b.overEnV:0,arch:S.arch,lv:S.lv,stats:effStats(),buffs:{warCry:b.warCry>0,blessing:b.blessing>0,leap:b.leap>0},gear:m});
+    const d=REOC.derive({pasLv:Object.fromEntries(learnedPas().map(i=>[i,skLvOf(i)])),over:b.overEn>0?b.overEnV:0,focus:b.focus>0?b.focusV:0,arch:S.arch,lv:S.lv,stats:effStats(),buffs:{warCry:b.warCry>0,blessing:b.blessing>0,leap:b.leap>0},gear:m});
     d.ab=m.ab;
     if(b.herbAtk>0){d.statusAtk=Math.round(d.statusAtk*1.1);d.watk=Math.round(d.watk*1.1)}
     if(b.herbDef>0)d.softDef=Math.round(d.softDef*1.15);
@@ -5753,8 +5810,9 @@ function offlineCalc(mapId,secs){
   for(const k in items)items[k]=lootOk(k)?Math.round(items[k]):0;   // v21: the loot filter applies offline too
   const gearN=Math.round(kills*.03);
   const maxLv=Math.max(...types.map(k=>MON[k].lv));
-  return {map:mapId,secs,kills,kph:sim.kph,eff,tier:tierOf(maxLv),gearN,
-    base:Math.round(kills*avg(d=>d.exp[0])),job:Math.round(kills*avg(d=>d.exp[1])),sc:Math.round(kills*avg(d=>(d.sc[0]+d.sc[1])/2)),items};
+  const arrowSc=Math.round(secs/3600*(sim.aph||0)*arrowCost());   // v21f No Arrow: the Scandium arrows shot while away (net Scandium may go below 0)
+  return {map:mapId,secs,kills,kph:sim.kph,eff,tier:tierOf(maxLv),gearN,arrowSc,
+    base:Math.round(kills*avg(d=>d.exp[0])),job:Math.round(kills*avg(d=>d.exp[1])),sc:Math.round(kills*avg(d=>(d.sc[0]+d.sc[1])/2))-arrowSc,items};
 }
 
 /* ================= draw helpers ================= */
@@ -7699,11 +7757,22 @@ function magicAttack(mo,o){const res=REOC.magicHit(pd(),mprof(mo),Object.assign(
 function hitMon(mo,mult){return physAttack(mo,{ratio:mult||1})}   // kept for debugging hooks
 const later=(ms,fn)=>setTimeout(fn,ms);
 const alive=mo=>mo&&!mo.dead&&mo.dieT<=0;
+/* ---- v21f No Arrow (SKILL-SPEC.md §3j): a Ranger who learned it shoots Scandium arrows; every arrow that leaves the bow costs
+   NA_SC[Lv-1] Scandium (20 / 18 / 15 / 13 / 10). Split arrows of Aim Strike come from one arrow and cost nothing more.
+   Not enough Scandium = no shot. A Ranger without No Arrow still shoots normal arrows for free (arrow items are not in the game yet). ---- */
+const arrowCost=()=>S.arch==="ranger"&&skLvOf("no_arrow")>0?REOC.NA_SC[skLvOf("no_arrow")-1]:0;
+let noScT=0;
+function payArrows(n){const c=arrowCost()*n;if(!c)return true;
+  if(S.sc<c){const now=performance.now();if(now>noScT){noScT=now+3000;AUD.sfx("err");toast(fmt("na_nosc",{c:num(c)}))}return false}
+  S.sc-=c;if(S.idle&&S.sess)S.sess.arrowSc=(S.sess.arrowSc||0)+c;return true}
+/* an arrow in flight: arcs to the target and lands after `dur` s. o: {from:[x,y] start point instead of the player, t0: delay, spread} */
+function shootArrow(mo,dur,o){o=o||{};const f=o.from||[player.x,player.y];
+  fx.push({k:"arrow",x:f[0],y:f[1],tx:mo.x,ty:mo.y,m:mo,t:-(o.t0||0),d:dur,sc:arrowCost()>0,arc:o.arc==null?22:o.arc,z0:o.from?o.z0||40:26,c:o.c||null})}
 function basicAttack(mo){
   const b=REOC.ARCH[S.arch].basic,d=pd(),x=player.x,y=player.y;
   player.pose=b.kind==="phys"?"attack":"cast";player.poseT=.32;   // hero sprite pose
   if(b.kind==="phys"){
-    if(d.ranged){fx.push({k:"proj",x,y,tx:mo.x,ty:mo.y,t:0,d:.2,c:"#f3e2b0"});later(190,()=>{if(alive(mo))physAttack(mo,{ratio:b.ratio})})}
+    if(d.ranged){if(!payArrows(1))return;shootArrow(mo,.2);later(190,()=>{if(alive(mo))physAttack(mo,{ratio:b.ratio})})}   // v21f: an arrow (No Arrow: Scandium arrow)
     else{player.lunge=.2;const res=physAttack(mo,{ratio:b.ratio});if(S.arch==="fighter"&&!res.miss)addMomentum(1)}
   }else{fx.push({k:"proj",x,y,tx:mo.x,ty:mo.y,t:0,d:.24,c:ELC[b.elem]||"#c9b8ff"});later(220,()=>{if(alive(mo))magicAttack(mo,{ratio:b.ratio,elem:b.elem,c:b.elem==="holy"?"#ffe9a0":null})})}
 }
@@ -7765,7 +7834,7 @@ function die(){
   $("#deathOv").classList.remove("hidden");pushChat({ch:"sys",k:"sys_dead"});
 }
 function respawn(){player.dead=false;S.hp=hpMax();S.sp=spMax();$("#deathOv").classList.add("hidden");goMap("town",TOWN_SPAWN[0],TOWN_SPAWN[1])}
-function resetCombatState(){volleys.length=0;balls.length=0;player.gd=0;BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=BF.overEn=BF.overEnV=0;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
+function resetCombatState(){volleys.length=0;balls.length=0;player.gd=0;BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=BF.overEn=BF.overEnV=BF.focus=BF.focusV=0;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
 function addMomentum(n){BF.momentum=Math.min(5,BF.momentum+n);BF.momT=5}
 /* ---- Fire Bolt volley: fireballs are released one at a time (Lv 2-3: 0.3 s apart, Lv 4-5: 0.2 s). v20.18: every fireball always falls,
    even after the target dies (they land on the spot and do nothing). A fireball falls for (gap - 0.02) s and deals its damage when it lands. ---- */
@@ -7796,7 +7865,7 @@ function updateVolleys(dt){
 }
 function updateCombat(dt){
   player.atkCd=Math.max(0,player.atkCd-dt);player.lunge=Math.max(0,player.lunge-dt);player.poseT=Math.max(0,(player.poseT||0)-dt);player.hurtT=Math.max(0,(player.hurtT||0)-dt);player.combatT+=dt;
-  for(const k of ["warCry","blessing","leap","overEn","regen","herbAtk","herbDef","sage"])if(BF[k]>0)BF[k]=Math.max(0,BF[k]-dt);
+  for(const k of ["warCry","blessing","leap","overEn","focus","regen","herbAtk","herbDef","sage"])if(BF[k]>0)BF[k]=Math.max(0,BF[k]-dt);
   if(BF.slow>0)BF.slow=Math.max(0,BF.slow-dt);player.speed=3.6*(BF.slow>0?.65:1);
   if(BF.burn>0&&!player.dead){BF.burn=Math.max(0,BF.burn-dt);BF.burnAcc+=dt;if(BF.burnAcc>=1){BF.burnAcc-=1;damagePlayer(Math.max(1,Math.round(BF.burnDps)),t("fx_burn"))}}
   if(BF.momT>0){BF.momT-=dt;if(BF.momT<=0)BF.momentum=0}
@@ -7856,6 +7925,9 @@ function updateMon(mo,dt){
   if(mo.boss&&mo.stun>0){mo.stun=0;fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:t("immune"),c:"#bfe8ff",ox:0,h:MON[mo.type].h*mSize(mo)})}
   if(mo.frz>0)mo.frz=Math.max(0,mo.frz-dt);if(mo.ptr>0)mo.ptr=Math.max(0,mo.ptr-dt);if(mo.brn>0){mo.brn=Math.max(0,mo.brn-dt);mo.brnAcc=(mo.brnAcc||0)+dt;   // Burning: 10% MATK Fire every second
     if(mo.brnAcc>=1||mo.brn<=0){mo.brnAcc=0;magicAttack(mo,{ratio:REOC.STATUS.brn.dot,elem:"fire",c:"#ff8a3a"});if(!alive(mo))return}}
+  if(mo.kb){const st=Math.min(mo.kb.left,12*dt),nx=mo.x+mo.kb.vx*st,ny=mo.y+mo.kb.vy*st;   // v21f knock-back slide (Aiming Shower)
+    if(walk(Math.floor(nx),Math.floor(ny))){mo.x=nx;mo.y=ny;mo.kb.left-=st}else mo.kb.left=0;
+    mo.path=[];mo.moving=false;if(mo.kb.left<=1e-3)mo.kb=null;return}
   if(mo.stun>0){mo.stun-=dt;mo.path=[];mo.moving=false;return}
   if(mo.hp<mo.maxHp&&!mo.aggro)mo.hp=Math.min(mo.maxHp,mo.hp+mo.maxHp*(mo.boss?.02:.05)*dt);
   if(mo.boss&&mo.aggro&&!player.dead){mo.slamT-=dt;if(!mo.tele&&mo.slamT<=0){mo.tele={t:1.4,total:1.4,x:mo.x,y:mo.y,r:3.4};AUD.sfx("warn");mo.slamT=9+Math.random()*3;mo.path=[]}}
@@ -7880,7 +7952,7 @@ function updateMon(mo,dt){
 
 /* ================= skills ================= */
 const SKC={bash:"#ffb08a",first_aid:"#8af0b6",power_strike:"#ff8a6a",cleave:"#ffb070",crushing_blow:"#ff6a5a",war_cry:"#ff9a9a",
- double_strafe:"#d8f0a0",arrow_shower:"#b8f08a",piercing_shot:"#f0ffd0",evasive_leap:"#ffffff",
+ double_strafe:"#d8f0a0",arrow_shower:"#b8f08a",focusing:"#9fe6ff",aim_strike:"#ffe27a",aiming_shower:"#ffcf8a",piercing_shot:"#f0ffd0",evasive_leap:"#ffffff",
  fire_bolt:ELC.fire,freezer:ELC.water,lightning_spear:"#fff36a",petrifaction:ELC.earth,overload_energy:"#c9b8ff",
  heal:"#8af0b6",holy_light:"#ffe9a0",blessing:"#ffd76a",sanctuary:"#fff2b8"};
 /* v20.10: one colour per class line, used by the Skills Tree tabs and tiles and by every skill icon (hotkey bar, drag ghost):
@@ -7912,6 +7984,8 @@ function skMaxOf(id){return REOC.skMax(id)}
 /* v20.6: what a levelled passive gives now and at the next level (Skills window) */
 function pasEffAt(id,lv){
   if(id==="mana_flow"){const f=REOC.manaFlow(lv);return fmt("pe_mf",{a:Math.round(f.sp*100),b:Math.round(f.regen*100),c:Math.round(f.cost*100)})}
+  if(id==="no_arrow")return fmt("pe_na",{a:REOC.NA_SC[lv-1]});
+  if(id==="ranger_mastery")return fmt("pe_rm",{a:lv});
   if(id==="elemental_attunement")return fmt("pe_ea",{a:Math.round(lv*REOC.PASSIVE.elemental_attunement.per*100),b:Math.round(150+lv*REOC.PASSIVE.elemental_attunement.per*100)});
   return ""}
 function pasEff(id){if(!REOC.SKLV[id])return "";const L=skLvOf(id),mx=skMaxOf(id),a=L?pasEffAt(id,L):"",n=L<mx?pasEffAt(id,L+1):"";
@@ -7928,6 +8002,7 @@ function skFix(){   // keep every level inside the points the character has (Job
   if(S.arch!=="beginner")S.basicLv=BASIC_MAX;   // the trial needs Basic Skill Lv 10, so every Archetype has it
   while(S.arch==="beginner"&&skAvail()<0&&S.basicLv>1)S.basicLv--;
   while(skAvail()<0){let best=null;for(const id of skMine())if(skLvOf(id)>0&&(!best||skLvOf(id)>skLvOf(best)))best=id;if(!best)break;S.skLv[best]--}
+  for(const id of skMine())if(skLvOf(id)>0&&!skReqOk(id,skLvOf))S.skLv[id]=0;   // v21f: a skill whose requirement is gone is unlearned (its points come back)
 }
 function skRaise(id){if(!skMine().includes(id)||skLvOf(id)>=skMaxOf(id)||skAvail()<=0)return;S.skLv[id]=skLvOf(id)+1;_pdKey="";buildSlots();renderWin();save()}
 /* ---- v20.10 Skills Tree (UI-UX.md §26) ----
@@ -7941,7 +8016,7 @@ const skTabs=()=>[S.arch];   // one tab: the Beginner tree, or the archetype tre
 const skTabNow=()=>{const L=skTabs();return L.includes(skTab)?skTab:L[L.length-1]};
 const skTreeIds=tab=>tab==="beginner"?[BASIC_T,...BASIC_ACT]:[BASIC_T,...BASIC_ACT,...REOC.ARCH[tab].passives,...REOC.ARCH[tab].actives];
 /* tree layout: rows of up to 4 archetype skills (columns 2-5); column 1 holds Basic Skill, First Aid, Heavy Strike. Default: passives, then actives */
-const SKT_ROWS={spellcaster:[["mana_flow","elemental_attunement","overload_energy"],["fire_bolt","freezer","lightning_spear","petrifaction"]]};
+const SKT_ROWS={ranger:[["no_arrow","ranger_mastery","eagle_eye","steady_aim"],["focusing","aim_strike","aiming_shower"],["double_strafe","arrow_shower","piercing_shot","evasive_leap"]],spellcaster:[["mana_flow","elemental_attunement","overload_energy"],["fire_bolt","freezer","lightning_spear","petrifaction"]]};
 function skGrid(tab){
   const col=[BASIC_T,...BASIC_ACT],A=REOC.ARCH[tab],rows=[];
   if(tab!=="beginner")for(const r of SKT_ROWS[tab]||[A.passives,A.actives])for(let i=0;i<r.length;i+=4)rows.push(r.slice(i,i+4));
@@ -7954,8 +8029,12 @@ const skLearned=id=>id===BASIC_T?basicLv():skLvOf(id);
 const skMaxT=id=>id===BASIC_T?BASIC_MAX:skMaxOf(id);
 const skCanLearn=id=>id===BASIC_T?S.arch==="beginner":skMine().includes(id);
 const skView=id=>skCur[id]>0?skCur[id]:skLearned(id);   // the level the tile shows
+/* v21f skill requirements (REOC.SKREQ): a skill can only be learned once the skills it needs reach their level (a draft counts) */
+const skReqOk=(id,lvOf)=>{const q=REOC.SKREQ[id];if(!q)return true;lvOf=lvOf||skView;for(const r in q)if(lvOf(r)<q[r])return false;return true};
+const skReqTxt=id=>{const q=REOC.SKREQ[id];return q?Object.keys(q).map(r=>`${t("sk_"+r)} Lv ${q[r]}`).join(", "):""};
 function skPendCost(){let n=0;for(const id in skCur)if(skCanLearn(id))n+=Math.max(0,skCur[id]-skLearned(id));return n}
 function skCurFix(){   // keep the cursors valid after a level, Job Lv or class change; drafts that no longer fit the points left are cut back
+  for(const id of Object.keys(skCur))if(skCur[id]>skLearned(id)&&!skReqOk(id))delete skCur[id];   // v21f: a draft whose requirement was taken back goes too
   for(const id of Object.keys(skCur)){const L=skLearned(id);let c=Math.min(skCur[id]|0,skMaxT(id));
     if(c>L&&!skCanLearn(id))c=L;if(id===BASIC_T&&c<L)c=L;
     if(c<1||c===L)delete skCur[id];else skCur[id]=c}
@@ -7965,15 +8044,15 @@ function skCurFix(){   // keep the cursors valid after a level, Job Lv or class 
 function skStepOk(id,n){   // can the cursor of this tile go to level n?
   const L=skLearned(id);
   if(n<(id===BASIC_T?L:L>0?1:0)||n>skMaxT(id))return false;
-  if(n>L&&n>skView(id))return skCanLearn(id)&&skPendCost()<skAvail();
+  if(n>L&&n>skView(id))return skCanLearn(id)&&skReqOk(id)&&skPendCost()<skAvail();
   return true}
 function skStep(id,d){
   const n=skView(id)+d,L=skLearned(id);
-  if(!skStepOk(id,n)){if(d>0&&n<=skMaxT(id)&&n>L){AUD.sfx("err");toast(skCanLearn(id)?t("skt_nopts"):BASIC_UNLOCK[id]?basicNeed(id):t("bs_kept"))}return}
-  skSel=id;if(n===L||n<1)delete skCur[id];else skCur[id]=n;AUD.sfx("click");renderWin()}
+  if(!skStepOk(id,n)){if(d>0&&n<=skMaxT(id)&&n>L){AUD.sfx("err");toast(skCanLearn(id)?(skReqOk(id)?t("skt_nopts"):fmt("skt_req",{s:skReqTxt(id)})):BASIC_UNLOCK[id]?basicNeed(id):t("bs_kept"))}return}
+  skSel=id;if(n===L||n<1)delete skCur[id];else skCur[id]=n;if(d<0)skCurFix();AUD.sfx("click");renderWin()}
 function skPick(id){   // a tap on a tile selects it; a grey skill that can be learned also gets a Lv 1 draft
   skSel=id;winDet="skinfo";const L=skLearned(id);   // a left click opens Skill Info beside the tree
-  if(!L&&!(skCur[id]>0)){if(skCanLearn(id)){if(skPendCost()<skAvail())skCur[id]=1;else{AUD.sfx("err");toast(t("skt_nopts"))}}else if(BASIC_UNLOCK[id])toast(basicNeed(id))}
+  if(!L&&!(skCur[id]>0)){if(skCanLearn(id)&&!skReqOk(id))toast(fmt("skt_req",{s:skReqTxt(id)}));else if(skCanLearn(id)){if(skPendCost()<skAvail())skCur[id]=1;else{AUD.sfx("err");toast(t("skt_nopts"))}}else if(BASIC_UNLOCK[id])toast(basicNeed(id))}
   AUD.sfx("click");renderWin()}
 function skLearn(){
   skCurFix();const cost=skPendCost();if(!cost)return;
@@ -7993,7 +8072,8 @@ function skTile(id){
      (Basic Skill as a Beginner, a passive below max) and a learned active with levels (level for the hotkey bar) */
   const arw=pend||(sel&&(mx>1||(!L&&skCanLearn(id))))||(L>0&&mx>1&&(!pas||(skCanLearn(id)&&L<mx)));
   const low=`<span class="skc-arw${pas?" pas":""}"><button class="l" data-act="skstep" data-id="${id}" data-d="-1" aria-label="-"${skStepOk(id,v-1)?"":" disabled"}><i></i></button><b>${v}</b><button class="r" data-act="skstep" data-id="${id}" data-d="1" aria-label="+"${v<mx&&(v<L||skCanLearn(id))?"":" disabled"}><i></i></button></span>`;
-  const pill=arw?low:L?`<span class="skc-lv${pas?" pas":""}">${L}</span>`:BASIC_UNLOCK[id]?`<span class="skc-lv req">${t("bs_short")} ${BASIC_UNLOCK[id]}</span>`:`<span class="skc-lv none"></span>`;
+  const rq=REOC.SKREQ[id]&&!L&&!pend&&!skReqOk(id)?REOC.SKREQ[id]:null,rk=rq&&Object.keys(rq)[0];
+  const pill=rq?`<span class="skc-lv req" title="${skReqTxt(id)}">${t("sk_"+rk)} ${rq[rk]}</span>`:arw?low:L?`<span class="skc-lv${pas?" pas":""}">${L}</span>`:BASIC_UNLOCK[id]?`<span class="skc-lv req">${t("bs_short")} ${BASIC_UNLOCK[id]}</span>`:`<span class="skc-lv none"></span>`;
   return `<div class="skc${on?"":" off"}" style="--ac:${ARC_COL[a]};--ag:${SKG[a]}"><span class="skc-n" title="${name}">${name}</span><button class="sk-tile${pas?" pas":""}${on?"":" off"}${sel?" sel":""}" data-act="skpick" data-id="${id}"${dnd} aria-label="${name}">${skSvg(id)}${pend?`<em class="skc-plus">+${v-L}</em>`:""}</button>${pill}</div>`}
 const slotLv=sl=>sl&&sl.id&&REOC.SKLV[sl.id]?(sl.lv>0?Math.min(sl.lv,skLvOf(sl.id)):skLvOf(sl.id)):0;   // lv 0 on a slot = the highest level learned
 function lvFor(id){   // level Idle uses: the level set on the first hotbar slot that holds the skill, else the highest learned
@@ -8069,6 +8149,7 @@ function useSkill(id,auto,lvArg){
   const lv=REOC.SKLV[id]?Math.min(lvArg||lvFor(id),skLvOf(id)):0;if(lv)k=REOC.skAt(id,lv);
   if(CD[id]>0||player.casting||(player.gd||0)>0)return false;   // Global Delay: no skill until it ends (basic attacks are not blocked)
   const cost=Math.ceil(k.sp*d.spCost);if(S.sp<cost){if(!auto)toast(t("noSp"));return false}
+  if(k.kind==="phys"&&k.ranged&&S.sc<arrowCost()*(k.hits||1)){payArrows(k.hits||1);return false}   // v21f No Arrow: no Scandium, no shot (payArrows tells the player)
   let tg=null;
   const needsTarget=(k.kind==="phys"||k.kind==="magic")&&!(k.aoe&&k.at==="self");
   if(needsTarget){
@@ -8097,6 +8178,23 @@ function leapAway(n){
   for(let r=n;r>=1;r-=.5){const tx=player.x+dx*r,ty=player.y+dy*r;if(walk(Math.floor(tx),Math.floor(ty))&&los(player.x,player.y,tx,ty)){player.x=tx;player.y=ty;break}}
   player.path=[];
 }
+/* v21f Aim Strike (SKILL-SPEC.md §3m): one arrow; with chance splitCh it splits in mid-air into k.split arrows that land 0.1 s apart.
+   Every arrow that hits does k.ratio x ATK (can crit, crit chance x0.5) and splashes 50% of it on every other monster in a 3x3 square
+   round the target. Arrows that land after the target died hit nothing. */
+function aimStrike(tg,k,o,col){
+  const n=Math.random()<k.splitCh?k.split:1,fly=.24,mid=[(player.x+tg.x)/2,(player.y+tg.y)/2],gap=k.gap||.1;let sq=0;
+  const land=()=>{if(!alive(tg)){fx.push({k:"burst",x:tg.x,y:tg.y,t:0,d:.3,c:"#fff3c0",n:6,z:4});return}
+    physAttack(tg,o);if(!sq++)fx.push({k:"sqarea",x:tg.x,y:tg.y,t:0,d:.25+n*gap,c:col,r:k.splashR});   // the 3x3 splash square, drawn once per cast
+    for(const m of liveMon())if(m!==tg&&Math.max(Math.abs(m.x-tg.x),Math.abs(m.y-tg.y))<=k.splashR)physAttack(m,{ratio:k.ratio*k.splash,canCrit:false,c:col})};
+  shootArrow(tg,fly,{c:col});later(fly*1000,land);
+  if(n<2)return;
+  later(fly*500,()=>{fx.push({k:"burst",x:mid[0],y:mid[1],t:0,d:.35,c:"#fff6c8",n:12,z:44});fx.push({k:"dmg",x:mid[0],y:mid[1],t:0,d:.8,txt:fmt("as_split",{n}),c:"#fff2a8",ox:0,h:56})});
+  const px=-(tg.y-player.y),py=tg.x-player.x,pl=Math.hypot(px,py)||1;   // split arrows fan out sideways from the split point
+  for(let h=1;h<n;h++){const o2=((h%2?1:-1)*Math.ceil(h/2))*.35/pl;shootArrow(tg,fly*.5,{from:[mid[0]+px*o2,mid[1]+py*o2],t0:fly*.5+h*gap,z0:44,arc:8,c:col});later((fly+h*gap)*1000,land)}
+}
+/* v21f Aiming Shower: push the monster `n` tiles straight away from the player (bosses too); it slides and stops at a wall */
+function knockBack(m,n){const dx=m.x-player.x,dy=m.y-player.y,l=Math.hypot(dx,dy)||1;m.kb={vx:dx/l,vy:dy/l,left:n};m.path=[];m.moving=false;
+  fx.push({k:"burst",x:m.x,y:m.y,t:0,d:.45,c:"#e8dcc0",n:12,z:4})}
 function finishSkill(id,tg,lv,gp){
   const k=lv?REOC.skAt(id,lv):REOC.SK[id],d=pd(),x=player.x,y=player.y,col=SKC[id]||"#fff";
   CD[id]=k.cd*d.cdMul;   // cooldown and Global Delay both start when the cast ends
@@ -8112,8 +8210,11 @@ function finishSkill(id,tg,lv,gp){
      const bonus=(k.ranged&&BF.leapShot)?1.6:1;if(k.ranged)BF.leapShot=false;
      const o={ratio,ignoreDef:k.ignoreDef,canCrit:!!k.canCrit,critMul:k.critMul,bonus,c:col};
      if(k.ranged){
+       if(!payArrows(k.hits||1))break;   // v21f No Arrow: Scandium per arrow that leaves the bow
+       if(k.split&&tg){aimStrike(tg,k,o,col);break}   // v21f Aim Strike
+       if(k.knock&&tg){shootArrow(tg,.2,{c:col});later(190,()=>{if(alive(tg)){physAttack(tg,o);if(alive(tg))knockBack(tg,k.knock)}});break}   // v21f Aiming Shower
        if(k.aoe&&tg){fx.push({k:"burst",x:tg.x,y:tg.y,t:0,d:.6,c:col,n:20,z:8});fx.push({k:"ring",x:tg.x,y:tg.y,t:0,d:.5,c:col,r:k.aoe*48})}
-       area.forEach(m=>{for(let h=0;h<(k.hits||1);h++){fx.push({k:"proj",x,y,tx:m.x,ty:m.y,t:-h*.09,d:.18+h*.09,c:col});later(170+h*90,()=>{if(alive(m))physAttack(m,o)})}});
+       area.forEach(m=>{for(let h=0;h<(k.hits||1);h++){shootArrow(m,.18,{t0:h*.09,c:col});later(170+h*90,()=>{if(alive(m))physAttack(m,o)})}});
      }else{
        if(k.aoe)fx.push({k:"ring",x,y,t:0,d:.45,c:col,r:k.aoe*55});else fx.push({k:"slash",x:tg.x,y:tg.y,t:0,d:.35,c:col,dir:player.dir});
        player.lunge=.2;
@@ -8145,6 +8246,7 @@ function finishSkill(id,tg,lv,gp){
      if(d.shieldCap&&over>0)BF.shield=Math.min(hpMax()*d.shieldCap,BF.shield+over);
      fx.push({k:"rise",x,y,t:0,d:1,c:col,follow:true});floatText("+"+num(h)+" HP",col);break}
    case "buff":{BF[k.buff]=k.dur;
+     if(k.focus){BF.focusV=k.focus;_pdKey="";fx.push({k:"ring",x,y,t:0,d:.7,c:col,r:56})}   // v21f Focusing: DEX and AGI +%
      if(k.over){BF.overEnV=k.over;_pdKey="";   // v20.6 Overload Energy: self + party members within 6 tiles (a 12x12 square). Party members are simulated (no combat stats yet), so on them it is only shown
        fx.push({k:"ring",x,y,t:0,d:.8,c:col,r:k.area*48});
        if(S.party&&cur===town)for(const m of S.party.members){const w=findPlayer(m.name);if(w&&Math.abs(w.x-x)<=k.area&&Math.abs(w.y-y)<=k.area)fx.push({k:"rise",x:w.x,y:w.y,t:0,d:1.1,c:col})}}
@@ -8239,6 +8341,23 @@ function hfxDraw(f,cx,cy){
     else fxSq(X,Y,p>.7?1:f.s,fxCol(f.ramp,p))}
 }
 function fxDisc(cx,cy,R,c){const bx=Math.round(cx/2),by=Math.round(cy/2);g.fillStyle=c;for(let yy=-R;yy<=R;yy++){const hw=Math.floor(Math.sqrt(R*R-yy*yy));g.fillRect((bx-hw)*2,(by+yy)*2,(hw*2+1)*2,2)}}
+/* v21f arrow in flight: a real arrow (shaft, head, fletching) that turns along its arc. Scandium arrows (No Arrow) are pale gold
+   metal with a soft glow and a sparkling trail; normal arrows are wood with a steel head and red feathers. */
+function arrowDraw(f,x0,y0,p){
+  const m=f.m&&alive(f.m)?f.m:null,[tx,ty]=P(m?m.x:f.tx,m?m.y:f.ty),hz=m?Math.min(60,MON[m.type].h*mSize(m)*.45):20;
+  const sx=x0,sy=y0-f.z0,ex=tx,ey=ty-hz,A=f.arc,u=Math.min(1,p);
+  const px=sx+(ex-sx)*u,py=sy+(ey-sy)*u-Math.sin(u*Math.PI)*A,ang=Math.atan2((ey-sy)-Math.cos(u*Math.PI)*Math.PI*A,ex-sx);
+  const sc=f.sc,tip=f.c&&/^#[0-9a-f]{6}$/i.test(f.c)?f.c:null;
+  if(sc){g.globalCompositeOperation="lighter";for(let i=1;i<=5;i++){const q=Math.max(0,u-i*.05),qx=sx+(ex-sx)*q,qy=sy+(ey-sy)*q-Math.sin(q*Math.PI)*A;ell(qx,qy,2.6-i*.35,2.6-i*.35,`rgba(255,236,170,${(.5-i*.08).toFixed(2)})`)}
+    glow(px,py,16,"rgba(255,232,150,.45)")}
+  g.globalCompositeOperation="source-over";g.save();g.translate(px,py);g.rotate(ang);
+  g.lineCap="round";g.strokeStyle="rgba(20,16,30,.85)";g.lineWidth=4;g.beginPath();g.moveTo(-19,0);g.lineTo(7,0);g.stroke();   // outline
+  g.strokeStyle=sc?"#efe0a0":"#b67a44";g.lineWidth=2.2;g.beginPath();g.moveTo(-19,0);g.lineTo(7,0);g.stroke();   // shaft
+  g.fillStyle=sc?"#fffbe6":"#e6ecf4";g.strokeStyle="rgba(20,16,30,.85)";g.lineWidth=1.2;g.beginPath();g.moveTo(14,0);g.lineTo(5,-4);g.lineTo(7,0);g.lineTo(5,4);g.closePath();g.fill();g.stroke();   // head
+  g.fillStyle=sc?(tip||"#ffd76a"):"#e23a3a";g.beginPath();g.moveTo(-12,0);g.lineTo(-20,-5);g.lineTo(-17,0);g.lineTo(-20,5);g.closePath();g.fill();g.stroke();   // fletching
+  g.fillStyle=sc?"#fff":"#ffd0c8";g.beginPath();g.moveTo(-15,0);g.lineTo(-21,-3);g.lineTo(-19,0);g.closePath();g.fill();
+  g.restore();
+}
 /* v20 Fire Bolt: a fireball falls from high above, with a ground shadow that grows, a flame trail and flickering embers */
 function fballDraw(f){
   const m=f.m,[tx,ty0]=P(m?m.x:f.x,m?m.y:f.y),p=Math.min(1,f.t/f.d),u=Math.pow(p,1.7),k=f.kk,tyb=ty0-f.hz;
@@ -8288,6 +8407,7 @@ function drawFx(f){
   else if(f.k==="dome"){const a=Math.min(1,(1-p)*3)*Math.min(1,p*6);g.globalAlpha=a*.5;const gr=g.createRadialGradient(x,y-26,6,x,y-26,34);gr.addColorStop(0,"rgba(220,230,255,0)");gr.addColorStop(1,f.c);g.fillStyle=gr;g.beginPath();g.ellipse(x,y-26,26,36,0,0,TAU);g.fill();g.globalAlpha=a;g.strokeStyle="#fff";g.lineWidth=1.2;g.stroke()}
   else if(f.k==="bolt"){g.globalAlpha=1-p;g.strokeStyle=f.c;g.lineWidth=4;g.beginPath();let yy=y-240,xx=x;g.moveTo(xx,yy);while(yy<y-20){yy+=24;xx=x+(hash(Math.floor(yy),Math.floor(f.x*10))-.5)*26;g.lineTo(xx,yy)}g.lineTo(x,y-20);g.stroke();g.strokeStyle="#fff";g.lineWidth=1.5;g.stroke()}
   else if(f.k==="proj"){const [tx,ty]=P(f.tx,f.ty);const px=x+(tx-x)*p,py=y-26+(ty-y)*p-Math.sin(p*Math.PI)*30;ell(px,py,6,6,f.c);ell(px,py,3,3,"#fff");g.globalAlpha=.5;ell(px-(tx-x)*.06,py+4,5,5,f.c)}
+  else if(f.k==="arrow"){arrowDraw(f,x,y,p)}
   else if(f.k==="fball"){g.globalCompositeOperation="source-over";fballDraw(f)}
   else if(f.k==="sqarea"){const a=Math.min(1,p*6)*(1-Math.max(0,p-.8)*5),r=f.r,c=[[f.x-r,f.y-r],[f.x+r,f.y-r],[f.x+r,f.y+r],[f.x-r,f.y+r]].map(q=>P(q[0],q[1]));   // v20.18 square area on the ground (5x5 / 7x7)
     g.globalAlpha=.35*a;g.fillStyle=f.c;g.beginPath();c.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.closePath();g.fill();g.globalAlpha=.9*a;g.strokeStyle=f.c;g.lineWidth=2;g.setLineDash([6,4]);g.stroke();g.setLineDash([])}
@@ -8332,6 +8452,7 @@ function renderFx(){
   const list=[];
   if(BF.momentum>0)list.push({ic:"flame",c:SKG.fighter,nk:"fx_momentum",dk:"fx_momentum_d",val:"×"+BF.momentum});
   if(BF.warCry>0)list.push({ic:"shout",c:SKG.fighter,nk:"sk_war_cry",dk:"fx_warcry_d",val:fmtSec(BF.warCry)});
+  if(BF.focus>0)list.push({ic:"aim",c:SKG.ranger,nk:"sk_focusing",dk:"fx_focus_d",val:fmtSec(BF.focus)});
   if(BF.leap>0)list.push({ic:"wing",c:SKG.ranger,nk:"sk_evasive_leap",dk:"fx_leap_d",val:fmtSec(BF.leap)});
   if(BF.leapShot)list.push({ic:"pierce",c:SKG.ranger,nk:"fx_leapshot",dk:"fx_leapshot_d",val:"+60%"});
   if(BF.overEn>0)list.push({ic:"sparkle",c:SKG.spellcaster,nk:"sk_overload_energy",dk:"fx_overEn_d",val:fmtSec(BF.overEn)});
@@ -8510,7 +8631,7 @@ function idleSit(){
 function autoPickId(){   // the built-in skill choice (used when every skill set is empty)
   const tg=alive(player.target)?player.target:null,d=pd();
   const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0,nearMe=liveMon().filter(m=>(m===tg||m.aggro)&&Math.max(Math.abs(m.x-player.x),Math.abs(m.y-player.y))<=3.5).length;
-  return REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0},
+  return REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0,focus:BF.focus>0},
     dist:tg?dist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,brn:tg.brn,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
 }
 const isGrpOf=id=>{const k=REOC.SK[id];if(!k)return null;for(const g in IS_GRP)if(IS_GRP[g].includes(k.kind))return g;return null};
@@ -9011,6 +9132,9 @@ function siLevel(id,n){   // what one level gives
   if(id==="lightning_spear")return fmt("si_ls",{a:k.hits,b:Math.round(k.ratio*100),c:sp});
   if(id==="petrifaction")return fmt("si_pt",{a:Math.round(k.ratio*100),b:Math.round(k.stCh*100),c:sp});
   if(id==="overload_energy")return fmt("si_oe",{a:k.over,b:k.dur,c:sp});
+  if(id==="focusing")return fmt("si_fo",{a:Math.round(k.focus*100),b:k.dur,c:sp});
+  if(id==="aim_strike")return fmt("si_as",{a:k.split,b:Math.round(k.splitCh*100),c:Math.round(k.ratio*100),d:sp});
+  if(id==="aiming_shower")return fmt("si_aw",{a:Math.round(k.ratio*100),c:sp});
   const rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"";
   return `SP ${sp}${rg}`}
 WIN.skinfo=()=>{
@@ -9025,7 +9149,7 @@ WIN.skinfo=()=>{
     return `<tr${n===L?' class="on"':""}><td>Lv.${n}</td><td>${k.vct?k.vct+" "+sec:"–"}</td><td>${k.fct?k.fct+" "+sec:"–"}</td><td>${k.cd?k.cd+" "+sec:"–"}</td><td>${k.gd?k.gd+" "+sec:"–"}</td></tr>`}).join("")}</tbody></table>`;
   return `<div class="si" style="--ac:${ARC_COL[a]};--ag:${SKG[a]}">
    <div class="si-top"><span class="sk-tile big${pas?" pas":""}${L?"":" off"}">${skSvg(id)}</span><div class="si-head"><b>${name} Lv.${L}/${mx}</b><div class="si-chips">${chips.map((c,i)=>`<span class="skt-chip${i?" pas":""}">${c}</span>`).join("")}</div></div></div>
-   <p class="si-desc">${desc}</p>${lvHtml?`<div class="si-lvs">${lvHtml}</div>`:""}${tb}</div>`};
+   <p class="si-desc">${desc}</p>${REOC.SKREQ[id]?`<p class="si-desc si-req${skReqOk(id,skLearned)?"":" no"}"><b>${t("skt_reqL")}</b> ${skReqTxt(id)}</p>`:""}${lvHtml?`<div class="si-lvs">${lvHtml}</div>`:""}${tb}</div>`};
 
 /* ---------- Idle: summary (when stopped) and settings (mock-up) ---------- */
 WIN.idlesum=()=>{
@@ -9033,8 +9157,8 @@ WIN.idlesum=()=>{
   const row=(k,v)=>`<div class="stat"><span>${k}</span><b>${v}</b></div>`,hr=L.t>20?3600/L.t:0;
   const items=Object.entries(L.items||{}).filter(([k,q])=>q>0).sort((a,b)=>b[1]-a[1]);
   return `<div class="isum-head"><span class="isum-ic">${svg("flame")}</span><div><b>${t("isum_title")}</b><small>${t(S.vip?"vipOn":"vipOff")}</small></div></div>
-   <div class="stats isum-stats">${row(t("isum_time"),fmtClock(L.t))}${row(t("isum_kills"),num(L.kills))}${row("Base EXP","+"+num(L.base))}${row("Job EXP","+"+num(L.job))}${row("Scandium","+"+num(L.sc))}${row(t("isum_gear"),num(L.gear||0))}</div>
-   ${hr?`<p class="muted">${fmt("rate",{e:num(L.base*hr),s:num(L.sc*hr)})}</p>`:""}
+   <div class="stats isum-stats">${row(t("isum_time"),fmtClock(L.t))}${row(t("isum_kills"),num(L.kills))}${row("Base EXP","+"+num(L.base))}${row("Job EXP","+"+num(L.job))}${row("Scandium",L.arrowSc?num(L.sc-L.arrowSc)+` (${fmt("off_arrows",{c:num(L.arrowSc)})})`:"+"+num(L.sc))}${row(t("isum_gear"),num(L.gear||0))}</div>
+   ${hr?`<p class="muted">${fmt("rate",{e:num(L.base*hr),s:num((L.sc-(L.arrowSc||0))*hr)})}</p>`:""}
    <div class="w-sec">${t("isum_items")}</div>
    ${items.length?`<div class="isum-items">${items.map(([id,q])=>`<div class="isum-it" title="${itemName(id)}"><span class="ii-ic">${itemArt(id)}</span><b>${num(q)}</b><small>${itemName(id)}</small></div>`).join("")}</div>`:`<p class="muted">${t("isum_none")}</p>`}
    <div class="w-dev" style="margin-top:12px"><button class="btn pri" data-act="idleAgain">${t("isum_again")}</button><button class="btn" data-act="idleClose">${t("close")}</button></div>`;
@@ -9579,7 +9703,7 @@ function processAway(map,vip,secs){
   S.pending={secs,map,vip:!!vip,full};return true;
 }
 function grantIdle(f,mult){
-  S.sc+=Math.round(f.sc*mult);S.kills+=Math.round(f.kills*mult);
+  S.sc=Math.max(0,S.sc+Math.round(f.sc*mult));S.kills+=Math.round(f.kills*mult);
   gainBase(Math.round(f.base*mult));gainJob(Math.round(f.job*mult));
   for(const k in f.items){const q=Math.round(f.items[k]*mult);if(q>0)gainItem(k,q)}
   for(let i=0;i<Math.round((f.gearN||0)*mult);i++){const g=rollDropGear(f.tier||1,"normal");if(lootOk(g.id))gainGear(g)}
@@ -9607,7 +9731,7 @@ WIN.idlerew=()=>{const p=S.pending;if(!p)return `<p class="muted">—</p>`;
   const matN=Object.values(F.items).reduce((a,b)=>a+b,0);
   return `<p class="muted">${t("rw_time")}: ${fmt("hrs",{h:hh,m:mm})} · ${t(p.vip?"rw_hidden":"rw_visible")}</p>
    <div class="w-sec">${t(p.vip?"rw_baseVip":"rw_baseNon")}</div>
-   <div class="stats">${row(t("kills"),F.kills*f)}${row("Base EXP",F.base*f)}${row("Job EXP",F.job*f)}${row("Scandium",F.sc*f)}${row(t("mats"),matN*f)}</div>
+   <div class="stats">${row(t("kills"),F.kills*f)}${row("Base EXP",F.base*f)}${row("Job EXP",F.job*f)}${row("Scandium",F.sc*f)}${row(t("mats"),matN*f)}</div>${F.arrowSc?`<p class="muted">${fmt("off_arrows",{c:num(Math.round(F.arrowSc*f))})}</p>`:""}
    <div class="w-sec">${t(p.vip?"rw_upVip":"rw_upNon")}</div>
    <p class="muted">${fmt("rw_cost",{c:cost,y:num(S.y)})}</p>
    <div class="w-dev"><button class="btn pri" data-act="rwYes">${fmt("rw_yes",{c:cost})}</button><button class="btn" data-act="rwNo">${t("rw_no")}</button></div>`};

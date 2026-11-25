@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v21e. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v21f. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,12 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v21e (this update)
+## Changes in v21f (this update)
+- **Five new Ranger skills** (from NIIQ, `SKILL-SPEC.md` §3i–3n; the old Ranger prototype skills stay): **No Arrow** (passive Lv 1–5: Scandium arrows, 20 / 18 / 15 / 13 / 10 Sc per arrow shot, no Scandium = no shot), **Ranger Mastery** (passive Lv 1–10: DEX, HIT, AGI +Lv), **Focusing** (Self Cast Lv 1–10: DEX and AGI +3–12% for 60–240 s, SP 25–70), **Aim Strike** (Lv 1–10: 100–200% ATK arrow, 20–40% chance to split into 2–7 arrows 0.1 s apart, 50% splash on 3 × 3, crit chance ×0.5, SP 12–25, GD 0.1 s), **Aiming Shower** (Lv 1–10: 160–250% ATK, pushes the target 2 tiles back incl. bosses, SP 20, FCT 0.1 s, GD 0.1 s). New **skill requirements** (`SKREQ`): the four need No Arrow Lv 1 / 3 / 5 / 5; locked tiles show what they need, Skill Info has a Requires line. Text in en / th / jp.
+- **Arrows look like arrows** (`arrowDraw`): every Ranger shot is an arrow turned along its arc; Scandium arrows glow pale gold with a sparkling trail (`UI-UX.md` §30). New icons for the five skills.
+- **Balance:** Ranger CP Lv 10 / 20 / 30: 457 / 861 / 1,354 → 640 / 1,065 / 1,614 (Fighter 598 / 1,090 / 1,576), mostly from Ranger Mastery. ⚠ Aim Strike can empty a full SP bar in about 1 s (~9,000 damage at Lv 30), and No Arrow costs more Scandium than Field 01–02 pay. Details and suggested fixes in `SKILL-SPEC.md` §3n, `ECONOMY.md` §5; idle / offline arrow cost in `IDLE.md`.
+
+## Changes in v21e
 - **Fire Bolt: splash + Burning.** Every fireball that hits also does 50% of its MATK as Fire to the other monsters in a 3 × 3 square round the target, and each cast has a 30 / 40 / 50 / 60 / 70% chance (by level) to set the target **Burning** (burns for 10% MATK Fire every second, Water hits it +50%, it keeps moving; a Freeze puts it out). **Freezer: splash** of 50% MATK Water on a 3 × 3 square while the target is Frozen. New `STATUS.brn`; statuses now say whether they hold the monster (`hold`). Skill text and Skill Info updated in en / th / jp. CP (Lv 10 / 20 / 30): 236 / 496 / 922 → 233 / 546 / 971 (`SKILL-SPEC.md` §3, §3e, §3h; `COMBAT-FORMULAS.md` §5).
 - **Status looks.** Frozen monsters turn icy blue inside ice crystals, Petrified ones turn to cracked grey stone, Burning ones glow orange in flames with embers and smoke, and stunned ones get circling stars. Ice shatters and stone crumbles when the status ends (`UI-UX.md` §29).
 
