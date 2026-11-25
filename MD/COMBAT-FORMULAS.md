@@ -121,7 +121,9 @@ Example: Lv 20, INT 40, Heal Lv 5 → ⌊60/8⌋ × 44 = **308** (369 with Divin
 
 Neutral and Holy deal 1.0 to these elements. Elemental Attunement adds +0.05 per level (Lv 1–5): 1.5 → 1.75 at Lv 5. **REO:** classic weak multipliers go lower than 0.75.
 
-**Status debuffs (v20.18).** A **Frozen** monster (Freezer) takes **+0.5** on the Wind multiplier, a **Petrified** one (Petrifaction) **+0.5** on the Fire multiplier, added after the table and Attunement: `element = table (+ Attunement) + 0.5`. Both stop the monster from moving and attacking. ⚠ Placeholders until NIIQ gives them: chance `skill% × (1 − MDEF%) − LUK/5`, time `3–7 s by skill level × (1 − MDEF%)`, bosses immune (`SKILL-SPEC.md` §3h).
+**Status debuffs (v20.18, Burning v21e).** A **Frozen** monster (Freezer) takes **+0.5** on the Wind multiplier, a **Petrified** one (Petrifaction) **+0.5** on the Fire multiplier, a **Burning** one (Fire Bolt) **+0.5** on the Water multiplier, added after the table and Attunement: `element = table (+ Attunement) + 0.5`. Freeze and Petrifaction stop the monster from moving and attacking; Burning does not, but it burns for `magicHit(ratio 0.1, Fire)` every second (no Overload). A new Freeze ends Burning.
+
+**Splash (v21e).** Fire Bolt (every fireball that hits) and Freezer (only while its target is Frozen) hit every other monster in a 3 × 3 square round the target for **50%** of the skill's MATK ratio, same element, no Overload. ⚠ Placeholders until NIIQ gives them: chance `skill% × (1 − MDEF%) − LUK/5`, time `3–7 s by skill level × (1 − MDEF%)`, bosses immune (`SKILL-SPEC.md` §3h).
 
 | Monster | Lv | Element | HP | ATK | Hard DEF | Soft DEF | MDEF | HIT | FLEE |
 |---|---|---|---|---|---|---|---|---|---|

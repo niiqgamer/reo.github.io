@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v21b. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v21e. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,11 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v21d (this update)
+## Changes in v21e (this update)
+- **Fire Bolt: splash + Burning.** Every fireball that hits also does 50% of its MATK as Fire to the other monsters in a 3 × 3 square round the target, and each cast has a 30 / 40 / 50 / 60 / 70% chance (by level) to set the target **Burning** (burns for 10% MATK Fire every second, Water hits it +50%, it keeps moving; a Freeze puts it out). **Freezer: splash** of 50% MATK Water on a 3 × 3 square while the target is Frozen. New `STATUS.brn`; statuses now say whether they hold the monster (`hold`). Skill text and Skill Info updated in en / th / jp. CP (Lv 10 / 20 / 30): 236 / 496 / 922 → 233 / 546 / 971 (`SKILL-SPEC.md` §3, §3e, §3h; `COMBAT-FORMULAS.md` §5).
+- **Status looks.** Frozen monsters turn icy blue inside ice crystals, Petrified ones turn to cracked grey stone, Burning ones glow orange in flames with embers and smoke, and stunned ones get circling stars. Ice shatters and stone crumbles when the status ends (`UI-UX.md` §29).
+
+## Changes in v21d
 - **Death crumble effect.** A dying monster breaks into shards in its colour that scatter and float up, then curve into the player with glowing trails and flash on arrival (~1 s). Normal 22 shards, Elite 38, boss 70 (half on Low graphics). A soft whoosh + rising sparkle (`absorb`, bigger `absorbbig` for Elites and bosses) plays as the shards arrive. See `UI-UX.md` §15b, `AUDIO.md`.
 
 ## Changes in v21c
