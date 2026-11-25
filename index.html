@@ -9085,7 +9085,7 @@ function stRaise(k,n){let did=0;for(let i=0;i<n;i++){const c=REOC.raiseCost(S.st
 /* v19.2: light Status window, after the user's reference image */
 function statusBody(){
   const d=pd(),free=statFree(),c1=S.arch!=="beginner",m=gearMods();
-  const bonus=k=>((m.attr&&m.attr[k])||0)+((BF.blessing>0&&["str","int","dex"].includes(k))?8:0);
+  const bonus=k=>d.s[k]-S.stats[k];   // v21f: everything on top of the base stat (gear, Blessing, Ranger Mastery, Focusing), read from the derived stats
   const pill=(v,cls)=>`<span class="lt-pill${cls?" "+cls:""}">${v}</span>`;
   const archV=c1?pill(svg(ARCH_IC[S.arch]||"user")+t("ar_"+S.arch))
     :S.jlv>=10?`<button class="lt-pill gold" data-act="trial">${t("lt_trial")}</button>`:pill(t("lt_noarch"),"dim");
