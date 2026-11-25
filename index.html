@@ -6108,6 +6108,24 @@ function face8(c,dx,dy){const sx=(dx-dy)*HW,sy=(dx+dy)*HH;if(sx*sx+sy*sy<1e-6)re
 const heroOn=()=>S.look!=="classic";
 const heroDeath=()=>{if(heroCustom())return true;const d=heroOn()&&HERO[heroSet()].death;return !!(d&&d.ok)};   // the death sheet replaces the tipped-over rotation
 const heroSet=()=>S.look==="female"?"female":"male";   // old saves may hold "new" = male
+/* v20.18 casting circles for the sprite heroes (the sheet's own small hand ring stays under them), in screen px at sc = 1 */
+function castFeetFx(T,r){g.save();g.scale(1,.32);
+  g.fillStyle="rgba(170,140,255,.18)";g.beginPath();g.arc(0,0,r*1.04,0,TAU);g.fill();
+  g.strokeStyle="rgba(190,170,255,.9)";g.lineWidth=2.4;g.setLineDash([r*.2,r*.11]);g.lineDashOffset=-T*30;g.beginPath();g.arc(0,0,r,0,TAU);g.stroke();g.setLineDash([]);
+  g.lineWidth=1.4;g.strokeStyle="rgba(220,205,255,.75)";g.beginPath();g.arc(0,0,r*.89,0,TAU);g.stroke();
+  for(let i=0;i<16;i++){const a=-T*.5+i*TAU/16;g.beginPath();g.moveTo(Math.cos(a)*r*.89,Math.sin(a)*r*.89);g.lineTo(Math.cos(a)*r*(i%2?.94:.98),Math.sin(a)*r*(i%2?.94:.98));g.stroke()}
+  g.strokeStyle="rgba(255,226,150,.9)";g.lineWidth=1.8;g.beginPath();g.arc(0,0,r*.76,0,TAU);g.stroke();
+  for(let k=0;k<2;k++){g.beginPath();for(let i=0;i<3;i++){const a=T*.8+k*Math.PI/3+i*TAU/3;g.lineTo(Math.cos(a)*r*.76,Math.sin(a)*r*.76)}g.closePath();g.stroke()}
+  g.lineWidth=1.3;g.beginPath();g.arc(0,0,r*.37,0,TAU);g.stroke();g.restore()}
+function castHandFx(T,r,flat){
+  g.save();g.globalCompositeOperation="lighter";const gl=g.createRadialGradient(0,0,0,0,0,r*1.3);gl.addColorStop(0,"rgba(255,255,255,.75)");gl.addColorStop(.35,"rgba(200,180,255,.45)");gl.addColorStop(1,"rgba(140,110,255,0)");
+  g.fillStyle=gl;g.beginPath();g.arc(0,0,r*1.3+Math.sin(T*6),0,TAU);g.fill();g.restore();
+  g.save();g.scale(flat,1);g.rotate(T*1.5);g.strokeStyle="rgba(235,222,255,.95)";g.lineWidth=1.4;g.setLineDash([r*.22,r*.14]);g.beginPath();g.arc(0,0,r,0,TAU);g.stroke();g.setLineDash([]);
+  g.lineWidth=1.2;g.beginPath();g.arc(0,0,r*.78,0,TAU);g.stroke();
+  for(let i=0;i<12;i++){const an=i*TAU/12;g.beginPath();g.moveTo(Math.cos(an)*r*.78,Math.sin(an)*r*.78);g.lineTo(Math.cos(an)*r*.9,Math.sin(an)*r*.9);g.stroke()}
+  g.strokeStyle="rgba(255,236,170,.95)";g.beginPath();for(let i=0;i<5;i++){const an=-T*3+i*TAU*2/5;g.lineTo(Math.cos(an)*r*.78,Math.sin(an)*r*.78)}g.closePath();g.stroke();g.restore();
+  for(let i=0;i<8;i++){const ph=(T*.9+i/8)%1,an=i*2.3;g.fillStyle=`rgba(255,250,220,${(1-ph).toFixed(2)})`;g.beginPath();g.arc(Math.cos(an)*ph*r*1.25,Math.sin(an)*ph*r*1.25-ph*5,1.1,0,TAU);g.fill()}}
+const OCT_OF_ROW=DIR8.map((_,r)=>DIR8.indexOf(r));   // sheet row -> screen octant (0 = E, clockwise)
 /* draws the hero with its feet at (X,Y); sc is in drawChibi units. Returns false if the sheet is not ready. */
 function drawHero(c,X,Y,sc=1,o={}){
   if(heroCustom())return drawHeroApp(c,X,Y,sc,o);
@@ -6117,10 +6135,16 @@ function drawHero(c,X,Y,sc=1,o={}){
   if(!a.ok)return false;const squash=sit&&a===H.idle;
   const row=c.f8!=null?c.f8:(c.back?(c.dir>0?3:5):(c.dir>0?1:7));
   const fr=a===H.death?Math.min(a.n-1,Math.floor(Math.max(0,T-(c.dieAt||0))*a.fps)):a===H.walk?Math.floor((c.phase||0)/TAU*a.n)%a.n:(o.still||a.n<2?0:Math.floor(T*a.fps+(c.seed||0))%a.n),bob=a!==H.idle||a.n>1?0:Math.sin(T*2.4+(c.seed||0))*.7,fw=a.fw||H.fw,ax=a.ax||H.ax,ay=a.ay||H.ay,rs=a.res||1;
+  const cst=a===H.cast&&!!c.casting&&!o.still,oct=OCT_OF_ROW[row]*Math.PI/4;   // v20.18: casting circles under the feet and at the hands
   g.save();g.translate(X,Y);g.scale(sc,sc);
   if(!o.noShadow)ell(0,0,sit?15:13,5,"rgba(12,16,28,.3)");
-  g.translate(0,bob+(squash?2:0));g.scale(H.sc,H.sc*(squash?.86:1));g.imageSmoothingEnabled=true;g.imageSmoothingQuality="high";
-  g.drawImage(a.img,fr*fw,row*fw,fw,fw,-ax/rs,-ay/rs,fw/rs,fw/rs);
+  if(cst)castFeetFx(T,46);
+  const back=cst&&Math.sin(oct)<-.2;   // facing away: the hand circle is behind the body
+  const hand=()=>{g.save();g.translate(Math.cos(oct)*27,-31+Math.sin(oct)*8);castHandFx(T,19,Math.max(.25,Math.abs(Math.cos(oct))));g.restore()};
+  if(back)hand();
+  g.save();g.translate(0,bob+(squash?2:0));g.scale(H.sc,H.sc*(squash?.86:1));g.imageSmoothingEnabled=true;g.imageSmoothingQuality="high";
+  g.drawImage(a.img,fr*fw,row*fw,fw,fw,-ax/rs,-ay/rs,fw/rs,fw/rs);g.restore();
+  if(cst&&!back)hand();
   g.restore();return true;
 }
 /* ================= code-drawn hero (v20.17) =================
@@ -6264,9 +6288,14 @@ function drawHero8(g,X,Y,sc,o={}){
   /* ground: shadow + cast circle */
   if(!o.noShadow){g.beginPath();g.ellipse(pz.fall?-(s0||1)*60*pz.fall:0,-2,40+pz.fall*40+(pz.drop?10:0),9,0,0,TAU);g.fillStyle="rgba(0,0,0,.28)";g.fill()}
   if(pz.fx&&pz.fx.type==="cast"){const T=pz.fx.t;g.save();g.translate(0,-2);g.scale(1,.28);
-    g.strokeStyle="rgba(190,170,255,.85)";g.lineWidth=5;g.setLineDash([18,10]);g.lineDashOffset=-T*60;g.beginPath();g.arc(0,0,70,0,TAU);g.stroke();
-    g.setLineDash([]);g.strokeStyle="rgba(255,226,150,.8)";g.lineWidth=3;g.beginPath();g.arc(0,0,56,0,TAU);g.stroke();
-    g.beginPath();for(let i=0;i<6;i++){const a=T*.8+i*TAU/6;g.lineTo(Math.cos(a)*56,Math.sin(a)*56)}g.closePath();g.stroke();g.restore()}
+    /* v20.18: a bigger circle under the feet: soft glow, outer dashed ring with rune ticks, inner ring with a turning hexagram */
+    g.fillStyle="rgba(170,140,255,.16)";g.beginPath();g.arc(0,0,112,0,TAU);g.fill();
+    g.strokeStyle="rgba(190,170,255,.85)";g.lineWidth=5;g.setLineDash([22,12]);g.lineDashOffset=-T*60;g.beginPath();g.arc(0,0,108,0,TAU);g.stroke();
+    g.setLineDash([]);g.lineWidth=3;g.strokeStyle="rgba(220,205,255,.7)";g.beginPath();g.arc(0,0,96,0,TAU);g.stroke();
+    for(let i=0;i<16;i++){const a=-T*.5+i*TAU/16,r0=96,r1=i%2?102:106;g.beginPath();g.moveTo(Math.cos(a)*r0,Math.sin(a)*r0);g.lineTo(Math.cos(a)*r1,Math.sin(a)*r1);g.stroke()}
+    g.strokeStyle="rgba(255,226,150,.85)";g.lineWidth=3.5;g.beginPath();g.arc(0,0,82,0,TAU);g.stroke();
+    for(let k=0;k<2;k++){g.beginPath();for(let i=0;i<3;i++){const a=T*.8+k*Math.PI/3+i*TAU/3;g.lineTo(Math.cos(a)*82,Math.sin(a)*82)}g.closePath();g.stroke()}
+    g.lineWidth=2.5;g.beginPath();g.arc(0,0,40,0,TAU);g.stroke();g.restore()}
   if(pz.fall){g.translate(0,-24*pz.fall);g.rotate(-(s0||1)*pz.fall*Math.PI/2*.94)}
   g.translate(pz.push*(s0||0),pz.push&&!s0?0:0);
   const headXf=()=>{g.translate(0,hipY);g.rotate(lean);g.translate(S*3,-94+(pz.fall?0:0));g.scale(1.28,1.28)};
@@ -6332,12 +6361,14 @@ function drawHero8(g,X,Y,sc,o={}){
       else if(fx.p>.72){const u=(fx.p-.72)/.28,ax=hx+S*(30+u*420);g.globalAlpha=1-u;g.beginPath();g.moveTo(ax-S*30,hy);g.lineTo(ax,hy);g.strokeStyle="#7a5230";g.lineWidth=2.2;g.stroke();
         g.strokeStyle="rgba(255,240,200,.8)";g.lineWidth=1;g.beginPath();g.moveTo(ax-S*60,hy);g.lineTo(ax-S*32,hy);g.stroke();g.globalAlpha=1}}
   };
-  const castOrb=()=>{if(fx.type!=="cast")return;const a=arms[1],b=arms[-1],T=fx.t,ox=(a.hx+b.hx)/2+S*16,oy=(a.hy+b.hy)/2-6;
-    g.save();g.translate(ox,oy);
-    g.fillStyle=RG(0,0,0,30,[[0,"rgba(255,255,255,1)"],[.3,"rgba(200,180,255,.9)"],[1,"rgba(140,110,255,0)"]]);g.beginPath();g.arc(0,0,30+Math.sin(T*6)*3,0,TAU);g.fill();
-    g.save();g.translate(S*8,0);g.scale(Math.max(.18,Math.abs(Cc)),1);g.rotate(T*1.5);g.strokeStyle="rgba(230,215,255,.9)";g.lineWidth=2;g.setLineDash([6,4]);g.beginPath();g.arc(0,0,22,0,TAU);g.stroke();g.setLineDash([]);
-    g.beginPath();for(let i=0;i<5;i++){const an=i*TAU*2/5;g.lineTo(Math.cos(an)*22,Math.sin(an)*22)}g.closePath();g.stroke();g.restore();
-    for(let i=0;i<8;i++){const ph=(T*.9+i/8)%1,an=i*2.3;g.fillStyle=`rgba(255,250,220,${1-ph})`;g.beginPath();g.arc(Math.cos(an)*ph*34,Math.sin(an)*ph*34-ph*10,2,0,TAU);g.fill()}
+  const castOrb=()=>{if(fx.type!=="cast")return;const a=arms[1],b=arms[-1],T=fx.t,ox=(a.hx+b.hx)/2+S*22,oy=(a.hy+b.hy)/2-8;
+    g.save();g.translate(ox,oy);   // v20.18: a bigger magic circle at the hands (glow, two turning rings, a pentagram, rune ticks)
+    g.fillStyle=RG(0,0,0,46,[[0,"rgba(255,255,255,1)"],[.3,"rgba(200,180,255,.9)"],[1,"rgba(140,110,255,0)"]]);g.beginPath();g.arc(0,0,46+Math.sin(T*6)*4,0,TAU);g.fill();
+    g.save();g.translate(S*12,0);g.scale(Math.max(.18,Math.abs(Cc)),1);g.rotate(T*1.5);g.strokeStyle="rgba(230,215,255,.95)";g.lineWidth=2.6;g.setLineDash([8,5]);g.beginPath();g.arc(0,0,42,0,TAU);g.stroke();g.setLineDash([]);
+    g.lineWidth=2.2;g.beginPath();g.arc(0,0,33,0,TAU);g.stroke();
+    for(let i=0;i<12;i++){const an=i*TAU/12;g.beginPath();g.moveTo(Math.cos(an)*33,Math.sin(an)*33);g.lineTo(Math.cos(an)*38,Math.sin(an)*38);g.stroke()}
+    g.strokeStyle="rgba(255,236,170,.95)";g.beginPath();for(let i=0;i<5;i++){const an=-T*3+i*TAU*2/5;g.lineTo(Math.cos(an)*33,Math.sin(an)*33)}g.closePath();g.stroke();g.restore();
+    for(let i=0;i<10;i++){const ph=(T*.9+i/10)%1,an=i*2.3;g.fillStyle=`rgba(255,250,220,${1-ph})`;g.beginPath();g.arc(Math.cos(an)*ph*52,Math.sin(an)*ph*52-ph*14,2.4,0,TAU);g.fill()}
     g.restore()};
   const backpack=()=>{const z=-(TB+8),cx=z*S,dz=z*Cc,w=40*Math.abs(Cc)+14*Math.abs(S);
     RR(cx-w/2,-38,w,36,7,LG(cx-w/2,0,cx+w/2,0,[[0,"#3a2c22"],[1,"#c9782a"]]));
@@ -8056,7 +8087,7 @@ function fballDraw(f){
 function fireRune(x,y){   // while casting Fire Bolt: a turning ring of fire at the caster's feet and rising embers
   const c=player.casting,u=1-c.t/c.total;g.save();g.globalCompositeOperation="lighter";
   for(let i=0;i<2;i++){g.strokeStyle=i?"rgba(255,215,130,.55)":"rgba(255,110,50,.75)";g.lineWidth=2;g.setLineDash(i?[3,5]:[10,6]);g.lineDashOffset=(i?1:-1)*T*40;
-    const rx=(22+u*10)*(1+i*.35);g.beginPath();g.ellipse(x,y+4,rx,rx*.5,0,0,TAU);g.stroke()}
+    const rx=(32+u*14)*(1+i*.35);   /* v20.18: bigger */g.beginPath();g.ellipse(x,y+4,rx,rx*.5,0,0,TAU);g.stroke()}
   g.setLineDash([]);
   for(let k=0;k<6;k++){const ph=(T*1.3+k/6)%1;ell(x+(hash(k,7)-.5)*36,y+2-ph*50,2.8*(1-ph)+.4,2.8*(1-ph)+.4,"rgba(255,170,80,"+(.9*(1-ph)).toFixed(2)+")")}
   g.restore();
