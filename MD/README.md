@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.17 (this update)
+## Changes in v20.17a (this update)
+- **Fix: inventory Sort crashed** ("loc is not defined"). `sortInventory` now builds its name-compare locale from the current language (`ja` for Japanese).
+
+## Changes in v20.17
 - **Character creator + code-drawn hero.** After login / register / guest, a save without an appearance opens a character creator in the login screen's style: gender, 7 hairstyles per gender, 8 hair colours, 6 eye colours, 5 outfit colours (Standard is the default) and the character name, with a live preview (Stand / Walk, turn through 8 directions). Saved as `S.app`; a new name is also written to the session and account (`AUTH.rename`). The main character is now drawn in code (`drawHero8`) in 8 directions with idle, walk, sword attack, cast, bow (Rangers), sit, hit (new `player.hurtT`) and death poses; it is the new default look (`S.look="custom"`). The sprite sets and classic chibi stay in Settings > Graphic > Character look; Settings > Graphic > Appearance > Edit reopens the creator. All text in Thai, English and Japanese. See `UI-UX.md` §28, `ACCOUNTS.md` §4b.
 
 ## Changes in v20.16
