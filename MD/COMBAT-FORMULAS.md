@@ -74,7 +74,7 @@ over_dmg = ⌊(statusMATK + weaponMATK + mastery) × skill% × element × bonus 
 over%    = CRIT × overMul − targetLUK/5                                              // Overload Chance (อัตราเกินพิกัด)
 ```
 - `overMul` (Overload Multiple, ตัวคูณอัตราเกินพิกัด) is set per skill. If a skill does not state it, it is **1**.
-- Rolled **per hit** for True multi-hit skills (see `SKILL-SPEC.md` for hit types). Example: Fire Bolt Lv 10 rolls Overload 10 times per cast.
+- Rolled **per hit** for True multi-hit skills (see `SKILL-SPEC.md` for hit types). Example: Fire Bolt Lv 5 (10 fireballs since v20.18) rolls Overload 10 times per cast.
 - Compare physical: crit = `… × 1.4`, chance `CRIT × critMul − targetLUK/5`.
 
 **⚠ Open items**
@@ -94,7 +94,7 @@ over%    = max(0, CRIT + overBonus − targetLUK/5) × overMul                  
 ```
 - `overBonus` (v20.6) is the flat +% from **Overload Energy** (+1% per skill level, `SKILL-SPEC.md` §3d). It raises the Overload Rate only, not physical CRIT. The Status window's Overload Rate shows `CRIT + overBonus`.
 - `overMul` (Overload Multiple, ตัวคูณอัตราเกินพิกัด) is set per skill. **A skill that does not state it has overMul 0: it cannot Overload.** (Physical crit works the same way: only the basic attack and Piercing Shot can crit.)
-- Rolled **per hit** for True multi-hit skills (hit types are in `SKILL-SPEC.md`). Fire Bolt Lv 10 rolls Overload 10 times per cast.
+- Rolled **per hit** for True multi-hit skills (hit types are in `SKILL-SPEC.md`). Fire Bolt Lv 5 (10 fireballs since v20.18) rolls Overload 10 times per cast.
 - **Magic does not ignore MDEF.** Overload still takes `(1 − targetMDEF%)` and `− targetSoftMDEF`.
 - The chance now subtracts the target’s LUK first, then multiplies: `(CRIT − targetLUK/5) × overMul`. (The first draft subtracted after multiplying, which gave 0% at overMul 0.5 for almost every character.)
 - ⚠ `statusMATK` is the top of the status range, `INT + ⌊INT/5⌋²`, the way a physical crit always uses the full weapon ATK. `weaponMATK` and `mastery` are the same values as in §1 (Spellcaster has no mastery passive yet, so 0), and MATK% multiplies the total as it does for normal hits. In other words `over_dmg` uses `MATKmax` from §1.
@@ -120,6 +120,8 @@ Example: Lv 20, INT 40, Heal Lv 5 → ⌊60/8⌋ × 44 = **308** (369 with Divin
 | Earth | 0.75 | 1.0 | **1.5** | 0.75 |
 
 Neutral and Holy deal 1.0 to these elements. Elemental Attunement adds +0.05 per level (Lv 1–5): 1.5 → 1.75 at Lv 5. **REO:** classic weak multipliers go lower than 0.75.
+
+**Status debuffs (v20.18).** A **Frozen** monster (Freezer) takes **+0.5** on the Wind multiplier, a **Petrified** one (Petrifaction) **+0.5** on the Fire multiplier, added after the table and Attunement: `element = table (+ Attunement) + 0.5`. Both stop the monster from moving and attacking. ⚠ Placeholders until NIIQ gives them: chance `skill% × (1 − MDEF%) − LUK/5`, time `3–7 s by skill level × (1 − MDEF%)`, bosses immune (`SKILL-SPEC.md` §3h).
 
 | Monster | Lv | Element | HP | ATK | Hard DEF | Soft DEF | MDEF | HIT | FLEE |
 |---|---|---|---|---|---|---|---|---|---|

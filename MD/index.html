@@ -1852,7 +1852,7 @@ const ARCH={
    actives:["double_strafe","arrow_shower","piercing_shot","evasive_leap"],passives:["eagle_eye","steady_aim"]},
  spellcaster:{type:"MAGIC",range:7,hpLv:30,spLv:11,aspd:1.3,weapon:{atk:12,lvAtk:1,ranged:false,matkBase:2,matkLv:.65},armor:.05,
    tpl:{str:0,agi:0,vit:2,int:6,dex:4,luk:0},basic:{kind:"magic",ratio:.7,elem:"neutral"},
-   actives:["fire_bolt","frost_nova","lightning_spear","stone_spike","overload_energy"],passives:["mana_flow","elemental_attunement"]},
+   actives:["fire_bolt","freezer","lightning_spear","petrifaction","overload_energy"],passives:["mana_flow","elemental_attunement"]},
  supporter:{type:"SUPPORT",range:9,healRange:15,hpLv:42,spLv:9,aspd:1.1,weapon:{atk:25,lvAtk:1.5,ranged:false,matkPct:.10},armor:.12,
    tpl:{str:0,agi:0,vit:4,int:5,dex:3,luk:0},basic:{kind:"magic",ratio:.6,elem:"holy"},
    actives:["heal","holy_light","blessing","sanctuary"],passives:["divine_grace","guardian_aura"]}
@@ -1876,10 +1876,10 @@ const SK={
  piercing_shot:{arch:"ranger",kind:"phys",ratio:3.2,ignoreDef:.5,canCrit:true,critMul:2,sp:18,cd:6,range:12,ranged:true,ic:"pierce"},
  evasive_leap:{arch:"ranger",kind:"move",leap:3,buff:"leap",dur:4,sp:10,cd:10,ic:"wing"},
  // spellcaster — Casting (DEX and INT shorten the variable cast) + elemental weakness; spells never miss
- fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.0,hits:5,sp:20,cd:0,gd:1.4,vct:1.7,fct:0,gap:.3,range:7,overMul:.5,lv:5,ic:"flame"},   // v20: this is the Lv 5 row; skAt() gives every level (SKILL-SPEC.md)
- frost_nova:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.6,sp:20,cd:5,vct:.6,fct:0,aoe:2.5,at:"self",freeze:.4,freezeDur:2,ic:"snow"},
- lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:3.8,sp:22,cd:3,vct:1.6,fct:0,range:7,ic:"bolt"},
- stone_spike:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:2.6,sp:16,cd:2,vct:1.0,fct:0,range:7,stunChance:.2,stun:1,ic:"spike"},
+ fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.2,hits:10,sp:40,cd:0,gd:1,vct:0,fct:1,gap:.2,range:7,overMul:.5,lv:5,ic:"flame"},   // v20.18: Lv 5 row (Lv 1-5); skAt() gives every level (SKILL-SPEC.md §3)
+ freezer:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.0,sp:25,cd:0,gd:.5,vct:.64,fct:.16,range:7,st:"frz",stCh:.75,stDur:7,debuff:true,lv:5,ic:"snow"},   // v20.18 (was Frost Nova): 1 enemy + Freeze (Wind resistance -50%)
+ lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:1,hits:10,sp:78,cd:0,gd:2,vct:1.8,fct:1.5,gap:.1,range:7,aoe:2.5,at:"target",sq:true,ground:true,overMul:.5,lv:5,ic:"bolt"},   // v20.18: ground magic, spears fall 0.1 s apart on a 5x5 area fixed where the cast started
+ petrifaction:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:1,sp:35,cd:0,gd:0,vct:.8,fct:.2,aoe:3.5,at:"self",sq:true,st:"ptr",stCh:.75,stDur:7,debuff:true,lv:5,ic:"rock"},   // v20.18 (was Stone Spike): Self Cast, 7x7 around the caster + Petrifaction (Fire resistance -50%)
  overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:120,sp:110,cd:60,gd:1,vct:2,fct:0,area:6,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 50/65/80/95/110
  // supporter — Sustain: Heal (classic formula) + overheal turns into a Grace shield; buffs reach 15 tiles
  heal:{arch:"supporter",kind:"heal",lvl:5,sp:13,cd:1,range:15,ic:"plus"},
@@ -1995,10 +1995,16 @@ function physHit(d,m,o,r){
   const hd=m.hardDef*(1-(o.ignoreDef||0));
   return {dmg:Math.max(1,fl(raw*(1-hd)-m.softDef))};
 }
+/* v20.18 status debuffs (Freezer, Petrifaction): the monster cannot move or attack, and one element hits it harder
+   (Freeze: Wind +50%, Petrifaction: Fire +50%, added to the element multiplier). Chance and time drop with the target's MDEF and LUK.
+   ASSUMPTION (not given by NIIQ): chance = skill% x (1 - MDEF%) - LUK/5, time = stDur x (1 - MDEF%); bosses are immune. */
+const STATUS={frz:{elem:"wind",add:.5},ptr:{elem:"fire",add:.5}};
+function stAdd(elem,m){let a=0;if(!m)return 0;for(const k in STATUS)if(m[k]>0&&STATUS[k].elem===elem)a+=STATUS[k].add;return a}
+function stRoll(k,m,r){if(!k.st||!m||m.boss)return 0;const mdef=m.mdef||0,ch=k.stCh*100*(1-mdef)-(m.luk||0)/5;return r()*100<ch?+(k.stDur*(1-mdef)).toFixed(2):0}
 // magic: MATK roll x ratio x element ; then x(1 - MDEF) - soft MDEF ; never misses
 function magicHit(d,m,o,r){
   const matk=d.matkMin+(d.matkMax-d.matkMin)*r();
-  const em=elemMult(o.elem||"neutral",m.elem,d.attune);
+  const em=elemMult(o.elem||"neutral",m.elem,d.attune)+stAdd(o.elem,o.st||m);   // o.st: the monster in the game (m is only its profile there)
   // Overload (magic critical, COMBAT-FORMULAS.md 3b): chance = max(0, CRIT - targetLUK/5) x overMul; a skill without overMul never Overloads.
   // Damage uses the top of the MATK range x1.3 and still takes MDEF.
   // v20.6: Overload Energy adds its +% to the base Overload Rate (d.over), not to CRIT
@@ -2031,14 +2037,23 @@ function autoStats(arch,lv,base){
 
 /* ---------- skill levels (v20) ----------
    Skills listed in SKLV have levels; every other skill is still the fixed Lv 5 prototype.
-   Fire Bolt (SKILL-SPEC.md): Lv N = N fireballs of 100% MATK, SP 12+2(N-1), cast 0.5+0.3(N-1) s, 0.3 s apart (0.2 s from Lv 6), cooldown 0, Global Delay 1.4 s. The cast is all VCT for now (FCT 0). */
-const SKLV={fire_bolt:{max:10,def:5},overload_energy:{max:5,def:5},mana_flow:{max:10,def:10},elemental_attunement:{max:5,def:5}};   // v20.6: passives with levels too (derive reads them)
+   v20.18 Spellcaster spells, Lv 1-5 each (SKILL-SPEC.md §3, §3e-3g). */
+const SKLV={fire_bolt:{max:5,def:5},freezer:{max:5,def:5},lightning_spear:{max:5,def:5},petrifaction:{max:5,def:5},overload_energy:{max:5,def:5},mana_flow:{max:10,def:10},elemental_attunement:{max:5,def:5}};   // v20.6: passives with levels too (derive reads them)
 const OE_DUR=[20,40,60,80,120],OE_VCT=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, VCT (FCT 0), SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
+const FB_N=[1,3,5,7,10],FB_SP=[12,17,22,27,40],FB_GAP=[0,.3,.3,.2,.2],FB_FCT=[.5,.6,.7,.8,1];   // Fire Bolt: 120% MATK per fireball, VCT 0, GD 1 s, CD 0
+const FZ_R=[1.1,1.3,1.5,1.7,2],FZ_CH=[.35,.45,.55,.65,.75];                                     // Freezer: SP 25, FCT 0.16, VCT 0.64, GD 0.5 s, CD 0
+const LS_SP=[30,42,54,66,78],LS_VCT=[1,1.2,1.4,1.6,1.8];                                         // Lightning Spear: 2 spears per Lv, 100% MATK each, 0.1 s apart, FCT 1.5, GD 2 s, CD 0
+const PT_R=[.75,.8,.85,.9,1],PT_CH=[.3,.4,.55,.65,.75],PT_SP=[25,27,28,32,35];                   // Petrifaction: FCT 0.2, VCT 0.8, GD 0, CD 0
+const ST_DUR=[3,4,5,6,7];   // ASSUMPTION: Freeze / Petrifaction time by skill level (not given yet), before the target's MDEF
 const skMax=id=>SKLV[id]?SKLV[id].max:1;   // every other skill is learn-only (one level) until its levels are designed
 function skAt(id,lv){
   const k=SK[id];if(!k||!SKLV[id])return k;
   const L=clamp(Math.floor(lv)||SKLV[id].def,1,SKLV[id].max);
-  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:L,sp:10+2*L,vct:+(.2+.3*L).toFixed(2),gap:L>=6?.2:.3});
+  const i=L-1;
+  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:FB_N[i],sp:FB_SP[i],gap:FB_GAP[i],fct:FB_FCT[i]});
+  if(id==="freezer")return Object.assign({},k,{lv:L,ratio:FZ_R[i],stCh:FZ_CH[i],stDur:ST_DUR[i]});
+  if(id==="lightning_spear")return Object.assign({},k,{lv:L,hits:2*L,sp:LS_SP[i],vct:LS_VCT[i]});
+  if(id==="petrifaction")return Object.assign({},k,{lv:L,ratio:PT_R[i],stCh:PT_CH[i],sp:PT_SP[i],stDur:ST_DUR[i]});
   if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],vct:OE_VCT[L-1],sp:35+15*L});
   return k;
 }
@@ -2068,14 +2083,27 @@ function pickSkill(ctx){
     if(reserve&&ready("double_strafe"))return "double_strafe";return null;
    case "spellcaster":{
     if(!ctx.buffs.overEn&&ctx.dist<=d.range&&ready("overload_energy"))return "overload_energy";   // v20.6: keep the Overload Energy buff up while fighting
-    if(ctx.near>=2&&ctx.dist<=SK.frost_nova.aoe&&ready("frost_nova"))return "frost_nova";
     if(ctx.dist>d.range)return null;
-    const spells=["lightning_spear","stone_spike","fire_bolt"].filter(ready);
-    if(!spells.length)return null;
-    // prefer the spell the target is weak to, then the biggest hitter
-    let best=null,bv=-1;
-    for(const id of spells){const k=skx(id);const v=k.ratio*(k.hits||1)*elemMult(k.elem,ctx.tgtElem,d.attune)/(castTime(k,d)||1);if(v>bv){bv=v;best=id}}
-    if(!reserve&&elemMult(SK[best].elem,ctx.tgtElem,d.attune)<=1)return null;
+    // v20.18: damage per second of cast + Global Delay, times the enemies it reaches; the target's weakness and its Freeze / Petrifaction count.
+    // A Freeze or Petrifaction the target does not have yet is worth more (it stops the monster and opens a weakness).
+    const st=ctx.tgtSt||{},held=st.frz>0||st.ptr>0||st.stun>0,nearMe=ctx.nearMe!=null?ctx.nearMe:(ctx.dist<=3.5?ctx.near:0);
+    // ctx.autoLv (simulator only): also pick the level - the hits that can still land on what is left of the target's HP,
+    // per second while SP is above half, per SP below that. In the game Idle keeps the level set on the hotbar.
+    const lowSp=ctx.sp<d.maxSP*.5,matk=(d.matkMin+d.matkMax)/2*(1-(ctx.tgtMdef||0));
+    let best=null,bv=0,bl=0;
+    for(const id of ["fire_bolt","freezer","lightning_spear","petrifaction"]){
+      const lvs=ctx.autoLv?Array.from({length:skMax(id)},(_,i)=>i+1):[0];
+      for(const L of lvs){const k=L?skAt(id,L):skx(id);
+        if(!k||ctx.gd>0||(ctx.learned&&!ctx.learned.includes(id))||ctx.cd[id]>0||ctx.sp<k.sp*d.spCost)continue;
+        const n=id==="lightning_spear"?Math.max(1,ctx.near):id==="petrifaction"?nearMe:1;if(!n)continue;
+        const em=elemMult(k.elem,ctx.tgtElem,d.attune)+stAdd(k.elem,st),hit=k.ratio*em;
+        const hits=ctx.autoLv&&ctx.tgtHp?Math.min(k.hits||1,Math.ceil(ctx.tgtHp/Math.max(1,hit*matk))):(k.hits||1);
+        let v=hit*hits*n/(ctx.autoLv&&lowSp?k.sp:Math.max(.5,castTime(k,d)+(k.gd||0)*d.gdMul));
+        if(k.st&&!held&&!ctx.boss)v*=1+k.stCh;
+        if(v>bv){bv=v;best=id;bl=L}}}
+    if(!best)return null;
+    ctx.pickLv=bl;
+    if(!reserve&&!SK[best].st&&elemMult(SK[best].elem,ctx.tgtElem,d.attune)+stAdd(SK[best].elem,st)<=1)return null;
     return best;}
    case "supporter":
     if(hpPct<.55&&ready("heal"))return "heal";
@@ -2106,8 +2134,8 @@ function simulate(arch,lv,monKeys,opt){
   const doBasic=m=>{const b=ARCH[arch].basic;
     if(b.kind==="phys"){const res=physHit(d,m,{ratio:b.ratio,dist:d.ranged?m.dist:0},r);hitMob(m,res);if(arch==="fighter"&&!res.miss){momentum=Math.min(5,momentum+1);momT=5}}
     else hitMob(m,magicHit(d,m,{ratio:b.ratio,elem:b.elem},r))};
-  const doSkill=(id,m)=>{const k=KL(id);sp-=k.sp*d.spCost;cd[id]=k.cd*d.cdMul;if(k.gd)gdT=k.gd*d.gdMul;
-    const targets=k.aoe?mobs.filter(x=>x.hpNow>0&&(k.at==="self"?x.dist<=k.aoe:true)):(m?[m]:[]);
+  const doSkill=(id,m,L)=>{const k=L?skAt(id,L):KL(id);sp-=k.sp*d.spCost;cd[id]=k.cd*d.cdMul;if(k.gd)gdT=k.gd*d.gdMul;
+    const targets=k.aoe?mobs.filter(x=>x.hpNow>0&&(k.at==="self"?x.dist<=k.aoe+.5:true)):(m?[m]:[]);
     if(k.kind==="phys"){for(const x of targets)for(let h=0;h<(k.hits||1);h++){
         const ratio=k.ratio+(k.spend?k.perStack*momentum:0);
         const res=physHit(d,x,{ratio,ignoreDef:k.ignoreDef,canCrit:!!k.canCrit,critMul:k.critMul,dist:k.ranged?x.dist:0,bonus:buffs.leapShot?1.6:1},r);hitMob(x,res)}
@@ -2115,8 +2143,7 @@ function simulate(arch,lv,monKeys,opt){
       if(k.momentum)momentum=Math.min(5,momentum+k.momentum),momT=5;
       if(k.spend){if(momentum>=k.stunAt&&m)m.stun=k.stun;momentum=0}}
     else if(k.kind==="magic"){for(const x of targets)for(let h=0;h<(k.hits||1);h++){if(k.gap)pending.push({t:(k.gap||0)*h+(k.gap?k.gap-.02:0),x,k});else hitMob(x,magicHit(d,x,{ratio:k.ratio,elem:k.elem,overMul:k.overMul},r))};
-      if(k.freeze)for(const x of targets)if(r()<k.freeze)x.stun=Math.max(x.stun,k.freezeDur);
-      if(k.stunChance&&m&&r()<k.stunChance)m.stun=Math.max(m.stun,k.stun)}
+      if(k.st)for(const x of targets){if(x.hpNow<=0)continue;const sd=stRoll(k,x,r);if(sd>0){x.stun=Math.max(x.stun,sd);x[k.st]=Math.max(x[k.st]||0,sd)}}}
     else if(k.kind==="heal"){const h=healAmount(d,k),over=Math.max(0,hp+h-d.maxHP);hp=Math.min(d.maxHP,hp+h);if(d.shieldCap)shield=Math.min(d.maxHP*d.shieldCap,shield+over)}
     else if(k.kind==="buff"){buffs[k.buff]=k.dur;if(k.over)ovV=k.over;if(k.buff==="blessing"||k.over)d=DV();
       if(k.taunt)mobs.forEach(x=>x.aggro=true)}
@@ -2138,18 +2165,18 @@ function simulate(arch,lv,monKeys,opt){
       const zd=(d.matkMin+d.matkMax)/2*SK.sanctuary.ratio*dt;
       for(const x of mobs)if(x.hpNow>0&&x.dist<=SK.sanctuary.radius+1){const z=zd*(1-x.mdef);x.hpNow-=z;dealt+=z;x.aggro=true}}
     // monsters
-    for(const x of mobs){if(x.hpNow<=0||!x.aggro)continue;if(x.stun>0){x.stun-=dt;continue}
+    for(const x of mobs){if(x.frz>0)x.frz-=dt;if(x.ptr>0)x.ptr-=dt;if(x.hpNow<=0||!x.aggro)continue;if(x.stun>0){x.stun-=dt;continue}
       if(x.dist>1.2){x.dist=Math.max(1.2,x.dist-x.speed*1.6*dt);continue}
       x.atkCd-=dt;if(x.atkCd<=0){x.atkCd=x.aspd;const res=monHit(x,d,r);if(!res.miss){let dmg=res.dmg;if(shield>0){const a=Math.min(shield,dmg);shield-=a;dmg-=a}hp-=dmg;taken+=dmg}}}
     if(hp<=0){deaths++;hp=d.maxHP;sp=d.maxSP;momentum=0;shield=0;zone=0;wait=20;casting=null;pending=[];spawn();continue}
     // player
     if(d.type==="MELEE"&&m.dist>d.range){m.dist=Math.max(d.range,m.dist-3.6*dt);continue}
-    if(casting){casting.t-=dt;if(casting.t<=0){const c=casting;casting=null;doSkill(c.id,tgt())}continue}
+    if(casting){casting.t-=dt;if(casting.t<=0){const c=casting;casting=null;doSkill(c.id,tgt(),c.lv)}continue}
     swing-=dt;
     const near=mobs.filter(x=>x.hpNow>0&&x.dist<=2.5).length;
-    const ctx={d,hp,sp,cd,momentum,buffs,dist:m.dist,near:pack>1?mobs.filter(x=>x.hpNow>0).length:1,tgtElem:m.elem,inZone:zone>0,engaged:m.aggro,skLv:opt.skLv,gd:gdT};
+    const ctx={d,hp,sp,cd,momentum,buffs,dist:m.dist,near:pack>1?mobs.filter(x=>x.hpNow>0).length:1,nearMe:mobs.filter(x=>x.hpNow>0&&x.dist<=4).length,tgtSt:{frz:m.frz,ptr:m.ptr,stun:m.stun},boss:!!m.boss,autoLv:!opt.skLv,tgtHp:m.hpNow,tgtMdef:m.mdef,tgtElem:m.elem,inZone:zone>0,engaged:m.aggro,skLv:opt.skLv,gd:gdT};
     const id=pickSkill(ctx);
-    if(id){const k=KL(id);{const ct=castTime(k,d);if(ct>.05){casting={id,t:ct};continue}}doSkill(id,m);continue}
+    if(id){const L=ctx.pickLv||0,k=L?skAt(id,L):KL(id);{const ct=castTime(k,d);if(ct>.05){casting={id,t:ct,lv:L};continue}}doSkill(id,m,L);continue}
     if(swing<=0&&m.dist<=d.range){swing=d.interval;doBasic(m)}
   }
   return {arch,lv,kills,deaths,dealt:Math.round(dealt),taken:Math.round(taken),dps:+(dealt/secs).toFixed(1),hpLeft:hpN?+(hpSum/hpN).toFixed(2):0,maxHP:d.maxHP,stats};
@@ -2175,7 +2202,7 @@ function combatPower(arch,lv,stats,gear){
   const ehp=d.maxHP/(1-d.hardDef)+d.softDef*30;
   const v=Math.round(sim.dps*6+ehp/20);_cpc.set(key,v);return v;
 }
-return {manaFlow,STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax,castTime};
+return {manaFlow,STATS,statPointsTotal,raiseCost,costTo,spent,elemMult,ARCH,SK,PASSIVE,derive,MONC,eliteOf,rngOf,physHit,magicHit,healAmount,monHit,autoStats,pickSkill,simulate,killsPerHour,combatPower,skAt,SKLV,skMax,castTime,stRoll,stAdd,STATUS};
 })();
 
 
@@ -2425,19 +2452,19 @@ D2.en.skd_eagle_eye="+3 range (12 tiles) and +10 HIT.";D2.th.skd_eagle_eye="ร�
 D2.en.sk_steady_aim="Steady Aim";D2.th.sk_steady_aim="Steady Aim";
 D2.en.skd_steady_aim="Distance bonus (+2% per tile beyond 3) and +5% crit.";D2.th.skd_steady_aim="โบนัสระยะ (+2% ต่อช่องที่เกิน 3) และคริติคอล +5%";
 D2.en.sk_fire_bolt="Fire Bolt";D2.th.sk_fire_bolt="Fire Bolt";
-D2.en.skd_fire_bolt="Drops one fireball per skill level on one enemy, 100% MATK each, 0.3 s apart (0.2 s from Lv 6). If the target dies, the fireballs still to come are not released. Can Overload.";D2.th.skd_fire_bolt="ลูกไฟตกใส่ศัตรู 1 ตัว เท่ากับเลเวลสกิล ลูกละ 100% MATK ห่างกัน 0.3 วิ (0.2 วิ ตั้งแต่ Lv 6) ถ้าเป้าหมายตายก่อน ลูกที่เหลือจะไม่ออก เกิดเกินพิกัดได้";
+D2.en.skd_fire_bolt="Strikes one enemy with fireballs that fall one by one, 120% MATK Fire magic damage each (1 / 3 / 5 / 7 / 10 fireballs). Every fireball always falls, even if the target dies first. Can Overload.";D2.th.skd_fire_bolt="โจมตีศัตรูด้วยลูกไฟที่ตกลงมาทีละลูก สร้างความเสียหายทางเวทมนตร์ธาตุ Fire ลูกละ 120% MATK (1 / 3 / 5 / 7 / 10 ลูก) ลูกไฟตกครบตามจำนวนเสมอ แม้เป้าหมายจะตายไปแล้ว เกินพิกัดได้";
 D2.en.skpLine="Skill points: {n} (1 per Job Lv)";D2.th.skpLine="แต้มสกิล: {n} (1 Job Lv = 1 แต้ม)";
 D2.en.gdLbl="Global Delay";D2.th.gdLbl="ดีเลย์รวม";
 D2.en.fbLbl="Fireballs";D2.th.fbLbl="ลูกไฟ";
 D2.en.dnd_item_no="This item can't be placed here.";D2.th.dnd_item_no="\u0e44\u0e2d\u0e40\u0e17\u0e47\u0e21\u0e19\u0e35\u0e49\u0e44\u0e21\u0e48\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e27\u0e32\u0e07\u0e17\u0e35\u0e48\u0e19\u0e35\u0e48\u0e44\u0e14\u0e49";D2.en.dnd_skill_no="Passive skills can't go on the hotkey bar.";D2.th.dnd_skill_no="\u0e2a\u0e01\u0e34\u0e25\u0e41\u0e1a\u0e1a Passive \u0e43\u0e2a\u0e48\u0e1a\u0e19\u0e41\u0e16\u0e1a hotkey \u0e44\u0e21\u0e48\u0e44\u0e14\u0e49";D2.en.fctOver="OVERLOAD!";D2.th.fctOver="เกินพิกัด!";
 D2.en.skNone="Not learned";D2.th.skNone="ยังไม่ได้เรียน";
 D2.en.skNotLearned="Skill not learned yet. Spend a skill point in the Skills window.";D2.th.skNotLearned="ยังไม่ได้เรียนสกิลนี้ ใช้แต้มสกิลในหน้าสกิล";
-D2.en.sk_frost_nova="Frost Nova";D2.th.sk_frost_nova="Frost Nova";
-D2.en.skd_frost_nova="260% MATK water to enemies within 2.5 tiles; 40% chance to freeze 2 s.";D2.th.skd_frost_nova="260% MATK ธาตุน้ำ รอบตัว 2.5 ช่อง โอกาสแช่แข็ง 40% นาน 2 วิ";
+D2.en.sk_freezer="Freezer";D2.th.sk_freezer="Freezer";
+D2.en.skd_freezer="Grips the target with the power of ice: Water magic damage to one enemy and a chance of Freeze, which also cuts its resistance to Wind by 50%. The chance and time of Freeze change with the skill level and the target's MDEF and LUK.";D2.th.skd_freezer="ยึดจับและเหนี่ยวนำด้วยพลังน้ำแข็ง สร้างความเสียหายทางเวทมนตร์ธาตุ Water ต่อศัตรู 1 ตัว และมีโอกาสทำให้ติดสถานะ Freeze (แช่แข็ง) ที่ลดความต้านทานต่อธาตุ Wind ลง 50% เพิ่มเติม โอกาสและระยะเวลาติดสถานะเปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย";
 D2.en.sk_lightning_spear="Lightning Spear";D2.th.sk_lightning_spear="Lightning Spear";
-D2.en.skd_lightning_spear="380% MATK wind to one enemy.";D2.th.skd_lightning_spear="380% MATK ธาตุลม ใส่ศัตรู 1 ตัว";
-D2.en.sk_stone_spike="Stone Spike";D2.th.sk_stone_spike="Stone Spike";
-D2.en.skd_stone_spike="260% MATK earth; 20% chance to stun 1 s.";D2.th.skd_stone_spike="260% MATK ธาตุดิน โอกาสสตัน 20% นาน 1 วิ";
+D2.en.skd_lightning_spear="Ground magic: spears of lightning strike a 5 × 5 area one after another (2 per level, 0.1 s apart), each dealing 100% MATK Wind magic damage to every enemy inside. The area is where the target stood when the cast started. Can Overload.";D2.th.skd_lightning_spear="เวทพื้นที่: สร้างหอกแห่งสายฟ้าฟาดลงมาที่พื้นที่ 5×5 ช่องทีละเล่ม (เลเวลละ 2 เล่ม ห่างกัน 0.1 วิ) แต่ละเล่มสร้างความเสียหายทางเวทมนตร์ธาตุ Wind 100% MATK ต่อศัตรูทุกตัวในพื้นที่ พื้นที่คือจุดที่เป้าหมายยืนตอนเริ่มร่าย เกินพิกัดได้";
+D2.en.sk_petrifaction="Petrifaction";D2.th.sk_petrifaction="Petrifaction";
+D2.en.skd_petrifaction="Bends the geology of all matter into fossil: Earth magic damage to enemies in the 7 × 7 area around you and a chance of Petrifaction, which also cuts their resistance to Fire by 50%. The chance and time of Petrifaction change with the skill level and the target's MDEF and LUK.";D2.th.skd_petrifaction="เรียนรู้กระบวนการทางธรณีศาสตร์ ปรับมวลสารทุกสรรพสิ่งให้เป็นซากฟอสซิล สร้างความเสียหายทางเวทมนตร์ธาตุ Earth ต่อศัตรูโดยรอบ 7×7 ช่องรอบตัวเอง และมีโอกาสทำให้ติดสถานะ Petrifaction (แข็งเป็นหิน) ที่ลดความต้านทานต่อธาตุ Fire ลง 50% เพิ่มเติม โอกาสและระยะเวลาติดสถานะเปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย";
 D2.en.sk_mana_flow="Mana Flow";D2.th.sk_mana_flow="Mana Flow";
 D2.en.skd_mana_flow="Trains SP to flow through the whole body as efficiently as possible. Max SP, SP regeneration and SP cost improve with each level (Lv 10: +12% / +30% / −12%).";D2.th.skd_mana_flow="ฝึกการไหลเวียน SP ทั่วทั้งร่างกาย ให้มีประสิทธิภาพสูงสุด เพิ่ม Max SP ฟื้น SP เร็วขึ้น และใช้ SP น้อยลงตามเลเวล (Lv 10: +12% / +30% / −12%)";
 D2.en.pe_mf="Max SP +{a}%, SP regen +{b}%, SP cost −{c}%";D2.th.pe_mf="Max SP +{a}% ฟื้น SP เร็วขึ้น {b}% ใช้ SP น้อยลง {c}%";
@@ -2936,11 +2963,11 @@ Object.assign(D2.th,{m_social:"สังคม",soc_friends:"เพื่อน"
 D2.en.errTitle="Something went wrong";D2.th.errTitle="เกิดข้อผิดพลาด";D2.en.q_auto="Auto";D2.th.q_auto="ออโต้";D2.en.q4="Complete!";D2.th.q4="สำเร็จแล้ว!";
 /* v20.10 Skills Tree window */
 Object.assign(D2.en,{w_skinfo:"Skill Info",si_self:"Self Cast",si_target:"Target Cast",si_k_phys:"Physical",si_k_magic:"Magic",si_k_heal:"Heal",si_k_buff:"Buff",si_k_zone:"Zone",si_k_move:"Movement",
- si_lv:"Level {n}",si_det:"In details",si_delay:"Delay",si_fb:"{a} fireball(s), {b}% MATK in total · SP {c}",si_oe:"Overload Rate +{a}% for {b} seconds · SP {c}",
+ si_lv:"Level {n}",si_det:"In details",si_delay:"Delay",si_fb:"{a} fireball(s), {b}% MATK in total · SP {c}",si_fz:"MATK {a}% · Freeze chance {b}% · SP {c}",si_ls:"{a} spear(s), {b}% MATK each on a 5 × 5 area · SP {c}",si_pt:"MATK {a}% in a 7 × 7 area · Petrifaction chance {b}% · SP {c}",si_k_ground:"Ground Magic",si_debuff:"Debuff",st_frz:"FREEZE",st_ptr:"PETRIFIED",si_oe:"Overload Rate +{a}% for {b} seconds · SP {c}",
  w_skill:"Skills Tree",skt_pts:"Skill Points : {n}",skt_learn:"Learn",skt_reset:"Reset",skt_active:"Active",skt_passive:"Passive",
  skt_done:"Learned: {s}",skt_nopts:"Not enough skill points."});
 Object.assign(D2.th,{w_skinfo:"ข้อมูลสกิล",si_self:"ร่ายใส่ตัวเอง",si_target:"เลือกเป้าหมาย",si_k_phys:"กายภาพ",si_k_magic:"เวท",si_k_heal:"ฟื้นฟู",si_k_buff:"บัฟ",si_k_zone:"พื้นที่",si_k_move:"เคลื่อนที่",
- si_lv:"เลเวล {n}",si_det:"รายละเอียด",si_delay:"ดีเลย์",si_fb:"ลูกไฟ {a} ลูก รวม {b}% MATK · SP {c}",si_oe:"เพิ่มอัตราเกินพิกัด +{a}% ระยะเวลา {b} วินาที · SP {c}",
+ si_lv:"เลเวล {n}",si_det:"รายละเอียด",si_delay:"ดีเลย์",si_fb:"ลูกไฟ {a} ลูก รวม {b}% MATK · SP {c}",si_fz:"MATK {a}% · โอกาสติด Freeze {b}% · SP {c}",si_ls:"หอก {a} เล่ม เล่มละ {b}% MATK ในพื้นที่ 5×5 ช่อง · SP {c}",si_pt:"MATK {a}% ในพื้นที่ 7×7 ช่อง · โอกาสติด Petrifaction {b}% · SP {c}",si_k_ground:"เวทพื้นที่",si_debuff:"ดีบัฟ",st_frz:"แช่แข็ง!",st_ptr:"แข็งเป็นหิน!",si_oe:"เพิ่มอัตราเกินพิกัด +{a}% ระยะเวลา {b} วินาที · SP {c}",
  w_skill:"ผังสกิล",skt_pts:"แต้มสกิล : {n}",skt_learn:"เรียน",skt_reset:"รีเซ็ต",skt_active:"แอคทีฟ",skt_passive:"พาสซีฟ",
  skt_done:"เรียนแล้ว: {s}",skt_nopts:"แต้มสกิลไม่พอ"});
 Object.assign(D.en,D2.en);Object.assign(D.th,D2.th);
@@ -3311,7 +3338,7 @@ D.jp={
   "sk_steady_aim":"狙い澄まし",
   "skd_steady_aim":"距離ボーナス（3マスを超えた分1マスにつき+2%）とクリティカル+5%。",
   "sk_fire_bolt":"ファイアボルト",
-  "skd_fire_bolt":"スキルLvごとに火球を1つ、敵1体へ放ちます。各火球は魔法攻撃100%、0.3秒間隔（Lv6から0.2秒）。対象が倒れると、まだ飛んでいない火球は放たれません。オーバーロード可能。",
+  "skd_fire_bolt":"1体の敵に火球を1つずつ落とし、各火球が火属性の魔法ダメージ（MATK 120%）を与えます（1 / 3 / 5 / 7 / 10個）。対象が先に倒れても、火球はすべて落ちます。オーバーロード可能。",
   "skpLine":"スキルポイント：{n}（ジョブLv 1ごとに1）",
   "gdLbl":"グローバルディレイ",
   "fbLbl":"火球",
@@ -3320,12 +3347,12 @@ D.jp={
   "fctOver":"オーバーロード！",
   "skNone":"未習得",
   "skNotLearned":"まだ習得していません。スキル画面でスキルポイントを使ってください。",
-  "sk_frost_nova":"フロストノヴァ",
-  "skd_frost_nova":"2.5マス以内の敵に魔法攻撃260%の水属性。40%の確率で2秒凍結。",
+  "sk_freezer":"フリーザー",
+  "skd_freezer":"氷の力で捕らえ、敵1体に水属性の魔法ダメージ。一定確率で凍結させ、さらに風属性への耐性を50%下げます。凍結の確率と時間はスキルLv、対象の魔法防御とLUKで変わります。",
   "sk_lightning_spear":"ライトニングスピア",
-  "skd_lightning_spear":"敵1体に魔法攻撃380%の風属性。",
-  "sk_stone_spike":"ストーンスパイク",
-  "skd_stone_spike":"魔法攻撃260%の地属性。20%の確率で1秒気絶。",
+  "skd_lightning_spear":"地面魔法：雷の槍を5×5マスの範囲に1本ずつ落とし（Lvごとに2本、0.1秒間隔）、範囲内の全ての敵に風属性の魔法ダメージ（各 MATK 100%）。範囲は詠唱開始時に対象がいた場所。オーバーロード可能。",
+  "sk_petrifaction":"ペトリファクション",
+  "skd_petrifaction":"地質の理で万物を化石に変え、自分の周囲7×7マスの敵に地属性の魔法ダメージ。一定確率で石化させ、さらに火属性への耐性を50%下げます。石化の確率と時間はスキルLv、対象の魔法防御とLUKで変わります。",
   "sk_mana_flow":"マナフロー",
   "skd_mana_flow":"SPを全身にめぐらせ、できるだけ効率よく流す修練。Lvごとに最大SP・SP回復・SP消費が改善（Lv10：+12% / +30% / −12%）。",
   "pe_mf":"最大SP +{a}%、SP回復 +{b}%、SP消費 −{c}%",
@@ -3954,7 +3981,7 @@ D.jp={
   "lt_sell_hint":"アイテムを長押しすると選択を始められます。"
 };
 Object.assign(D.jp,{w_skinfo:"スキル情報",si_self:"自己詠唱",si_target:"対象指定",si_k_phys:"物理",si_k_magic:"魔法",si_k_heal:"回復",si_k_buff:"バフ",si_k_zone:"範囲",si_k_move:"移動",
- si_lv:"レベル {n}",si_det:"詳細",si_delay:"ディレイ",si_fb:"火球 {a} 個、合計 MATK {b}% · SP {c}",si_oe:"オーバーロード率 +{a}%、{b} 秒間 · SP {c}",
+ si_lv:"レベル {n}",si_det:"詳細",si_delay:"ディレイ",si_fb:"火球 {a} 個、合計 MATK {b}% · SP {c}",si_fz:"MATK {a}% · 凍結確率 {b}% · SP {c}",si_ls:"槍 {a} 本、各 MATK {b}%（5×5マス） · SP {c}",si_pt:"MATK {a}%（7×7マス） · 石化確率 {b}% · SP {c}",si_k_ground:"地面魔法",si_debuff:"デバフ",st_frz:"凍結！",st_ptr:"石化！",si_oe:"オーバーロード率 +{a}%、{b} 秒間 · SP {c}",
  w_skill:"スキルツリー",skt_pts:"スキルポイント : {n}",skt_learn:"習得",skt_reset:"リセット",skt_active:"アクティブ",skt_passive:"パッシブ",
  skt_done:"習得：{s}",skt_nopts:"スキルポイントが足りません。"});   // v20.10 Skills Tree
 let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
@@ -4259,10 +4286,10 @@ const SKI={
  evasive_leap:'<path d="M2 48h12M4 56h18M8 40h6" stroke="#fff" stroke-width="3" stroke-opacity=".85"/><path fill="url(#kCloth)" d="M12 52C16 30 32 14 60 8c-2 9-7 15-14 18 4 0 7-1 10-2-4 9-11 15-20 18 3 0 6 0 8-1-7 7-17 11-32 11z"/><path fill="url(#kLeaf)" d="M20 46C26 32 38 22 54 16c-3 7-8 11-14 13 3 1 6 0 8 0-5 6-12 10-20 12 3 1 5 1 7 0-5 3-10 5-15 5z"/><path d="M14 50C26 36 40 24 56 12" stroke="#fff" stroke-width="2" fill="none"/><path fill="#fff" stroke="none" d="M54 40.5C54.525 43.475 54.525 43.475 57.5 44C54.525 44.525 54.525 44.525 54 47.5C53.475 44.525 53.475 44.525 50.5 44C53.475 43.475 53.475 43.475 54 40.5z"/><path fill="#fff" stroke="none" d="M44 51.5C44.375 53.625 44.375 53.625 46.5 54C44.375 54.375 44.375 54.375 44 56.5C43.625 54.375 43.625 54.375 41.5 54C43.625 53.625 43.625 53.625 44 51.5z"/>',
  eagle_eye:'<circle cx="32" cy="32" r="26" fill="url(#kGlowY)" stroke="none"/><path fill="url(#kCloth)" d="M3 34C12 20 22 15 32 15s20 5 29 19c-9 12-19 16-29 16S12 46 3 34z"/><circle cx="32" cy="33" r="13" fill="url(#kOrbH)"/><ellipse cx="32" cy="33" rx="3.6" ry="10" fill="#1b2030" stroke="none"/><circle cx="27" cy="28" r="3" fill="#fff" stroke="none"/><path fill="url(#kWood)" d="M2 26C12 14 24 8 36 9c10 1 19 6 26 14-8-4-17-5-26-4-12 1-23 4-34 7z"/><path d="M32 52v9M32 3v4" stroke="#fff" stroke-width="2.6"/>',
  steady_aim:'<circle cx="32" cy="32" r="27" fill="url(#kSteelD)"/><circle cx="32" cy="32" r="21" fill="url(#kLens)"/><path d="M32 13v13M32 38v13M13 32h13M38 32h13" stroke="#ff4a3a" stroke-width="2.4"/><circle cx="32" cy="32" r="12" fill="none" stroke="#ff4a3a" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="32" cy="32" r="3" fill="#ff4a3a" stroke="#fff" stroke-width="1"/><path d="M19 22a16 16 0 0 1 10-8" stroke="#fff" stroke-opacity=".85" stroke-width="2.6" fill="none"/><rect x="30" y="2" width="4" height="7" rx="1" fill="url(#kGold)" transform="rotate(0 32 32)"/><rect x="30" y="2" width="4" height="7" rx="1" fill="url(#kGold)" transform="rotate(90 32 32)"/><rect x="30" y="2" width="4" height="7" rx="1" fill="url(#kGold)" transform="rotate(180 32 32)"/><rect x="30" y="2" width="4" height="7" rx="1" fill="url(#kGold)" transform="rotate(270 32 32)"/>',
- fire_bolt:'<circle cx="22" cy="42" r="22" fill="url(#kGlowF)" stroke="none"/><path fill="url(#kFireO)" stroke="#7a1008" d="M10 30L62 2 34 54A16 16 0 0 1 10 30z"/><path fill="url(#kFireM)" stroke="none" d="M13 33L52 10 31 49A12 12 0 0 1 13 33z"/><path fill="url(#kFireC)" stroke="none" d="M16 37L40 22 27 46A7 7 0 0 1 16 37z"/><circle cx="21" cy="42" r="5" fill="#fff" stroke="none"/><path fill="#ffe27a" stroke="none" d="M52 31C52.45 33.55 52.45 33.55 55 34C52.45 34.45 52.45 34.45 52 37C51.55 34.45 51.55 34.45 49 34C51.55 33.55 51.55 33.55 52 31z"/><path fill="#ffe27a" stroke="none" d="M40 55.6C40.36 57.64 40.36 57.64 42.4 58C40.36 58.36 40.36 58.36 40 60.4C39.64 58.36 39.64 58.36 37.6 58C39.64 57.64 39.64 57.64 40 55.6z"/><path fill="#ffe27a" stroke="none" d="M6 13.4C6.39 15.61 6.39 15.61 8.6 16C6.39 16.39 6.39 16.39 6 18.6C5.61 16.39 5.61 16.39 3.4 16C5.61 15.61 5.61 15.61 6 13.4z"/>',
- frost_nova:'<circle cx="32" cy="32" r="30" fill="url(#kGlowB)" stroke="none"/><g transform="rotate(0 32 32)"><path fill="url(#kIce)" d="M32 1l2.2 4L32 9l-2.2-4z" stroke-width="1"/></g><g transform="rotate(45 32 32)"><path fill="url(#kIce)" d="M32 1l2.2 4L32 9l-2.2-4z" stroke-width="1"/></g><g transform="rotate(90 32 32)"><path fill="url(#kIce)" d="M32 1l2.2 4L32 9l-2.2-4z" stroke-width="1"/></g><g transform="rotate(135 32 32)"><path fill="url(#kIce)" d="M32 1l2.2 4L32 9l-2.2-4z" stroke-width="1"/></g><g transform="rotate(180 32 32)"><path fill="url(#kIce)" d="M32 1l2.2 4L32 9l-2.2-4z" stroke-width="1"/></g><g transform="rotate(225 32 32)"><path fill="url(#kIce)" d="M32 1l2.2 4L32 9l-2.2-4z" stroke-width="1"/></g><g transform="rotate(270 32 32)"><path fill="url(#kIce)" d="M32 1l2.2 4L32 9l-2.2-4z" stroke-width="1"/></g><g transform="rotate(315 32 32)"><path fill="url(#kIce)" d="M32 1l2.2 4L32 9l-2.2-4z" stroke-width="1"/></g><g transform="rotate(0 32 32)"><path fill="url(#kIce)" d="M32 5l4 6v14l-4 5-4-5V11z"/><path fill="url(#kIce)" d="M32 15l8-5 1.5 3-9.5 7zM32 15l-8-5-1.5 3 9.5 7z" stroke-width="1.2"/></g><g transform="rotate(60 32 32)"><path fill="url(#kIce)" d="M32 5l4 6v14l-4 5-4-5V11z"/><path fill="url(#kIce)" d="M32 15l8-5 1.5 3-9.5 7zM32 15l-8-5-1.5 3 9.5 7z" stroke-width="1.2"/></g><g transform="rotate(120 32 32)"><path fill="url(#kIce)" d="M32 5l4 6v14l-4 5-4-5V11z"/><path fill="url(#kIce)" d="M32 15l8-5 1.5 3-9.5 7zM32 15l-8-5-1.5 3 9.5 7z" stroke-width="1.2"/></g><g transform="rotate(180 32 32)"><path fill="url(#kIce)" d="M32 5l4 6v14l-4 5-4-5V11z"/><path fill="url(#kIce)" d="M32 15l8-5 1.5 3-9.5 7zM32 15l-8-5-1.5 3 9.5 7z" stroke-width="1.2"/></g><g transform="rotate(240 32 32)"><path fill="url(#kIce)" d="M32 5l4 6v14l-4 5-4-5V11z"/><path fill="url(#kIce)" d="M32 15l8-5 1.5 3-9.5 7zM32 15l-8-5-1.5 3 9.5 7z" stroke-width="1.2"/></g><g transform="rotate(300 32 32)"><path fill="url(#kIce)" d="M32 5l4 6v14l-4 5-4-5V11z"/><path fill="url(#kIce)" d="M32 15l8-5 1.5 3-9.5 7zM32 15l-8-5-1.5 3 9.5 7z" stroke-width="1.2"/></g><path fill="url(#kIce)" d="M32 23l8 4.5v9L32 41l-8-4.5v-9z"/><path fill="#fff" stroke="none" d="M32 26l5 3-5 3-5-3z"/>',
- lightning_spear:'<circle cx="30" cy="34" r="26" fill="url(#kGlowP)" stroke="none"/><path fill="url(#kElec)" stroke="#6b3b00" d="M62 2L48 26l-4-2-26 26 4 2L4 62l12-20-4-1 26-24-4-3z"/><path fill="#fff" stroke="none" d="M58 6L46 22l-3-1-22 22 6-10 18-15z"/><path d="M14 24l6 2-2 5 6 1M44 46l-2 6 5 0-1 6M52 30l6 2" stroke="#fff3a0" stroke-width="2" fill="none"/><path fill="#fff" stroke="none" d="M62 -2C62.6 1.4 62.6 1.4 66 2C62.6 2.6 62.6 2.6 62 6C61.4 2.6 61.4 2.6 58 2C61.4 1.4 61.4 1.4 62 -2z"/><path fill="#fff" stroke="none" d="M10 9C10.45 11.55 10.45 11.55 13 12C10.45 12.45 10.45 12.45 10 15C9.55 12.45 9.55 12.45 7 12C9.55 11.55 9.55 11.55 10 9z"/>',
- stone_spike:'<circle cx="32" cy="56" r="22" fill="url(#kGlowF)" stroke="none"/><path fill="url(#kStoneD)" d="M0 62l6-8 12 3 8-4 10 3 10-4 10 3 8 7z"/><path fill="url(#kStone)" d="M4 56l8-26 8 27z"/><path fill="url(#kStoneD)" d="M12 30l8 27h-6z" stroke="none"/><path fill="url(#kStone)" d="M44 57l7-22 9 22z"/><path fill="url(#kStoneD)" d="M51 35l9 22h-6z" stroke="none"/><path fill="url(#kStone)" d="M19 58L33 3l13 55z"/><path fill="url(#kStoneD)" d="M33 3l13 55H35z" stroke="none"/><path d="M33 3l2 55" stroke="#1b2030" stroke-width="1.2"/><path d="M29 18l-4 18" stroke="#fff" stroke-opacity=".6" stroke-width="2"/><path fill="url(#kStone)" d="M6 18l4-3 3 4-4 3zM53 12l5-1 1 5-5 1zM14 8l3-2 2 3-3 2z"/>',
+ fire_bolt:'<ellipse cx="26" cy="54" rx="25" ry="8" fill="url(#kGlowF)" stroke="none"/><ellipse cx="26" cy="55" rx="20" ry="5" fill="#ffb347" fill-opacity=".55" stroke="#7a1008" stroke-width="1.3"/><path d="M6 51l-3-3M46 51l3-3" stroke="#ffd27a" stroke-width="2"/><g transform="translate(22.0 6.0) scale(0.38)"><path fill="url(#kFireO)" stroke="#7a1008" stroke-width="4.2" d="M10 30L62 2 34 54A16 16 0 0 1 10 30z"/><path fill="url(#kFireM)" stroke="none" d="M13 33L52 10 31 49A12 12 0 0 1 13 33z"/><path fill="url(#kFireC)" stroke="none" d="M16 37L40 22 27 46A7 7 0 0 1 16 37z"/><circle cx="21" cy="42" r="5" fill="#fff" stroke="none"/></g><g transform="translate(30.3 26.7) scale(0.46)"><path fill="url(#kFireO)" stroke="#7a1008" stroke-width="3.5" d="M10 30L62 2 34 54A16 16 0 0 1 10 30z"/><path fill="url(#kFireM)" stroke="none" d="M13 33L52 10 31 49A12 12 0 0 1 13 33z"/><path fill="url(#kFireC)" stroke="none" d="M16 37L40 22 27 46A7 7 0 0 1 16 37z"/><circle cx="21" cy="42" r="5" fill="#fff" stroke="none"/></g><g transform="translate(3.2 23.5) scale(0.56)"><path fill="url(#kFireO)" stroke="#7a1008" stroke-width="2.9" d="M10 30L62 2 34 54A16 16 0 0 1 10 30z"/><path fill="url(#kFireM)" stroke="none" d="M13 33L52 10 31 49A12 12 0 0 1 13 33z"/><path fill="url(#kFireC)" stroke="none" d="M16 37L40 22 27 46A7 7 0 0 1 16 37z"/><circle cx="21" cy="42" r="5" fill="#fff" stroke="none"/></g><path fill="#ffe27a" stroke="none" d="M56 5C56.36 7.64 56.36 7.64 59 8C56.36 8.36 56.36 8.36 56 11C55.64 8.36 55.64 8.36 53 8C55.64 7.64 55.64 7.64 56 5z"/><path fill="#ffe27a" stroke="none" d="M7 21.4C7.312 23.688 7.312 23.688 9.6 24C7.312 24.312 7.312 24.312 7 26.6C6.688 24.312 6.688 24.312 4.4 24C6.688 23.688 6.688 23.688 7 21.4z"/><path fill="#ffe27a" stroke="none" d="M56 27.8C56.264 29.736 56.264 29.736 58.2 30C56.264 30.264 56.264 30.264 56 32.2C55.736 30.264 55.736 30.264 53.8 30C55.736 29.736 55.736 29.736 56 27.8z"/>',
+ freezer:'<circle cx="32" cy="34" r="29" fill="url(#kGlowB)" stroke="none"/><ellipse cx="32" cy="57" rx="22" ry="5" fill="#bfefff" fill-opacity=".55" stroke="none"/><path fill="#5a3fc8" d="M20 50c0-11 5-19 12-19s12 8 12 19z"/><circle cx="27.5" cy="40" r="2.6" fill="#fff" stroke="none"/><circle cx="36.5" cy="40" r="2.6" fill="#fff" stroke="none"/><circle cx="28" cy="40.5" r="1.1" fill="#1b2030" stroke="none"/><circle cx="37" cy="40.5" r="1.1" fill="#1b2030" stroke="none"/><path fill="url(#kIce)" fill-opacity=".62" stroke="#1d5f8a" d="M12 22l20-9 20 9v28l-20 8-20-8z"/><path fill="#fff" fill-opacity=".5" stroke="#1d5f8a" d="M12 22l20-9 20 9-20 8z"/><path d="M32 30v28" stroke="#1d5f8a" stroke-width="1.3"/><path d="M16 26l4 2M16 31v8M47 28l-3 6M46 40l-2 5" stroke="#fff" stroke-width="2" stroke-opacity=".9"/><path fill="url(#kIce)" stroke="#1d5f8a" stroke-width="1.2" d="M6 14l3-6 3 6-3 4zM55 12l2.5-5 2.5 5-2.5 3.5zM4 44l2.5-4 2.5 4-2.5 3zM58 40l2.5-4 2.5 4-2.5 3z"/><path fill="#fff" stroke="none" d="M48 3.4C48.312 5.688 48.312 5.688 50.6 6C48.312 6.312 48.312 6.312 48 8.6C47.688 6.312 47.688 6.312 45.4 6C47.688 5.688 47.688 5.688 48 3.4z"/><path fill="#fff" stroke="none" d="M14 55.8C14.264 57.736 14.264 57.736 16.2 58C14.264 58.264 14.264 58.264 14 60.2C13.736 58.264 13.736 58.264 11.8 58C13.736 57.736 13.736 57.736 14 55.8z"/>',
+ lightning_spear:'<circle cx="32" cy="22" r="22" fill="url(#kGlowP)" stroke="none"/><path fill="#fff37a" fill-opacity=".35" stroke="#c9a400" stroke-width="1.6" stroke-dasharray="4 3" d="M32 42l26 9-26 9-26-9z"/><ellipse cx="32" cy="51" rx="22" ry="7" fill="url(#kGlowY)" stroke="none"/><g transform="rotate(-14 18 50)"><path fill="url(#kElec)" stroke="#6b3b00" stroke-width="1.3" d="M16 10h4v32l3 0-5 8-5-8h3z"/><path d="M18 12l-2 6 3 3-3 7 2 3" stroke="#fff" stroke-width="1.3" fill="none"/></g><g transform="rotate(14 46 49)"><path fill="url(#kElec)" stroke="#6b3b00" stroke-width="1.3" d="M44 8h4v33l3 0-5 8-5-8h3z"/><path d="M46 10l-2 6 3 3-3 7 2 3" stroke="#fff" stroke-width="1.3" fill="none"/></g><g transform="rotate(0 32 54)"><path fill="url(#kElec)" stroke="#6b3b00" stroke-width="1.3" d="M30 2h4v44l3 0-5 8-5-8h3z"/><path d="M32 4l-2 6 3 3-3 7 2 3" stroke="#fff" stroke-width="1.3" fill="none"/></g><path d="M14 52l-4-3M50 51l4-3M30 58l-3 3M34 58l3 3" stroke="#fff37a" stroke-width="2"/><path fill="#fff37a" stroke="none" d="M8 9.2C8.336 11.664 8.336 11.664 10.8 12C8.336 12.336 8.336 12.336 8 14.8C7.664 12.336 7.664 12.336 5.2 12C7.664 11.664 7.664 11.664 8 9.2z"/><path fill="#fff37a" stroke="none" d="M57 23.6C57.288 25.712 57.288 25.712 59.4 26C57.288 26.288 57.288 26.288 57 28.4C56.712 26.288 56.712 26.288 54.6 26C56.712 25.712 56.712 25.712 57 23.6z"/>',
+ petrifaction:'<circle cx="32" cy="30" r="28" fill="url(#kGlowY)" stroke="none" opacity=".6"/><path fill="url(#kStoneD)" d="M2 52l8-7h44l8 7-8 8H10z"/><path d="M10 52l7 2 3 5M54 52l-6 2-2 5M22 48l-4 4M42 48l5 4" stroke="#2a1d12" stroke-width="1.3"/><circle cx="32" cy="29" r="19" fill="url(#kStone)"/><path d="M43.0 29.0L47.5 29.0" stroke="#5f4f3e" stroke-width="1.2"/><path d="M41.9 33.8L46.0 35.7" stroke="#5f4f3e" stroke-width="1.2"/><path d="M38.9 37.6L41.7 41.1" stroke="#5f4f3e" stroke-width="1.2"/><path d="M34.4 39.7L35.4 44.1" stroke="#5f4f3e" stroke-width="1.2"/><path d="M29.6 39.7L28.6 44.1" stroke="#5f4f3e" stroke-width="1.2"/><path d="M25.1 37.6L22.3 41.1" stroke="#5f4f3e" stroke-width="1.2"/><path d="M22.1 33.8L18.0 35.7" stroke="#5f4f3e" stroke-width="1.2"/><path d="M21.0 29.0L16.5 29.0" stroke="#5f4f3e" stroke-width="1.2"/><path d="M22.1 24.2L18.0 22.3" stroke="#5f4f3e" stroke-width="1.2"/><path d="M25.1 20.4L22.3 16.9" stroke="#5f4f3e" stroke-width="1.2"/><path d="M29.6 18.3L28.6 13.9" stroke="#5f4f3e" stroke-width="1.2"/><path d="M34.4 18.3L35.4 13.9" stroke="#5f4f3e" stroke-width="1.2"/><path d="M38.9 20.4L41.7 16.9" stroke="#5f4f3e" stroke-width="1.2"/><path d="M41.9 24.2L46.0 22.3" stroke="#5f4f3e" stroke-width="1.2"/><path d="M32 29a2 2 0 0 1 4 0a4 4 0 0 1-8 0a6 6 0 0 1 12 0a8 8 0 0 1-16 0a10 10 0 0 1 20 0a12 12 0 0 1-24 0a14 14 0 0 1 28 0" stroke="#4a3c2e" stroke-width="2" fill="none"/><path fill="url(#kStone)" d="M5 30l4-3 3 3-3 3zM55 18l4-2 2 4-4 2zM53 40l3-2 3 3-3 2z"/><path d="M24 14c4-3 10-3 14-1" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>',
  overload_energy:'<circle cx="32" cy="32" r="30" fill="url(#kGlowP)" stroke="none"/><ellipse cx="32" cy="32" rx="29" ry="11" fill="none" stroke="#e2b8ff" stroke-width="2" transform="rotate(-30 32 32)"/><ellipse cx="32" cy="32" rx="29" ry="11" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1.6" transform="rotate(30 32 32)"/><circle cx="32" cy="32" r="14" fill="url(#kOrbP)"/><path fill="#fff" stroke="none" d="M32 18c1.4 9 4.6 12.6 14 14-9.4 1.4-12.6 5-14 14-1.4-9-4.6-12.6-14-14 9.4-1.4 12.6-5 14-14z"/><path d="M52 14l5-5 5 5M57 9v12" stroke="#1b2030" stroke-width="5"/><path d="M52 14l5-5 5 5M57 9v12" stroke="#7dffb0" stroke-width="2.6"/><path fill="#fff" stroke="none" d="M8 49C8.45 51.55 8.45 51.55 11 52C8.45 52.45 8.45 52.45 8 55C7.55 52.45 7.55 52.45 5 52C7.55 51.55 7.55 51.55 8 49z"/><path fill="#fff" stroke="none" d="M12 7.6C12.36 9.64 12.36 9.64 14.4 10C12.36 10.36 12.36 10.36 12 12.4C11.64 10.36 11.64 10.36 9.6 10C11.64 9.64 11.64 9.64 12 7.6z"/>',
  mana_flow:'<circle cx="32" cy="38" r="26" fill="url(#kGlowB)" stroke="none"/><path fill="url(#kMana)" d="M32 3c10 12 19 21 19 33a19 19 0 0 1-38 0c0-12 9-21 19-33z"/><path fill="#9fdcff" fill-opacity=".55" stroke="none" d="M14 38c6-4 11 3 18 0s12-4 18-1c-1 10-9 17-18 17s-17-7-18-16z"/><path d="M22 30c2-7 5-12 9-17" stroke="#fff" stroke-width="3" fill="none"/><path d="M4 50c8 6 16 4 22-1M60 22c-6-6-12-5-16-1" stroke="#7fe0ff" stroke-width="2.4" fill="none"/><path fill="#fff" stroke="none" d="M12 19C12.45 21.55 12.45 21.55 15 22C12.45 22.45 12.45 22.45 12 25C11.55 22.45 11.55 22.45 9 22C11.55 21.55 11.55 21.55 12 19z"/><path fill="#fff" stroke="none" d="M52 49.4C52.39 51.61 52.39 51.61 54.6 52C52.39 52.39 52.39 52.39 52 54.6C51.61 52.39 51.61 52.39 49.4 52C51.61 51.61 51.61 51.61 52 49.4z"/>',
  elemental_attunement:'<circle cx="32" cy="32" r="22" fill="url(#kGlowW)" stroke="none"/><circle cx="32" cy="32" r="17" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="1.6" stroke-dasharray="4 3"/><circle cx="32" cy="10" r="8" fill="url(#kOrbF)"/><circle cx="29.5" cy="7.5" r="2" fill="#fff" stroke="none" fill-opacity=".85"/><circle cx="54" cy="32" r="8" fill="url(#kOrbW)"/><circle cx="51.5" cy="29.5" r="2" fill="#fff" stroke="none" fill-opacity=".85"/><circle cx="32" cy="54" r="8" fill="url(#kOrbE)"/><circle cx="29.5" cy="51.5" r="2" fill="#fff" stroke="none" fill-opacity=".85"/><circle cx="10" cy="32" r="8" fill="url(#kOrbA)"/><circle cx="7.5" cy="29.5" r="2" fill="#fff" stroke="none" fill-opacity=".85"/><path fill="url(#kOrbP)" d="M32 22l7 10-7 10-7-10z"/><path fill="#fff" stroke="none" d="M32 24l3 8h-6z" opacity=".8"/>',
@@ -6983,7 +7010,12 @@ function drawMon(mo,sx,sy){
   if(mo.elite)glow(0,-d.h*.5,d.h*.75,`rgba(255,190,90,${.22+Math.sin(T*4)*.08})`);
   MDRAW[d.sprite](mo,MPAL[mo.type]);
   if(mo.hitT>0)glow(0,-d.h*.55,d.h*.55,`rgba(255,255,255,${Math.min(.8,mo.hitT*5)})`);
-  if(mo.stun>0)glow(0,-d.h*.5,d.h*.6,"rgba(150,220,255,.45)");
+  if(mo.ptr>0||mo.frz>0){const p=mo.ptr>0,w=d.h*.95,h=d.h*1.08;   // v20.18 Petrifaction: grey stone shell with cracks; Freeze: a block of ice
+    g.save();g.globalAlpha=.55;g.fillStyle=p?"#8a7f70":"#bfeeff";g.strokeStyle=p?"#4a3c2e":"#3aa8e6";g.lineWidth=1.6;
+    g.beginPath();g.roundRect(-w/2,-h,w,h,p?w*.3:3);g.fill();g.globalAlpha=.95;g.stroke();
+    g.beginPath();if(p){g.moveTo(-w*.2,-h*.9);g.lineTo(-w*.05,-h*.6);g.lineTo(-w*.22,-h*.4);g.moveTo(w*.18,-h*.7);g.lineTo(w*.05,-h*.45)}else{g.strokeStyle="#fff";g.moveTo(-w*.32,-h*.85);g.lineTo(-w*.32,-h*.55);g.moveTo(w*.28,-h*.4);g.lineTo(w*.18,-h*.22)}
+    g.stroke();g.restore()}
+  else if(mo.stun>0)glow(0,-d.h*.5,d.h*.6,"rgba(150,220,255,.45)");
   g.restore();
 }
 
@@ -7482,7 +7514,7 @@ function applyHit(mo,res,o){
   if(mo.hp<=0)killMon(mo);
 }
 function physAttack(mo,o){const d=pd();const res=REOC.physHit(d,mprof(mo),Object.assign({dist:d.ranged?dist(player,mo):0},o),rnd);applyHit(mo,res,o);return res}
-function magicAttack(mo,o){const res=REOC.magicHit(pd(),mprof(mo),o,rnd);applyHit(mo,res,o);return res}
+function magicAttack(mo,o){const res=REOC.magicHit(pd(),mprof(mo),Object.assign({st:mo},o),rnd);applyHit(mo,res,o);return res}   // st: the monster's Freeze / Petrifaction
 function hitMon(mo,mult){return physAttack(mo,{ratio:mult||1})}   // kept for debugging hooks
 const later=(ms,fn)=>setTimeout(fn,ms);
 const alive=mo=>mo&&!mo.dead&&mo.dieT<=0;
@@ -7495,7 +7527,7 @@ function basicAttack(mo){
   }else{fx.push({k:"proj",x,y,tx:mo.x,ty:mo.y,t:0,d:.24,c:ELC[b.elem]||"#c9b8ff"});later(220,()=>{if(alive(mo))magicAttack(mo,{ratio:b.ratio,elem:b.elem,c:b.elem==="holy"?"#ffe9a0":null})})}
 }
 function killMon(mo){
-  const d=MON[mo.type],E=mo.elite,B=mo.boss;AUD.sfx(B?"bossdown":"kill");mo.hp=0;mo.dieT=.45;mo.aggro=false;mo.path=[];mo.stun=0;if(player.target===mo)player.target=null;
+  const d=MON[mo.type],E=mo.elite,B=mo.boss;AUD.sfx(B?"bossdown":"kill");mo.hp=0;mo.dieT=.45;mo.aggro=false;mo.path=[];mo.stun=0;mo.frz=0;mo.ptr=0;if(player.target===mo)player.target=null;
   const sc0=Math.round((d.sc[0]+Math.floor(Math.random()*(d.sc[1]-d.sc[0]+1)))*(E?ELITE.sc:1)),be0=d.exp[0]*(E?ELITE.exp:1),je0=d.exp[1]*(E?ELITE.exp:1);
   // party: the bonus multiplies what you receive; equal EXP sharing splits the EXP evenly; item sharing rotates the loot (ptTake)
   const PR=ptRewards(),lvM=mLv(mo),kind=B?"boss":E?"elite":"normal";
@@ -7542,8 +7574,8 @@ function die(){
 function respawn(){player.dead=false;S.hp=hpMax();S.sp=spMax();$("#deathOv").classList.add("hidden");goMap("town",TOWN_SPAWN[0],TOWN_SPAWN[1])}
 function resetCombatState(){volleys.length=0;balls.length=0;player.gd=0;BF.regen=BF.herbAtk=BF.herbDef=BF.sage=0;BF.warCry=BF.blessing=BF.leap=BF.overEn=BF.overEnV=0;BF.burn=BF.slow=BF.burnAcc=0;BF.leapShot=false;BF.shield=0;BF.momentum=0;BF.momT=0;BF.zone=null;for(const k in CD)CD[k]=0}
 function addMomentum(n){BF.momentum=Math.min(5,BF.momentum+n);BF.momT=5}
-/* ---- Fire Bolt volley (v20): fireballs are released one at a time (0.3 s apart, 0.2 s from Lv 6). If the target dies, the ones not yet released never come out.
-   A fireball falls for (gap - 0.02) s and deals its damage when it lands. ---- */
+/* ---- Fire Bolt volley: fireballs are released one at a time (Lv 2-3: 0.3 s apart, Lv 4-5: 0.2 s). v20.18: every fireball always falls,
+   even after the target dies (they land on the spot and do nothing). A fireball falls for (gap - 0.02) s and deals its damage when it lands. ---- */
 const volleys=[],balls=[];
 function startVolley(m,k,o){volleys.push({m,k,o,n:0,t:0,fall:Math.max(.12,(k.gap||.3)-.02)})}
 function releaseBall(v){
@@ -7554,7 +7586,7 @@ function releaseBall(v){
 function landBall(b){if(alive(b.m))magicAttack(b.m,b.o);else fx.push({k:"burst",x:b.m.x,y:b.m.y,t:0,d:.35,c:"#ff9a4a",n:8,z:4})}
 function updateVolleys(dt){
   for(let i=volleys.length-1;i>=0;i--){const v=volleys[i];v.t-=dt;
-    while(v.t<=0&&v.n<v.k.hits){if(!alive(v.m)){v.n=v.k.hits;break}releaseBall(v);v.n++;v.t+=v.k.gap}
+    while(v.t<=0&&v.n<v.k.hits){releaseBall(v);v.n++;v.t+=v.k.gap||0}
     if(v.n>=v.k.hits)volleys.splice(i,1)}
   for(let i=balls.length-1;i>=0;i--){const b=balls[i];b.t+=dt;if(b.t>=b.fall){balls.splice(i,1);landBall(b)}}
 }
@@ -7571,7 +7603,7 @@ function updateCombat(dt){
     if(z.map===cur.id){if(Math.hypot(player.x-z.x,player.y-z.y)<=k.radius)S.hp=Math.min(hpMax(),S.hp+hpMax()*k.healPct*dt);
       z.acc+=dt;if(z.acc>=.5){z.acc-=.5;for(const m of liveMon())if(Math.hypot(m.x-z.x,m.y-z.y)<=k.radius)magicAttack(m,{ratio:k.ratio*.5,elem:"holy",c:"#ffe9a0"})}}
     if(z.t<=0)BF.zone=null}
-  if(player.casting){const c=player.casting;c.t-=dt;if(c.t<=0){player.casting=null;finishSkill(c.id,c.tg,c.lv)}return}
+  if(player.casting){const c=player.casting;c.t-=dt;if(c.t<=0){player.casting=null;finishSkill(c.id,c.tg,c.lv,c.gp)}return}
   const tg=player.target;if(!tg){player.pend=null;return}
   if(!alive(tg)){player.target=null;player.pend=null;return}
   /* v20.4: a pending melee skill walks in to its own range, then fires (gives up after 4 s or on a new target) */
@@ -7618,6 +7650,7 @@ function updateMon(mo,dt){
   if(mo.dieT>0){mo.dieT-=dt;if(mo.dieT<=0){mo.dead=true;mo.tele=null;mo.respawn=mo.boss?120:mo.elite?45+Math.random()*15:8+Math.random()*7}return}
   mo.hitT=Math.max(0,mo.hitT-dt);mo.atkCd=Math.max(0,mo.atkCd-dt);
   if(mo.boss&&mo.stun>0){mo.stun=0;fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:t("immune"),c:"#bfe8ff",ox:0,h:MON[mo.type].h*mSize(mo)})}
+  if(mo.frz>0)mo.frz=Math.max(0,mo.frz-dt);if(mo.ptr>0)mo.ptr=Math.max(0,mo.ptr-dt);
   if(mo.stun>0){mo.stun-=dt;mo.path=[];mo.moving=false;return}
   if(mo.hp<mo.maxHp&&!mo.aggro)mo.hp=Math.min(mo.maxHp,mo.hp+mo.maxHp*(mo.boss?.02:.05)*dt);
   if(mo.boss&&mo.aggro&&!player.dead){mo.slamT-=dt;if(!mo.tele&&mo.slamT<=0){mo.tele={t:1.4,total:1.4,x:mo.x,y:mo.y,r:3.4};AUD.sfx("warn");mo.slamT=9+Math.random()*3;mo.path=[]}}
@@ -7643,7 +7676,7 @@ function updateMon(mo,dt){
 /* ================= skills ================= */
 const SKC={bash:"#ffb08a",first_aid:"#8af0b6",power_strike:"#ff8a6a",cleave:"#ffb070",crushing_blow:"#ff6a5a",war_cry:"#ff9a9a",
  double_strafe:"#d8f0a0",arrow_shower:"#b8f08a",piercing_shot:"#f0ffd0",evasive_leap:"#ffffff",
- fire_bolt:ELC.fire,frost_nova:ELC.water,lightning_spear:"#fff36a",stone_spike:ELC.earth,overload_energy:"#c9b8ff",
+ fire_bolt:ELC.fire,freezer:ELC.water,lightning_spear:"#fff36a",petrifaction:ELC.earth,overload_energy:"#c9b8ff",
  heal:"#8af0b6",holy_light:"#ffe9a0",blessing:"#ffd76a",sanctuary:"#fff2b8"};
 /* v20.10: one colour per class line, used by the Skills Tree tabs and tiles and by every skill icon (hotkey bar, drag ghost):
    C0 Beginner blue, C1 Fighter red, Ranger green, Spellcaster purple, Supporter yellow */
@@ -7703,7 +7736,7 @@ const skTabs=()=>[S.arch];   // one tab: the Beginner tree, or the archetype tre
 const skTabNow=()=>{const L=skTabs();return L.includes(skTab)?skTab:L[L.length-1]};
 const skTreeIds=tab=>tab==="beginner"?[BASIC_T,...BASIC_ACT]:[BASIC_T,...BASIC_ACT,...REOC.ARCH[tab].passives,...REOC.ARCH[tab].actives];
 /* tree layout: rows of up to 4 archetype skills (columns 2-5); column 1 holds Basic Skill, First Aid, Heavy Strike. Default: passives, then actives */
-const SKT_ROWS={spellcaster:[["mana_flow","elemental_attunement","overload_energy"],["fire_bolt","frost_nova","lightning_spear","stone_spike"]]};
+const SKT_ROWS={spellcaster:[["mana_flow","elemental_attunement","overload_energy"],["fire_bolt","freezer","lightning_spear","petrifaction"]]};
 function skGrid(tab){
   const col=[BASIC_T,...BASIC_ACT],A=REOC.ARCH[tab],rows=[];
   if(tab!=="beginner")for(const r of SKT_ROWS[tab]||[A.passives,A.actives])for(let i=0;i<r.length;i+=4)rows.push(r.slice(i,i+4));
@@ -7848,8 +7881,9 @@ function useSkill(id,auto,lvArg){
   }
   if((k.kind==="phys"||k.kind==="magic")&&k.aoe&&k.at==="self"&&!isField()){if(!auto)toast(t("noTarget"));return false}
   AUD.sfx("skill");S.sp-=cost;   // v20.9: the cooldown starts when the cast ends (finishSkill), as SKILL-SPEC.md says
-  {const ct=REOC.castTime(k,d);if(ct>.05){player.casting={id,lv,tg,t:ct,total:ct,cost};player.path=[];player.moving=false;return true}}
-  finishSkill(id,tg,lv);return true;
+  const gp=k.ground&&tg?{x:tg.x,y:tg.y,map:cur.id}:null;   // v20.18 ground magic (Lightning Spear) lands where the target stood when the cast started
+  {const ct=REOC.castTime(k,d);if(ct>.05){player.casting={id,lv,tg,gp,t:ct,total:ct,cost};player.path=[];player.moving=false;return true}}
+  finishSkill(id,tg,lv,gp);return true;
 }
 function leapAway(n){
   const m=nearestMon(30);let dx=-player.dir,dy=player.dir;
@@ -7858,13 +7892,14 @@ function leapAway(n){
   for(let r=n;r>=1;r-=.5){const tx=player.x+dx*r,ty=player.y+dy*r;if(walk(Math.floor(tx),Math.floor(ty))&&los(player.x,player.y,tx,ty)){player.x=tx;player.y=ty;break}}
   player.path=[];
 }
-function finishSkill(id,tg,lv){
+function finishSkill(id,tg,lv,gp){
   const k=lv?REOC.skAt(id,lv):REOC.SK[id],d=pd(),x=player.x,y=player.y,col=SKC[id]||"#fff";
   CD[id]=k.cd*d.cdMul;   // cooldown and Global Delay both start when the cast ends
   if(k.gd){player.gd=k.gd*d.gdMul;player.gdMax=player.gd}
   if(tg&&!alive(tg))tg=null;
   player.pose=k.kind==="phys"?"attack":"cast";player.poseT=.36;if(tg)faceToward(player,tg.x,tg.y);   // hero sprite pose
-  const area=k.aoe?(k.at==="self"?liveMon().filter(m=>dist(m,player)<=k.aoe):(tg?liveMon().filter(m=>dist(m,tg)<=k.aoe):[])):(tg?[tg]:[]);
+  const inA=(m,cx,cy)=>k.sq?Math.max(Math.abs(m.x-cx),Math.abs(m.y-cy))<=k.aoe:Math.hypot(m.x-cx,m.y-cy)<=k.aoe;   // sq: a square area (7x7, 5x5 tiles)
+  const area=k.aoe?(k.at==="self"?liveMon().filter(m=>inA(m,player.x,player.y)):(tg?liveMon().filter(m=>inA(m,tg.x,tg.y)):[])):(tg?[tg]:[]);
   switch(k.kind){
    case "phys":{
      if(!area.length)return;
@@ -7883,18 +7918,23 @@ function finishSkill(id,tg,lv){
      if(k.spend){if(BF.momentum>=k.stunAt&&tg&&alive(tg)){tg.stun=k.stun;fx.push({k:"ring",x:tg.x,y:tg.y,t:0,d:.6,c:"#ffe28a",r:40})}BF.momentum=0;BF.momT=0}
      break}
    case "magic":{
+     player.atkCd=Math.max(player.atkCd,d.interval);   // v20.18: no basic-attack bolt from the hand right as a spell goes off
+     const o={ratio:k.ratio,elem:k.elem,overMul:k.overMul,c:col};
+     if(k.ground){const c=gp||(tg?{x:tg.x,y:tg.y,map:cur.id}:null);if(!c||c.map!==cur.id)break;   // v20.18 Lightning Spear: spears fall one by one on the 5x5 square, each hits everything inside it
+       fx.push({k:"sqarea",x:c.x,y:c.y,t:0,d:(k.hits-1)*k.gap+.5,c:col,r:k.aoe});
+       for(let h=0;h<k.hits;h++)later(h*k.gap*1000,()=>{if(cur.id!==c.map)return;const sx=c.x+(Math.random()-.5)*k.aoe*1.6,sy=c.y+(Math.random()-.5)*k.aoe*1.6;
+         fx.push({k:"bolt",x:sx,y:sy,t:0,d:.35,c:col});for(const m of liveMon())if(inA(m,c.x,c.y))magicAttack(m,o)});
+       break}
      if(!area.length&&!(k.aoe&&k.at==="self"))return;
-     const o={ratio:k.ratio,elem:k.elem,c:col};
-     if(id==="frost_nova"){fx.push({k:"ring",x,y,t:0,d:.7,c:col,r:k.aoe*55});fx.push({k:"burst",x,y,t:0,d:.7,c:"#e6f8ff",n:16})}
-     if(id==="lightning_spear"&&tg)fx.push({k:"bolt",x:tg.x,y:tg.y,t:0,d:.45,c:col});
-     if(id==="stone_spike"&&tg){fx.push({k:"burst",x:tg.x,y:tg.y,t:0,d:.5,c:col,n:14,z:6});fx.push({k:"ring",x:tg.x,y:tg.y,t:0,d:.4,c:col,r:36})}
+     if(id==="freezer"&&tg){fx.push({k:"burst",x:tg.x,y:tg.y,t:0,d:.5,c:"#e6f8ff",n:14,z:10});fx.push({k:"ring",x:tg.x,y:tg.y,t:0,d:.45,c:col,r:34})}
+     if(id==="petrifaction"){fx.push({k:"sqarea",x,y,t:0,d:.6,c:col,r:k.aoe});fx.push({k:"burst",x,y,t:0,d:.6,c:col,n:18,z:4})}
      if(id==="holy_light"&&tg)fx.push({k:"pillar",x:tg.x,y:tg.y,t:0,d:.6,c:col});
      if(id==="fire_bolt"){startVolley(tg,k,Object.assign({fire:true,overMul:k.overMul},o));break}   // v20: fireballs fall one at a time
      const delay=id==="holy_light"?250:0;
      area.forEach(m=>{for(let h=0;h<(k.hits||1);h++){
        later(delay+h*120,()=>{if(!alive(m))return;magicAttack(m,o);
-         if(k.freeze&&h===0&&Math.random()<k.freeze)m.stun=Math.max(m.stun||0,k.freezeDur);
-         if(k.stunChance&&h===0&&Math.random()<k.stunChance)m.stun=Math.max(m.stun||0,k.stun)})}});
+         if(k.st&&h===0&&alive(m)){const sd=REOC.stRoll(k,mprof(m),Math.random);if(sd>0&&!m.boss){m.stun=Math.max(m.stun||0,sd);m[k.st]=Math.max(m[k.st]||0,sd);
+           fx.push({k:"dmg",x:m.x,y:m.y,t:0,d:.9,txt:t("st_"+k.st),c:k.st==="frz"?"#bfefff":"#d8cbb0",ox:0,h:MON[m.type].h*mSize(m)+14})}}})}});
      break}
    case "heal":{const h=REOC.healAmount(d,k),over=Math.max(0,S.hp+h-hpMax());S.hp=Math.min(hpMax(),S.hp+h);
      if(d.shieldCap&&over>0)BF.shield=Math.min(hpMax()*d.shieldCap,BF.shield+over);
@@ -7913,9 +7953,9 @@ function finishSkill(id,tg,lv){
 function autoSkill(){
   if(player.casting||player.dead)return;
   const tg=alive(player.target)?player.target:null,d=pd();
-  const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0;
+  const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0,nearMe=liveMon().filter(m=>(m===tg||m.aggro)&&Math.max(Math.abs(m.x-player.x),Math.abs(m.y-player.y))<=3.5).length;
   const id=REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0},
-    dist:tg?dist(tg,player):99,near,tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
+    dist:tg?dist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
   if(id)useSkill(id,true,lvFor(id));
 }
 function becomeArch(a){
@@ -8034,6 +8074,8 @@ function drawFx(f){
   else if(f.k==="bolt"){g.globalAlpha=1-p;g.strokeStyle=f.c;g.lineWidth=4;g.beginPath();let yy=y-240,xx=x;g.moveTo(xx,yy);while(yy<y-20){yy+=24;xx=x+(hash(Math.floor(yy),Math.floor(f.x*10))-.5)*26;g.lineTo(xx,yy)}g.lineTo(x,y-20);g.stroke();g.strokeStyle="#fff";g.lineWidth=1.5;g.stroke()}
   else if(f.k==="proj"){const [tx,ty]=P(f.tx,f.ty);const px=x+(tx-x)*p,py=y-26+(ty-y)*p-Math.sin(p*Math.PI)*30;ell(px,py,6,6,f.c);ell(px,py,3,3,"#fff");g.globalAlpha=.5;ell(px-(tx-x)*.06,py+4,5,5,f.c)}
   else if(f.k==="fball"){g.globalCompositeOperation="source-over";fballDraw(f)}
+  else if(f.k==="sqarea"){const a=Math.min(1,p*6)*(1-Math.max(0,p-.8)*5),r=f.r,c=[[f.x-r,f.y-r],[f.x+r,f.y-r],[f.x+r,f.y+r],[f.x-r,f.y+r]].map(q=>P(q[0],q[1]));   // v20.18 square area on the ground (5x5 / 7x7)
+    g.globalAlpha=.35*a;g.fillStyle=f.c;g.beginPath();c.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.closePath();g.fill();g.globalAlpha=.9*a;g.strokeStyle=f.c;g.lineWidth=2;g.setLineDash([6,4]);g.stroke();g.setLineDash([])}
   else if(f.k==="float"){g.globalCompositeOperation="source-over";g.globalAlpha=1-p*p;g.font=`600 13px ${FONT}`;g.textAlign="center";g.textBaseline="middle";g.lineWidth=3;g.strokeStyle="rgba(20,10,30,.8)";const yy=y-70-(f.oy||0)-p*30;g.strokeText(f.txt,x,yy);g.fillStyle=f.c;g.fillText(f.txt,x,yy)}
   else if(f.k==="hfx"){g.globalCompositeOperation="source-over";g.globalAlpha=1;hfxDraw(f,x,y-(f.z||0))}
   else if(f.k==="dmg"&&f.pop){g.globalCompositeOperation="source-over";
@@ -8624,7 +8666,10 @@ function siLevel(id,n){   // what one level gives
   if(id===BASIC_T){const r=BASIC_ROWS[n-1];return `${t("bs_u_"+r)} · ${t("bs_d_"+r)}`}
   if(!REOC.SK[id])return REOC.SKLV[id]?pasEffAt(id,n):"";
   const k=REOC.SKLV[id]?REOC.skAt(id,n):REOC.SK[id],d=pd(),sp=Math.ceil(k.sp*d.spCost);
-  if(id==="fire_bolt")return fmt("si_fb",{a:k.hits,b:k.hits*100,c:sp});
+  if(id==="fire_bolt")return fmt("si_fb",{a:k.hits,b:Math.round(k.hits*k.ratio*100),c:sp});
+  if(id==="freezer")return fmt("si_fz",{a:Math.round(k.ratio*100),b:Math.round(k.stCh*100),c:sp});
+  if(id==="lightning_spear")return fmt("si_ls",{a:k.hits,b:Math.round(k.ratio*100),c:sp});
+  if(id==="petrifaction")return fmt("si_pt",{a:Math.round(k.ratio*100),b:Math.round(k.stCh*100),c:sp});
   if(id==="overload_energy")return fmt("si_oe",{a:k.over,b:k.dur,c:sp});
   const rg=k.range||k.aoe?` · ${t("rangeLbl")} ${k.ranged?d.range:(k.range||k.aoe)}`:"";
   return `SP ${sp}${rg}`}
@@ -8633,7 +8678,7 @@ WIN.skinfo=()=>{
   const L=skLearned(id),mx=skMaxT(id),pas=skIsPas(id),a=skArchOf(id),k0=REOC.SK[id],sec=t("lt_sec");
   const name=t(id===BASIC_T?"bs_title":"sk_"+id),desc=t(id===BASIC_T?(S.arch==="beginner"?"bs_desc":"bs_kept"):"skd_"+id);
   const chips=[t("ar_"+a)];
-  if(pas)chips.push(t("skt_passive"));else{chips.push(t(k0.at==="self"||!(k0.range||k0.ranged)?"si_self":"si_target"));chips.push(t("si_k_"+k0.kind)+(k0.elem?" · "+t("el_"+k0.elem):""))}
+  if(pas)chips.push(t("skt_passive"));else{chips.push(t(k0.at==="self"||!(k0.range||k0.ranged)?"si_self":"si_target"));chips.push(t(k0.ground?"si_k_ground":"si_k_"+k0.kind)+(k0.debuff?", "+t("si_debuff"):"")+(k0.elem?" · "+t("el_"+k0.elem):""))}
   const lvls=pas&&mx<2&&id!==BASIC_T?[]:Array.from({length:mx},(_,i)=>i+1);
   const lvHtml=lvls.map(n=>`<div class="si-lv${n===L?" on":""}${n>L?" dim":""}"><span class="si-tag">${fmt("si_lv",{n})}</span><p>${siLevel(id,n)}</p></div>`).join("");
   const tb=pas?"":`<span class="si-tag">${t("si_det")}</span><table class="si-tb"><thead><tr><th></th><th>VCT</th><th>FCT</th><th>CD</th><th>${t("si_delay")}</th></tr></thead><tbody>${lvls.map(n=>{const k=REOC.SKLV[id]?REOC.skAt(id,n):k0;
@@ -9129,7 +9174,11 @@ try{if(saved){
   S.app=appClean(S.app);if(!["custom","male","female","classic","new"].includes(S.look))S.look="custom";
   sanitizeGear();
   if(S.autoStat||REOC.spent(S.stats)>REOC.statPointsTotal(Math.max(1,Math.floor(+S.lv||1))))S.stats=REOC.autoStats(S.arch,Math.max(1,Math.floor(+S.lv||1)));
-  for(const k of ["lv","jlv"])S[k]=Math.max(1,Math.floor(+S[k]||1));S.jlv=Math.min(jcap(),S.jlv);skFix();
+  for(const k of ["lv","jlv"])S[k]=Math.max(1,Math.floor(+S[k]||1));S.jlv=Math.min(jcap(),S.jlv);
+{const RN={frost_nova:"freezer",stone_spike:"petrifaction"};   // v20.18 renamed skills keep their levels and hotbar slots
+  if(S.skLv)for(const o in RN)if(S.skLv[o]!=null){S.skLv[RN[o]]=Math.max(S.skLv[RN[o]]|0,S.skLv[o]|0);delete S.skLv[o]}
+  if(Array.isArray(S.hot))for(const h of S.hot)if(h&&RN[h.id])h.id=RN[h.id]}
+skFix();
   for(const k of ["exp","jexp","sc","y","la","kills","deaths","hp","sp"])S[k]=Math.max(0,+S[k]||0);
   for(const k in S.inv)S.inv[k]=Math.max(0,Math.floor(+S.inv[k]||0));
   if(!S.sess||typeof S.sess!=="object")S.sess={t:0,kills:0,base:0,job:0,sc:0,mats:0,items:{},gear:0};
