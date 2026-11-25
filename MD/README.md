@@ -53,6 +53,8 @@
 - **Aiming Shower:** FCT 0.5 s, VCT 0.5 s, Global Delay 0.1 s, **cooldown 2 s** (was FCT 0.1 s, CD 0).
 - **Balance:** Ranger CP Lv 10 / 20 / 30 = 637 / 1,023 / 1,708 (Fighter 598 / 1,090 / 1,576), Ruins DPS 185 (v21g 407). Aim Strike is now slightly below just shooting against one target (the cast stops basic attacks); it pays off on packs.
 
+- **Deploy note (2026-11-25):** the first Pages deploy of v21h failed with HTTP 500 during GitHub's incident ("degraded experiences across GitHub products", high database load, from about 16:08 UTC); run #62 stayed queued and could not be cancelled. This entry is a new commit on main so Pages builds and deploys v21h again. No game code changed.
+
 ## Changes in v21g
 - **Aim Strike is now a Self Cast buff** (new spec from NIIQ, `SKILL-SPEC.md` §3m). For 60–150 s, every basic shot has a 20–38% chance to split in mid-air into 2 / 2 / 3 / 3 / 4 / 4 / 5 / 5 / 6 / 7 arrows of 100–200% ATK each (0.1 s apart, crit chance ×0.5); every arrow splashes 50% on a 3 × 3 area. SP 60–150, FCT 2 s, Global Delay 2 s, cooldown = duration. The v21f burst (a full SP bar in 1 s) is gone. Idle and the simulator keep the buff up; buff icon in the status island; text in en / th / jp.
 - **Balance:** Ranger CP Lv 10 / 20 / 30 = 654 / 1,056 / 1,996 (v21f 640 / 1,065 / 1,614; Fighter 598 / 1,090 / 1,576). ⚠ At Lv 10 a basic shot under the buff averages ~6× a normal shot: Ruins DPS 407 (Fighter 181, Spellcaster 200). Ideas in `SKILL-SPEC.md` §3n balance check.
