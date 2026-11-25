@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v21b (this update)
+## Changes in v21c (this update)
+- **Monster packs.** Every hunting map (Field 01–03, Geosyncline, Ruins) keeps its scattered monsters and now also has 3 packs, one per kind: 6 of the weakest kind, 5 of the middle, 4 of the strongest. A pack stays within 2.5 tiles of its centre (wanders 3 tiles), respawns there, and the whole pack (within 10 tiles) charges when one member is hit or spots you. Code: `PACK_*`, `packSize`, `packSpot`, `packAggro` next to `newMon`. Docs: the five `FIELD-*.md` files, wiki Monsters.
+
+## Changes in v21b
 - **The Idle buff skill set rotates too**, like the attack set: after slot n comes slot n+1 (wrapping); a buff that is still running (more than 1 s left) is skipped.
 
 ## Changes in v21a
