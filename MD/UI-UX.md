@@ -723,3 +723,4 @@ Status effects on monsters are drawn in `drawMon` (helpers `stRecolor`, `stIceBa
 - **Aiming Shower:** the target slides back 2 tiles (12 tiles/s, stops at a wall) with a puff of dust.
 - **Focusing:** a ring at the feet and the buff icon (eye, ranger green) in the status island with its time left.
 - **Skills Tree requirements:** a skill whose requirement is not met shows a pill with the skill and level it needs (for example "No Arrow 3") instead of its level; tapping it says "Learn No Arrow Lv 3 first". Skill Info shows a **Requires:** line (red while not met). Lowering a draft of No Arrow drops the drafts that needed it.
+- **Status window bonus (v21f):** the green "+N" after a base stat is the derived stat minus the base (`d.s[k] − S.stats[k]`): gear, Blessing, Ranger Mastery and Focusing all show there (for example DEX 35 +15 with Ranger Mastery Lv 10 and Focusing Lv 10).
