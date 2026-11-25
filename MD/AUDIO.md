@@ -21,8 +21,8 @@ Each track is built from a scale, a chord progression (4 bars) and a seed, so it
 | boss | Field 03 while Gadolith is fighting | 152 | tense (harmonic minor), driving drums, pulsing bass |
 Changing map fades the new track in. The boss track plays while the boss is aggressive and the normal track returns when the fight ends.
 
-## 3. Sound effects (25)
-UI: click, window open, window close, error. Combat: hit, critical, miss, hurt, skill, kill, boss slam warning, boss slam, boss defeated, death. Progress: level up, quest accepted, quest done, announcement. Items: pickup, equipment drop, potion, equip, refine success, refine fail, coin (buy or sell). Travel: warp (map change and teleport), Idle on, Idle off.
+## 3. Sound effects (27)
+UI: click, window open, window close, error. Combat: hit, critical, miss, hurt, skill, kill, boss slam warning, boss slam, boss defeated, death, shard absorb (normal / Elite & boss: a soft whoosh then a rising triangle sparkle, played 0.78 s after the kill so it lands as the death-crumble shards reach the player; `AUD.sfx(name, delay)` schedules a sound ahead on the audio clock). Progress: level up, quest accepted, quest done, announcement. Items: pickup, equipment drop, potion, equip, refine success, refine fail, coin (buy or sell). Travel: warp (map change and teleport), Idle on, Idle off.
 Fast repeats are limited (for example hits at most every 60 ms) so it never turns into noise.
 
 ## 4. Open questions

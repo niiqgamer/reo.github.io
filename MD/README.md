@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v21c (this update)
+## Changes in v21d (this update)
+- **Death crumble effect.** A dying monster breaks into shards in its colour that scatter and float up, then curve into the player with glowing trails and flash on arrival (~1 s). Normal 22 shards, Elite 38, boss 70 (half on Low graphics). A soft whoosh + rising sparkle (`absorb`, bigger `absorbbig` for Elites and bosses) plays as the shards arrive. See `UI-UX.md` §15b, `AUDIO.md`.
+
+## Changes in v21c
 - **Monster packs.** Every hunting map (Field 01–03, Geosyncline, Ruins) keeps its scattered monsters and now also has 3 packs, one per kind: 6 of the weakest kind, 5 of the middle, 4 of the strongest. A pack stays within 2.5 tiles of its centre (wanders 3 tiles), respawns there, and the whole pack (within 10 tiles) charges when one member is hit or spots you. Code: `PACK_*`, `packSize`, `packSpot`, `packAggro` next to `newMon`. Docs: the five `FIELD-*.md` files, wiki Monsters.
 
 ## Changes in v21b
