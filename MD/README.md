@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.16. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.17. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.16 (this update)
+## Changes in v20.17 (this update)
+- **Character creator + code-drawn hero.** After login / register / guest, a save without an appearance opens a character creator in the login screen's style: gender, 7 hairstyles per gender, 8 hair colours, 6 eye colours, 5 outfit colours (Standard is the default) and the character name, with a live preview (Stand / Walk, turn through 8 directions). Saved as `S.app`; a new name is also written to the session and account (`AUTH.rename`). The main character is now drawn in code (`drawHero8`) in 8 directions with idle, walk, sword attack, cast, bow (Rangers), sit, hit (new `player.hurtT`) and death poses; it is the new default look (`S.look="custom"`). The sprite sets and classic chibi stay in Settings > Graphic > Character look; Settings > Graphic > Appearance > Edit reopens the creator. All text in Thai, English and Japanese. See `UI-UX.md` §28, `ACCOUNTS.md` §4b.
+
+## Changes in v20.16
 - **Illustrated skill icons.** All 28 skill icons are redrawn as full-colour pictures based on each skill's description (gradients, light, glow, dark outline): e.g. Fire Bolt is a fireball comet, Frost Nova an ice crystal, Crushing Blow a hammer cracking the ground with 3 stack orbs, Elemental Attunement four element orbs. They replace the one-colour duotone set from v20.10 in the Skills Tree, Skill Info, hotkey bar, drag ghost and archetype cards. Locked skills show the picture in grey. Shared gradients live in `<svg id="skdefs">`. See `UI-UX.md` §26.
 
 ## Changes in v20.15

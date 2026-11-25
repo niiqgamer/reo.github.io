@@ -653,6 +653,37 @@ The player is drawn from sprite sheets instead of the canvas chibi. Two sets: **
 - **Animation:** walking steps through the walk frames with the walk phase (one cycle = 2π; male 4 frames, about 7 fps; female 3 frames). Standing plays the idle frames at their fps (female); a one-frame idle (male) gets a small breathing bob instead. **Sitting** reuses the idle frame pressed down a little (no sit art yet). **Dead** keeps the old tipped-over rotation.
 - **Portraits:** the player card avatar (first idle frame, still), the Character window doll and the Status portrait use the front (S) direction of the chosen set.
 - **Fallback:** while the sheets load, or if they fail, the old chibi is drawn. Other players and NPCs still use the chibi.
-- **Settings > Graphic > Character look:** Male (default), Female or Classic (the old chibi). Saved as `S.look` (`"male"`, `"female"`, `"classic"`; a v20.11 save with `"new"` reads as Male). For testing only; a real gender choice belongs in character creation later.
+- **Settings > Graphic > Character look:** My character (default since v20.17, see §28), Male, Female or Classic (the old chibi). Saved as `S.look` (`"custom"`, `"male"`, `"female"`, `"classic"`; a v20.11 save with `"new"` reads as Male). The sprite sets stay for testing.
 - Missing art for later: true SW and NW death rows for the male set.
 
+## 28. Code-drawn hero and character creator (v20.17)
+
+The player's own character is now drawn in code (`drawHero8`), with the look chosen in a character creator. It is the default look (`S.look="custom"`); the sprite sets of §27 and the classic chibi stay in Settings.
+
+### Character creator (`#cc`, `openCreator`)
+- **When:** right after login / register / guest, whenever the save has no appearance (`S.app` is empty). This covers new characters and older saves (once). Also from **Settings > Graphic > Appearance > Edit**, and when Character look is switched to My character without an appearance.
+- **Look:** a full-screen dialog in the login screen's style (navy radial background, floating crystals, `.au-card` panels, violet-to-teal `.au-go` button, gold accents, Kanit). Desktop: preview card on the left (sticky), controls on the right. Under 760 px: preview and summary side by side on top, controls below; hairstyles in 4 columns. Under 380 px: outfits in 3 columns.
+- **Preview:** the hero on a turning magic-circle pedestal with rising motes, name plate above. **Stand / Walk** tabs, **‹ ›** turn the hero through the 8 directions. Chips under it sum up the choices.
+- **Steps:** 1 Gender (Male / Female) → 2 Hairstyle (7 per gender, head thumbnails drawn live in the chosen colours) → 3 Hair colour (8) → 4 Eye colour (6) → 5 Outfit colour (5, the first is the default) → 6 Character name.
+- **Gender switch:** resets the hairstyle to that gender's first style; hair and eye colour also move to that gender's default unless the player already picked them.
+- **Name:** prefilled with the current name. Same rules as the login screen (2–12 letters, numbers, `_`, `-`, spaces; reserved names refused, via `AUTH.nameOK`). Live counter and error line; ⚄ picks a random name. The confirm button is disabled until the name is valid. A changed name is written to `player.name`, the session and the account record (`AUTH.rename`).
+- **Buttons:** **Randomise all**; first time **Start adventure**; from Settings **Cancel** and **Save** (toast "Appearance saved."). Enter in the name field confirms.
+- Language switches re-render it (`applyI18n` → `ccRender`).
+
+### Appearance data (`S.app`)
+`{sex:"m"|"f", style, hc, ec, suit}`, checked on load by `appClean` (unknown values fall back to the gender's defaults; a bad record is dropped and the creator opens again).
+
+| Field | Values |
+|---|---|
+| `style` (male) | `spiky` (default) · `bald` · `student` · `upright` · `long` · `fluffy` · `curly` |
+| `style` (female) | `ponytail` (default, after the female sprite) · `bobS` · `bobL` · `straight` · `longcurly` · `afro` · `twin` |
+| `hc` | `silver` (male default) · `pink` (female default) · `black` · `brown` · `blonde` · `red` · `blue` · `mint` (`APP_HAIR`: light / mid / dark) |
+| `ec` | `blue` (male default) · `purple` (female default) · `green` · `amber` · `red` · `grey` (`APP_EYE`) |
+| `suit` | `def` (white jacket, orange trim) · `silver` · `copper` · `green` · `purple` (`HERO_SUITS`: the jacket / boot whites and the orange trim are remapped by brightness) |
+
+### Drawing (`drawHero8(g, X, Y, sc, o)`)
+- Feet at (X, Y), units of the 256 px sprite frame, so it is drawn at `sc × 0.34` (`HERO_K`) like the sprites. `o = {dir, pose, t, sex, style, hair, eye, suit, phase, p, dt, noShadow}`.
+- **8 directions** in the sprite row order (S, SE, E, NE, N, NW, W, SW). The face, bangs and goggles are front-view drawings wrapped on a turning ellipsoid head; the jacket trim on an elliptic-cylinder body (front and back trim); parts turned away are skipped. The far side of the head is covered by the hair mass along the head's edge. **E / W** use a hand-made profile head (nose, mouth, chin, side eye, side bangs by style group, one goggle lens), mirrored for W. The backpack (crystal on the back, blue ring on the side) and long hair change draw order with the direction.
+- **Poses** (`heroPose`): idle (breathing, blinking), walk (arm and leg swing, bob; uses the walk phase), attack (sword wind-up, slash and trail), cast (both hands up, orb with a turning rune ring, ground circle), bow (draw, release, arrow flies), sit (legs forward, hands on knees), hit (knocked back, >< eyes, spark), death (falls backwards, × eyes, stays down). Limbs are jointed (`phi` swing forward, `al` spread out), so they foreshorten with the direction.
+- **Game pose order** (`drawHeroApp`): dead → death (from `player.dieAt`) · casting → cast · walking → walk · pose flash (`player.pose` / `poseT`) → cast for magic, bow for Rangers, sword attack for the rest · hurt (`player.hurtT`, 0.4 s after taking damage) → hit · sitting → sit · else idle.
+- Portraits (player card, Character window doll, Status portrait) use the front view, like the sprites. Other players and NPCs still use the chibi.

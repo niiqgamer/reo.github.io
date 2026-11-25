@@ -61,6 +61,8 @@ So this is a convenience system for the prototype (separate saves, character nam
 
 The character name comes from the account (guests: the nickname). Saves are completely separate per account.
 
+**Character creator (v20.17):** after login, register or guest play, a save without an appearance opens the character creator (gender, hairstyle, colours, name; see `UI-UX.md` §28). Its name field can rename the character: the new name must pass the same rules as above (`AUTH.nameOK`, reserved names included) and is written to the session and, for accounts, to the account record (`AUTH.rename`).
+
 ## 5. If browser storage is blocked
 Register and Login explain that they can't work. **Guest still plays**, but nothing is saved.
 
