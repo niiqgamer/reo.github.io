@@ -18,7 +18,8 @@ Each track is built from a scale, a chord progression (4 bars) and a seed, so it
 | field3 | Field 03 | 72 | icy, sparkling (whole tone), no drums |
 | geo | Path to the Geosyncline | 76 | ancient, heavy (harmonic minor), soft drums, long bass |
 | ruins | Road to the Ruins | 104 | scorched, driving (double harmonic), driving drums, pulsing bass |
-| boss | Field 03 while Gadolith is fighting | 152 | tense (harmonic minor), driving drums, pulsing bass |
+| ashfall | Ashfall Ruins | 118 | ashen, ominous (Phrygian dominant), driving drums, pulsing bass |
+| boss | any map while its boss is fighting (Gadolith, Magma Gatekeeper) | 152 | tense (harmonic minor), driving drums, pulsing bass |
 Changing map fades the new track in. The boss track plays while the boss is aggressive and the normal track returns when the fight ends.
 
 ## 3. Sound effects (27)

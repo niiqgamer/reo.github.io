@@ -2010,7 +2010,12 @@ const MONC={
  cinderling:{lv:32,hp:3000,atk:104,hardDef:.10,softDef:24,mdef:.22,softMdef:18,hit:112,flee:54,luk:11,elem:"fire",aspd:1.4,speed:1.9},
  magmaback:{lv:35,hp:4000,atk:122,hardDef:.26,softDef:34,mdef:.12,softMdef:16,hit:120,flee:40,luk:12,elem:"fire",aspd:1.6,speed:1.6},
  ashsentinel:{lv:38,hp:5200,atk:140,hardDef:.24,softDef:38,mdef:.26,softMdef:22,hit:128,flee:30,luk:13,elem:"fire",aspd:1.9,speed:1.1},
- gadolith:{lv:20,hp:8000,atk:58,hardDef:.25,softDef:12,mdef:.20,softMdef:8,hit:80,flee:20,luk:8,elem:"earth",aspd:2.6,speed:1.0,boss:true}
+ gadolith:{lv:20,hp:8000,atk:58,hardDef:.25,softDef:12,mdef:.20,softMdef:8,hit:80,flee:20,luk:8,elem:"earth",aspd:2.6,speed:1.0,boss:true},
+ /* v22: Ashfall Ruins (3x Road to the Ruins) */
+ scoriahound:{lv:42,hp:9000,atk:312,hardDef:.14,softDef:60,mdef:.14,softMdef:30,hit:150,flee:72,luk:14,elem:"fire",aspd:1.2,speed:2.6},
+ cinderbow:{lv:45,hp:12000,atk:366,hardDef:.18,softDef:70,mdef:.20,softMdef:36,hit:168,flee:60,luk:16,elem:"fire",aspd:1.5,speed:2.3},
+ pyromagus:{lv:48,hp:15600,atk:420,hardDef:.20,softDef:76,mdef:.36,softMdef:50,hit:176,flee:46,luk:18,elem:"fire",aspd:2.0,speed:2.0},
+ magmagk:{lv:55,hp:120000,atk:560,hardDef:.32,softDef:90,mdef:.30,softMdef:60,hit:195,flee:40,luk:20,elem:"fire",aspd:2.4,speed:1.4,boss:true}
 };
 function eliteOf(m){return Object.assign({},m,{lv:m.lv+2,hp:m.hp*5,atk:m.atk*1.6,softDef:m.softDef+3,elite:true})}
 
@@ -2660,6 +2665,36 @@ D2.en.gate_short="Needs Lv {l}+ and CP {c}+";D2.th.gate_short="ต้องม�
 D2.en.sign_warn="WARNING";D2.th.sign_warn="คำเตือน";
 D2.en.mi_req="Entry needs";D2.th.mi_req="เงื่อนไขเข้าแมพ";
 D2.en.mi_aggr="Aggressive";D2.th.mi_aggr="โจมตีก่อน";
+/* ---- v22: Ashfall Ruins (south of Road to the Ruins) + boss Magma Gatekeeper ---- */
+D2.en.ashfall_name="Ashfall Ruins";D2.th.ashfall_name="Ashfall Ruins";
+D2.en.ashfall_sub="Remnants of Promethea";D2.th.ashfall_sub="ซากอารยธรรมพรอมีเธีย";
+D2.en.mapd_ashfall="The remains of Promethea, a civilization buried in a single night when the great volcano tore itself open. Ash still falls like snow on the broken streets, and rivers of lava run where the avenues once stood. Yet the same eruption spewed veins of rare earth up from the deep. They glow through the rubble and lure hunters in, while everything that survived the fire guards them without mercy.";
+D2.th.mapd_ashfall="ซากของพรอมีเธีย อารยธรรมที่ถูกฝังกลบในชั่วข้ามคืนเมื่อภูเขาไฟยักษ์ปะทุอย่างรุนแรง เถ้าถ่านยังโปรยปรายลงบนถนนที่แตกพังราวหิมะ และธารลาวาไหลผ่านที่ซึ่งเคยเป็นถนนสายใหญ่ ทว่าการระเบิดครั้งนั้นก็พ่นสายแร่หายากขึ้นมาจากใต้พิภพ แสงของมันเรืองรองผ่านกองซากปรักหักพังและล่อนักล่าเข้ามา ขณะที่ทุกสิ่งที่รอดจากเปลวเพลิงเฝ้าปกป้องมันอย่างไร้ความปรานี";
+D2.en.mon_scoriahound="Scoria Hound";D2.th.mon_scoriahound="สกอเรียฮาวนด์";
+D2.en.mon_cinderbow="Cinderbow Revenant";D2.th.mon_cinderbow="ซินเดอร์โบว์ เรเวแนนต์";
+D2.en.mon_pyromagus="Pyroclast Magus";D2.th.mon_pyromagus="ไพโรคลาสต์ เมกัส";
+D2.en.mon_magmagk="Magma Gatekeeper";D2.th.mon_magmagk="แมกมา เกทคีปเปอร์";
+D2.en.bt_magmagk="Warden of the Sealed Caldera";D2.th.bt_magmagk="ผู้เฝ้าประตูปล่องภูเขาไฟ";
+D2.en.qn_scoriahound="Hunt: Scoria Hound";D2.th.qn_scoriahound="ล่า: สกอเรียฮาวนด์";
+D2.en.qn_cinderbow="Hunt: Cinderbow Revenant";D2.th.qn_cinderbow="ล่า: ซินเดอร์โบว์ เรเวแนนต์";
+D2.en.qn_pyromagus="Hunt: Pyroclast Magus";D2.th.qn_pyromagus="ล่า: ไพโรคลาสต์ เมกัส";
+D2.en.qe_ashfall="Elite Hunt: Ashfall";D2.th.qe_ashfall="ล่า Elite: Ashfall";
+D2.en.qb_magmagk="Boss Hunt: Magma Gatekeeper";D2.th.qb_magmagk="ล่าบอส: แมกมา เกทคีปเปอร์";
+D2.en.msk_moltenpounce="Molten Pounce";D2.th.msk_moltenpounce="กระโจนหินหลอม";
+D2.en.msk_cindervolley="Cinder Volley";D2.th.msk_cindervolley="ห่าธนูเถ้าถ่าน";
+D2.en.msk_meteor="Meteor Fall";D2.th.msk_meteor="อุกกาบาตเพลิง";
+D2.en.msk_eruption="Eruption Nova";D2.th.msk_eruption="ระเบิดปะทุ";
+D2.en.msk_magmagate="Magma Gate";D2.th.msk_magmagate="ประตูแมกมา";
+D2.en.msk_caldera="Caldera Slam";D2.th.msk_caldera="ทุบปล่องภูเขาไฟ";
+D2.en.caldera_warn="⚠ Caldera Slam! Step out of the red circle";D2.th.caldera_warn="⚠ ทุบปล่องภูเขาไฟ! ก้าวออกจากวงสีแดง";
+D2.en.boss_rage="{n} is enraged!";D2.th.boss_rage="{n} คลั่งแล้ว!";
+D2.en.bd_magmagk="Magma Gatekeeper, Warden of the Sealed Caldera, has fallen!";D2.th.bd_magmagk="แมกมา เกทคีปเปอร์ ผู้เฝ้าประตูปล่องภูเขาไฟ ถูกปราบแล้ว!";
+D2.en.sb_magmagk="Magma Gatekeeper was defeated in the Ashfall Ruins!";D2.th.sb_magmagk="แมกมา เกทคีปเปอร์ ถูกปราบแล้วที่ Ashfall Ruins!";
+D2.en.mi_mech_magmagk="Caldera Slam: every 9–12 s a red circle (4 tiles) around it, ATK ×2.0 + Burning. Magma Gate: every 7–10 s a circle (3.2 tiles) on you, magic ATK ×2.2 + Burning. Below 30% HP it is enraged: attacks 30% faster, slams and casts more often. Immune to stun and freeze.";
+D2.th.mi_mech_magmagk="ทุบปล่องภูเขาไฟ: ทุก 9–12 วิ มีวงแดงรอบตัว (4 ช่อง) ATK ×2.0 + ไฟลวก ประตูแมกมา: ทุก 7–10 วิ มีวงบนตัวเรา (3.2 ช่อง) เวท ATK ×2.2 + ไฟลวก เมื่อ HP ต่ำกว่า 30% จะคลั่ง: ตีเร็วขึ้น 30% ทุบและร่ายถี่ขึ้น ไม่ติดมึนและแช่แข็ง";
+D2.en.mi_rng="Ranged attack ({n} tiles)";D2.th.mi_rng="โจมตีระยะไกล ({n} ช่อง)";
+D2.en.mi_mag="Magic attack ({n} tiles, armor does not help, MDEF does)";D2.th.mi_mag="โจมตีด้วยเวท ({n} ช่อง เกราะกันไม่ได้ ใช้ MDEF)";
+D2.en.mi_fast="Fast";D2.th.mi_fast="เคลื่อนที่เร็ว";
 D2.en.o_eliteMap="Defeat Elite monsters in {p} ({c}/{n})";D2.th.o_eliteMap="ปราบมอนสเตอร์ Elite ที่ {p} ({c}/{n})";
 D2.en.q_general="General";D2.th.q_general="ทั่วไป";
 D2.en.w_char="Character Info";D2.th.w_char="ข้อมูลตัวละคร";
@@ -4255,6 +4290,23 @@ const JPX={
   "Guild war prep tonight at 8!":"今夜20時にギルド戦の準備をするよ！",
   "Meet at the east gate portal in 5":"5分後に東門のポータルで集合！"
 };
+/* v22: Ashfall Ruins (jp) */
+Object.assign(D.jp,{ashfall_name:"灰降りの遺跡",ashfall_sub:"プロメテアの残骸",
+ mapd_ashfall:"大火山が一夜にして裂け、埋もれた文明プロメテアの跡。灰は今も雪のように崩れた街路へ降り、かつて大通りだった場所を溶岩の川が流れています。だがその噴火は地の底から希土類の鉱脈も噴き上げました。瓦礫の間で輝く鉱脈は狩人を呼び寄せ、炎を生き延びたものたちが容赦なくそれを守っています。",
+ mon_scoriahound:"スコリアハウンド",mon_cinderbow:"シンダーボウ・レヴナント",mon_pyromagus:"パイロクラスト・メイガス",mon_magmagk:"マグマ・ゲートキーパー",bt_magmagk:"封じられた火口の番人",
+ qn_scoriahound:"討伐：スコリアハウンド",qn_cinderbow:"討伐：シンダーボウ・レヴナント",qn_pyromagus:"討伐：パイロクラスト・メイガス",qe_ashfall:"エリート討伐：灰降りの遺跡",qb_magmagk:"ボス討伐：マグマ・ゲートキーパー",
+ msk_moltenpounce:"溶岩の飛びかかり",msk_cindervolley:"燃え殻の斉射",msk_meteor:"流星落とし",msk_eruption:"噴火の衝撃波",msk_magmagate:"マグマゲート",msk_caldera:"カルデラスラム",
+ caldera_warn:"⚠ カルデラスラム！赤い円の外へ出てください",boss_rage:"{n}が激怒した！",
+ bd_magmagk:"封じられた火口の番人マグマ・ゲートキーパーが倒れました！",sb_magmagk:"灰降りの遺跡でマグマ・ゲートキーパーが倒されました！",
+ mi_mech_magmagk:"カルデラスラム：9–12秒ごとに自分の周り（4マス）に赤い円、ATK ×2.0＋炎上。マグマゲート：7–10秒ごとにあなたの足元（3.2マス）に円、魔法 ATK ×2.2＋炎上。HP 30%未満で激怒：攻撃速度30%アップ、スラムと詠唱が増えます。気絶と凍結は無効です。",
+ mi_rng:"遠距離攻撃（{n}マス）",mi_mag:"魔法攻撃（{n}マス、防具は効かずMDEFが効く）",mi_fast:"高速"});
+Object.assign(JPX,{"Scoria Fang":"スコリアの牙","A fang of porous volcanic stone, still warm.":"まだ温かい、多孔質の火山岩の牙。",
+ "Neodymium Ore":"ネオジム鉱石","A rare earth ore that pulls hard on iron.":"鉄を強く引き寄せる希土類の鉱石。",
+ "Revenant Ash":"亡者の灰","Ash that once was an archer of Promethea.":"かつてプロメテアの射手だった灰。",
+ "Samarium Ore":"サマリウム鉱石","A rare earth ore that never loses its pull, even in fire.":"炎の中でも磁力を失わない希土類の鉱石。",
+ "Pyroclast Glyph":"火砕の刻印","A burning glyph from a Promethean spellbook.":"プロメテアの魔導書から剥がれた燃える刻印。",
+ "Promethium Ore":"プロメチウム鉱石","The rarest earth of all. It glows on its own.":"もっとも希少な希土類。ひとりでに光を放つ。",
+ "Caldera Heart":"カルデラの心臓","Heart of the Magma Gatekeeper. Keep it for quests.":"マグマ・ゲートキーパーの心臓。クエストのために保管しておこう。"});
 const LOCALE={th:"th-TH",en:"en-US",jp:"ja-JP"};
 const htmlLang=l=>l==="jp"?"ja":l;
 const LP=p=>lang==="jp"?(JPX[p[0]]??p[0]):p[lang==="th"?1:0];                 // [en, th, ...] pair
@@ -4408,9 +4460,10 @@ const AUD=(()=>{
     field3:{bpm:72,root:64,scale:[0,2,4,6,8,10],prog:[0,2,1,3],lead:"triangle",arpOct:24,drums:"none",bass:"long",seed:41,dens:.5},   // icy, sparkling (whole tone)
     geo:{bpm:76,root:52,scale:[0,2,3,5,7,8,11],prog:[0,5,2,6],lead:"p125",arpOct:12,drums:"soft",bass:"long",seed:67,dens:.5},          // ancient, heavy (harmonic minor)
     ruins:{bpm:104,root:55,scale:[0,1,4,5,7,8,11],prog:[0,1,5,4],lead:"square",arpOct:12,drums:"drive",bass:"pulse",seed:79,dens:.8},     // scorched, driving (double harmonic)
+    ashfall:{bpm:118,root:50,scale:[0,1,4,5,7,8,10],prog:[0,6,5,1],lead:"square",arpOct:12,drums:"drive",bass:"pulse",seed:97,dens:.85},  // v22 ashen, ominous (phrygian dominant)
     boss:{bpm:152,root:54,scale:[0,2,3,5,7,8,11],prog:[0,5,6,4],lead:"square",arpOct:12,drums:"drive",bass:"pulse",seed:53,dens:.9}   // tense
   };
-  const MAPTRACK={town:"town",field1:"field1",field2:"field2",field3:"field3",geo:"geo",ruins:"ruins"};
+  const MAPTRACK={town:"town",field1:"field1",field2:"field2",field3:"field3",geo:"geo",ruins:"ruins",ashfall:"ashfall"};
   function deg(sp,d){const L=sp.scale.length;return sp.root+sp.scale[((d%L)+L)%L]+12*Math.floor(d/L)}
   function makeTrack(sp){
     const R=rng(sp.seed),steps=[];for(let i=0;i<64;i++)steps.push({});
@@ -4483,8 +4536,8 @@ const AUD=(()=>{
     trackName=name;track=makeTrack(TR[name]);step=0;stats.tracks++;
     if(ctx){const t0=ctx.currentTime;musG.gain.cancelScheduledValues(t0);musG.gain.setValueAtTime(.02,t0);musG.gain.linearRampToValueAtTime(.16,t0+.8);nextT=t0+.08}
   }
-  function setMap(id){pendingMap=id;if(!ctx)return;play(bossOn&&id==="field3"?"boss":(MAPTRACK[id]||"field1"))}
-  function setBoss(b){if(b===bossOn)return;bossOn=b;if(pendingMap==="field3"&&ctx)play(b?"boss":"field3")}
+  function setMap(id){if(id!==pendingMap)bossOn=false;pendingMap=id;if(!ctx)return;play(bossOn?"boss":(MAPTRACK[id]||"field1"))}
+  function setBoss(b){if(b===bossOn)return;bossOn=b;if(ctx)play(b?"boss":(MAPTRACK[pendingMap]||"field1"))}   // v22: any map with a boss (Field 03, Ashfall Ruins)
   /* ---- sound effects ---- */
   const SFX={
     click:t=>tone(t,1500,.035,"square",.12,sfxG),
@@ -4535,7 +4588,7 @@ const AUD=(()=>{
 const TW=64,TH=32,HW=32,HH=16,N0=49;
 /* v20: every map has its own grid size. Every map, Gadolinium included, is 2× the old 49×49 (98×98).
    N always holds the size of the CURRENT map; code that works on another map uses m.N. */
-const MAPK={town:2,field1:2,field2:2,field3:2,geo:2,ruins:2};
+const MAPK={town:2,field1:2,field2:2,field3:2,geo:2,ruins:2,ashfall:2};
 let N=N0*MAPK.town;
 /* Lite mode: phones and low-memory devices get a smaller ground texture and keep only one map in memory */
 const LITE=(()=>{try{const sm=Math.min(screen.width||9999,screen.height||9999)<=820;return matchMedia("(pointer:coarse)").matches||sm||(navigator.deviceMemory&&navigator.deviceMemory<=4)}catch(e){return true}})();
@@ -4635,7 +4688,10 @@ const FPAL={
  field2:{gH:266,gHr:30,gS:22,gSr:12,gL:27,gLr:10,tA:"rgba(240,190,255,.45)",tB:"rgba(30,10,40,.5)",fl:["#ffb86b","#ff7ad9","#ffe08a","#b9f2ff"],edge:"rgba(50,20,50,.45)",side:["#6a4a3a","#2a1a14","#4f3628","#1d120c"],rim:"#5a3a6e",pool:["#ffd18a","#a8406e"],shore:"#7a5a4a",pad:["#c86a3a","#fff0b0"],blob:["rgba(255,170,90,.08)","rgba(30,0,30,.12)"],glow:["rgba(255,170,90,.16)","rgba(255,110,220,.16)"],mote:"255,200,150",mini:["#4a2e5e","#5e3a70","#e09a6a"],dirt:18,drip:"rgba(255,190,120,.35)"},
  field3:{gH:200,gHr:25,gS:30,gSr:12,gL:46,gLr:12,tA:"rgba(220,245,255,.5)",tB:"rgba(10,30,60,.45)",fl:["#ffffff","#bfe8ff","#d8c8ff","#fff3c0"],edge:"rgba(30,60,90,.45)",side:["#4a5a78","#1a2236","#38465e","#121a2a"],rim:"#4a78a8",pool:["#bff4ff","#3a78c8"],shore:"#8a9ab8",pad:["#6ac0d8","#ffffff"],blob:["rgba(200,230,255,.1)","rgba(0,20,50,.12)"],glow:["rgba(160,220,255,.18)","rgba(200,170,255,.16)"],mote:"200,230,255",mini:["#3a7088","#5a98b0","#a8e8f8"],dirt:215,drip:"rgba(190,230,255,.35)"},
  geo:{gH:28,gHr:18,gS:14,gSr:8,gL:25,gLr:9,tA:"rgba(200,170,130,.4)",tB:"rgba(20,14,10,.45)",fl:["#7ff0ff","#c8b88a","#a0e0ff","#ffe0a0"],edge:"rgba(30,20,14,.5)",side:["#4a3a30","#1c1410","#3a2c24","#120c08"],rim:"#6a4a30",pool:["#8ff8ff","#1c6fa8"],shore:"#7a6a58",pad:["#4a8a78","#cfeeff"],blob:["rgba(120,200,230,.08)","rgba(30,10,0,.14)"],glow:["rgba(120,220,255,.16)","rgba(255,170,90,.12)"],mote:"170,225,255",mini:["#4a3c30","#5e4c3c","#3aa8d0"],dirt:34,drip:"rgba(160,220,255,.3)"},
- ruins:{gH:8,gHr:14,gS:16,gSr:8,gL:17,gLr:7,tA:"rgba(255,140,60,.4)",tB:"rgba(10,4,4,.5)",fl:["#ff9a3c","#ffd27a","#ff5a2a","#ffe9b0"],edge:"rgba(20,6,4,.55)",side:["#3a2220","#150a0a","#2c1814","#0e0606"],rim:"#a8401a",pool:["#ffd36a","#d8340a"],shore:"#5a3a30",pad:["#7a3a1a","#ffcf7a"],blob:["rgba(255,100,40,.09)","rgba(0,0,0,.16)"],glow:["rgba(255,120,40,.2)","rgba(255,200,90,.12)"],mote:"255,150,70",mini:["#3a2220","#4e2c24","#ff7a2a"],dirt:12,drip:"rgba(255,140,60,.3)"}
+ ruins:{gH:8,gHr:14,gS:16,gSr:8,gL:17,gLr:7,tA:"rgba(255,140,60,.4)",tB:"rgba(10,4,4,.5)",fl:["#ff9a3c","#ffd27a","#ff5a2a","#ffe9b0"],edge:"rgba(20,6,4,.55)",side:["#3a2220","#150a0a","#2c1814","#0e0606"],rim:"#a8401a",pool:["#ffd36a","#d8340a"],shore:"#5a3a30",pad:["#7a3a1a","#ffcf7a"],blob:["rgba(255,100,40,.09)","rgba(0,0,0,.16)"],glow:["rgba(255,120,40,.2)","rgba(255,200,90,.12)"],mote:"255,150,70",mini:["#3a2220","#4e2c24","#ff7a2a"],dirt:12,drip:"rgba(255,140,60,.3)"},
+ /* v22 Ashfall Ruins: grey ash over black rock, lava fissures (chasm), lava pools, ember arena */
+ ashfall:{gH:18,gHr:16,gS:9,gSr:8,gL:21,gLr:9,tA:"rgba(255,170,110,.4)",tB:"rgba(14,8,8,.5)",fl:["#c8bcb4","#ff9a3c","#d8a8ff","#7ff0d8"],edge:"rgba(24,12,10,.55)",side:["#3c3432","#141010","#2e2826","#0c0808"],rim:"#b8501a",pool:["#ffe08a","#e8400a"],shore:"#3a2e2c",pad:["#5a3a2a","#ffcf7a"],blob:["rgba(220,210,200,.07)","rgba(0,0,0,.18)"],glow:["rgba(255,110,40,.2)","rgba(190,140,255,.12)"],mote:"220,210,200",mini:["#3c3432","#4e4440","#ff6a2a"],dirt:20,drip:"rgba(255,150,80,.3)",
+   chasm:["255,120,40","170,50,10","255,210,120","255,90,30"],arenaC:["255,140,60","200,60,20","255,190,120","255,120,60","255,220,150","255,160,90"]}
 };
 const fPathY=x=>24+Math.round(Math.sin((x-2)*.21)*3);
 const fPathX=y=>27+Math.round(Math.sin(y*.19+1)*3);
@@ -4648,6 +4704,12 @@ const geoPathY=x=>24+Math.round(Math.sin(x*.2+1)*3);
 const geoPathX=y=>22+Math.round(Math.sin(y*.17)*3);
 const ruinPathX=y=>24+Math.round(Math.sin(y*.16+.8)*4);
 const ruinPathY=x=>26+Math.round(Math.sin(x*.19)*3);
+/* v22 Ashfall Ruins: the old avenue runs north to south into the Gatekeeper's arena; lava fissures cut the city */
+const ashPathX=y=>24+Math.round(Math.sin(y*.15+.3)*4);
+const ashPathY=x=>18+Math.round(Math.sin(x*.21+.5)*3);
+const ASH_ARENA=[24.5,40,5.6];
+const ASH_RIFTS=[[[4,8],[10,12],[15,9]],[[33,6],[38,11],[45,9]],[[3,27],[9,31],[15,29]],[[34,25],[40,30],[45,27]],[[6,40],[12,44]],[[37,38],[43,44]]];
+const ashChasm=(x,y)=>{const px=x+.5,py=y+.5;for(const f of ASH_RIFTS)for(let i=0;i<f.length-1;i++)if(segD(px,py,f[i],f[i+1])<.6+hash(x+3,y)*.3)return true;return false};
 const FAULTS=[[[5,6],[12,11],[19,10],[27,16],[33,15]],[[8,40],[15,35],[22,38],[30,33],[38,36]],[[36,4],[40,10],[37,16]],[[4,17],[9,24],[6,31]]];
 const segD=(px,py,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],l=dx*dx+dy*dy,u=l?Math.max(0,Math.min(1,((px-a[0])*dx+(py-a[1])*dy)/l)):0;return Math.hypot(px-a[0]-u*dx,py-a[1]-u*dy)};
 const geoChasm=(x,y)=>{const px=x+.5,py=y+.5;for(const f of FAULTS)for(let i=0;i<f.length-1;i++)if(segD(px,py,f[i],f[i+1])<.62+hash(x,y)*.25)return true;return false};
@@ -4669,9 +4731,21 @@ const FCFG={
     after:(m,S)=>{const py=geoPathY(46),I=(x,y)=>y*m.N+x;for(const [x,y] of [[S(44),S(py-2)],[S(44),S(py+3)],[S(42),S(py-2)],[S(42),S(py+3)]])if(!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:"stele",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:.5})}}},
   ruins:{nameK:"ruins_name",subK:"ruins_sub",bg:["#2a0e0a","#0c0404"],rec:3000,pools:[[9,13,3,2.2],[39,15,3.4,2.4],[11,38,3.4,2.2],[39,39,3,2],[35,30,2.4,1.6]],
     paths:(x,y)=>{if(y>=2){const px=ruinPathX(y);if(x===px||x===px+1)return true}if(x>=3&&x<=45){const py=ruinPathY(x);if(y===py||y===py+1)return true}return false},
-    portals:[{x:ruinPathX(2),y:2,to:"town",labelK:"mapName"}],trees:[10,10],alt:4,
+    portals:[{x:ruinPathX(2),y:2,to:"town",labelK:"mapName"},{x:ruinPathX(46),y:46,to:"ashfall",labelK:"ashfall_name"}],trees:[10,10],alt:4,
     pick:(x,y,border,r)=>{if(border)return r<.35?{kind:"tree",v:10}:null;if(r<.012)return {kind:"pillar",v:hash(x*5,y*3)};if(r<.02)return {kind:"brazier",v:hash(x,y*9)};if(r<.04)return {kind:"crys",v:hash(x,y*7),alt:4};if(r<.056)return {kind:"rock",v:hash(x*3,y*3)};if(r<.066)return {kind:"tree",v:10};return null},
-    after:(m,S)=>{const K=m.K,I=(x,y)=>y*m.N+x;let i=0;for(let y=7*K;y<=44*K;y+=5,i++)for(const sx of [-3,2*K+2]){const x=ruinPathX(Math.floor(y/K))*K+sx;if(x>0&&x<m.N-1&&!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:(i+(sx>0?1:0))%2?"brazier":"pillar",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x*5,y*3)})}}}}
+    after:(m,S)=>{const K=m.K,I=(x,y)=>y*m.N+x;let i=0;for(let y=7*K;y<=44*K;y+=5,i++)for(const sx of [-3,2*K+2]){const x=ruinPathX(Math.floor(y/K))*K+sx;if(x>0&&x<m.N-1&&!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:(i+(sx>0?1:0))%2?"brazier":"pillar",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x*5,y*3)})}}
+      const py=m.N-3,px=ruinPathX(46)*K;for(const [x,y] of [[px-3,py-1],[px+4,py-1]])if(!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:"warnsign",x,y,cx:x+.5,cy:y+.5,k:x+y+1,lv:40})}}},
+  ashfall:{nameK:"ashfall_name",subK:"ashfall_sub",bg:["#1e1412","#080505"],rec:9000,pools:[[8,12,3,2.2],[41,15,3.2,2.2],[10,33,3.4,2.2],[40,34,3,2],[16,21,2.2,1.5],[33,22,2.4,1.6]],arena:ASH_ARENA,
+    paths:(x,y)=>{if(Math.hypot(x+.5-ASH_ARENA[0],y+.5-ASH_ARENA[1])<=ASH_ARENA[2])return true;if(y>=2&&y<=36){const px=ashPathX(y);if(x===px||x===px+1)return true}if(x>=3&&x<=45){const py=ashPathY(x);if(y===py||y===py+1)return true}return false},
+    chasm:ashChasm,
+    portals:[{x:ashPathX(2),y:2,to:"ruins",labelK:"ruins_name"}],trees:[10,10],alt:4,
+    pick:(x,y,border,r)=>{if(border)return r<.3?{kind:"tree",v:10}:r<.42?{kind:"rock",v:hash(x*3,y*3)}:null;if(r<.012)return {kind:"pillar",v:hash(x*5,y*3)};if(r<.022)return {kind:"vein",v:hash(x*7,y*3)};if(r<.036)return {kind:"crys",v:hash(x,y*7),alt:4};if(r<.056)return {kind:"rock",v:hash(x*3,y*3)};if(r<.064)return {kind:"tree",v:10};return null},
+    after:(m,S)=>{const K=m.K,I=(x,y)=>y*m.N+x,[ax,ay,ar]=m.arena;
+      /* the sealed caldera gate stands behind the arena; braziers ring it; broken columns line the old avenue */
+      const gx=Math.floor(ax),gy=Math.floor(ay+ar+1.5);for(let j=-1;j<=1;j++)for(let i=-3;i<=3;i++)m.blk[I(gx+i,gy+j)]=1;
+      addS(m,{kind:"bgate",x:gx,y:gy,cx:gx+.5,cy:gy+.5,k:gx+gy+1,v:.5});
+      for(let i=0;i<8;i++){const a=(i+.5)*Math.PI/4,x=Math.floor(ax+Math.cos(a)*(ar+1)),y=Math.floor(ay+Math.sin(a)*(ar+1));if(Math.sin(a)>.75)continue;if(!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:"brazier",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x,y)})}}
+      let n=0;for(let y=6*K;y<=34*K;y+=6,n++)for(const sx of [-3,2*K+2]){const x=ashPathX(Math.floor(y/K))*K+sx;if(x>0&&x<m.N-1&&!m.blk[I(x,y)]){m.blk[I(x,y)]=1;addS(m,{kind:(n+(sx>0?1:0))%3?"pillar":"vein",x,y,cx:x+.5,cy:y+.5,k:x+y+1,v:hash(x*5,y*3)})}}}}
 };
 /* v20: a field is laid out on the old 49×49 design grid and scaled up by K (2): paths, pools, cracks, the arena,
    portals and monster zones all grow, while trees, rocks and props keep their size (so there are K² times as many) */
@@ -4708,9 +4782,9 @@ function buildField(id){
   if(c.after)c.after(m,S);
   return m;
 }
-const town=buildTown(),field1=buildField("field1"),field2=buildField("field2"),field3=buildField("field3"),geo=buildField("geo"),ruins=buildField("ruins");
-const MAPS={town,field1,field2,field3,geo,ruins};
-const FIELDS=[field1,field2,field3,geo,ruins];
+const town=buildTown(),field1=buildField("field1"),field2=buildField("field2"),field3=buildField("field3"),geo=buildField("geo"),ruins=buildField("ruins"),ashfall=buildField("ashfall");
+const MAPS={town,field1,field2,field3,geo,ruins,ashfall};
+const FIELDS=[field1,field2,field3,geo,ruins,ashfall];
 let cur=town;
 function setCur(m){cur=m;N=m.N}
 const walkM=(m,x,y)=>x>=0&&y>=0&&x<m.N&&y<m.N&&!m.blk[y*m.N+x];
@@ -4842,7 +4916,7 @@ function staticBox(o){
   const [sx,sy]=P(o.cx,o.cy),s=o.s||1;
   switch(o.kind){case "tree":return [sx-30*s,sy-92*s,sx+30*s,sy+4];case "lamp":return [sx-9,sy-70,sx+9,sy+2];case "stall":return [sx-38,sy-52,sx+38,sy+14];
     case "barrel":case "crate":return [sx-17,sy-32,sx+17,sy+6];case "crystal":return [sx-200,sy-340,sx+200,sy+100];case "eye":return [sx-20,sy-74,sx+20,sy+4];
-    case "pod":return [sx-16,sy-56,sx+16,sy+4];case "tent":return [sx-26,sy-62,sx+26,sy+4];case "mono":return [sx-24,sy-84,sx+24,sy+8];case "float":return [sx-34,sy-96,sx+34,sy+8];case "shroom":return [sx-30,sy-70,sx+30,sy+6]}
+    case "pod":return [sx-16,sy-56,sx+16,sy+4];case "tent":return [sx-26,sy-62,sx+26,sy+4];case "mono":return [sx-24,sy-84,sx+24,sy+8];case "float":return [sx-34,sy-96,sx+34,sy+8];case "shroom":return [sx-30,sy-70,sx+30,sy+6];case "bgate":return [sx-130,sy-200,sx+130,sy+30]}
   return null;
 }
 function npcBlocked(x,y){
@@ -4902,7 +4976,11 @@ const MPAL={
  stratagolem:{s:["#6a5a4a","#8c7a64","#74634f","#9a8870"],l1:"#54463a",l2:"#3c3228",a1:"#7a6a56",a2:"#4a3e32",fist:"#8a7860",eye:"#9ff4ff",rock:"#8a7a66"},
  cinderling:{aura:"rgba(255,120,40,.4)",f0:"#d8340a",f1:"#ff7a2a",f2:"#ffd27a",horn:"#2a1410",eye:"#fff6d0"},
  magmaback:{b1:"#3a2a28",b2:"#1a0f0e",head:"#4a3430",l1:"#2c1c1a",l2:"#1a0e0c",spine:"#5a3a30",eye:"#ffd060"},
- ashsentinel:{a1:"#4a4240",a2:"#2e2826",a3:"#5e5450",helm:"#3a3230",spike:"#6a5e58",blade:"#2a2220"}
+ ashsentinel:{a1:"#4a4240",a2:"#2e2826",a3:"#5e5450",helm:"#3a3230",spike:"#6a5e58",blade:"#2a2220"},
+ scoriahound:{b1:"#4a4240",b2:"#1c1614",head:"#3e3634",l1:"#2c2422",l2:"#181210",mane:"#ff7a2a",eye:"#ffe27a",seam:"255,130,40"},
+ cinderbow:{bone:"#d8ccbc",bone2:"#9a8c7c",cloak:"#3a2a2e",cloak2:"#1e1416",bow:"#4a3426",fire:"255,140,50",eye:"#ff9a3a"},
+ pyromagus:{robe:"#5a1e1a",robe2:"#2a0c0c",trim:"#e8a040",hood:"#1a0a0a",skin:"#2a1a18",eye:"#ffd27a",orb:"255,120,40",rune:"255,200,110"},
+ magmagk:{r1:"#3a3030",r2:"#1c1616",r3:"#4e4240",lava:"255,120,30",core:"#fff0b0",horn:"#2a2220",gate:"#5a4a44",rune:"255,180,90"}
 };
 const MON={
  lumite:{sprite:"lumite",map:"field1",nameK:"mon_lumite",lv:1,hp:60,atk:10,def:1,aspd:1.6,speed:1.3,exp:[20,14],sc:[3,7],drop:["mat_gel",.45],h:50,size:1.05,zone:[5,24,3,45],count:9},
@@ -4920,7 +4998,13 @@ const MON={
   cinderling:{sprite:"cinderling",map:"ruins",nameK:"mon_cinderling",lv:32,hp:3000,atk:104,def:24,aspd:1.4,speed:1.9,exp:[1250,800],sc:[190,290],drop:["mat_cinder",.4],h:56,size:1.1,zone:[3,45,5,24],count:8,aggr:6.5,skills:["emberburst"]},
   magmaback:{sprite:"magmaback",map:"ruins",nameK:"mon_magmaback",lv:35,hp:4000,atk:122,def:34,aspd:1.6,speed:1.6,exp:[1480,940],sc:[230,350],drop:["mat_magma",.36],h:38,size:1.3,zone:[3,45,16,38],count:7,aggr:5.5,skills:["lavaspit"]},
   ashsentinel:{sprite:"ashsentinel",map:"ruins",nameK:"mon_ashsentinel",lv:38,hp:5200,atk:140,def:38,aspd:1.9,speed:1.1,exp:[1750,1110],sc:[275,415],drop:["mat_relic",.32],h:84,size:1.3,zone:[3,45,28,45],count:5,aggr:5,skills:["inferno","ashwave"]},
-  gadolith:{sprite:"gadolith",map:"field3",nameK:"mon_gadolith",boss:true,lv:20,hp:8000,atk:58,def:12,aspd:2.6,speed:1.0,exp:[2600,1700],sc:[1000,1600],drop:["mat_gheart",1],h:100,size:2.2,zone:[22,27,12,17],count:0}
+  gadolith:{sprite:"gadolith",map:"field3",nameK:"mon_gadolith",boss:true,lv:20,hp:8000,atk:58,def:12,aspd:2.6,speed:1.0,exp:[2600,1700],sc:[1000,1600],drop:["mat_gheart",1],h:100,size:2.2,zone:[22,27,12,17],count:0},
+  /* v22 Ashfall Ruins: 3x Road to the Ruins, fast, see far (aggr 6.5-8, Elites +1), ranged (rng) and magic (mag) attackers, many of them */
+  scoriahound:{sprite:"scoriahound",map:"ashfall",nameK:"mon_scoriahound",lv:42,hp:9000,atk:312,def:60,aspd:1.2,speed:2.6,exp:[3750,2400],sc:[570,870],drop:["mat_scoria",.4],h:44,size:1.25,zone:[3,45,4,30],count:10,aggr:7,skills:["moltenpounce"]},
+  cinderbow:{sprite:"cinderbow",map:"ashfall",nameK:"mon_cinderbow",lv:45,hp:12000,atk:366,def:70,aspd:1.5,speed:2.3,exp:[4440,2820],sc:[690,1050],drop:["mat_revash",.38],h:72,size:1.2,zone:[3,45,8,36],count:8,aggr:8,rng:7,skills:["cindervolley"]},
+  pyromagus:{sprite:"pyromagus",map:"ashfall",nameK:"mon_pyromagus",lv:48,hp:15600,atk:420,def:76,aspd:2.0,speed:2.0,exp:[5250,3330],sc:[825,1245],drop:["mat_pyroglyph",.34],h:80,size:1.25,zone:[3,45,16,44],count:6,aggr:6.5,rng:6,mag:true,skills:["meteor","eruption"]},
+  magmagk:{sprite:"magmagk",map:"ashfall",nameK:"mon_magmagk",boss:true,lv:55,hp:120000,atk:560,def:90,aspd:2.4,speed:1.4,exp:[31500,20000],sc:[10000,16000],drop:["mat_calheart",1],h:130,size:2.3,zone:[22,27,38,42],count:0,skills:["magmagate"],
+    slam:{r:4,wind:1.4,mult:2.0,cd:[9,12],deb:{burn:6},nameK:"msk_caldera"},warnK:"caldera_warn",enrage:.3,heart:"mat_calheart",downK:"bd_magmagk",sysK:"sb_magmagk",col:"#ff8a3a"}
 };
 const ELITE={hp:5,atk:1.6,def:3,exp:5,sc:4,size:1.3};
 function spawnPos(m,type){const K=m.K||1,z=MON[type].zone.map(v=>v*K);for(let k=0;k<400;k++){const x=z[0]+Math.floor(Math.random()*(z[1]-z[0])),y=z[2]+Math.floor(Math.random()*(z[3]-z[2]));
@@ -4935,7 +5019,7 @@ const packSize=d=>d.count>=8?6:d.count>=6?5:4;   // the weakest kind runs in the
 function packSpot(m,pk){for(let k=0;k<60;k++){const a=Math.random()*Math.PI*2,r=Math.random()*PACK_R,x=Math.floor(pk.x+Math.cos(a)*r),y=Math.floor(pk.y+Math.sin(a)*r);
   if(walkM(m,x,y)&&(!m.arena||Math.hypot(x+.5-m.arena[0],y+.5-m.arena[1])>m.arena[2]+1))return [x+.5,y+.5]}return [pk.x,pk.y]}
 function newMon(type,elite,pack){const d=MON[type],m=MAPS[d.map],[x,y]=pack?packSpot(m,pack):spawnPos(m,type),hp=d.hp*(elite?ELITE.hp:1);
-  return mk({mon:true,type,boss:!!d.boss,slamT:6+Math.random()*3,tele:null,skCd:null,elite:!!elite,pack:pack||null,x,y,home:[x,y],hp,maxHp:hp,speed:d.speed,wait:Math.random()*3,aggro:false,atkCd:0,hitT:0,dieT:0,dead:false,respawn:0,repath:0,phase:Math.random()*9})}
+  return mk({mon:true,type,boss:!!d.boss,rage:false,slamT:6+Math.random()*3,tele:null,skCd:null,elite:!!elite,pack:pack||null,x,y,home:[x,y],hp,maxHp:hp,speed:d.speed,wait:Math.random()*3,aggro:false,atkCd:0,hitT:0,dieT:0,dead:false,respawn:0,repath:0,phase:Math.random()*9})}
 for(const k in MON){const m=MAPS[MON[k].map];if(MON[k].boss){m.monsters.push(newMon(k,false));continue}
   for(let i=0;i<MON[k].count*MON_MULT;i++)m.monsters.push(newMon(k,false));for(let i=0;i<ELITE_PER;i++)m.monsters.push(newMon(k,true));
   m.packs=m.packs||[];let c=spawnPos(m,k);for(let t=0;t<40&&m.packs.some(p=>Math.hypot(p.x-c[0],p.y-c[1])<PACK_GAP);t++)c=spawnPos(m,k);
@@ -4978,9 +5062,10 @@ for(const k in MON){const d=MON[k];if(d.boss)continue;const id=k==="shardback"?"
   if(QD[id]){QD[id].r=huntReward(d,QD[id].stages[0].n);continue}   // older hand-written hunts use the same formula
   QD[id]={type:"normal",rep:true,qmap:d.map,titleK:"qn_"+k,stages:[{t:"kill",mon:k,map:d.map,n:15}],r:huntReward(d,15)}}
 /* Elite hunt per map + boss hunt */
-const ELQ={field1:{n:3},field2:{n:3},field3:{n:3},geo:{n:3},ruins:{n:3}};   // every Elite hunt pays 1 Yttrium only
+const ELQ={field1:{n:3},field2:{n:3},field3:{n:3},geo:{n:3},ruins:{n:3},ashfall:{n:3}};   // every Elite hunt pays 1 Yttrium only
 for(const m in ELQ){const e=ELQ[m];QD["qe_"+m]={type:"normal",rep:true,qmap:m,titleK:"qe_"+m,stages:[{t:"kill",elite:true,map:m,n:e.n}],r:{y:1}}}
 QD.qb_gadolith={type:"normal",rep:true,qmap:"field3",titleK:"qb_gadolith",stages:[{t:"kill",mon:"gadolith",map:"field3",n:1}],r:{b:2500,j:1500,sc:2500,y:20}};
+QD.qb_magmagk={type:"normal",rep:true,qmap:"ashfall",titleK:"qb_magmagk",stages:[{t:"kill",mon:"magmagk",map:"ashfall",n:1}],r:{b:30000,j:19000,sc:25000,y:40}};
 
 /* ===== Item artwork (48x48 SVG). Every stackable item has its own drawing.
    Gear: 6 slot designs per class (30 total). Rarity frames, stars and level are drawn by the UI on top. ===== */
@@ -5081,6 +5166,14 @@ const ART={
  mat_lavaglass:artWrap(`<path d="M14 8l16 4 8 16-10 14-16-6-4-16z" fill="#ffb040" ${ART_OUT}/><path d="M14 8l10 12 14 8M24 20l-6 16" stroke="#fff0c0" stroke-width="1.4" fill="none" opacity=".8"/><path d="M18 14l6 2" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`),
  mat_relic:artWrap(`<path d="M8 38c0-14 7-24 16-24s16 10 16 24z" fill="#6e5e54" ${ART_OUT}/><path d="M14 38v-8h20v8" fill="#4a3c34"/><rect x="21" y="23" width="6" height="2.6" fill="#ff7a2a"/><path d="M16 20l4 4M32 18l-3 5" stroke="#2a201c" stroke-width="1.6" stroke-linecap="round"/>`),
  mat_infernoshard:artWrap(`<path d="M24 3l9 13-3 12 6 8-12 8-12-8 6-8-3-12z" fill="#ff5a1a" ${ART_OUT}/><path d="M24 3l-3 13 3 24 3-24z" fill="#ffb060"/><path d="M18 22h12" stroke="#fff0c0" stroke-width="1.4"/>`),
+ /* v22 Ashfall Ruins */
+ mat_scoria:artWrap(`<path d="M14 6c6 2 18 12 22 30l-6 6c-4-14-10-22-18-28z" fill="#8a7a72" ${ART_OUT}/><path d="M16 9c6 4 12 12 16 24" stroke="#c8b8ae" stroke-width="1.6" fill="none"/><circle cx="20" cy="16" r="1.6" fill="#3a2e2a"/><circle cx="26" cy="24" r="1.4" fill="#3a2e2a"/><circle cx="29" cy="32" r="1.2" fill="#3a2e2a"/><path d="M30 40l6-4" stroke="#ff7a2a" stroke-width="2.2" stroke-linecap="round"/>`),
+ mat_neodym:artWrap(`<circle cx="24" cy="26" r="19" fill="#9a88ff" opacity=".28"/><path d="M6 40l5-18 11-9 13 4 8 12-3 11z" fill="#3e3634" ${ART_OUT}/><path d="M12 24l9 6-2 9M22 30l12-3" stroke="#201a18" stroke-width="1.4" fill="none"/><path d="M19 15l6 3-1 8-6 2-3-6z" fill="#b8a8ff" ${ART_OUT}/><path d="M29 22l6 2 1 7-5 3-4-5z" fill="#8a78f0" ${ART_OUT}/><path d="M14 31l5 1 1 5-5 1-2-4z" fill="#dcd2ff" ${ART_OUT}/><path d="M20 17l3 2-1 4" stroke="#fff" stroke-width="1.2" fill="none" opacity=".7"/>`),
+ mat_revash:artWrap(`<path d="M8 40c3-10 9-15 16-15s13 5 16 15z" fill="#8a7e74" ${ART_OUT}/><path d="M24 25c-5-6-2-12 3-17-1 6 5 8 3 14" fill="#c8bcb0" ${ART_OUT}/><circle cx="18" cy="34" r="2" fill="#ff9a3a"/><circle cx="29" cy="33" r="1.6" fill="#ffc070"/><path d="M14 39h20" stroke="#5a4e46" stroke-width="1.4"/>`),
+ mat_samar:artWrap(`<circle cx="24" cy="26" r="19" fill="#ffb84a" opacity=".28"/><path d="M6 40l5-18 11-9 13 4 8 12-3 11z" fill="#3e3634" ${ART_OUT}/><path d="M12 24l9 6-2 9M22 30l12-3" stroke="#201a18" stroke-width="1.4" fill="none"/><path d="M19 15l6 3-1 8-6 2-3-6z" fill="#ffd08a" ${ART_OUT}/><path d="M29 22l6 2 1 7-5 3-4-5z" fill="#ffa83a" ${ART_OUT}/><path d="M14 31l5 1 1 5-5 1-2-4z" fill="#fff0c8" ${ART_OUT}/><path d="M20 17l3 2-1 4" stroke="#fff" stroke-width="1.2" fill="none" opacity=".7"/>`),
+ mat_pyroglyph:artWrap(`<path d="M10 8h28v32H10z" fill="#5a1e1a" ${ART_OUT}/><path d="M10 8h28v5H10z" fill="#e8a040"/><circle cx="24" cy="26" r="9" fill="none" stroke="#ffb060" stroke-width="1.8"/><path d="M24 17v18M16 26h16M19 20l10 12M29 20L19 32" stroke="#ffd27a" stroke-width="1.3"/><circle cx="24" cy="26" r="2.6" fill="#fff0b0"/>`),
+ mat_prometh:artWrap(`<circle cx="24" cy="26" r="19" fill="#5affc8" opacity=".28"/><path d="M6 40l5-18 11-9 13 4 8 12-3 11z" fill="#3e3634" ${ART_OUT}/><path d="M12 24l9 6-2 9M22 30l12-3" stroke="#201a18" stroke-width="1.4" fill="none"/><path d="M19 15l6 3-1 8-6 2-3-6z" fill="#7ff0c8" ${ART_OUT}/><path d="M29 22l6 2 1 7-5 3-4-5z" fill="#4ad0a8" ${ART_OUT}/><path d="M14 31l5 1 1 5-5 1-2-4z" fill="#d8fff0" ${ART_OUT}/><path d="M20 17l3 2-1 4" stroke="#fff" stroke-width="1.2" fill="none" opacity=".7"/><circle cx="22" cy="20" r="1.4" fill="#fff"/>`),
+ mat_calheart:artWrap(`<circle cx="24" cy="25" r="20" fill="#ff7a2a" opacity=".25"/><path d="M24 42C10 32 6 24 8 16c2-6 10-8 16-2 6-6 14-4 16 2 2 8-2 16-16 26z" fill="#3a2a28" ${ART_OUT}/><path d="M24 36c-8-6-11-11-10-16 1-3 6-4 10 1 4-5 9-4 10-1 1 5-2 10-10 16z" fill="#ff7a2a"/><path d="M24 30c-3-3-4-5-3-7 1-1 2-1 3 1 1-2 2-2 3-1 1 2 0 4-3 7z" fill="#fff0b0"/><path d="M12 16l6 4M36 16l-6 4M24 14v-4" stroke="#ffb060" stroke-width="1.6" stroke-linecap="round"/>`),
  mat_ore:artWrap(`<path d="M6 40l6-22 10-8 12 4 8 12-2 14z" fill="#8a8aa8" ${ART_OUT}/>
   <path d="M16 18l6 8-2 12M22 26l10-2" stroke="#5a5a78" stroke-width="1.4" fill="none"/>
   <path d="M24 16l4 6-4 6-4-6z" fill="#d8d2ff" ${ART_OUT}/>`),
@@ -5280,7 +5373,15 @@ const ITEMDB={
  mat_magma:{t:"mat",p:38,c:"#c8401a",ic:"shield",n:["Magma Plate","แผ่นหินหลอม"],d:["Black plate veined with lava.","แผ่นหินดำมีเส้นลาวาไหลผ่าน"]},
  mat_lavaglass:{t:"mat",p:125,c:"#ffb040",ic:"gem",n:["Lava Glass","แก้วลาวา"],d:["Glass formed from cooled lava.","แก้วที่เกิดจากลาวาเย็นตัว"]},
  mat_relic:{t:"mat",p:45,c:"#8a7060",ic:"rock",n:["Scorched Relic","ซากโบราณไหม้เกรียม"],d:["A burnt piece of the old ruins.","ชิ้นส่วนซากปรักหักพังที่ถูกไฟไหม้"]},
- mat_infernoshard:{t:"mat",p:160,c:"#ff5a1a",ic:"flame",n:["Inferno Shard","เศษหัวใจนรก"],d:["A shard of hellfire made solid.","เศษไฟนรกที่แข็งตัวเป็นผลึก"]}
+ mat_infernoshard:{t:"mat",p:160,c:"#ff5a1a",ic:"flame",n:["Inferno Shard","เศษหัวใจนรก"],d:["A shard of hellfire made solid.","เศษไฟนรกที่แข็งตัวเป็นผลึก"]},
+ /* v22: Ashfall Ruins (the rare drops are the rare earth veins the eruption spewed up) */
+ mat_scoria:{t:"mat",p:85,c:"#8a7a72",ic:"gem",n:["Scoria Fang","เขี้ยวหินภูเขาไฟ"],d:["A fang of porous volcanic stone, still warm.","เขี้ยวหินภูเขาไฟพรุน ยังอุ่นอยู่"]},
+ mat_neodym:{t:"mat",p:280,c:"#b8a8ff",ic:"gem",n:["Neodymium Ore","แร่นีโอดิเมียม"],d:["A rare earth ore that pulls hard on iron.","แร่หายากที่ดูดเหล็กได้แรงมาก"]},
+ mat_revash:{t:"mat",p:100,c:"#b0a090",ic:"flame",n:["Revenant Ash","เถ้าวิญญาณ"],d:["Ash that once was an archer of Promethea.","เถ้าที่ครั้งหนึ่งเคยเป็นนักธนูแห่งพรอมีเธีย"]},
+ mat_samar:{t:"mat",p:320,c:"#ffd08a",ic:"gem",n:["Samarium Ore","แร่ซาแมเรียม"],d:["A rare earth ore that never loses its pull, even in fire.","แร่หายากที่ไม่สูญเสียแรงดูดแม้อยู่ในไฟ"]},
+ mat_pyroglyph:{t:"mat",p:120,c:"#ff8a4a",ic:"star",n:["Pyroclast Glyph","อักขระไพโรคลาสต์"],d:["A burning glyph from a Promethean spellbook.","อักขระลุกไหม้จากตำราเวทพรอมีเธีย"]},
+ mat_prometh:{t:"mat",p:400,c:"#7ff0c8",ic:"gem",n:["Promethium Ore","แร่โพรมีเทียม"],d:["The rarest earth of all. It glows on its own.","แร่หายากที่สุด เรืองแสงได้ในตัวเอง"]},
+ mat_calheart:{t:"mat",q:1,p:1500,c:"#ffb060",ic:"gem",n:["Caldera Heart","หัวใจปล่องภูเขาไฟ"],d:["Heart of the Magma Gatekeeper. Keep it for quests.","หัวใจของแมกมา เกทคีปเปอร์ เก็บไว้ทำเควสต์"]}
 };
 /* equipment */
 /* 10 equipment slots (v15). Item families made before this layout still work: they equip into the slot they map to. */
@@ -5443,9 +5544,13 @@ const LOOT={
  cinderling:[["mat_cinder",.4,1,2],["mat_embercore",.13,1,1],["herb_ember",.09,1,1]],
  magmaback:[["mat_magma",.36,1,2],["mat_lavaglass",.12,1,1],["red_l",.07,1,1]],
  ashsentinel:[["mat_relic",.32,1,2],["mat_infernoshard",.1,1,1],["herb_dew",.07,1,1]],
- gadolith:[]
+ gadolith:[],
+ scoriahound:[["mat_scoria",.4,1,2],["mat_neodym",.12,1,1],["red_l",.08,1,1]],
+ cinderbow:[["mat_revash",.38,1,2],["mat_samar",.1,1,1],["herb_ember",.09,1,1]],
+ pyromagus:[["mat_pyroglyph",.34,1,2],["mat_prometh",.08,1,1],["blue_l",.08,1,1]],
+ magmagk:[["mat_prometh",1,2,3],["mat_neodym",1,2,3],["mat_samar",1,2,3]]
 };
-const REFINE_CH={lumite:.02,crawlix:.03,oculoth:.04,nebulite:.03,shardback:.04,cryoculus:.05,glacilite:.04,rimeback:.05,magnoculus:.06,faultcrawler:.06,tidewraith:.07,stratagolem:.08,cinderling:.08,magmaback:.09,ashsentinel:.10};
+const REFINE_CH={lumite:.02,crawlix:.03,oculoth:.04,nebulite:.03,shardback:.04,cryoculus:.05,glacilite:.04,rimeback:.05,magnoculus:.06,faultcrawler:.06,tidewraith:.07,stratagolem:.08,cinderling:.08,magmaback:.09,ashsentinel:.10,scoriahound:.09,cinderbow:.10,pyromagus:.11,magmagk:0};
 function rollRarity(kind){const w=kind==="boss"?[10,30,35,20,5]:kind==="elite"?[45,30,15,8,2]:[70,22,6,1.8,.2];let x=Math.random()*100;for(let i=0;i<5;i++){x-=w[i];if(x<0)return i+1}return 1}
 /* a random piece of gear for a tier: random class, slot, rarity and one of its 3 sets */
 function rollDropGear(L,kind){
@@ -5459,7 +5564,7 @@ function rollDrops(mk,kind,lv){
   else if(Math.random()<Math.min(1,(REFINE_CH[mk]||.02)*(E?3:1)))items.push(["refine_ore",1]);
   const n=B?2:(Math.random()<(E?.12:.03)?1:0);
   for(let i=0;i<n;i++)gear.push(rollDropGear(tierOf(lv),kind));
-  if(B)items.push(["mat_gheart",1],["mat_core",3],["mat_ore",5]);
+  if(B)items.push([MON[mk].heart||"mat_gheart",1],["mat_core",3],["mat_ore",5]);
   return {items,gear};
 }
 
@@ -5777,7 +5882,7 @@ function pd(){
 const hpMax=()=>pd().maxHP,spMax=()=>pd().maxSP;
 const atkV=()=>pd().statusAtk+pd().watk+pd().mastery,defV=()=>pd().softDef;
 const cpV=()=>REOC.combatPower(S.arch,S.lv,effStats(),gearMods());
-const GATE={geo:{lv:25,cp:2000},ruins:{lv:30,cp:3000}};
+const GATE={geo:{lv:25,cp:2000},ruins:{lv:30,cp:3000},ashfall:{lv:40,cp:6000}};
 function gateCheck(id){const q=GATE[id];if(!q)return {ok:true};const cp=cpV();return {ok:S.lv>=q.lv&&cp>=q.cp,lv:q.lv,cp:q.cp,myCp:cp}}
 const gateMsg=q=>fmt("gate_block",{l:q.lv,c:num(q.cp),a:S.lv,d:num(q.myCp)});
 const statFree=()=>REOC.statPointsTotal(S.lv)-REOC.spent(S.stats);
@@ -5932,13 +6037,13 @@ function* groundChunk(m,ch,gs){
     {const [cx,cy]=P(CRY[0],CRY[1]);g.save();g.translate(cx+70,cy+26);g.rotate(.18);const sg=g.createRadialGradient(0,0,0,0,0,230);sg.addColorStop(0,"rgba(20,24,50,.22)");sg.addColorStop(1,"rgba(20,24,50,0)");g.fillStyle=sg;g.beginPath();g.ellipse(0,0,230,70,0,0,TAU);g.fill();g.restore();
       const rgc=g.createRadialGradient(cx,cy,0,cx,cy,PLAZA_R*40);rgc.addColorStop(0,"rgba(150,130,255,.38)");rgc.addColorStop(.5,"rgba(150,130,255,.12)");rgc.addColorStop(1,"rgba(150,130,255,0)");g.fillStyle=rgc;g.beginPath();g.ellipse(cx,cy,PLAZA_R*40,PLAZA_R*20,0,0,TAU);g.fill()}
   }
-  if(m.arena){g=gctx;const [ax,ay,ar]=m.arena;
+  if(m.arena){g=gctx;const [ax,ay,ar]=m.arena,AC=(m.pal&&m.pal.arenaC)||["170,225,255","120,170,230","200,240,255","160,200,255","210,190,255","190,235,255"];   // v22: arena colours per map
     const ring=(r,col,w,dash)=>{isoPath(()=>g.ellipse(ax,ay,r,r,0,0,TAU));g.strokeStyle=col;g.lineWidth=w;g.setLineDash(dash||[]);g.stroke();g.setLineDash([])};
-    isoPath(()=>g.ellipse(ax,ay,ar,ar,0,0,TAU));const ac=P(ax,ay),rgA=g.createRadialGradient(ac[0],ac[1],10,ac[0],ac[1],ar*HW*1.5);rgA.addColorStop(0,"rgba(170,225,255,.34)");rgA.addColorStop(1,"rgba(120,170,230,.08)");g.fillStyle=rgA;g.fill();
-    ring(ar,"rgba(200,240,255,.85)",3);ring(ar-.5,"rgba(160,200,255,.5)",1.5);ring(ar*.72,"rgba(210,190,255,.7)",2,[10,7]);ring(ar*.3,"rgba(200,240,255,.7)",2);
-    const tri=(rot,rr)=>{const pp=[];for(let i=0;i<3;i++){const a=rot+i*TAU/3;pp.push(P(ax+Math.cos(a)*rr,ay+Math.sin(a)*rr))}fillPoly(pp,null,"rgba(190,235,255,.8)",2)};
+    isoPath(()=>g.ellipse(ax,ay,ar,ar,0,0,TAU));const ac=P(ax,ay),rgA=g.createRadialGradient(ac[0],ac[1],10,ac[0],ac[1],ar*HW*1.5);rgA.addColorStop(0,`rgba(${AC[0]},.34)`);rgA.addColorStop(1,`rgba(${AC[1]},.08)`);g.fillStyle=rgA;g.fill();
+    ring(ar,`rgba(${AC[2]},.85)`,3);ring(ar-.5,`rgba(${AC[3]},.5)`,1.5);ring(ar*.72,`rgba(${AC[4]},.7)`,2,[10,7]);ring(ar*.3,`rgba(${AC[2]},.7)`,2);
+    const tri=(rot,rr)=>{const pp=[];for(let i=0;i<3;i++){const a=rot+i*TAU/3;pp.push(P(ax+Math.cos(a)*rr,ay+Math.sin(a)*rr))}fillPoly(pp,null,`rgba(${AC[5]},.8)`,2)};
     tri(-Math.PI/2,ar*.7);tri(Math.PI/2,ar*.7);
-    for(let i=0;i<12*K;i++){const a=i/(12*K)*TAU,p1=P(ax+Math.cos(a)*(ar-.1),ay+Math.sin(a)*(ar-.1)),p2=P(ax+Math.cos(a)*(ar-.6),ay+Math.sin(a)*(ar-.6));g.strokeStyle="rgba(200,240,255,.8)";g.lineWidth=2;line(p1,p2)}
+    for(let i=0;i<12*K;i++){const a=i/(12*K)*TAU,p1=P(ax+Math.cos(a)*(ar-.1),ay+Math.sin(a)*(ar-.1)),p2=P(ax+Math.cos(a)*(ar-.6),ay+Math.sin(a)*(ar-.6));g.strokeStyle=`rgba(${AC[2]},.8)`;g.lineWidth=2;line(p1,p2)}
   }
   g=gctx;yield .75;g=gctx;
   for(const e of m.pools){
@@ -5955,14 +6060,15 @@ function* groundChunk(m,ch,gs){
     g.save();g.globalCompositeOperation="lighter";const rg=g.createRadialGradient(sx,sy,0,sx,sy,26);rg.addColorStop(0,c);rg.addColorStop(1,"rgba(0,0,0,0)");g.fillStyle=rg;g.beginPath();g.ellipse(sx,sy,26,13,0,0,TAU);g.fill();g.restore()}
   g=gctx;
 }
-function drawChasmTile(pts,x,y){
-  const h=hash(x*3,y*5),c=P(x+.5,y+.5);
+const CHASM_C=["90,230,255","40,120,170","140,240,255","255,190,120"];   // v22: a map palette may recolour the cracks (Ashfall Ruins: lava fissures)
+function drawChasmTile(pts,x,y,fp){
+  const h=hash(x*3,y*5),c=P(x+.5,y+.5),C=(fp&&fp.chasm)||CHASM_C;
   fillPoly(pts,"#0b080c");
   g.save();path(pts);g.clip();
-  const rg=g.createRadialGradient(c[0],c[1],1,c[0],c[1],20);rg.addColorStop(0,"rgba(90,230,255,.55)");rg.addColorStop(.5,"rgba(40,120,170,.25)");rg.addColorStop(1,"rgba(0,0,0,0)");
+  const rg=g.createRadialGradient(c[0],c[1],1,c[0],c[1],20);rg.addColorStop(0,`rgba(${C[0]},.55)`);rg.addColorStop(.5,`rgba(${C[1]},.25)`);rg.addColorStop(1,"rgba(0,0,0,0)");
   g.fillStyle=rg;g.fillRect(c[0]-24,c[1]-14,48,28);
-  g.strokeStyle="rgba(140,240,255,.55)";g.lineWidth=1.2;line(P(x+.15+h*.3,y+.2),P(x+.6+h*.3,y+.8));
-  g.strokeStyle="rgba(255,190,120,.35)";g.lineWidth=1;line(P(x+.7,y+.15),P(x+.3,y+.65));
+  g.strokeStyle=`rgba(${C[2]},.55)`;g.lineWidth=1.2;line(P(x+.15+h*.3,y+.2),P(x+.6+h*.3,y+.8));
+  g.strokeStyle=`rgba(${C[3]},.35)`;g.lineWidth=1;line(P(x+.7,y+.15),P(x+.3,y+.65));
   g.restore();
   g.strokeStyle="rgba(30,18,10,.85)";g.lineWidth=2;path(pts);g.stroke();
 }
@@ -5973,7 +6079,7 @@ function tile(m,x,y){
   if(tp===T_W)tp=T_G;
   const pts=[P(x,y),P(x+1,y),P(x+1,y+1),P(x,y+1)],h=hash(x,y);
   const pathT=(nx,ny)=>{if(!inb(nx,ny))return true;const q=m.map[I(nx,ny)];return q===T_R||q===T_P||q===T_D};
-  if(tp===T_C){drawChasmTile(pts,x,y)}
+  if(tp===T_C){drawChasmTile(pts,x,y,fp)}
   else if(tp===T_R||tp===T_D){
     const dirt=tp===T_D;
     const c=dirt?`hsl(${(fieldMap?fp.dirt:26)+h*6},${28+h*8}%,${38+h*6}%)`:`hsl(268,${16+h*8}%,${50+h*8}%)`;fillPoly(pts,c,c,1);
@@ -7100,6 +7206,172 @@ MDRAW.gadolith=function(mo,p){
   orbit(true);
   g.strokeStyle="rgba(255,255,255,.6)";g.lineWidth=2;g.beginPath();g.moveTo(-14,fy-30);g.lineTo(-6,fy-12);g.stroke();
 };
+/* ---- v22 Ashfall Ruins monster sprites ---- */
+MDRAW.scoriahound=function(mo,p){
+  const ph=mo.phase+(mo.moving?T*13:0),run=mo.moving?1:0,bob=Math.abs(Math.sin(ph))*2.2*run,fl=.6+Math.sin(T*5+mo.phase)*.25,OL="rgba(10,6,4,.75)";
+  ell(0,1,22,6.5,"rgba(10,4,2,.36)");
+  g.save();g.scale(mo.dir,1);g.lineCap="round";g.lineJoin="round";
+  const leg=(lx,near,k)=>{const sw=Math.sin(ph+k)*4.5*run;g.strokeStyle=near?p.l1:p.l2;g.lineWidth=4;g.beginPath();g.moveTo(lx,-14-bob);g.lineTo(lx+sw*.6,-7);g.lineTo(lx+sw,-1);g.stroke();
+    g.save();g.globalCompositeOperation="lighter";ell(lx+sw,-1,2.6,1.3,`rgba(${p.seam},${.5*fl})`);g.restore()};
+  leg(-12,false,Math.PI);leg(7,false,0);
+  /* tail: a whip of embers */
+  g.strokeStyle=p.b2;g.lineWidth=4;g.beginPath();g.moveTo(-17,-20-bob);g.quadraticCurveTo(-26,-24,-28+Math.sin(T*6+mo.phase)*2,-33);g.stroke();
+  g.save();g.globalCompositeOperation="lighter";for(let i=0;i<4;i++){const q=(T*1.4+i/4+mo.phase)%1;ell(-28-q*4,-34-q*16,2.2*(1-q)+.3,2.2*(1-q)+.3,`rgba(255,${150+i*20},60,${1-q})`)}g.restore();
+  const bg=g.createLinearGradient(0,-30,0,-10);bg.addColorStop(0,p.b1);bg.addColorStop(1,p.b2);
+  g.fillStyle=bg;g.beginPath();g.moveTo(-19,-17-bob);g.quadraticCurveTo(-16,-30-bob,0,-29-bob);g.quadraticCurveTo(15,-30-bob,19,-21-bob);g.quadraticCurveTo(14,-11-bob,0,-12-bob);g.quadraticCurveTo(-15,-11-bob,-19,-17-bob);g.fill();g.strokeStyle=OL;g.lineWidth=1.2;g.stroke();
+  /* porous scoria: dark pits and glowing lava seams */
+  for(const [cx,cy] of [[-10,-21],[-3,-24],[5,-20],[11,-24],[-6,-16]])ell(cx,cy-bob,1.6,1.1,"rgba(10,4,2,.6)");
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(${p.seam},${.5+fl*.4})`;g.lineWidth=1.7;g.beginPath();g.moveTo(-16,-18-bob);g.lineTo(-9,-25-bob);g.lineTo(-2,-19-bob);g.lineTo(6,-26-bob);g.lineTo(13,-19-bob);g.stroke();g.restore();
+  glow(0,-20-bob,26,`rgba(255,110,30,${.14*fl})`);
+  /* blazing mane */
+  g.save();g.globalCompositeOperation="lighter";for(let i=0;i<5;i++){const bx=6+i*2.8,fh=9+Math.sin(T*8+i+mo.phase)*3;g.fillStyle=`rgba(255,${110+i*24},40,.8)`;g.beginPath();g.moveTo(bx-3.5,-25-bob);g.quadraticCurveTo(bx-2,-25-fh-6-bob,bx+3,-25-bob);g.fill()}g.restore();
+  /* head + jaw */
+  const hy=-24-bob+(mo.aggro?Math.sin(T*10)*.8:0);
+  fillPoly([[14,hy-6],[24,hy-7],[31,hy-2],[30,hy+2],[20,hy+4],[14,hy+3]],p.head,OL,1.2);
+  fillPoly([[18,hy+3],[29,hy+2],[27,hy+6+(mo.aggro?2:0)],[19,hy+6]],p.b2,OL,1);
+  g.fillStyle="#f0e4d0";for(const tx of [21,24,27])fillPoly([[tx,hy+2],[tx+1.4,hy+2],[tx+.7,hy+4.4]],"#f0e4d0");
+  fillPoly([[15,hy-6],[16,hy-14],[20,hy-7]],p.l2,OL,1);fillPoly([[19,hy-6],[22,hy-12],[23,hy-6]],p.l1,OL,1);
+  ell(24,hy-3,2,1.5,p.eye);g.save();g.globalCompositeOperation="lighter";glow(24,hy-3,7,"rgba(255,210,90,.7)");g.restore();
+  if(mo.aggro){g.save();g.globalCompositeOperation="lighter";for(let i=0;i<3;i++){const q=(T*2+i/3)%1;ell(32+q*6,hy+1-q*4,1.6*(1-q)+.3,1.6*(1-q)+.3,`rgba(255,170,60,${1-q})`)}g.restore()}
+  leg(-5,true,Math.PI*.5);leg(13,true,Math.PI*1.5);
+  g.restore();
+};
+MDRAW.cinderbow=function(mo,p){
+  const t=T*1.6+mo.phase,br=Math.sin(t)*1.2,ph=mo.phase+(mo.moving?T*8:0),sw=Math.sin(ph)*(mo.moving?2.4:.3),OL="rgba(10,6,6,.75)",fl=.6+Math.sin(T*6+mo.phase)*.25;
+  ell(0,1,15,5,"rgba(10,4,2,.34)");
+  g.save();g.scale(mo.dir,1);g.lineCap="round";g.lineJoin="round";
+  /* bone legs */
+  for(const s of [-1,1]){g.strokeStyle=s<0?p.bone2:p.bone;g.lineWidth=2.6;g.beginPath();g.moveTo(s*4,-24);g.lineTo(s*5+sw*s,-12);g.lineTo(s*4+sw*s*1.4,-1);g.stroke()}
+  /* tattered cloak */
+  const cg=g.createLinearGradient(0,-56,0,-18);cg.addColorStop(0,p.cloak);cg.addColorStop(1,p.cloak2);
+  g.fillStyle=cg;g.beginPath();g.moveTo(-9,-54+br);g.quadraticCurveTo(-15,-38,-14,-20);for(let i=-6;i<=6;i++)g.lineTo(i*2.3,-20+(i%2?4:0)+Math.sin(t*2+i)*1.5);g.quadraticCurveTo(14,-38,9,-54+br);g.closePath();g.fill();g.strokeStyle=OL;g.lineWidth=1.1;g.stroke();
+  /* ribs showing through */
+  g.strokeStyle=p.bone2;g.lineWidth=1.3;for(const ry of [-44,-40,-36])line([-5,ry+br],[5,ry+br]);line([0,-47+br],[0,-31+br]);
+  /* skull + hood */
+  fillPoly([[-9,-55+br],[0,-66+br],[9,-55+br],[7,-48+br],[-7,-48+br]],p.cloak2,OL,1.1);
+  ell(1,-55+br,5.4,5.8,p.bone);fillPoly([[-2,-51+br],[5,-51+br],[4,-47.5+br],[-1,-47.5+br]],p.bone2,OL,.8);
+  g.save();g.globalCompositeOperation="lighter";ell(3,-56+br,1.6,1.8,p.eye);glow(3,-56+br,8,`rgba(${p.fire},.7)`);g.restore();
+  ell(-1.5,-56+br,1.3,1.6,"#140806");
+  /* bow arm: the bow, drawn string and a burning arrow */
+  const ax=10,ay=-42+br,pull=mo.aggro?(.5+.5*Math.sin(T*4)):0;
+  g.strokeStyle=p.bone;g.lineWidth=2.4;g.beginPath();g.moveTo(2,-46+br);g.lineTo(ax+4,ay);g.stroke();
+  g.strokeStyle=p.bow;g.lineWidth=3;g.beginPath();g.moveTo(ax+6,ay-17);g.quadraticCurveTo(ax+15,ay,ax+6,ay+17);g.stroke();
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(${p.fire},${.55+fl*.3})`;g.lineWidth=1.2;g.beginPath();g.moveTo(ax+7,ay-15);g.quadraticCurveTo(ax+14,ay,ax+7,ay+15);g.stroke();g.restore();
+  const sx=ax+6-4-pull*5;g.strokeStyle="rgba(240,230,210,.8)";g.lineWidth=.9;g.beginPath();g.moveTo(ax+6,ay-17);g.lineTo(sx,ay);g.lineTo(ax+6,ay+17);g.stroke();
+  g.strokeStyle="#6a4a30";g.lineWidth=1.6;line([sx,ay],[ax+22,ay]);
+  g.save();g.globalCompositeOperation="lighter";glow(ax+22,ay,12,`rgba(${p.fire},${.45+fl*.3})`);for(const [sc,col] of [[1,"rgba(255,110,30,.9)"],[.6,"rgba(255,220,140,.95)"]]){g.fillStyle=col;g.beginPath();g.ellipse(ax+23,ay,5*sc,2.6*sc,0,0,TAU);g.fill()}g.restore();
+  g.strokeStyle=p.bone2;g.lineWidth=2.2;g.beginPath();g.moveTo(-3,-45+br);g.lineTo(sx-2,ay+1);g.stroke();
+  /* quiver */
+  fillPoly([[-12,-54+br],[-7,-56+br],[-4,-34+br],[-9,-32+br]],"#4a3426",OL,1);
+  g.save();g.globalCompositeOperation="lighter";for(const qx of [-10,-8,-6])ell(qx-1,-56+br,1.4,1.4,`rgba(${p.fire},${.6+fl*.3})`);g.restore();
+  g.restore();
+};
+MDRAW.pyromagus=function(mo,p){
+  const t=T*1.4+mo.phase,fy=-8+Math.sin(t)*3,fl=.6+Math.sin(T*4+mo.phase)*.3,OL="rgba(10,4,4,.75)",cast=mo.tele?1:0;
+  ell(0,0,14-Math.sin(t)*1.5,4.5,"rgba(10,4,2,.32)");
+  /* rune circle under its feet (always when angry, brighter while casting) */
+  if(mo.aggro||cast){g.save();g.globalCompositeOperation="lighter";g.translate(0,0);g.scale(1,.45);g.rotate(T*.8);g.strokeStyle=`rgba(${p.rune},${.35+cast*.45})`;g.lineWidth=1.8;g.beginPath();g.arc(0,0,22,0,TAU);g.stroke();
+    for(let i=0;i<6;i++){const a=i*TAU/6;g.beginPath();g.moveTo(Math.cos(a)*22,Math.sin(a)*22);g.lineTo(Math.cos(a+TAU/3)*22,Math.sin(a+TAU/3)*22);g.stroke()}g.restore()}
+  /* robe */
+  const rg=g.createLinearGradient(0,fy-60,0,fy);rg.addColorStop(0,p.robe);rg.addColorStop(1,p.robe2);
+  g.fillStyle=rg;g.beginPath();g.moveTo(-8,fy-56);g.quadraticCurveTo(-18,fy-30,-15,fy-4);for(let i=-5;i<=5;i++)g.lineTo(i*3,fy-4+(i%2?3:0)+Math.sin(t*2+i)*1.4);g.quadraticCurveTo(18,fy-30,8,fy-56);g.closePath();g.fill();g.strokeStyle=OL;g.lineWidth=1.2;g.stroke();
+  g.strokeStyle=p.trim;g.lineWidth=1.6;line([0,fy-52],[0,fy-6]);g.beginPath();g.moveTo(-13,fy-10);g.quadraticCurveTo(0,fy-6,13,fy-10);g.stroke();
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(${p.rune},${.4+fl*.4})`;g.lineWidth=1.2;for(const ry of [-40,-30,-20]){g.beginPath();g.moveTo(-3,fy+ry);g.lineTo(0,fy+ry-3);g.lineTo(3,fy+ry);g.stroke()}g.restore();
+  /* hood + face */
+  fillPoly([[-10,fy-54],[0,fy-74],[10,fy-54],[7,fy-46],[-7,fy-46]],p.hood,OL,1.2);
+  ell(0,fy-54,6,6.5,"#0a0404");
+  g.save();g.globalCompositeOperation="lighter";const ex=mo.dir*1.2;ell(-2.4+ex,fy-55,1.5,1.2,p.eye);ell(2.4+ex,fy-55,1.5,1.2,p.eye);glow(ex,fy-55,10,"rgba(255,190,80,.5)");g.restore();
+  /* staff + molten orb */
+  const sx=15*mo.dir,oy=fy-70-cast*4;
+  g.strokeStyle="#3a2418";g.lineWidth=2.6;g.lineCap="round";line([sx,fy-2],[sx,oy+6]);
+  g.strokeStyle=p.trim;g.lineWidth=1.6;g.beginPath();g.arc(sx,oy,7,Math.PI*.15,Math.PI*.85,true);g.stroke();
+  g.save();g.globalCompositeOperation="lighter";glow(sx,oy,24+cast*12,`rgba(${p.orb},${.35+fl*.25+cast*.3})`);
+  const og=g.createRadialGradient(sx-1,oy-1,0,sx,oy,6);og.addColorStop(0,"#fff6d0");og.addColorStop(.5,"#ffb050");og.addColorStop(1,"#d8340a");ell(sx,oy,5.5,5.5,og);
+  for(let k=0;k<3;k++){const a=T*3+k*TAU/3,rx=sx+Math.cos(a)*11,ry=oy+Math.sin(a)*4;ell(rx,ry,1.6,1.6,`rgba(${p.rune},.9)`)}
+  for(let i=0;i<4;i++){const q=(T*1.2+i/4+mo.phase)%1;ell(sx+Math.sin(q*8+i)*4,oy-q*20,1.8*(1-q)+.3,1.8*(1-q)+.3,`rgba(255,${150+i*20},60,${1-q})`)}g.restore();
+  /* free hand */
+  ell(-12*mo.dir,fy-30,3,3,p.skin);
+  if(cast){g.save();g.globalCompositeOperation="lighter";glow(-12*mo.dir,fy-30,14,"rgba(255,140,50,.6)");g.restore()}
+};
+MDRAW.magmagk=function(mo,p){
+  const ph=mo.phase+(mo.moving?T*4:0),sw=Math.sin(ph)*(mo.moving?2.6:.4),br=Math.sin(T*1.2+mo.phase)*1.2,rage=mo.rage,ang=mo.aggro,OL="rgba(8,4,2,.8)";
+  const fl=.65+Math.sin(T*(rage?9:4))*.25,lv=`${p.lava}`,hot=rage?"255,235,170":p.lava;
+  ell(0,1,40,12,"rgba(10,4,2,.45)");g.lineJoin="round";g.lineCap="round";
+  /* heat haze + ember column */
+  g.save();g.globalCompositeOperation="lighter";glow(0,-60+br,90,`rgba(${lv},${(rage?.26:.14)*fl})`);
+  for(let i=0;i<10;i++){const q=(T*.5+i/10+mo.phase)%1;ell(Math.sin(i*5.3+T)*30*(1-q*.3),-30-q*110,2.4*(1-q)+.4,2.4*(1-q)+.4,`rgba(255,${140+i*10},60,${(1-q)*.9})`)}g.restore();
+  /* legs: pillars of obsidian with molten joints */
+  for(const s of [-1,1]){const lx=s*13+sw*s*.5;fillPoly([[lx-9,-34],[lx+9,-34],[lx+11,-2],[lx-11,-2]],s<0?p.r2:p.r1,OL,1.4);
+    g.save();g.globalCompositeOperation="lighter";ell(lx,-18,4,2.4,`rgba(${hot},${.6*fl})`);g.restore();fillPoly([[lx-12,-6],[lx+12,-6],[lx+13,0],[lx-13,0]],p.r3,OL,1.2)}
+  /* back arm holds the gate-shield: a slab with bars and a sealing rune */
+  const shx=-34,shy=-70+br;
+  fillPoly([[shx-14,shy-26],[shx+12,shy-30],[shx+14,shy+30],[shx-12,shy+34]],p.gate,OL,1.6);
+  fillPoly([[shx-14,shy-26],[shx+12,shy-30],[shx+12,shy-22],[shx-14,shy-18]],p.r3,OL,1);
+  g.strokeStyle="rgba(10,6,4,.8)";g.lineWidth=2;for(const bx of [-8,-2,4,10])line([shx+bx,shy-20],[shx+bx+1,shy+30]);line([shx-12,shy+4],[shx+13,shy+1]);
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(${p.rune},${.55+fl*.35})`;g.lineWidth=1.8;g.beginPath();g.arc(shx,shy+4,7,0,TAU);g.stroke();g.beginPath();g.moveTo(shx,shy-4);g.lineTo(shx,shy+12);g.moveTo(shx-6,shy+4);g.lineTo(shx+6,shy+4);g.stroke();glow(shx,shy+4,16,`rgba(${p.rune},.3)`);g.restore();
+  /* torso */
+  const tg=g.createLinearGradient(0,-104+br,0,-30);tg.addColorStop(0,p.r3);tg.addColorStop(1,p.r2);
+  fillPoly([[-24,-34],[24,-34],[30,-80+br],[18,-100+br],[-18,-100+br],[-30,-80+br]],tg,OL,1.6);
+  /* molten veins + core */
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(${hot},${.55+fl*.4})`;g.lineWidth=2.4;
+  g.beginPath();g.moveTo(-22,-42);g.lineTo(-12,-56+br);g.lineTo(-16,-74+br);g.moveTo(20,-44);g.lineTo(12,-60+br);g.lineTo(17,-82+br);g.moveTo(-6,-36);g.lineTo(0,-50+br);g.lineTo(6,-38);g.stroke();
+  const cy=-70+br,cg=g.createRadialGradient(0,cy,1,0,cy,16);cg.addColorStop(0,rage?"#ffffff":p.core);cg.addColorStop(.45,rage?"#fff0a0":"#ffb040");cg.addColorStop(1,"rgba(220,60,10,0)");
+  g.fillStyle=cg;g.beginPath();g.arc(0,cy,16,0,TAU);g.fill();glow(0,cy,40,`rgba(${hot},${.3+fl*.2})`);g.restore();
+  fillPoly([[-9,cy-10],[9,cy-10],[12,cy],[9,cy+10],[-9,cy+10],[-12,cy]],null,OL,1.6);
+  /* shoulders: volcanic spires that leak lava */
+  for(const s of [-1,1]){const bx=s*26;fillPoly([[bx-12,-92+br],[bx+12,-92+br],[bx+10,-80+br],[bx-10,-80+br]],p.r1,OL,1.3);
+    fillPoly([[bx-8,-92+br],[bx-3,-112+br],[bx+2,-92+br]],p.horn,OL,1.1);fillPoly([[bx+1,-92+br],[bx+6,-106+br],[bx+9,-92+br]],p.horn,OL,1.1);
+    g.save();g.globalCompositeOperation="lighter";ell(bx-3,-111+br,2.4,2.4,`rgba(${hot},${fl})`);const q=(T*.9+(s>0?.5:0))%1;ell(bx-8+s*2,-90+br+q*14,1.8,2.6*(1-q)+.6,`rgba(${hot},${1-q})`);g.restore()}
+  /* head: horned helm with a visor slit */
+  const hy=-104+br;
+  fillPoly([[-11,hy+6],[11,hy+6],[13,hy-8],[6,hy-16],[-6,hy-16],[-13,hy-8]],p.r1,OL,1.4);
+  fillPoly([[-12,hy-8],[-24,hy-22],[-20,hy-26],[-8,hy-14]],p.horn,OL,1.1);fillPoly([[12,hy-8],[24,hy-22],[20,hy-26],[8,hy-14]],p.horn,OL,1.1);
+  g.save();g.globalCompositeOperation="lighter";g.fillStyle=`rgba(${rage?"255,250,210":"255,200,90"},${.85+fl*.15})`;g.fillRect(-8,hy-6,16,3);glow(0,hy-5,16,`rgba(${hot},.55)`);g.restore();
+  /* front arm: a huge fist dripping magma, raised while it winds up a slam */
+  const up=mo.tele?Math.min(1,1-mo.tele.t/mo.tele.total):0,ax=34-sw*.5,ay=-88+br-up*26;
+  fillPoly([[22,-90+br],[34,-94+br],[ax+8,ay+30],[ax-6,ay+32]],p.r1,OL,1.4);
+  fillPoly([[ax-11,ay+28],[ax+11,ay+26],[ax+13,ay+46],[ax-11,ay+48]],p.r3,OL,1.5);
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(${hot},${.6+fl*.3})`;g.lineWidth=1.8;for(const k of [-5,0,5])line([ax+k,ay+30],[ax+k,ay+46]);
+  for(let i=0;i<2;i++){const q=(T*.8+i*.5+mo.phase)%1;ell(ax-4+i*8,ay+48+q*20,2,3*(1-q)+.5,`rgba(${hot},${1-q})`)}g.restore();
+  if(ang&&!rage){g.save();g.globalCompositeOperation="lighter";glow(0,-60,60,`rgba(${lv},.08)`);g.restore()}
+};
+/* v22 rare earth vein: a dark outcrop with glowing seams of rare earth (neodymium violet, samarium amber, promethium green) */
+const VEIN_C=[["184,168,255","#b8a8ff"],["255,200,120","#ffc878"],["127,240,200","#7ff0c8"]];
+function drawVein(o){
+  const [x,y]=P(o.cx,o.cy),s=.95+o.v*.3,k=VEIN_C[Math.floor(o.v*2.999)],pul=.55+Math.sin(T*2.2+o.x*1.3+o.y)*.3;
+  ell(x+4,y+1,18*s,6*s,"rgba(8,4,4,.38)");
+  fillPoly([[x-17*s,y],[x-14*s,y-16*s],[x-5*s,y-26*s],[x+6*s,y-22*s],[x+16*s,y-10*s],[x+17*s,y]],"#3a3230","rgba(10,6,6,.8)",1.2);
+  fillPoly([[x-5*s,y-26*s],[x+6*s,y-22*s],[x+16*s,y-10*s],[x+3*s,y-8*s],[x-9*s,y-14*s]],"#4e4440");
+  fillPoly([[x+3*s,y-8*s],[x+16*s,y-10*s],[x+17*s,y],[x+4*s,y]],"#2a2422");
+  g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(${k[0]},${.5+pul*.45})`;g.lineWidth=2;
+  g.beginPath();g.moveTo(x-12*s,y-4*s);g.lineTo(x-6*s,y-13*s);g.lineTo(x-1*s,y-10*s);g.lineTo(x+5*s,y-18*s);g.moveTo(x-1*s,y-10*s);g.lineTo(x+2*s,y-3*s);g.moveTo(x+8*s,y-12*s);g.lineTo(x+13*s,y-5*s);g.stroke();
+  glow(x,y-12*s,30*s,`rgba(${k[0]},${.12+pul*.12})`);g.restore();
+  for(const [dx,dy,r] of [[-6,-13,3.4],[5,-18,4],[12,-6,2.6]])fillPoly([[x+dx*s,y+(dy-r)*s],[x+(dx+r*.7)*s,y+dy*s],[x+dx*s,y+(dy+r*.6)*s],[x+(dx-r*.7)*s,y+dy*s]],k[1],"rgba(255,255,255,.6)",.8);
+  const q=(T*.6+o.v*3)%1;g.save();g.globalCompositeOperation="lighter";ell(x+(o.v-.5)*14*s,y-18*s-q*26,1.6*(1-q)+.3,1.6*(1-q)+.3,`rgba(${k[0]},${1-q})`);g.restore();
+}
+/* v22 the sealed caldera gate behind the Gatekeeper's arena: two cracked towers, a lintel with a burning seal and a lava portcullis */
+function drawBGate(o){
+  const [x,y]=P(o.cx,o.cy),pul=.6+Math.sin(T*2)*.3,OL="rgba(10,6,4,.85)";
+  ell(x,y+4,120,30,"rgba(8,4,4,.4)");
+  const tower=(tx)=>{fillPoly([[tx-20,y+6],[tx-17,y-150],[tx+17,y-156],[tx+20,y+4]],"#3e3432",OL,1.6);fillPoly([[tx+17,y-156],[tx+20,y+4],[tx+28,y],[tx+25,y-150]],"#2a2220",OL,1.2);
+    fillPoly([[tx-22,y-150],[tx+28,y-160],[tx+30,y-148],[tx-20,y-140]],"#4e4440",OL,1.2);
+    g.strokeStyle="rgba(10,6,4,.7)";g.lineWidth=1.4;for(const k of [-110,-70,-30])line([tx-18,y+k],[tx+18,y+k-3]);
+    g.save();g.globalCompositeOperation="lighter";g.strokeStyle=`rgba(255,120,40,${pul})`;g.lineWidth=1.6;g.beginPath();g.moveTo(tx-12,y-120);g.lineTo(tx-4,y-100);g.lineTo(tx-9,y-80);g.lineTo(tx+2,y-58);g.stroke();g.restore()};
+  tower(x-82);tower(x+70);
+  /* portcullis of cooling lava */
+  const gx0=x-62,gx1=x+66,gy0=y-120,gy1=y-6;
+  const lg=g.createLinearGradient(0,gy0,0,gy1);lg.addColorStop(0,"rgba(40,12,6,.95)");lg.addColorStop(1,"rgba(120,30,8,.95)");
+  fillPoly([[gx0,gy0+6],[gx1,gy0],[gx1,gy1-4],[gx0,gy1]],lg,OL,1.4);
+  g.save();g.globalCompositeOperation="lighter";
+  for(let i=0;i<9;i++){const bx=gx0+8+i*(gx1-gx0-16)/8,f=.5+Math.sin(T*3+i)*.3;g.strokeStyle=`rgba(255,${120+i*8},40,${.5+f*.4})`;g.lineWidth=3;line([bx,gy0+8-i*.6],[bx,gy1-2-i*.4])}
+  for(const yy of [-90,-50])line([gx0,y+yy+3],[gx1,y+yy]);
+  glow(x+2,y-60,110,`rgba(255,100,30,${.12+pul*.1})`);g.restore();
+  /* lintel and seal */
+  fillPoly([[gx0-26,gy0+8],[gx1+30,gy0-2],[gx1+32,gy0-26],[gx0-24,gy0-16]],"#4a3e3a",OL,1.6);
+  g.save();g.globalCompositeOperation="lighter";const sx=x+2,sy=gy0-12;g.strokeStyle=`rgba(255,190,90,${.6+pul*.4})`;g.lineWidth=2.2;
+  g.beginPath();g.arc(sx,sy,13,0,TAU);g.stroke();g.beginPath();for(let i=0;i<=5;i++){const a=-Math.PI/2+i*TAU*2/5;i?g.lineTo(sx+Math.cos(a)*11,sy+Math.sin(a)*11):g.moveTo(sx+Math.cos(a)*11,sy+Math.sin(a)*11)}g.stroke();
+  glow(sx,sy,34,`rgba(255,170,70,${.3+pul*.2})`);g.restore();
+}
 /* boss aura: ground rune circle (calm = ice, aggro = ember), shock rings and rising motes. Bigger than the Elite circle. */
 function bossAura(sx,sy,r,rage){
   const col=rage?"255,150,110":"170,230,255",col2=rage?"255,205,150":"210,190,255";
@@ -7297,7 +7569,7 @@ function buildMini(m){
   for(let y=0;y<N;y++)for(let x=0;x<N;x++){const tp=m.map[I(x,y)];dia(x,y,tp===T_C?"#0c0a10":tp===T_R?"#cdbf9f":tp===T_P?"#ebe4d4":tp===T_W?(F?mp[2]:"#4aa0d8"):tp===T_D?"#8a6c4c":tp===T_F?(F?mp[1]:"#5f9952"):(F?mp[0]:"#4c8746"))}
   for(const o of m.statics){
     if(o.kind==="tree")dia(o.x,o.y,o.v===3?"#c97a9e":o.v===2?"#b86a2e":o.v===4?"#123f48":o.v===5?"#4a2058":o.v===6?"#7a4a1e":o.v===7?"#5a88b0":o.v===8?"#b8c8dc":o.v===9?"#7a7260":o.v===10?"#2a1812":"#2b5a33");
-    else if(o.kind==="shroom")dia(o.x,o.y,o.alt===3?"#5ac0e0":o.alt===4?"#ff7a2a":o.alt===2?"#8ac0f0":o.alt?"#ff9a5a":o.v<.5?"#3fd0c4":"#9a6cf0");else if(o.kind==="crys")dia(o.x,o.y,o.alt===3?"#7fe0ff":o.alt===4?"#ff9a50":o.alt===2?"#e8f6ff":o.alt?"#ffd890":"#b7f4ff");else if(o.kind==="rock")dia(o.x,o.y,"#6a6e7c");else if(o.kind==="stele"||o.kind==="pillar")dia(o.x,o.y,"#8a8a98");else if(o.kind==="brazier")dia(o.x,o.y,"#ff9a3a");else if(o.kind==="warnsign")dia(o.x,o.y,"#ff4a5a");
+    else if(o.kind==="shroom")dia(o.x,o.y,o.alt===3?"#5ac0e0":o.alt===4?"#ff7a2a":o.alt===2?"#8ac0f0":o.alt?"#ff9a5a":o.v<.5?"#3fd0c4":"#9a6cf0");else if(o.kind==="crys")dia(o.x,o.y,o.alt===3?"#7fe0ff":o.alt===4?"#ff9a50":o.alt===2?"#e8f6ff":o.alt?"#ffd890":"#b7f4ff");else if(o.kind==="rock")dia(o.x,o.y,"#6a6e7c");else if(o.kind==="stele"||o.kind==="pillar")dia(o.x,o.y,"#8a8a98");else if(o.kind==="brazier")dia(o.x,o.y,"#ff9a3a");else if(o.kind==="vein")dia(o.x,o.y,"#b8a8ff");else if(o.kind==="bgate"){for(let j=-1;j<=1;j++)for(let i=-3;i<=3;i++)dia(o.x+i,o.y+j,"#5a4a44")}else if(o.kind==="warnsign")dia(o.x,o.y,"#ff4a5a");
     else if(o.kind==="bld"){const b=o.b;for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)dia(x,y,b.roof)}}
   if(!F)for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(Math.hypot(x+.5-CRY[0],y+.5-CRY[1])<CRY_R)dia(x,y,Math.hypot(x+.5-CRY[0],y+.5-CRY[1])<1.6?"#d8ceff":"#8a78ff");
   m.mini=c;
@@ -7557,8 +7829,8 @@ function blockGate(p,gk){
   if(gateT<=0){gateT=2.5;AUD.sfx("err");toast(gateMsg(gk));fx.push({k:"ring",x:p.x+.5,y:p.y+.5,t:0,d:.7,c:"#ff6a7a",r:60})}
 }
 function deaggroAll(){for(const m of FIELDS)for(const mo of m.monsters){mo.aggro=false;mo.speed=MON[mo.type].speed}}
-const AHEAD={town:"field1",field1:"field2",field2:"field3",field3:"field2",geo:"town",ruins:"town"};   // phones keep only the current map + the one ahead in memory
-const NEIGH={town:["field1","geo","ruins"],field1:["town","field2"],field2:["field1","field3"],field3:["field2"],geo:["town"],ruins:["town"]};
+const AHEAD={town:"field1",field1:"field2",field2:"field3",field3:"field2",geo:"town",ruins:"town",ashfall:"ruins"};   // phones keep only the current map + the one ahead in memory
+const NEIGH={town:["field1","geo","ruins"],field1:["town","field2"],field2:["field1","field3"],field3:["field2"],geo:["town"],ruins:["town","ashfall"],ashfall:["ruins"]};
 function goMap(id,ax,ay){
   if(warping)return;warping=true;
   whenReady([MAPS[id]],()=>{$("#fade").classList.add("on");setTimeout(()=>applyMap(id,ax,ay),380)},"ld_map");
@@ -7582,7 +7854,7 @@ function applyMap(id,ax,ay){
 function warpTown(){if(player.dead||warping)return;if(cur===town){toast(t("inTown"));return}player.nav=null;fx.push({k:"pillar",x:player.x,y:player.y,t:0,d:.5,c:"#cfc4ff"});
   setTimeout(()=>{goMap("town",TOWN_SPAWN[0],TOWN_SPAWN[1]);setTimeout(()=>toast(t("warpTown")),420)},250)}
 /* next portal toward a destination map */
-const ROUTE={town:{field1:0,field2:0,field3:0,geo:1,ruins:2},field1:{town:0,field2:1,field3:1,geo:0,ruins:0},field2:{town:0,field1:0,field3:1,geo:0,ruins:0},field3:{town:0,field1:0,field2:0,geo:0,ruins:0},geo:{town:0,field1:0,field2:0,field3:0,ruins:0},ruins:{town:0,field1:0,field2:0,field3:0,geo:0}};
+const ROUTE={town:{field1:0,field2:0,field3:0,geo:1,ruins:2,ashfall:2},field1:{town:0,field2:1,field3:1,geo:0,ruins:0,ashfall:0},field2:{town:0,field1:0,field3:1,geo:0,ruins:0,ashfall:0},field3:{town:0,field1:0,field2:0,geo:0,ruins:0,ashfall:0},geo:{town:0,field1:0,field2:0,field3:0,ruins:0,ashfall:0},ruins:{town:0,field1:0,field2:0,field3:0,geo:0,ashfall:1},ashfall:{town:0,field1:0,field2:0,field3:0,geo:0,ruins:0}};
 function routeTo(dest){const i=(ROUTE[cur.id]||{})[dest];if(i==null)return;const p=cur.portals[i];
   if(!player.path.length||player.navPortal!==p){player.navPortal=p;walkTo(player,p.x,p.y)}}
 
@@ -7812,7 +8084,7 @@ function killMon(mo){
   floatText(`+${num(be)} EXP`,"#ffd76a");if(sc)floatText(`+${num(sc)} Sc`,"#e9d89a");
   crumbleFx(mo);
   if(E)fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:.8,c:"#ffd76a",r:90});
-  if(B){fx.push({k:"pillar",x:mo.x,y:mo.y,t:0,d:1.6,c:"#bfe8ff"});fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:1.1,c:"#ffffff",r:170});fx.push({k:"ring",x:mo.x,y:mo.y,t:-.2,d:1.1,c:"#9fd8ff",r:130});toast(t("boss_down"),true);pushChat({ch:"sys",k:"sys_boss"})}
+  if(B){fx.push({k:"pillar",x:mo.x,y:mo.y,t:0,d:1.6,c:d.col||"#bfe8ff"});fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:1.1,c:"#ffffff",r:170});fx.push({k:"ring",x:mo.x,y:mo.y,t:-.2,d:1.1,c:"#9fd8ff",r:130});toast(t(d.downK||"boss_down"),true);pushChat({ch:"sys",k:d.sysK||"sys_boss"})}
   if(S.idle){const s=S.sess;s.kills++;s.base+=be;s.job+=S.jlv<jcap()?je:0;s.sc+=sc;s.mats+=got;s.items=s.items||{};for(const [id,q] of L.items)s.items[id]=(s.items[id]||0)+q;s.gear=(s.gear||0)+L.gear.length}
   questEvent({t:"kill",mo});
 }
@@ -7825,8 +8097,11 @@ function damagePlayer(dmg,tag){
   S.hp-=dmg;player.hurtT=.4;fx.push({k:"dmg",x:player.x,y:player.y,t:0,d:.95,txt:(tag?tag+" ":"")+num(dmg),c:tag?"#ff9a5a":"#ff5a6a",big:!!tag,ox:(rnd()-.5)*24,h:52});
   if(S.hp<=0){S.hp=0;die()}
 }
+/* v22: magic hits (Pyroclast Magus, magic skills) never miss and ignore armor: ATK x (1 - MDEF) - soft MDEF */
+const magDmg=(atk,d)=>Math.max(1,Math.round(atk*(1-(d.mdef||0))-(d.softMdef||0)));
 function monHit(mo){
   player.combatT=0;
+  if(MON[mo.type].mag){damagePlayer(magDmg(mprof(mo).atk*(.85+.3*rnd()),pd()));return}
   const res=REOC.monHit(mprof(mo),pd(),rnd);
   if(res.miss){fx.push({k:"dmg",x:player.x,y:player.y,t:0,d:.9,txt:t(res.lucky?"lucky":"miss"),c:res.lucky?"#ffe28a":"#c8c8d8",ox:(rnd()-.5)*24,h:52});return}
   damagePlayer(res.dmg);
@@ -7900,17 +8175,23 @@ const MSK={
  emberburst:{k:"ground",r:1.7,wind:.8,mult:1.2,cd:[4.5,7],rng:7,nameK:"msk_emberburst",deb:{burn:5}},
  lavaspit:{k:"ground",r:2.1,wind:1.0,mult:1.5,cd:[6,9],rng:8,nameK:"msk_lavaspit",deb:{burn:4}},
  inferno:{k:"ground",r:2.8,wind:1.3,mult:1.9,cd:[8,11],rng:8,nameK:"msk_inferno",deb:{burn:6}},
- ashwave:{k:"self",r:4.2,wind:1.4,mult:1.7,cd:[10,14],rng:4.2,nameK:"msk_ashwave"}
+ ashwave:{k:"self",r:4.2,wind:1.4,mult:1.7,cd:[10,14],rng:4.2,nameK:"msk_ashwave"},
+ /* v22 Ashfall Ruins. mg = magic: armor (hard / soft DEF) does not help, MDEF does */
+ moltenpounce:{k:"ground",r:1.8,wind:.7,mult:1.4,cd:[5,8],rng:6,nameK:"msk_moltenpounce",deb:{burn:4}},
+ cindervolley:{k:"ground",r:2.4,wind:1.0,mult:1.6,cd:[6,9],rng:9,nameK:"msk_cindervolley",deb:{burn:4}},
+ meteor:{k:"ground",r:3.0,wind:1.5,mult:2.4,cd:[9,12],rng:10,nameK:"msk_meteor",mg:true,deb:{burn:6}},
+ eruption:{k:"self",r:4.6,wind:1.4,mult:2.0,cd:[11,15],rng:4.6,nameK:"msk_eruption",mg:true},
+ magmagate:{k:"ground",r:3.2,wind:1.2,mult:2.2,cd:[7,10],rng:10,nameK:"msk_magmagate",mg:true,deb:{burn:5}}
 };
 function castMonSkill(mo,id){
   const s=MSK[id],self=s.k==="self";
-  mo.tele={t:s.wind,total:s.wind,x:self?mo.x:player.x,y:self?mo.y:player.y,r:s.r,mult:s.mult,deb:s.deb||null,nameK:s.nameK};
+  mo.tele={t:s.wind,total:s.wind,x:self?mo.x:player.x,y:self?mo.y:player.y,r:s.r,mult:s.mult,deb:s.deb||null,nameK:s.nameK,mg:!!s.mg};
   mo.path=[];mo.moving=false;faceToward(mo,player.x,player.y);
   fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.9,txt:t(s.nameK),c:"#ffb08a",ox:0,h:MON[mo.type].h*mSize(mo)+16});
   AUD.sfx("warn");
 }
 function monSkillTick(mo,d,dt){
-  const ds=MON[mo.type].skills;if(!ds||mo.tele)return false;
+  const ds=MON[mo.type].skills;if(!ds||mo.tele)return false;if(mo.rage)dt*=1.5;   // v22: an enraged boss casts 1.5x as often
   mo.skCd=mo.skCd||[];
   for(let i=0;i<ds.length;i++){const s=MSK[ds[i]];
     if(mo.skCd[i]==null)mo.skCd[i]=s.cd[0]*(.35+rnd()*.5);
@@ -7922,6 +8203,12 @@ function applyDeb(deb,mo){   // Burning: 10% of the monster's ATK per second
   if(deb.burn){BF.burn=Math.max(BF.burn,deb.burn);BF.burnDps=Math.max(BF.burnDps||0,mprof(mo).atk*.1)}
   if(deb.slow)BF.slow=Math.max(BF.slow,deb.slow);
 }
+/* v22 ranged / magic basic attack: an arrow or a magma orb flies at you, the hit lands when it arrives (if the monster is still alive) */
+function monShoot(mo){
+  const d=MON[mo.type],h=d.h*mSize(mo);
+  if(d.mag){fx.push({k:"proj",x:mo.x,y:mo.y,tx:player.x,ty:player.y,t:0,d:.38,c:"#ff6a2a"})}
+  else fx.push({k:"arrow",x:mo.x,y:mo.y,tx:player.x,ty:player.y,m:null,t:0,d:.3,sc:true,c:"#ff7a2a",arc:14,z0:Math.min(60,h*.6)});
+  later(d.mag?380:300,()=>{if(!mo.dead&&mo.dieT<=0&&!player.dead&&cur.monsters.includes(mo))monHit(mo)})}
 function updateMon(mo,dt){
   if(mo.dead){mo.respawn-=dt;if(mo.respawn<=0)respawnMon(mo);return}
   if(mo.dieT>0){mo.dieT-=dt;if(mo.dieT<=0){mo.dead=true;mo.tele=null;mo.respawn=mo.boss?120:mo.elite?45+Math.random()*15:8+Math.random()*7}return}
@@ -7934,10 +8221,14 @@ function updateMon(mo,dt){
     mo.path=[];mo.moving=false;if(mo.kb.left<=1e-3)mo.kb=null;return}
   if(mo.stun>0){mo.stun-=dt;mo.path=[];mo.moving=false;return}
   if(mo.hp<mo.maxHp&&!mo.aggro)mo.hp=Math.min(mo.maxHp,mo.hp+mo.maxHp*(mo.boss?.02:.05)*dt);
-  if(mo.boss&&mo.aggro&&!player.dead){mo.slamT-=dt;if(!mo.tele&&mo.slamT<=0){mo.tele={t:1.4,total:1.4,x:mo.x,y:mo.y,r:3.4};AUD.sfx("warn");mo.slamT=9+Math.random()*3;mo.path=[]}}
+  if(mo.boss){const dd=MON[mo.type];   // v22: enrage below dd.enrage of max HP (Magma Gatekeeper 30%)
+    if(dd.enrage&&!mo.rage&&mo.aggro&&mo.hp<mo.maxHp*dd.enrage){mo.rage=true;AUD.sfx("warn");toast(fmt("boss_rage",{n:t(dd.nameK)}),true);fx.push({k:"ring",x:mo.x,y:mo.y,t:0,d:.9,c:dd.col||"#ff9a7a",r:160});fx.push({k:"burst",x:mo.x,y:mo.y,t:0,d:.8,c:"#ffb060",n:30,z:40})}
+    else if(mo.rage&&mo.hp>=mo.maxHp*dd.enrage)mo.rage=false}
+  if(mo.boss&&mo.aggro&&!player.dead){mo.slamT-=dt;if(!mo.tele&&mo.slamT<=0){const sl=MON[mo.type].slam||{},cd=sl.cd||[9,12];   // Gadolith: Crystal Slam (defaults); others bring their own slam
+    mo.tele={t:sl.wind||1.4,total:sl.wind||1.4,x:mo.x,y:mo.y,r:sl.r||3.4,mult:sl.mult,deb:sl.deb||null,nameK:sl.nameK,mg:!!sl.mg};AUD.sfx("warn");mo.slamT=(cd[0]+Math.random()*(cd[1]-cd[0]))*(mo.rage?.6:1);mo.path=[]}}
   if(mo.tele){mo.tele.t-=dt;if(mo.tele.t<=0){const tl=mo.tele;mo.tele=null;
     AUD.sfx("slam");fx.push({k:"ring",x:tl.x,y:tl.y,t:0,d:.6,c:"#ff9a7a",r:tl.r*55});fx.push({k:"burst",x:tl.x,y:tl.y,t:0,d:.6,c:"#ffd0b0",n:26,z:10});
-    if(!player.dead&&Math.hypot(player.x-tl.x,player.y-tl.y)<=tl.r){const raw=mprof(mo).atk*(tl.mult||1.8)*(.9+rnd()*.2);damagePlayer(Math.max(1,Math.round(raw*(1-pd().hardDef)-pd().softDef)),t(tl.nameK||"slam"));if(tl.deb&&!player.dead)applyDeb(tl.deb,mo)}}}
+    if(!player.dead&&Math.hypot(player.x-tl.x,player.y-tl.y)<=tl.r){const raw=mprof(mo).atk*(tl.mult||1.8)*(.9+rnd()*.2);damagePlayer(tl.mg?magDmg(raw,pd()):Math.max(1,Math.round(raw*(1-pd().hardDef)-pd().softDef)),t(tl.nameK||"slam"));if(tl.deb&&!player.dead)applyDeb(tl.deb,mo)}}}
   {const dd=MON[mo.type];   // aggressive monsters (v19) attack first when you come close
     if(!mo.aggro&&dd.aggr&&!mo.boss&&aggroGrace<=0&&!player.dead&&dist(mo,player)<=dd.aggr+(mo.elite?1:0)){mo.aggro=true;mo.speed=dd.speed*1.6;mo.path=[];mo.repath=0;fx.push({k:"dmg",x:mo.x,y:mo.y,t:0,d:.8,txt:"!",c:"#ff5a6a",big:true,ox:0,h:dd.h*mSize(mo)+10});packAggro(mo)}}
   if(mo.aggro&&!player.dead){
@@ -7945,8 +8236,8 @@ function updateMon(mo,dt){
     if(mo.tele){mo.path=[];mo.moving=false}
     else if(d<=16&&monSkillTick(mo,d,dt)){}
     else if(d>16){mo.aggro=false;mo.speed=MON[mo.type].speed;walkTo(mo,Math.floor(mo.home[0]),Math.floor(mo.home[1]))}
-    else if(d>1.25){mo.repath-=dt;if(mo.repath<=0||!mo.path.length){mo.repath=.5;walkTo(mo,Math.floor(player.x),Math.floor(player.y))}}
-    else{mo.path=[];mo.moving=false;faceToward(mo,player.x,player.y);if(mo.atkCd<=0){mo.atkCd=MON[mo.type].aspd;monHit(mo)}}
+    else if(d>(MON[mo.type].rng||1.25)){mo.repath-=dt;if(mo.repath<=0||!mo.path.length){mo.repath=.5;walkTo(mo,Math.floor(player.x),Math.floor(player.y))}}
+    else{mo.path=[];mo.moving=false;faceToward(mo,player.x,player.y);if(mo.atkCd<=0){mo.atkCd=MON[mo.type].aspd/(mo.rage?1.3:1);if(MON[mo.type].rng)monShoot(mo);else monHit(mo)}}
   }else{
     mo.wait-=dt;
     if(!mo.path.length&&mo.wait<=0){const wr=mo.boss?3:mo.pack?PACK_WANDER*2:8,tx=Math.floor(mo.home[0]+(Math.random()-.5)*wr),ty=Math.floor(mo.home[1]+(Math.random()-.5)*wr);if(walk(tx,ty))walkTo(mo,tx,ty);mo.wait=(mo.boss?6:2)+Math.random()*5}
@@ -8509,7 +8800,7 @@ function render(){
     switch(o.kind){
       case "tree":drawTree(o);break;case "lamp":drawLamp(o);break;case "bld":drawBuilding(o.b);break;case "crystal":drawCrystal();break;case "eye":drawEye(o);break;case "pod":drawPod(o);break;case "tent":drawTent(o);break;case "mono":drawMono(o);break;case "float":drawFloat(o);break;
       case "barrel":drawBarrel(o);break;case "crate":drawCrate(o);break;case "stall":drawStall(o);break;
-      case "shroom":drawShroom(o);break;case "crys":drawCrys(o);break;case "rock":drawRock(o);break;case "portal":drawPortal(o);break;case "stele":drawStele(o);break;case "pillar":drawPillar(o);break;case "brazier":drawBrazier(o);break;case "warnsign":drawWarnSign(o);break;
+      case "shroom":drawShroom(o);break;case "crys":drawCrys(o);break;case "rock":drawRock(o);break;case "portal":drawPortal(o);break;case "stele":drawStele(o);break;case "pillar":drawPillar(o);break;case "brazier":drawBrazier(o);break;case "warnsign":drawWarnSign(o);break;case "vein":drawVein(o);break;case "bgate":drawBGate(o);break;
       case "mon":drawMon(o.c,o.sx,o.sy);break;
       case "char":{const c=o.c;let sx=o.sx,sy=o.sy;
         if(c.me&&c.lunge>0&&c.target){const [tx,ty]=P(c.target.x,c.target.y),l=Math.sin((1-c.lunge/.2)*Math.PI)*7,d=Math.hypot(tx-sx,ty-sy)||1;sx+=(tx-sx)/d*l;sy+=(ty-sy)/d*l}
@@ -8715,7 +9006,7 @@ function updateIdle(dt){
 function update(dt){
   hsCd-=dt;if(hitStopT>0){hitStopT-=dt;return}
   shakeT=Math.max(0,shakeT-dt);
-  T+=dt;gateT=Math.max(0,gateT-dt);aggroGrace=Math.max(0,aggroGrace-dt);if((T*2|0)!==(update.q|0)){update.q=T*2;AUD.setBoss(cur.id==="field3"&&cur.monsters.some(m=>m.boss&&m.aggro&&!m.dead&&m.dieT<=0))}watchWins(dt);updateMobBar(dt);updateAnn(dt);
+  T+=dt;gateT=Math.max(0,gateT-dt);aggroGrace=Math.max(0,aggroGrace-dt);if((T*2|0)!==(update.q|0)){update.q=T*2;AUD.setBoss(cur.monsters.some(m=>m.boss&&m.aggro&&!m.dead&&m.dieT<=0))}watchWins(dt);updateMobBar(dt);updateAnn(dt);
   if(player.dead){deathT-=dt;if(deathT<=0)respawn()}
   if(holding&&lastHold&&!player.dead){holdTimer+=dt;if(holdTimer>.3){holdTimer=0;const [wx,wy]=toWorld(lastHold.x,lastHold.y),[tx,ty]=isoToTile(wx,wy),a=Math.floor(tx),b=Math.floor(ty);if(!player.target&&inb(a,b)&&walk(a,b)&&walkTo(player,a,b))setMarker(a+.5,b+.5)}}
   if((winId==="storage"||winSide==="storage")&&(cur!==town||Math.hypot(player.x-NARVIS_AT[0],player.y-NARVIS_AT[1])>5))closeWin();   // v20.4: the Pocket Dimension closes when you walk away from Narvis
@@ -8860,7 +9151,7 @@ const WIN={
       return `<div class="row qrow" style="--qc:${QCOL[d.type]}"><span class="qbar"></span><div class="grow"><b>${t(d.titleK)}</b> <small style="display:inline;color:${QCOL[d.type]}">${t("qt_"+d.type)}${d.rep?" · "+t("q_repeat"):""}${lv?" · Lv "+lv:""}</small><small>${on?objText(id):fmtObjPreview(id)}</small></div>
       ${on?`<button class="btn sm ${pin?"pri":""}" data-act="pin" data-q="${id}">${t(pin?"q_tracked":"q_track")}</button><button class="btn sm" data-act="auto" data-q="${id}">${t("q_auto")}</button>${id!=="main"&&id!=="arch"?`<button class="btn sm" data-act="abandon" data-q="${id}">×</button>`:""}`:doneToday(id)?`<span class="qs done">${t("q_today")}</span>`:`<button class="btn sm pri" data-act="accept" data-q="${id}">${t("q_accept")}</button>`}</div>`};
     const grp={};for(const id of av){const k=QD[id].qmap||"gen";(grp[k]=grp[k]||[]).push(id)}
-    const groups=["field1","field2","field3","geo","ruins","gen"].filter(k=>grp[k]).map(k=>`<div class="w-sec sub">${k==="gen"?t("q_general"):t(MAPS[k].nameK)}${k!=="gen"&&MAPS[k].rec?` <span class="muted">· ${fmt("rec",{n:num(MAPS[k].rec)})}</span>`:""}</div><div class="rows">${grp[k].sort((a,b)=>qlv(a)-qlv(b)).map(id=>row(id,false)).join("")}</div>`).join("");
+    const groups=["field1","field2","field3","geo","ruins","ashfall","gen"].filter(k=>grp[k]).map(k=>`<div class="w-sec sub">${k==="gen"?t("q_general"):t(MAPS[k].nameK)}${k!=="gen"&&MAPS[k].rec?` <span class="muted">· ${fmt("rec",{n:num(MAPS[k].rec)})}</span>`:""}</div><div class="rows">${grp[k].sort((a,b)=>qlv(a)-qlv(b)).map(id=>row(id,false)).join("")}</div>`).join("");
     return `<div class="w-sec">${t("q_active")} <span class="muted">· ${fmt("q_count",{n:S.pins.filter(id=>S.q[id]&&S.q[id].s==="active").length})}</span></div><div class="rows">${act.map(id=>row(id,true)).join("")||`<p class="muted">—</p>`}</div>
     <div class="w-sec">${t("q_avail")}</div>${groups||`<p class="muted">—</p>`}
     <p class="muted">${fmt("q_completed",{n:done})}</p>`},
@@ -8986,8 +9277,8 @@ addEventListener("pointerup",()=>{ptrDown=false},true);addEventListener("pointer
 for(const sl of WSLOT)$("#"+sl.x).addEventListener("click",()=>closeSlot(sl.k));
 
 /* ================= World Map: connected maps, teleport with Scandium, and per-map info ================= */
-const WM={town:{lx:34,ly:54,px:28,py:50},field1:{lx:58,ly:26,px:72,py:36},field2:{lx:66,ly:70,px:28,py:22},field3:{lx:88,ly:28,px:72,py:8},geo:{lx:15,ly:26,px:72,py:64},ruins:{lx:34,ly:86,px:28,py:80}};
-const WM_LINKS=[["town","field1"],["field1","field2"],["field2","field3"],["town","geo"],["town","ruins"]];
+const WM={town:{lx:34,ly:54,px:28,py:50},field1:{lx:58,ly:26,px:72,py:36},field2:{lx:66,ly:70,px:28,py:22},field3:{lx:88,ly:28,px:72,py:8},geo:{lx:15,ly:26,px:72,py:64},ruins:{lx:34,ly:86,px:28,py:80},ashfall:{lx:62,ly:90,px:72,py:88}};
+const WM_LINKS=[["town","field1"],["field1","field2"],["field2","field3"],["town","geo"],["town","ruins"],["ruins","ashfall"]];
 const TP_COST=150;   // Scandium per map you pass
 function mapDist(a,b){if(a===b)return 0;const q=[[a,0]],seen=new Set([a]);while(q.length){const [m,d]=q.shift();for(const n of NEIGH[m]||[]){if(n===b)return d+1;if(!seen.has(n)){seen.add(n);q.push([n,d+1])}}}return 99}
 const tpCost=id=>TP_COST*mapDist(cur.id,id);
@@ -8995,7 +9286,7 @@ const mapCols=id=>FPAL[id]?FPAL[id].mini:["#3c8a4a","#6ab56a","#c8e0a0"];
 const mapMons=id=>Object.keys(MON).filter(k=>MON[k].map===id&&!MON[k].boss);
 const mapBoss=id=>Object.keys(MON).filter(k=>MON[k].map===id&&MON[k].boss);
 const elChip=e=>e?`<span class="el" style="--ec:${ELC[e]||"#ccc"}">● ${t("el_"+e)}</span>`:"";
-const MCOL={faultcrawler:"#c9b08a",tidewraith:"#6ab8f0",stratagolem:"#a89478",cinderling:"#ff7a2a",magmaback:"#d8401a",ashsentinel:"#ff9a4a"};
+const MCOL={faultcrawler:"#c9b08a",tidewraith:"#6ab8f0",stratagolem:"#a89478",cinderling:"#ff7a2a",magmaback:"#d8401a",ashsentinel:"#ff9a4a",scoriahound:"#c86a3a",cinderbow:"#e8c8a0",pyromagus:"#ff5a2a",magmagk:"#ff8a3a"};
 function monCol(k){if(MCOL[k])return MCOL[k];const d=MON[k],P0=MPAL[k];return d.sprite==="lumite"?P0.mid:d.sprite==="crawlix"?P0.c[0]:d.sprite==="gadolith"?P0.f2:P0.i1}
 function tpArrive(id){   // arrive at the entrance that leads back toward town
   if(id==="town")return TOWN_SPAWN.slice();
@@ -9044,12 +9335,12 @@ WIN.mapinfo=()=>{
       <div class="kv"><span>${t("mt_boss")}</span><b>${bs.length?bs.map(k=>t(MON[k].nameK)).join(", "):"—"}</b></div>
       <div class="kv"><span>${t("mi_links")}</span><b>${links||"—"}</b></div></div>`;
   }else if(mapTab==="mon"){
-    body=mons.length?`<div class="rows">${mons.map(k=>{const d=MON[k],pr=REOC.MONC[k];return `<div class="row mrow"><span class="m-dot" style="--c:${monCol(k)}"></span><div class="grow"><b>${t(d.nameK)}</b> <small style="display:inline">Lv ${d.lv} ${elChip(pr.elem)}</small><small>HP ${num(d.hp)} · EXP ${num(d.exp[0])} / ${num(d.exp[1])} · ${d.sc[0]}–${d.sc[1]} Sc</small>${d.aggr?`<small>⚔ ${t("mi_aggr")} · ${(d.skills||[]).map(x=>t(MSK[x].nameK)).join(", ")}</small>`:""}</div></div>`}).join("")}</div><p class="muted">${t("mi_elite_note")}</p>`:`<p class="muted">${t("mi_none_mon")}</p>`;
+    body=mons.length?`<div class="rows">${mons.map(k=>{const d=MON[k],pr=REOC.MONC[k];return `<div class="row mrow"><span class="m-dot" style="--c:${monCol(k)}"></span><div class="grow"><b>${t(d.nameK)}</b> <small style="display:inline">Lv ${d.lv} ${elChip(pr.elem)}</small><small>HP ${num(d.hp)} · EXP ${num(d.exp[0])} / ${num(d.exp[1])} · ${d.sc[0]}–${d.sc[1]} Sc</small>${d.aggr?`<small>⚔ ${t("mi_aggr")}${d.speed>=2?" · "+t("mi_fast"):""}${d.rng?" · "+fmt(d.mag?"mi_mag":"mi_rng",{n:d.rng}):""} · ${(d.skills||[]).map(x=>t(MSK[x].nameK)).join(", ")}</small>`:""}</div></div>`}).join("")}</div><p class="muted">${t("mi_elite_note")}</p>`:`<p class="muted">${t("mi_none_mon")}</p>`;
   }else if(mapTab==="boss"){
     body=bs.length?bs.map(k=>{const d=MON[k],pr=REOC.MONC[k];return `<div class="boss-card"><div class="bc-h"><span class="m-dot" style="--c:${monCol(k)}"></span><div><b>${t(d.nameK)}</b><small>${t("bt_"+k)}</small></div><span class="bc-lv">Lv ${d.lv}</span></div>
       <div class="kvs"><div class="kv"><span>HP</span><b>${num(d.hp)}</b></div><div class="kv"><span>${t("mi_el")}</span><b>${elChip(pr.elem)}</b></div><div class="kv"><span>EXP</span><b>${num(d.exp[0])} / ${num(d.exp[1])}</b></div><div class="kv"><span>Scandium</span><b>${num(d.sc[0])}–${num(d.sc[1])}</b></div><div class="kv"><span>${t("mi_respawn")}</span><b>120 s</b></div></div>
       <p class="mi-desc">${t("mi_mech_"+k)}</p>
-      <div class="w-sec">${t("mi_boss_rew")}</div><div class="dropl">${[["mat_gheart","1"],["mat_core","×3"],["mat_ore","×5"],["refine_ore","×2–4"]].map(([id,q])=>`<div class="drop"><span class="ii-ic">${itemArt(id)}</span><b>${itemName(id)}</b><em>${q}</em></div>`).join("")}<div class="drop"><span class="ii-ic">${itemArt(gearId("fighter","weapon",20,5,0))}</span><b>${t("mi_gear2")}</b><em>×2</em></div></div></div>`}).join(""):`<p class="muted">${t("mi_none_boss")}</p>`;
+      <div class="w-sec">${t("mi_boss_rew")}</div><div class="dropl">${[[d.heart||"mat_gheart","1"],...(LOOT[k]||[]).map(([id,ch,mn,mx])=>[id,mn===mx?"×"+mn:`×${mn}–${mx}`]),["mat_core","×3"],["mat_ore","×5"],["refine_ore","×2–4"]].map(([id,q])=>`<div class="drop"><span class="ii-ic">${itemArt(id)}</span><b>${itemName(id)}</b><em>${q}</em></div>`).join("")}<div class="drop"><span class="ii-ic">${itemArt(gearId("fighter","weapon",tierOf(d.lv),5,0))}</span><b>${t("mi_gear2")}</b><em>×2</em></div></div></div>`}).join(""):`<p class="muted">${t("mi_none_boss")}</p>`;
   }else if(mapTab==="drop"){
     const maxLv=mons.length?Math.max(...mons.map(k=>MON[k].lv)):0;
     body=mons.length?mons.map(k=>`<div class="w-sec sub2">${t(MON[k].nameK)} <span class="muted">Lv ${MON[k].lv}</span></div><div class="dropl">${(LOOT[k]||[]).map(([id,ch,mn,mx])=>`<div class="drop"><span class="ii-ic">${itemArt(id)}</span><b>${itemName(id)}</b><em>${Math.round(ch*100)}%${mx>1?` · ×${mn}–${mx}`:""}</em></div>`).join("")}<div class="drop"><span class="ii-ic">${itemArt("refine_ore")}</span><b>${itemName("refine_ore")}</b><em>${Math.round((REFINE_CH[k]||.02)*100)}%</em></div></div>`).join("")
@@ -9644,7 +9935,7 @@ function updateMobBar(dt){
   if(mobHold>0)mobHold-=dt;else mobTrail=Math.max(pct,mobTrail-dt*.7);
   $("#moFill").style.width=(pct*100).toFixed(1)+"%";$("#moTrail").style.width=(mobTrail*100).toFixed(1)+"%";
   const tx=`${num(Math.ceil(Math.max(0,m.hp)))} / ${num(m.maxHp)}`;if($("#moT").textContent!==tx)$("#moT").textContent=tx;
-  const w=$("#moWarn"),wt=m.boss&&m.tele?t("slam_warn"):"";if(w.textContent!==wt){w.textContent=wt;w.classList.toggle("on",!!wt)}
+  const w=$("#moWarn"),wt=m.boss&&m.tele?t(MON[m.type].warnK||"slam_warn"):"";if(w.textContent!==wt){w.textContent=wt;w.classList.toggle("on",!!wt)}
 }
 
 /* ---- status islands (v18.3): FPS | ping | online | time, one island each, left of the minimap ---- */
@@ -9864,7 +10155,11 @@ function frame(now){
 $("#errReset").addEventListener("click",()=>{try{SLS.removeItem(SAVE_KEY);if(AUTH.isGuest)SLS.removeItem(OLD_KEY)}catch(_){}resetDone=true;location.reload()});
 $("#errHide").addEventListener("click",()=>$("#errBox").classList.add("hidden"));
 window.addEventListener("error",e=>showErr(e.error||e.message));
-window.__reo={openCreator,closeCreator,basicLv,basicRaise,hasBasic,stoMove,stoSlots,sitDown,createParty,helperTalk,narvisTalk,skAvail,skRaise,skLvOf,lvFor,slotLv,buildSlots,skFix,volleys,balls,GATE,gateCheck,MON,MSK,castMonSkill,updateMon,gainItem,AUD,npcBlocked,staticBox,netExpand,applyUiMode,acceptQuest,closeWin,t,tpCost,doTeleport,announce,sortInventory,invMax,stopIdle,mapDist,gFull,GBASE,itemArt,GEAR_TINT,RARN,ITEMDB,equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setLang,WIN,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
+/* v22 debug / wiki helper: draw one monster sprite on a transparent canvas and return a PNG data URL */
+function monPortrait(k,W,H,sc,o){const c=document.createElement("canvas");c.width=W;c.height=H;const A=c.getContext("2d"),g0=g;
+  const fake=Object.assign({type:k,phase:1.3,dir:-1,moving:false,aggro:false,tele:null,rage:false,elite:false},o||{});
+  g=A;A.translate(W/2,H-14);A.scale(sc,sc);try{MDRAW[MON[k].sprite](fake,MPAL[k])}finally{g=g0}return c.toDataURL("image/png")}
+window.__reo={monPortrait,openCreator,closeCreator,basicLv,basicRaise,hasBasic,stoMove,stoSlots,sitDown,createParty,helperTalk,narvisTalk,skAvail,skRaise,skLvOf,lvFor,slotLv,buildSlots,skFix,volleys,balls,GATE,gateCheck,MON,MSK,castMonSkill,updateMon,gainItem,AUD,npcBlocked,staticBox,netExpand,applyUiMode,acceptQuest,closeWin,t,tpCost,doTeleport,announce,sortInventory,invMax,stopIdle,mapDist,gFull,GBASE,itemArt,GEAR_TINT,RARN,ITEMDB,equipSlotOf,equipUid,gainBase,rollDropGear,gParse,gearMods,pd,setName,rollDrops,gReqs,setArch,cpV,inv:()=>S.inv,QD,getStill:()=>stillT,setStill:v=>{stillT=v},stopIdleManual:()=>{autoIdleBlock=true;setIdle(false)},talkTo,chooseArchetype,openWin,REOC,setLang,WIN,setArch,BF,CD,pd,useSkill,get SLOTS(){return SLOTS},LITE,S,player,goMap,MAPS,town,setIdle,get cur(){return cur},save,hitMon,useSlot,startNav,acceptQuest,offlineCalc,processAway,settleIdle,simClose,onLeave,whenReady};
 requestAnimationFrame(frame);
 };
 

@@ -192,6 +192,19 @@ A drop's tier = the monster's level rounded down to a multiple of 10 (minimum Lv
 | `mat_relic` | Scorched Relic / ซากโบราณไหม้เกรียม | 45 |
 | `mat_infernoshard` | Inferno Shard / เศษหัวใจนรก | 160 |
 
+## v22 materials (Ashfall Ruins)
+| ID | EN / TH | Sell |
+|---|---|---|
+| `mat_scoria` | Scoria Fang / เขี้ยวหินภูเขาไฟ | 85 |
+| `mat_neodym` | Neodymium Ore / แร่นีโอดิเมียม | 280 |
+| `mat_revash` | Revenant Ash / เถ้าวิญญาณ | 100 |
+| `mat_samar` | Samarium Ore / แร่ซาแมเรียม | 320 |
+| `mat_pyroglyph` | Pyroclast Glyph / อักขระไพโรคลาสต์ | 120 |
+| `mat_prometh` | Promethium Ore / แร่โพรมีเทียม | 400 |
+| `mat_calheart` | Caldera Heart / หัวใจปล่องภูเขาไฟ (quest item, boss) | 1,500 |
+
+Ashfall drops are in `FIELD-ASHFALL.md` (Lv 42–48 monsters drop tier 40 gear; the Lv 55 boss drops tier 50). A boss's heart item comes from `MON.<boss>.heart` (default Crystal Heart).
+
 Drop chances, Refine Ore chances (6–10%) and sources are in `FIELD-GEOSYNCLINE.md` and `FIELD-RUINS.md`. Gear tier: Lv 25–29 monsters drop tier 20, Lv 30+ drop tier 30. These materials are not quest items and have no use yet (crafting is still open).
 
 ## Inventory v19.2 (light window; replaces the page size and tabs of v17)

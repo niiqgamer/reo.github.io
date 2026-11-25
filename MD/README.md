@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v21h. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v22. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -21,6 +21,7 @@
 | FIELD-03.md | Field 03 (CP 900): monsters and the Gadolith boss |
 | FIELD-GEOSYNCLINE.md | Path to the Geosyncline (town west gate, Lv 25+ / CP 2,000+): aggressive Earth and Water monsters, skills, drops |
 | FIELD-RUINS.md | Road to the Ruins (town south gate, Lv 30+ / CP 3,000+): aggressive Fire monsters, skills, drops |
+| FIELD-ASHFALL.md | Ashfall Ruins (Ruins south portal, Lv 40+ / CP 6,000+, rec. 9,000): fast, far-seeing, ranged and magic Fire monsters, boss Magma Gatekeeper |
 | WORLD-MAP.md | World Map, teleport, Map Info, announcements |
 | LOADING.md | Loading screens and background asset builds |
 
@@ -43,12 +44,19 @@
 | COMBAT-TEST-REPORT.md | Simulator results and balance evidence (historical) |
 
 ## Key numbers (single source)
-- Recommended CP: Field 01 **150**, Field 02 **450**, Field 03 **900**, Path to the Geosyncline **2,000**, Road to the Ruins **3,000**.
-- Gates: Geosyncline needs Base Lv 25+ and CP 2,000+; Ruins needs Base Lv 30+ and CP 3,000+.
+- Recommended CP: Field 01 **150**, Field 02 **450**, Field 03 **900**, Path to the Geosyncline **2,000**, Road to the Ruins **3,000**, Ashfall Ruins **9,000**.
+- Gates: Geosyncline needs Base Lv 25+ and CP 2,000+; Ruins needs Base Lv 30+ and CP 3,000+; Ashfall Ruins needs Base Lv 40+ and CP 6,000+.
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v21h (this update)
+## Changes in v22 (this update)
+- **New map: Ashfall Ruins / ซากอารยธรรมพรอมีเธีย** (`ashfall`, `FIELD-ASHFALL.md`), through a new **south portal on Road to the Ruins** (Lv 40+ and CP 6,000+, recommended CP 9,000, two "Monster Lv.40+" signs). The ruins of Promethea, buried by a volcanic eruption that also spewed rare earth veins: ash ground, lava fissures (palette-coloured chasm tiles), lava pools, glowing rare earth veins (`vein`), broken columns, a boss arena and the Sealed Caldera Gate (`bgate`). Music `ashfall`.
+- **Three aggressive monsters, ~3× Road to the Ruins**, fast (chase 3.2–4.2 tiles/s) and far-seeing (aggro 6.5–8, Elites +1): **Scoria Hound** (Lv 42, melee pack hunter), **Cinderbow Revenant** (Lv 45, **ranged 7 tiles**), **Pyroclast Magus** (Lv 48, **magic 6 tiles**: never misses, armor does not help, MDEF does). Five new monster skills, some magic (`MSK.*.mg`). New monster fields `rng` and `mag`; `monShoot`, `magDmg` (`COMBAT-FORMULAS.md`).
+- **Boss: Magma Gatekeeper** (Lv 55, 120,000 HP): Caldera Slam, Magma Gate, enrage below 30% HP. Boss code is generic now (`slam`, `warnK`, `enrage`, `heart`, `downK`, `sysK`, `col` per boss; boss music on any map with a boss; Map Info Boss tab rewards per boss).
+- 7 new items (rare earth ores Neodymium / Samarium / Promethium, Scoria Fang, Revenant Ash, Pyroclast Glyph, quest item Caldera Heart), 3 hunts, Elite Hunt: Ashfall, Boss Hunt: Magma Gatekeeper. Map Info Monster tab shows Fast / Ranged / Magic. World Map node beside Ruins. Text in en / th / jp.
+- Wiki: new map, monsters, boss section (both bosses), hunts for Geosyncline / Ruins / Ashfall; new images in `images/monsters` and `images/maps`. `window.__reo.monPortrait` renders a monster sprite for wiki images.
+
+## Changes in v21h
 - **Aim Strike is an attack skill again, toned down** (new spec from NIIQ, `SKILL-SPEC.md` §3m): one arrow of 100–200% ATK **in total**; a 20–38% chance to split into 2 arrows (Lv 1–5) or 3 (Lv 6–10) that **share** that total; each arrow splashes 50% of its share on 3 × 3; crit chance ×0.5. SP 12–20, FCT 0.5 s, VCT 1 s, Global Delay 2 s, cooldown 2 s. The v21g buff is gone.
 - **Aiming Shower:** FCT 0.5 s, VCT 0.5 s, Global Delay 0.1 s, **cooldown 2 s** (was FCT 0.1 s, CD 0).
 - **Balance:** Ranger CP Lv 10 / 20 / 30 = 637 / 1,023 / 1,708 (Fighter 598 / 1,090 / 1,576), Ruins DPS 185 (v21g 407). Aim Strike is now slightly below just shooting against one target (the cast stops basic attacks); it pays off on packs.
