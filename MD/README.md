@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v20.17. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v20.18. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -48,7 +48,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v20.17a (this update)
+## Changes in v20.18 (this update)
+- **Spellcaster spells rebalanced, all Lv 1–5.** **Fire Bolt** 1 / 3 / 5 / 7 / 10 fireballs of 120% MATK, SP 12 / 17 / 22 / 27 / 40, FCT 0.5–1.0 s (VCT 0), Global Delay 1 s; every fireball always falls even after the target dies, and no basic-attack bolt leaves the hand as a spell goes off. **Frost Nova → Freezer** (1 enemy, 110–200% MATK Water, Freeze 35–75%). **Lightning Spear** is ground magic: 2–10 spears of 100% MATK Wind on a 5 × 5 area, FCT 1.5 + VCT 1.0–1.8 s, GD 2 s. **Stone Spike → Petrifaction** (Self Cast, 7 × 7 around the caster, 75–100% MATK Earth, Petrifaction 30–75%). New status debuffs: Freeze (Wind +50%) and Petrifaction (Fire +50%) stop the monster; time, resistance and boss immunity are placeholders (⚠). New icons for the four spells. Old saves keep their levels (Fire Bolt above 5 drops to 5, points come back). The simulator now picks spell levels itself; Spellcaster CP at Lv 30 without gear 1,158 → 922. Bigger casting circles: a magic circle under the feet and a larger one at the hands while casting (`UI-UX.md` §27). See `SKILL-SPEC.md` §3, §3e–3h, `ARCHETYPES.md`, `COMBAT-FORMULAS.md` §5, `UI-UX.md`.
+
+## Changes in v20.17a
 - **Fix: inventory Sort crashed** ("loc is not defined"). `sortInventory` now builds its name-compare locale from the current language (`ja` for Japanese).
 
 ## Changes in v20.17

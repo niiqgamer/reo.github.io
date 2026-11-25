@@ -579,7 +579,7 @@ Replaces the old Skills list (§24). Window `skill`, title **Skills Tree / ผ�
 | Spellcaster | purple `#7440c8` |
 | Supporter | yellow `#d69a0c` |
 
-**Grid.** 5 columns × 5 rows (more rows if a line ever needs them); empty cells are dashed. **Column 1** holds the Beginner skills top to bottom: Basic Skill, First Aid, Heavy Strike. **Columns 2–5** hold the archetype, one row at a time (`skGrid`, `SKT_ROWS`): by default the passives on row 1 and the actives on row 2 (a row longer than 4 wraps). Spellcaster: row 1 Mana Flow, Elemental Attunement, Overload Energy; row 2 Fire Bolt, Frost Nova, Lightning Spear, Stone Spike. The Beginner tab has only column 1. Each cell: name on top (cut with … when long), the 56 px tile, then a pill under it.
+**Grid.** 5 columns × 5 rows (more rows if a line ever needs them); empty cells are dashed. **Column 1** holds the Beginner skills top to bottom: Basic Skill, First Aid, Heavy Strike. **Columns 2–5** hold the archetype, one row at a time (`skGrid`, `SKT_ROWS`): by default the passives on row 1 and the actives on row 2 (a row longer than 4 wraps). Spellcaster: row 1 Mana Flow, Elemental Attunement, Overload Energy; row 2 Fire Bolt, Freezer, Lightning Spear, Petrifaction (v20.18). The Beginner tab has only column 1. Each cell: name on top (cut with … when long), the 56 px tile, then a pill under it.
 
 | Tile | Look |
 |---|---|
@@ -589,16 +589,16 @@ Replaces the old Skills list (§24). Window `skill`, title **Skills Tree / ผ�
 | Selected | gold ring |
 | Draft (planned, not yet learned) | in colour again, with a gold **+N** badge (levels planned) |
 
-The pill shows the learned level. These tiles always show **◀ level ▶** instead: a learned active with levels (Fire Bolt, Overload Energy), and a learned skill that can still be raised (Basic Skill as a Beginner, a passive below its max). Any tile also shows them while it is selected or has a draft. (They must not depend on the selection alone: on a phone, closing Skill Info clears it.) ▶ is greyed only at the max level; with no points left it stays tappable and says "Not enough skill points." First Aid and Heavy Strike before they unlock show "Basic Lv 3" / "Basic Lv 4".
+The pill shows the learned level. These tiles always show **◀ level ▶** instead: a learned active with levels (every Spellcaster active), and a learned skill that can still be raised (Basic Skill as a Beginner, a passive below its max). Any tile also shows them while it is selected or has a draft. (They must not depend on the selection alone: on a phone, closing Skill Info clears it.) ▶ is greyed only at the max level; with no points left it stays tappable and says "Not enough skill points." First Aid and Heavy Strike before they unlock show "Basic Lv 3" / "Basic Lv 4".
 
 **Learning (draft, then Learn).** Tap a grey skill: it turns to colour as a **Lv 1 draft** and the pill becomes **◀ level ▶**. ▶ plans one more level (1 skill point each), ◀ takes one back (◀ at Lv 1 of a skill that is not learned drops the draft). Several skills can be planned at once. Nothing is spent until **Learn**; **Reset** drops every draft. Both are disabled when there is no draft. ▶ stops at the max level and when the drafts already use every point left ("Not enough skill points."). Basic Skill is planned the same way, but only as a Beginner; First Aid and Heavy Strike have no draft (they come from Basic Skill Lv 3 / 4; tapping them says so). Learning Basic Skill levels shows what each new level teaches and can start the Archetype Trial (`JOBS.md` §1b).
 
-**Level for the hotkey bar.** On a learned skill with levels (Fire Bolt, Overload Energy), ◀ ▶ below the learned level pick the level a drag puts on the hotkey bar (`data-dnd="s:id:lv"`; the slot keeps that level, `SKILL-SPEC.md` §5). Example: Fire Bolt learned at Lv 5, ◀ ◀ shows 3, drag → the slot casts Lv 3.
+**Level for the hotkey bar.** On a learned skill with levels (every Spellcaster active), ◀ ▶ below the learned level pick the level a drag puts on the hotkey bar (`data-dnd="s:id:lv"`; the slot keeps that level, `SKILL-SPEC.md` §5). Example: Fire Bolt learned at Lv 5, ◀ ◀ shows 3, drag → the slot casts Lv 3.
 
 **Skill Info window** (`skinfo`, title Skill Info / ข้อมูลสกิล / スキル情報, note icon). A left click on a tile opens it in the Item Info slot, with the Item Info size and placement (beside the tree; on a phone it floats in the middle over a dimmed screen). Escape or × closes it; switching tabs (when a line has more than one) closes it too. Content, in a white card:
 - the 76 px tile and "**Name Lv.learned/max**" in the line colour; chips: archetype, then Passive, or the targeting (**Self Cast** / **Target Cast**) and the kind (Physical, Magic · element, Heal, Buff, Zone, Movement);
 - the description;
-- **Level 1 … Level max**: what each level gives (Fire Bolt: fireballs, total % MATK, SP; Overload Energy: Overload Rate, duration, SP; Mana Flow / Elemental Attunement: the passive effect; Basic Skill: what the level teaches; a one-level active: SP and range). The learned level is bold, higher levels are faded. One-level passives have no level list;
+- **Level 1 … Level max**: what each level gives (Fire Bolt: fireballs, total % MATK, SP; Freezer / Petrifaction: % MATK, status chance, SP; Lightning Spear: spears, % MATK each, SP; Overload Energy: Overload Rate, duration, SP; Mana Flow / Elemental Attunement: the passive effect; Basic Skill: what the level teaches; a one-level active: SP and range). The learned level is bold, higher levels are faded. One-level passives have no level list;
 - **In details** (actives only): a table Lv | VCT (Variable Cast, before DEX/INT and gear) | FCT (Fixed Cast; 0 shows as –) | CD | Delay (Global Delay), base values from the skill data (`vct`, `fct`, `cd`, `gd`, `COMBAT-FORMULAS.md` §2b), the learned row tinted. No line under the header row. This replaces the old Skills list line "Cast x s (VCT a + FCT b)" from v20.9.
 SP shown is the real cost (after Mana Flow).
 
@@ -623,10 +623,10 @@ SP shown is the real cost (after Mana Flow).
 | | Evasive Leap | white-green wing with dash lines |
 | | Eagle Eye (passive) | golden eagle eye under a brow |
 | | Steady Aim (passive) | scope lens with a red reticle |
-| Spellcaster | Fire Bolt | fireball comet (red, orange, white core) |
-| | Frost Nova | ice-crystal snowflake in a frost ring |
-| | Lightning Spear | yellow lightning javelin |
-| | Stone Spike | three stone spikes from cracked ground |
+| Spellcaster | Fire Bolt | three fireball comets falling onto one glowing spot (v20.18) |
+| | Freezer | a monster locked in a block of ice, ice shards around (v20.18) |
+| | Lightning Spear | three lightning spears plunging into a dashed square on the ground (v20.18) |
+| | Petrifaction | ammonite fossil in stone on a cracked slab (v20.18) |
 | | Overload Energy | arcane orb with a star, orbit rings, green up arrow |
 | | Mana Flow (passive) | blue mana drop with a flowing stream |
 | | Elemental Attunement (passive) | four element orbs (fire, water, wind, earth) round a gem |
@@ -650,6 +650,7 @@ The player is drawn from sprite sheets instead of the canvas chibi. Two sets: **
 - **Male poses (v20.14):** `images/hero/male/sit.webp`, `attack.webp`, `cast.webp`, same layout. All five male pose sheets (stand, run, sit, attack, cast) use the N, NE, E, SE / S, SW, W, NW grid, the sit sheet included. Scale 0.510 (standing sheet matched to the old male idle, 209 px); the sit sheet is drawn 0.9 of that. Stand and run cut but not used.
 - **Death (v20.15):** `death.webp` for both sets, in a 320 px frame (lying bodies are wide) with the feet at (160, 296); an anim can set its own `fw` / `ax` / `ay`. Male: 8 frames at 10 fps, stored at 3/4 size (240 px frames, `res: .75`, drawn back at full size) because the source was drawn small and scaled up about 2×; the source has 6 directions (N, NE, E, SE, S, W), so SW and NW are the SE and NE rows mirrored. Female: 3 frames at 5 fps; the source sheet's direction labels were wrong (its "N" column faces the camera), so columns were matched by what they show (S, SE, E, NE, N, NW, W, SW). The fall starts at `player.dieAt` (set in `die()`), plays once and holds the last frame until respawn. With a death sheet loaded the old tipped-over rotation is skipped (`heroDeath()`).
 - **Pose order (`drawHero`):** dead → death; casting (`player.casting`) → cast; walking → walk; a short pose flash `player.pose` for `player.poseT` s → attack or cast; sitting → sit; else idle. Basic attack sets the flash for 0.32 s (`attack` for physical, `cast` for magic); a finished skill sets it for 0.36 s (`attack` for physical skills, `cast` for the rest) and turns the hero toward the target. A set without a pose sheet falls back to idle, and sitting without a sit sheet uses the pressed-down idle frame.
+- **Casting circles (v20.18):** while `player.casting`, a magic circle turns under the feet (`castFeetFx`, radius 46 px at zoom 1: soft glow, dashed outer ring with rune ticks, gold ring with a turning hexagram) and a bigger circle glows at the hands (`castHandFx`, radius 19 px: glow, dashed ring, tick ring, turning pentagram, sparks), placed toward the facing direction and drawn behind the body when the hero faces away. The small ring baked into `cast.webp` stays under it. The code-drawn (SVG-style) hero made in the character creator (`drawHero8`, the default look) got the same: feet circle radius 70 → 112, hand circle 22 → 42 (hero units), and the hand circle is never squashed below 45% width when seen from the side. Fire Bolt's ring of fire at the feet (`fireRune`) is about 1.45 × bigger.
 - **Animation:** walking steps through the walk frames with the walk phase (one cycle = 2π; male 4 frames, about 7 fps; female 3 frames). Standing plays the idle frames at their fps (female); a one-frame idle (male) gets a small breathing bob instead. **Sitting** reuses the idle frame pressed down a little (no sit art yet). **Dead** keeps the old tipped-over rotation.
 - **Portraits:** the player card avatar (first idle frame, still), the Character window doll and the Status portrait use the front (S) direction of the chosen set.
 - **Fallback:** while the sheets load, or if they fail, the old chibi is drawn. Other players and NPCs still use the chibi.

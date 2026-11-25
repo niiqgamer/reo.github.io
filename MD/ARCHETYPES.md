@@ -44,22 +44,22 @@ Basic hits and Power Strike add Momentum (max 5, lost after 5 s without hitting)
 | Steady Aim | Distance bonus, +5% crit |
 
 ## Spellcaster — Casting + elements
-Every spell has a variable cast (VCT) reduced by DEX and INT (×(1 − √((DEX × 2 + INT) / 530))) and a fixed cast (FCT, 0 for now) only gear reduces (`COMBAT-FORMULAS.md` §2b). Spells **never miss**. One spell per element, so the caster can always hit a weakness:
+Every spell has a variable cast (VCT) reduced by DEX and INT (×(1 − √((DEX × 2 + INT) / 530))) and a fixed cast (FCT) only gear reduces (`COMBAT-FORMULAS.md` §2b). Spells **never miss**. One spell per element, so the caster can always hit a weakness:
 
 | Monster element | Weak to | Spell |
 |---|---|---|
-| Water (Lumite, Cryoculus) | Wind | Lightning Spear |
+| Water (Lumite, Cryoculus) | Wind | Lightning Spear (5 × 5 area) |
 | Earth (Crawlix, Shardback) | Fire | Fire Bolt |
-| Wind (Nebulite) | Earth | Stone Spike |
-| Fire (Oculoth) | Water | Frost Nova (area) |
+| Wind (Nebulite) | Earth | Petrifaction (7 × 7 around the caster) |
+| Fire (Oculoth) | Water | Freezer |
 
-| Active | Effect | SP | CD | VCT (FCT 0) |
+| Active (Lv 1–5) | Effect | SP | CD · Global Delay | Cast (FCT + VCT) |
 |---|---|---|---|---|
-| Fire Bolt | 100% MATK per fireball, fire; fireballs = skill Lv (Lv 1–10), dropped one at a time, 0.3 s apart (0.2 s from Lv 6), they stop if the target dies | 12 + 2 per Lv | 0 s, then 1.4 s Global Delay | 0.5 s + 0.3 s per Lv |
-| Frost Nova | 260% MATK water, all within 2.5 tiles; 40% freeze 2 s | 20 | 5 s | 0.6 s |
-| Lightning Spear | 380% MATK wind | 22 | 3 s | 1.6 s |
-| Stone Spike | 260% MATK earth; 20% stun 1 s | 16 | 2 s | 1.0 s |
-| Overload Energy (Lv 1–5, buff) | +Lv% Overload Rate to self and party within a 12 × 12 area; lasts 20 / 40 / 60 / 80 / 120 s; Global Delay 1 s | 50 / 65 / 80 / 95 / 110 | 60 s | 1 / 1.2 / 1.4 / 1.6 / 2 s |
+| Fire Bolt | Fire, 1 enemy: 1 / 3 / 5 / 7 / 10 fireballs of 120% MATK, 0.3 s apart (0.2 s at Lv 4–5); every fireball always falls | 12 / 17 / 22 / 27 / 40 | 0 s · 1 s | FCT 0.5 / 0.6 / 0.7 / 0.8 / 1.0 s, VCT 0 |
+| Freezer (was Frost Nova) | Water, 1 enemy: 110 / 130 / 150 / 170 / 200% MATK; Freeze 35–75% (Wind +50% on it) | 25 | 0 s · 0.5 s | FCT 0.16 + VCT 0.64 s |
+| Lightning Spear | Wind, ground magic on a 5 × 5 area: 2 / 4 / 6 / 8 / 10 spears of 100% MATK, 0.1 s apart, each hits every enemy inside | 30 / 42 / 54 / 66 / 78 | 0 s · 2 s | FCT 1.5 + VCT 1.0–1.8 s |
+| Petrifaction (was Stone Spike) | Earth, Self Cast, 7 × 7 around the caster: 75 / 80 / 85 / 90 / 100% MATK; Petrifaction 30–75% (Fire +50% on it) | 25 / 27 / 28 / 32 / 35 | 0 s · 0 s | FCT 0.2 + VCT 0.8 s |
+| Overload Energy (buff) | +Lv% Overload Rate to self and party within a 12 × 12 area; lasts 20 / 40 / 60 / 80 / 120 s | 50 / 65 / 80 / 95 / 110 | 60 s · 1 s | VCT 1 / 1.2 / 1.4 / 1.6 / 2 s |
 
 | Passive | Effect |
 |---|---|
@@ -70,7 +70,7 @@ Full per-level tables: `SKILL-SPEC.md` §3b–3d.
 
 Basic attack: Arcane Bolt, 70% MATK neutral, 7 tiles.
 
-Fire Bolt now follows `SKILL-SPEC.md` (draft, Lv 1–10, range 7, overMul 0.5). The other three spells are still Lv 5 prototypes. MATK now includes a flat `weaponMATK` from the staff (`COMBAT-FORMULAS.md` §1).
+All five Spellcaster actives have Lv 1–5 and follow `SKILL-SPEC.md` §3, §3d–3h (v20.18). Freeze and Petrifaction stop the monster and open a weakness (§3h). MATK includes a flat `weaponMATK` from the staff (`COMBAT-FORMULAS.md` §1).
 
 ## Supporter — Sustain
 Heal follows iRO Classic: `[(BaseLv + INT) / 8] × (4 + 8 × SkillLv)`. Overhealing turns into a **Grace shield** (up to 20% Max HP) that absorbs damage.
