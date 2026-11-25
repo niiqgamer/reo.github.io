@@ -31,7 +31,19 @@ Basic hits and Power Strike add Momentum (max 5, lost after 5 s without hitting)
 ## Ranger — Distance
 +2% damage per tile beyond 3, max +18% at 12 tiles (Steady Aim). Monsters must walk to you.
 
-| Active | Effect | SP | CD | Notes |
+v21f adds five skills from NIIQ (full tables: `SKILL-SPEC.md` §3i–3n). They all need **No Arrow** first (Skills Tree locks them until then). The old prototype skills below stay.
+
+| New skill | Effect | SP | Needs |
+|---|---|---|---|
+| No Arrow (passive, Lv 1–5) | Shoot Scandium arrows: every arrow shot costs 20 / 18 / 15 / 13 / 10 Sc. Not enough Sc = no shot | – | – |
+| Ranger Mastery (passive, Lv 1–10) | DEX +Lv, HIT +Lv, AGI +Lv | – | No Arrow 1 |
+| Focusing (Self Cast, Lv 1–10) | DEX and AGI +3–12% for 60–240 s | 25–70 | No Arrow 3 |
+| Aim Strike (Lv 1–10) | 1 arrow of 100–200% ATK; 20–40% chance to split into 2–7 arrows (0.1 s apart); each splashes 50% on a 3 × 3 area; can crit (×0.5). GD 0.1 s | 12–25 | No Arrow 5 |
+| Aiming Shower (Lv 1–10) | 1 arrow of 160–250% ATK, pushes the target 2 tiles back (bosses too); no crit. FCT 0.1 s, GD 0.1 s | 20 | No Arrow 5 |
+
+Points: the five new skills cost 45 points at max, the old six 6 points; a C1 Ranger has 49.
+
+| Active (prototype) | Effect | SP | CD | Notes |
 |---|---|---|---|---|
 | Double Strafe | 2 × 125% ATK | 10 | 1.2 s | Core rotation |
 | Arrow Shower | 90% ATK, all within 1.6 tiles of target | 14 | 4 s | AoE at target |

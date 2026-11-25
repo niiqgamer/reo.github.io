@@ -91,6 +91,9 @@ Equipment is kept only if it passes every condition that is set. Filtered drops 
 ### Offline idle (v21)
 Offline rewards use the same settings: Chosen targets limit the monster kinds of that map (empty = all), and the loot filter removes items and gear that would not be picked up. Bosses never count. Potions, skills and errands are not simulated offline.
 
+### No Arrow arrows (v21f)
+A Ranger with No Arrow pays Scandium per arrow while idling too. The idle summary shows Scandium net of arrows (and the arrow cost in brackets); the Scandium/h rate is net. Offline: the simulator also counts arrows (`killsPerHour` returns `aph`), the reward is income − arrows × cost (shown on its own line in the reward window), and the wallet never drops below 0.
+
 ## Saving when the game is closed
 
 - On `pagehide` or when the tab becomes hidden, the game saves immediately and records `away = { t, map, vip }` if idle was running in a field.

@@ -27,13 +27,15 @@
 | Sitting | HP and SP regen × 3 while sitting (v20.1, see `UI-UX.md` §23) | |
 | Potion healing | Red: `120 × (1 + VIT×0.02)` · Blue: `60 × (1 + INT×0.01)` | iRO |
 
+Ranger (v21f): **Ranger Mastery** adds DEX +Lv and AGI +Lv to the stats and HIT +Lv; **Focusing** then multiplies DEX and AGI by 1.03–1.12 (floored) while it runs (`derive`, `p.focus`).
+
 Stat points: 48 at creation, `⌊lv/5⌋ + 3` per level (1,273 total at Lv 99). Raising `x → x+1` costs `⌊(x−1)/10⌋ + 2` (628 for 1 → 99).
 
 ## 2. Physical damage
 
 ```
 hit%   = clamp(80 + HIT − targetFLEE, 5, 95)                       // iRO
-crit%  = CRIT × critMul − targetLUK/5   (basic attacks; only Piercing Shot among skills)
+crit%  = CRIT × critMul − targetLUK/5   (basic attacks; among skills only Piercing Shot (×2) and Aim Strike (×0.5, v21f))
 weaponRoll = weaponATK × U(lo, 1),  lo = min(1, 0.5 + DEX×0.005)    // DEX narrows the roll; DEX 100 = always max
 raw    = (statusATK + weaponRoll + masteryATK) × skill% × element × bonus
 bonus  = distance (Ranger) × leap shot (+60%) …

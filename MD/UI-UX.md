@@ -631,6 +631,11 @@ SP shown is the real cost (after Mana Flow).
 | | Evasive Leap | white-green wing with dash lines |
 | | Eagle Eye (passive) | golden eagle eye under a brow |
 | | Steady Aim (passive) | scope lens with a red reticle |
+| | No Arrow (passive, v21f) | glowing Scandium arrow rising out of an empty quiver inside a gold alchemy circle, "Sc 21" element tile |
+| | Ranger Mastery (passive, v21f) | recurve bow with a nocked arrow, laurel branch, green up chevrons and a gold star |
+| | Focusing (v21f) | green hunter's eye with a red reticle over a starry space disc, focus rings and converging lines |
+| | Aim Strike (v21f) | fully drawn bow; the arrow bursts into three arrows that hit a dashed 3 × 3 splash square |
+| | Aiming Shower (v21f) | heavy arrow striking a target that is pushed back: speed lines, dust and gold » chevrons |
 | Spellcaster | Fire Bolt | three fireball comets falling onto one glowing spot (v20.18) |
 | | Freezer | a monster locked in a block of ice, ice shards around (v20.18) |
 | | Lightning Spear | three lightning spears plunging into a dashed square on the ground (v20.18) |
@@ -711,3 +716,10 @@ Status effects on monsters are drawn in `drawMon` (helpers `stRecolor`, `stIceBa
 - **Start** (`fx` kind `stin`, from `applySt`): Freeze — white flash, ring and ice shards flying out; Petrifaction — dust cloud; Burning — a flare of sparks. The text แช่แข็ง! / แข็งเป็นหิน! / ติดไฟ! pops over it (`st_frz`, `st_ptr`, `st_brn`; `st_stun` is ready for later).
 - A Freeze on a Burning monster puts the fire out with a puff of steam. Burning damage ticks show as orange numbers every second.
 - **End** (`stout`): the ice shatters into falling shards, the stone crumbles into pebbles. Not shown when the monster dies.
+
+## 30. Arrows and Ranger skill effects (v21f)
+- **Arrows are real arrows.** Every Ranger shot (basic attack and every ranged skill) flies as an arrow (`fx` kind `arrow`, `arrowDraw`): dark outline, shaft, steel head and fletching, turned along its arc. A Ranger with **No Arrow** shoots **Scandium arrows**: pale-gold metal shaft, white head, gold feathers (the skill's colour), a soft glow and a sparkling trail. Without No Arrow it is a wooden arrow with red feathers. The old round projectile (`proj`) is left only for the magic basic attacks.
+- **Aim Strike:** the arrow flies; when it splits, a white-gold burst and the text **SPLIT ×N** (แยก ×N) pop at the split point halfway, and the extra arrows fan out from there and land 0.1 s apart. The 3 × 3 splash square shows once per cast.
+- **Aiming Shower:** the target slides back 2 tiles (12 tiles/s, stops at a wall) with a puff of dust.
+- **Focusing:** a ring at the feet and the buff icon (eye, ranger green) in the status island with its time left.
+- **Skills Tree requirements:** a skill whose requirement is not met shows a pill with the skill and level it needs (for example "No Arrow 3") instead of its level; tapping it says "Learn No Arrow Lv 3 first". Skill Info shows a **Requires:** line (red while not met). Lowering a draft of No Arrow drops the drafts that needed it.

@@ -275,6 +275,129 @@ Simulator on the game's combat module, 300 s, 3 seeds, auto stats, every skill a
 
 With every spell fixed at Lv 5 (no level choice) CP would be 724: Fire Bolt Lv 5 spends 40 SP and drops 10 fireballs on monsters that die after 2–3, so SP runs out. The CP drop matters for the gates (Geosyncline 2,000, Ruins 3,000; `CORE-LOOP.md`).
 
+## 3i. Ranger skills (v21f, from NIIQ)
+Five new Ranger skills. They are written to this standard and added next to the Ranger prototype skills (Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim), which stay as they were. **Skill requirements** are new in v21f (`SKREQ`): the Skills Tree does not let a skill be learned (or drafted) until the skills it needs reach their level; a draft counts. If a requirement is lost (points taken back), the skill that needed it goes back to Lv 0 and its points return.
+
+## 3j. No Arrow (passive)
+| | |
+|---|---|
+| MAX Lv | 5 |
+| Skill Requirement | – |
+| Skill Form | Passive |
+| Detail | ลูกธนูที่ทำมาจากแร่ Rare Earth นั้นหายากยิ่ง เหล่าบรรพบุรุษแห่ง Ranger จึงได้เล่นแร่แปรธาตุ จนเจอวิธีการที่จะยิงลูกธนูแต่ละดอกออกไป โดยไม่ต้องถือลูกธนูเลยสักดอก นั่นคือการยิงออกไปด้วยลูกธนู Scandium |
+
+| Lv | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|
+| Scandium per arrow | 20 | 18 | 15 | 13 | 10 |
+
+Built as (`NA_SC`, `payArrows`):
+- Every arrow that **leaves the bow** costs Scandium: a basic attack 1, Double Strafe 2, Arrow Shower / Piercing Shot / Aim Strike / Aiming Shower 1. The extra arrows of an Aim Strike split come out of the same arrow and cost nothing more (⚠ assumption).
+- Not enough Scandium = the shot does not happen (basic attack or skill; no SP is spent on a skill); a toast says so (at most every 3 s).
+- ⚠ **A Ranger without No Arrow shoots for free.** Arrow items do not exist yet, so there is nothing to spend. Once arrows exist, a Ranger without No Arrow should need them.
+- Idle: the session summary shows Scandium net of arrows. Offline idle subtracts the arrows the simulator shot (`aph`, arrows per hour) × the cost; the wallet never goes below 0.
+
+## 3k. Ranger Mastery (passive)
+| | |
+|---|---|
+| MAX Lv | 10 |
+| Skill Requirement | No Arrow Lv 1 |
+| Skill Form | Passive |
+| Detail | เรียนรู้สัญชาตญาณแห่งนักล่า เพิ่มความเชี่ยวชาญในการถือธนู ความแม่นยำ และการหลบหลีก |
+| Per level | Lv N: **DEX +N, HIT +N, AGI +N** (Lv 10: +10 each) |
+
+Built as stat points on top of the character's DEX and AGI (they count for ATK, ASPD, FLEE, cast time) plus flat HIT.
+
+## 3l. Focusing
+| | |
+|---|---|
+| MAX Lv | 10 |
+| Skill Requirement | No Arrow Lv 3 |
+| Skill Form | Self Cast · Type Buff, Support · Target Self |
+| FCT / VCT / Global Delay / Cooldown | not given = 0 |
+| Detail | ตั้งสมาธิให้แน่วแน่ เพ่งกระแสจิตทะลุมวลอวกาศ เพื่อเพิ่มความสามารถให้ตัวเอง |
+
+| Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| DEX, AGI | +3% | +4% | +5% | +6% | +7% | +8% | +9% | +10% | +11% | +12% |
+| Time | 60 s | 80 s | 100 s | 120 s | 140 s | 160 s | 180 s | 200 s | 220 s | 240 s |
+| SP | 25 | 30 | 35 | 40 | 45 | 50 | 55 | 60 | 65 | 70 |
+
+The % multiplies DEX and AGI after Ranger Mastery (rounded down). Recasting refreshes the time and takes the new level's %. Idle keeps it up.
+
+## 3m. Aim Strike
+| | |
+|---|---|
+| MAX Lv | 10 |
+| Skill Requirement | No Arrow Lv 5 |
+| Skill Form | Active, Target Cast · Type Range (physical) |
+| Target | 1 enemy, **True multi-hit** (split arrows), **Splash Damage** |
+| Critical Rate | True · Critical Damage ×0.5 (built as **crit chance ×0.5**, the same reading as Fire Bolt's Overload; ⚠) |
+| Gaps | 0.1 s · FCT 0 · VCT 0 · **Global Delay 0.1 s** · Cooldown 0 (every level) |
+| Detail | ง้างธนูอย่างสุดกำลัง และปล่อยพลังทั้งหมดไปที่ลูกศรที่พุ่งออกไป ในบางจังหวะ มีโอกาสที่ลูกธนูดอกนั้น จะแยกตัวออกมาสร้างความเสียหายให้เป้าหมายมากกว่า 1 ดอกด้วย และเมื่อยิงถูกเป้าหมาย แรงอัดอากาศทำหน้าที่อีกครั้ง Splash Damage 50% ออกไปอีก 3x3 ช่อง |
+
+| Lv | ATK per arrow | Split chance | Arrows when split | SP |
+|---|---|---|---|---|
+| 1 | 100% | 20% | 2 | 12 |
+| 2 | 110% | 22% | 2 | 13 |
+| 3 | 120% | 24% | 3 | 14 |
+| 4 | 130% | 26% | 3 | 15 |
+| 5 | 140% | 28% | 4 | 16 |
+| 6 | 160% | 30% | 4 | 17 |
+| 7 | 170% | 32% | 5 | 18 |
+| 8 | 180% | 34% | 5 | 19 |
+| 9 | 190% | 36% | 7 | 20 |
+| 10 | 200% | 40% | 7 | 25 |
+
+- ⚠ **"ATK +100% in total" is read as 100% ATK per arrow** (not 200%, and not 100% shared between the split arrows). Each split arrow does the full %.
+- The split is rolled once per cast. The first arrow lands 0.24 s after the shot; the others follow 0.1 s apart. Arrows that land after the target died hit nothing.
+- **Splash:** every arrow that hits also does 50% of its ATK to every other monster in a 3 × 3 square (1.5 tiles each way) round the target; splash cannot crit.
+
+## 3n. Aiming Shower
+| | |
+|---|---|
+| MAX Lv | 10 |
+| Skill Requirement | No Arrow Lv 5 |
+| Skill Form | Active, Target Cast · Type Range (physical) |
+| Target | 1 enemy |
+| Critical Rate | No |
+| FCT 0.1 s · VCT 0 · Global Delay 0.1 s · Cooldown 0 · SP 20 (every level) |
+| Detail | ยิงลูกธนู 1 ดอกออกไปผลักเป้าหมายให้ถอยหลังไป 2 ช่อง (สามารถใช้กับบอสได้) |
+
+| Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ATK | 160% | 170% | 180% | 190% | 200% | 210% | 220% | 230% | 240% | 250% |
+
+The push is straight away from the Ranger, 2 tiles, as a slide (12 tiles/s) that stops at a wall; bosses and Elites too. ⚠ "ATK +160%" read as 160% ATK. Idle (built-in choice) uses it when a monster is within 2.5 tiles.
+
+### Balance check (simulator, v21f)
+Game combat module in Node, 300 s, seeds 1–3, auto stats, no gear; the simulator counts **every** skill at max level (49 points cannot really buy all of them: the new five need 45). Kills · DPS · deaths. "Old" = v21e Ranger.
+
+| | Fighter | Ranger old | Ranger v21f | Spellcaster |
+|---|---|---|---|---|
+| Lv 10, Field 01 | 59.3 · 46 | 54.0 · 39 | 58.7 · 43 | 47.7 · 26 |
+| Lv 20, Field 02 | 53.3 · 75 | 50.0 · 67 | 51.3 · 76 | 46.0 · 53 |
+| Lv 30, Field 03 | 42.3 · 130 | 39.7 · 116 | **46.0 · 136** | 42.0 · 117 |
+| Lv 20, packs of 3 | 87 · 111 | 69 · 89 · 1 death | 83 · 102 | 108 · 123 |
+| Lv 30, Geosyncline | 16.3 · 146 | 16.0 · 148 · 2 d | 18.7 · 182 · 1.7 d | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 12.0 · 181 · 1 d | 13.0 · 192 · 3 d | 15.7 · 237 · 3 d | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 598 / 1,090 / 1,576 | 457 / 861 / 1,354 | **640 / 1,065 / 1,614** | 233 / 546 / 971 |
+
+Where the gain comes from (Lv 30, Field 03 DPS): old 116 → +Ranger Mastery 137 → +Focusing 137 → +Aim Strike 136 → +Aiming Shower 136. **Almost all the sustained gain is Ranger Mastery** (+10 DEX / AGI / HIT). Aim Strike adds little over time because SP runs out: Ranger SP regen is about 1.9/s at Lv 30, so Aim Strike Lv 10 alone sustains only about 67 DPS. With only the new actives (old actives off) the Ranger is about where the old kit was (113 DPS).
+
+**⚠ Burst is the problem, not sustained damage.** With Global Delay 0.1 s and no cooldown, a full SP bar goes out in about one second: Lv 30, 256 SP = 10 Aim Strikes ≈ 34 arrows of 200% ≈ **9,000 damage in 1 s** (about 56 s of basic attacks; Gadolith has 8,000 HP). Every Blue Potion adds about 2,100 more. Suggested fixes (not built, NIIQ to choose): make each Aim Strike take one attack swing (one cast per ASPD interval, about 0.8 s at Lv 30: the dump then takes 8 s), or a Global Delay of 0.5–1 s, or a small cooldown.
+
+**⚠ Scandium cost against income** (simulator, 600 s × 3 seeds, kills and arrows per hour; income = average monster Scandium, no drops sold):
+
+| Map (Lv) | Kills/h | Arrows/h (per kill) | Income Sc/h | Net at 10 Sc/arrow (No Arrow 5) | Net at 20 Sc/arrow (No Arrow 1) |
+|---|---|---|---|---|---|
+| Field 01 (10) | 680 | 1,176 (1.7) | 7,027 | **−4,733** | **−16,493** |
+| Field 02 (20) | 590 | 1,642 (2.8) | 13,177 | **−3,243** | **−19,663** |
+| Field 03 (30) | 510 | 2,178 (4.3) | 36,720 | +14,940 | **−6,840** |
+| Geosyncline (30) | 222 | 3,246 (14.6) | 39,960 | +7,500 | **−24,960** |
+| Ruins (35) | 174 | 3,290 (18.9) | 50,750 | +17,850 | **−15,050** |
+
+So a Ranger with No Arrow loses Scandium on Field 01–02 even at Lv 5, and on every map at Lv 1–2. Every other archetype keeps all of it. See `ECONOMY.md`.
+
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**
 - Skill points come from **Job Lv**: 1 Job Lv = 1 skill point. At Job Lv 1 a character has none; **Job Lv 2 gives the first point**.
@@ -307,7 +430,8 @@ Cause: every gear slot adds `m × 0.35` to the primary stat, and MATK has an `�
 New side effect of stopping fireballs when the target dies: CP counts damage dealt, and the old simulator counted overkill. With 2 common pieces the Spellcaster’s CP falls from 3,126 (old prototype) to about 2,140 with Fire Bolt Lv 5 and the staff × 1 (3,515 vs 6,698 with 5 pieces). Note that the CP simulation (and the Idle offline estimate) uses Fire Bolt Lv 5 and counts every skill and passive as learned. Nothing was changed for this.
 
 ## 7. ⚠ Open items
-1. Max level and per-level effects of the Fighter, Ranger and Supporter skills (one level each). Every Spellcaster skill now has levels.
+1. Max level and per-level effects of the Fighter and Supporter skills and the old Ranger prototype skills (one level each). Every Spellcaster skill and the five v21f Ranger skills have levels.
+1d. Ranger v21f (§3i–3n): Aim Strike burst with Global Delay 0.1 s; the Scandium cost of No Arrow against monster Scandium; whether the old Ranger skills stay; "ATK +X%" read as X% ATK; free arrows without No Arrow.
 1a. Freeze / Petrifaction / Burning time, the Burning damage over time (10% MATK/s, §3h; soft MDEF often cuts it to 1 on low-MATK characters), the exact MDEF / LUK resistance, boss immunity (§3h); the meaning of “Overload Damage ×0.5” (§3).
 1c. Spellcaster CP fell about 20% with the v20.18 spells (§3h).
 1b. Overload Energy: party members without combat stats (§3d).
