@@ -45,7 +45,7 @@ Every Beginner has one skill, **Basic Skill**, with **10 levels**. Lv 1 is given
 | # | Archetype | Type | Range (tiles) | Role |
 |---|---|---|---|---|
 | 1 | **Fighter** | `MELEE` | 1–3 | Physical close-quarters combat |
-| 2 | **Ranger** | `RANGED` | 1–12 | Physical long-range engagements |
+| 2 | **Ranger** | `RANGED` | 1–9 | Physical long-range engagements |
 | 3 | **Spellcaster** | `MAGIC` | 1–7 | Combat spells at medium range |
 | 4 | **Supporter** | `SUPPORT` | 1–15 | Team assistance over a massive range |
 
@@ -62,7 +62,7 @@ Every Beginner has one skill, **Basic Skill**, with **10 levels**. Lv 1 is given
 | 1.3 Thief | 1.3.1 Assassin | 1.3.2 Pirate |
 | 1.4 Monk | 1.4.1 Hermit | 1.4.2 Inquisitor |
 
-### 2. Ranger — RANGED (1–12 tiles)
+### 2. Ranger — RANGED (1–9 tiles)
 
 | Class (C1) | Job (C2) | Job (C2) |
 |---|---|---|

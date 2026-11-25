@@ -45,7 +45,7 @@ The gear badge on the Idle button opens **Idle Settings**. Rows whose buttons do
 | Skill attacks + Attack skill set (9 slots) | Physical and magic skills only. **Rotation:** after slot *n* fires, the next try starts at slot *n*+1 and wraps (1 → 2 → 1 → 2 …); a skill that is not ready (cooldown, SP) is skipped. A self-area skill (Petrifaction) walks in until the target is inside its area, then fires (gives up after 4 s) |
 | Buff skills + Buff skill set (9) | Buff skills only. Same rotation as the attack set (after slot *n* comes *n*+1, wrapping). A buff that still has more than 1 s left is skipped, so it is cast again only when it is about to run out |
 | Healing skills + Healing skill set (9) + "Heal when HP is below" (5–95%, default 60%) | Heal and zone skills (Heal, First Aid, Sanctuary). Sanctuary is not recast while one is up |
-| Movement skills + Movement skill set (9) | Movement skills (Evasive Leap). Used when an attacking monster is within 2 tiles |
+| Movement skills + Movement skill set (9) | Movement skills (none at the moment: Evasive Leap was removed in v22b). Used when an attacking monster is within 2 tiles |
 | Sit to rest + "Rest when below" (5–95%, default 40%, OFF by default) | Sits when HP **or** SP is below the bar and no attacking monster is within 8 tiles; stands at 95% of both or when a monster comes. Needs Basic Skill Lv 2 |
 
 Priority each tick: heal → movement → buff → attack. Tap a skill slot → list of this archetype's skills of that kind with level chips (1 … learned level); tap once to choose, again to put it in the slot (works the same on phones). Unlearned skills are greyed out. **If all four sets are empty, Idle picks skills by itself** (the built-in `REOC.pickSkill`), still obeying the four switches.

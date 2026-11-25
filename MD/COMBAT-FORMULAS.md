@@ -35,10 +35,10 @@ Stat points: 48 at creation, `⌊lv/5⌋ + 3` per level (1,273 total at Lv 99). 
 
 ```
 hit%   = clamp(80 + HIT − targetFLEE, 5, 95)                       // iRO
-crit%  = CRIT × critMul − targetLUK/5   (basic attacks; among skills only Piercing Shot (×2) and Aim Strike (×0.5, v21h))
+crit%  = CRIT × critMul − targetLUK/5   (basic attacks; among the skills in use only Aim Strike (×0.5, v21h); Piercing Shot (×2) was removed in v22b)
 weaponRoll = weaponATK × U(lo, 1),  lo = min(1, 0.5 + DEX×0.005)    // DEX narrows the roll; DEX 100 = always max
 raw    = (statusATK + weaponRoll + masteryATK) × skill% × element × bonus
-bonus  = distance (Ranger) × leap shot (+60%) …
+bonus  = … (the Ranger distance bonus and leap shot left with Steady Aim / Evasive Leap in v22b)
 normal = max(1, ⌊raw × (1 − hardDEF × (1 − ignoreDEF)) − softDEF⌋)
 crit   = ⌊(statusATK + weaponATK + mastery) × skill% × element × bonus × 1.4⌋   // ignores DEF and FLEE
 ```

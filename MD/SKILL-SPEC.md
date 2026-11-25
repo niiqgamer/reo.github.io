@@ -276,7 +276,7 @@ Simulator on the game's combat module, 300 s, 3 seeds, auto stats, every skill a
 With every spell fixed at Lv 5 (no level choice) CP would be 724: Fire Bolt Lv 5 spends 40 SP and drops 10 fireballs on monsters that die after 2–3, so SP runs out. The CP drop matters for the gates (Geosyncline 2,000, Ruins 3,000; `CORE-LOOP.md`).
 
 ## 3i. Ranger skills (v21f, from NIIQ)
-Five new Ranger skills. They are written to this standard and added next to the Ranger prototype skills (Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim), which stay as they were. **Skill requirements** are new in v21f (`SKREQ`): the Skills Tree does not let a skill be learned (or drafted) until the skills it needs reach their level; a draft counts. If a requirement is lost (points taken back), the skill that needed it goes back to Lv 0 and its points return.
+Five new Ranger skills, written to this standard. **v22b: they are the whole Ranger tree**; the prototype skills (Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim) are removed (NIIQ). Old saves get their points back and those hotbar slots are cleared. **Skill requirements** are new in v21f (`SKREQ`): the Skills Tree does not let a skill be learned (or drafted) until the skills it needs reach their level; a draft counts. If a requirement is lost (points taken back), the skill that needed it goes back to Lv 0 and its points return.
 
 ## 3j. No Arrow (passive)
 | | |
@@ -390,17 +390,32 @@ Gain by skill (Lv 35 Ruins DPS): old 192 → +Ranger Mastery 221 → +Focusing 2
 
 **v22a is balanced.** The Ranger sits level with the Fighter and with the Spellcaster on the Ruins (CP Lv 30 1,761, Ruins DPS 200). The shorter cast and 1 s delay alone barely moved the numbers, because the Ranger runs out of SP before it runs out of time (~1.9 SP/s regen at Lv 30); the AI order (Double Strafe before Aim Strike on one target) and **SP 20 → 10** did. Against one target Aim Strike is now close to just shooting (220 → 215 on the Ruins); it gains on packs through the splash. Aiming Shower costs a little DPS on the Ruins because the AI also spends 20 SP to push back every monster that comes close; that buys safety, not damage.
 
+### Balance check (simulator, v22b: old Ranger skills removed)
+Same method. The Ranger loses the distance bonus (+2% per tile beyond 3, up to +18%), range 12 → 9, +10 HIT, +5% crit, Double Strafe and Piercing Shot.
+
+| | Fighter | Ranger v22a | **Ranger v22b** | Spellcaster |
+|---|---|---|---|---|
+| Lv 10, Field 01 | 59.3 · 46 | 58.7 · 44 | **52.0 · 32** | 47.7 · 26 |
+| Lv 20, Field 02 | 53.3 · 75 | 50.7 · 77 | **44.0 · 55** | 46.0 · 53 |
+| Lv 30, Field 03 | 42.3 · 130 | 44.0 · 136 | **34.3 · 99** | 42.0 · 117 |
+| Lv 20, packs of 3 | 87 · 111 | 84 · 101 | **85 · 98** | 108 · 123 |
+| Lv 30, Geosyncline | 16.3 · 146 | 17.7 · 174 · 1.3 d | **13.0 · 125 · 2 d** | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 12.0 · 181 · 1 d | 12.0 · 200 · 3 d | **7.3 · 138 · 3.3 d** | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 598 / 1,090 / 1,576 | 656 / 1,044 / 1,761 | **510 / 789 / 1,196** | 233 / 546 / 971 |
+
+**⚠ v22b leaves the Ranger weaker:** CP Lv 30 −32% (1,761 → 1,196; Fighter 1,576), Ruins DPS 200 → 138. Only packs hold up (splash). Scandium also gets worse, because more arrows are needed per kill (table below). Open for NIIQ: give some of it back (for example base range 12, the distance bonus as part of Ranger Mastery, or more ATK on Aim Strike).
+
 **⚠ Scandium cost against income** (simulator, 600 s × 3 seeds, kills and arrows per hour; income = average monster Scandium, no drops sold):
 
 | Map (Lv) | Kills/h | Arrows/h (per kill) | Income Sc/h | Net at 10 Sc/arrow (No Arrow 5) | Net at 20 Sc/arrow (No Arrow 1) |
 |---|---|---|---|---|---|
-| Field 01 (10) | 684 | 1,174 (1.7) | 7,068 | **−4,672** | **−16,412** |
-| Field 02 (20) | 588 | 1,692 (2.9) | 13,132 | **−3,788** | **−20,708** |
-| Field 03 (30) | 494 | 2,300 (4.7) | 35,568 | +12,568 | **−10,432** |
-| Geosyncline (30) | 206 | 3,496 (17.0) | 37,080 | +2,120 | **−32,840** |
-| Ruins (35) | 148 | 3,698 (25.0) | 43,167 | +6,187 | **−30,793** |
+| Field 01 (10) | 620 | 1,220 (2.0) | 6,407 | **−5,793** | **−17,993** |
+| Field 02 (20) | 504 | 1,756 (3.5) | 11,256 | **−6,304** | **−23,864** |
+| Field 03 (30) | 392 | 2,414 (6.2) | 28,224 | +4,084 | **−20,056** |
+| Geosyncline (30) | 152 | 3,116 (20.5) | 27,360 | **−3,800** | **−34,960** |
+| Ruins (35) | 82 | 3,022 (36.9) | 23,917 | **−6,303** | **−36,523** |
 
-(v22a.) So a Ranger with No Arrow loses Scandium on Field 01–02 even at Lv 5, only just breaks even on the Geosyncline and Ruins at Lv 5, and loses on every map at Lv 1. Every other archetype keeps all of it. See `ECONOMY.md`.
+(v22b, old Ranger skills removed.) So a Ranger with No Arrow loses Scandium on Field 01–02 even at Lv 5, only just breaks even on the Geosyncline and Ruins at Lv 5, and loses on every map at Lv 1. Every other archetype keeps all of it. See `ECONOMY.md`.
 
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**
@@ -435,7 +450,7 @@ New side effect of stopping fireballs when the target dies: CP counts damage dea
 
 ## 7. ⚠ Open items
 1. Max level and per-level effects of the Fighter and Supporter skills and the old Ranger prototype skills (one level each). Every Spellcaster skill and the five v21f Ranger skills have levels.
-1d. Ranger v21f–v21h (§3i–3n): Aim Strike "in total" read as shared between split arrows (single target it is slightly worse than shooting); the Scandium cost of No Arrow against monster Scandium; whether the old Ranger skills stay; "ATK +X%" read as X% ATK; free arrows without No Arrow.
+1d. Ranger v21f–v22b (§3i–3n): v22b Ranger is weaker after the old skills left (CP −32%); Scandium negative on most maps; Aim Strike "in total" read as shared between split arrows (single target it is slightly worse than shooting); the Scandium cost of No Arrow against monster Scandium; whether the old Ranger skills stay; "ATK +X%" read as X% ATK; free arrows without No Arrow.
 1a. Freeze / Petrifaction / Burning time, the Burning damage over time (10% MATK/s, §3h; soft MDEF often cuts it to 1 on low-MATK characters), the exact MDEF / LUK resistance, boss immunity (§3h); the meaning of “Overload Damage ×0.5” (§3).
 1c. Spellcaster CP fell about 20% with the v20.18 spells (§3h).
 1b. Overload Energy: party members without combat stats (§3d).
