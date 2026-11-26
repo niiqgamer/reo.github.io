@@ -652,7 +652,7 @@ SP shown is the real cost (after Mana Flow).
 | | Edict of Radiance (passive) | edict scroll with a radiant orb rising from it and a holy ray shooting out |
 | | Heal | green-gold cross in a column of light over a turning seal, a small heart |
 | | Teleport | atom (cyan nucleus, three orbits) breaking into pixels over a portal ring |
-| | Cloud Flare | NIIQ's reference art: dark storm cloud with gold rims and rain, a gold beam striking a horned red-eyed foe in a gold magic circle (own dark background) |
+| | Cloud Flare | **NIIQ's own animated SVG** (`cloud-flare.svg`, 256 × 256 with its gold frame and blue gems, drawn into the 64 × 64 tile): storm clouds lit gold from below, a holy orb and beam striking a horned red-eyed shadow beast on a turning gold sigil; rain, god rays, cloud lightning, motes and rings move (SMIL). Its gradients and filters sit in `#skdefs` with `cf_` ids |
 | | Accelerator | cyan chevrons racing over a speed gauge at full, a small wing |
 | | Star Bless | spiral galaxy on a night disc, constellation, a gold star in front |
 
