@@ -587,7 +587,7 @@ Replaces the old Skills list (§24). Window `skill`, title **Skills Tree / ผ�
 | Spellcaster | purple `#7440c8` |
 | Supporter | yellow `#d69a0c` |
 
-**Grid.** 5 columns × 5 rows (more rows if a line ever needs them); empty cells are dashed. **Column 1** holds the Beginner skills top to bottom: Basic Skill, First Aid, Heavy Strike. **Columns 2–5** hold the archetype, one row at a time (`skGrid`, `SKT_ROWS`): by default the passives on row 1 and the actives on row 2 (a row longer than 4 wraps). Spellcaster: row 1 Mana Flow, Elemental Attunement, Overload Energy; row 2 Fire Bolt, Freezer, Lightning Spear, Petrifaction (v20.18). The Beginner tab has only column 1. Each cell: name on top (cut with … when long), the 56 px tile, then a pill under it.
+**Grid.** 5 columns × 5 rows (more rows if a line ever needs them); empty cells are dashed. **Column 1** holds the Beginner skills top to bottom: Basic Skill, First Aid, Heavy Strike. **Columns 2–5** hold the archetype, one row at a time (`skGrid`, `SKT_ROWS`): by default the passives on row 1 and the actives on row 2 (a row longer than 4 wraps). Spellcaster: row 1 Mana Flow, Elemental Attunement, Overload Energy; row 2 Fire Bolt, Freezer, Lightning Spear, Petrifaction (v20.18). Fighter (v22e): row 1 Weapons Mastery, Shield Mastery, Iron Body; row 2 Timber!!, Gaslighting, Forbear; row 3 Power Strike, Whirlwind Cleave, Crushing Blow, War Cry. The Beginner tab has only column 1. Each cell: name on top (cut with … when long), the 56 px tile, then a pill under it.
 
 | Tile | Look |
 |---|---|
@@ -623,7 +623,11 @@ SP shown is the real cost (after Mana Flow).
 | | Whirlwind Cleave | axe with a sweeping slash arc |
 | | Crushing Blow | warhammer cracking the ground, 3 fire orbs (stacks) |
 | | War Cry | gold war horn with red sound waves |
-| | Weapon Mastery (passive) | crossed swords on a gold burst |
+| | Weapons Mastery (passive, v22e) | a sword and a dagger crossed in front of a gold burst and dashed ring, blades glowing, gold up chevron |
+| | Shield Mastery (passive, v22e) | red kite shield with a gold rim and steel cross on a blue guard aura, sword lowered behind it, hourglass badge (slower swing) |
+| | Timber!! (v22e) | giant log smashing down onto cracked ground: gold impact burst, dashed 3 × 3 shockwave rings, stun stars |
+| | Gaslighting (v22e) | hypnotic eye with a spiral iris over a purple 3 × 3 tile grid, lure threads, cracked shield (DEF down) and red up arrow (ATK up) |
+| | Forbear (v22e) | stern bear face inside a gold barrier with 7 orbs round it (7 hits), blades glancing off, mana rune (MDEF) |
 | | Iron Body (passive) | steel shield, red band, gold heart |
 | Ranger | Double Strafe (removed v22b, icon kept) | two arrows with light trails |
 | | Arrow Shower (removed v22b, icon kept) | arrows raining on a red target ring |

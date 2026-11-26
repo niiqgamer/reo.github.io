@@ -97,7 +97,13 @@ Archetype คือกลุ่มบทบาทหลักของตัว�
 | Crushing Blow | 180% ATK +50% ต่อ 1 Momentum · ใช้แต้มทั้งหมด · สตัน 1.5 s เมื่อมี 3+ แต้ม | 12 | 5 s |
 | War Cry | ยั่วยุศัตรูในรัศมี 5 ช่อง · DEF +20% นาน 8 s | 15 | 20 s |
 
-**พาสซีฟ:** Weapon Mastery (ATK +20, HIT +5) · Iron Body (Max HP +15%, DEF จาก VIT ×1.5)
+| Timber!! (Lv 1–10) | 130–400% ATK ใส่ศัตรู 1 ตัว · HIT +5–50 · 70% ATK ใส่ตัวอื่นในระยะ 3×3 รอบเป้าหมาย · โอกาส Stun 20% นาน 3 วิ · คริไม่ได้ · ร่าย 0.5 วิ | 8 / 15 | 1.5 s |
+| Gaslighting (Lv 1–10) | ดีบัฟพื้นที่ 3×3 ที่เป้าหมาย: มอน (ไม่ใช่บอส) หันมาสนใจเรา · Def จาก VIT −10–55% · พลังโจมตีมอน +5–32% · นาน 5 / 10 วิ | 4–13 | 1 s |
+| Forbear (Lv 1–10, ต้องมี Gaslighting Lv 3) | ร่ายใส่ตัวเอง: โดนตีกายภาพแล้วไม่ชะงัก นาน 10–37 วิ · หายไปเมื่อโดนครบ 7 ครั้ง · MDEF +1–10% | 10 | 10 s |
+
+**พาสซีฟ:** Weapons Mastery (Lv 1–10, ATK +4 ต่อเลเวล) · Shield Mastery (Lv 1–10, เมื่อถือโล่: STR/VIT +Lv, DEF +2%×Lv, Attack Speed −2%×Lv) · Iron Body (Max HP +15%, DEF จาก VIT ×1.5)
+
+**ชะงัก (v22e):** โดนตีกายภาพแล้วจะเดินไม่ได้ 0.3 วิ (ทุกอาชีพ) — Forbear ช่วยกันได้
 
 ### Ranger — นักยิง
 **กลไก Scandium arrows:** ยิงไกล 9 ช่องด้วยลูกธนู Scandium (No Arrow ทุกดอกเสีย Scandium) Aim Strike แยกลูกธนูเป็นหลายดอกพร้อม Splash และ Aiming Shower ผลักมอนถอยหลัง 2 ช่อง (v22b เอาสกิลต้นแบบเดิมออกแล้ว: Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim)

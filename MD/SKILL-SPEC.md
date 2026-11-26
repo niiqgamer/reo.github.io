@@ -425,6 +425,70 @@ Damage does not move (CP Lv 10 / 20 / 30 = 510 / 789 / 1,196, same as v22b): the
 
 (v22b, old Ranger skills removed.) So a Ranger with No Arrow loses Scandium on Field 01–02 even at Lv 5, only just breaks even on the Geosyncline and Ruins at Lv 5, and loses on every map at Lv 1. Every other archetype keeps all of it. See `ECONOMY.md`.
 
+## 3o. Fighter skills (v22e, from NIIQ)
+Five Fighter skills. The old Fighter skills (Power Strike, Whirlwind Cleave, Crushing Blow, War Cry, Iron Body) stay for now; Weapon Mastery becomes **Weapons Mastery** (Lv 1–10). Forbear needs Gaslighting Lv 3 (`SKREQ`); the others need nothing. The five cost 50 points at max; a C1 Fighter has 49.
+
+## 3p. Weapons Mastery (passive, Lv 1–10)
+Master the knife and the sword and draw out what the weapon holds: **ATK +4 per level** (Lv 10: +40) while a knife or sword is held. The game has no knife / sword weapon types yet, so every Fighter weapon counts. Replaces the old Weapon Mastery (+20 ATK +5 HIT, one level): an old save keeps its one level (+4 ATK) and can raise it. `PASSIVE.weapon_mastery.atk` = 4 per level; the mastery ATK goes into `(statusATK + weapon + mastery)` (`COMBAT-FORMULAS.md` §2).
+
+## 3q. Shield Mastery (passive, Lv 1–10)
+A stronger guard for a slower swing, **only while a shield is worn** (`S.equip.shield`; the simulator assumes one: the Fighter set has a Tower Shield).
+
+| Lv | STR / VIT | DEF | Attack speed |
+|---|---|---|---|
+| N | +N / +N | +2% × N (soft and hard DEF × (1 + 0.02N), hard DEF cap 70%) | −2% × N (attack delay × (1 + 0.02N)) |
+| 10 | +10 / +10 | +20% | −20% |
+
+## 3r. Timber!! (Active, Melee, Lv 1–10)
+One blow on the target as heavy as a giant log falling on its head. **20% chance to Stun it for 3 s** (bosses are immune). The shock spreads: **70% ATK on every other enemy in the 3 × 3 square round the target**. Cannot crit. HIT bonus is added to the hit formula: `80 + HIT + bonus − FLEE`.
+
+| Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ATK | 130% | 160% | 190% | 220% | 250% | 280% | 310% | 340% | 370% | 400% |
+| HIT bonus | +5 | +10 | +15 | +20 | +25 | +30 | +35 | +40 | +45 | +50 |
+| SP | 8 | 8 | 8 | 8 | 8 | 15 | 15 | 15 | 15 | 15 |
+
+Every level: FCT 0, **VCT 0.5 s**, Global Delay 0.5 s, Cooldown 1.5 s. Range 1.8 tiles (the Fighter walks in first). Code: `TB_R`, `TB_SP`, `timber()`.
+
+## 3s. Gaslighting (Active, Ground Debuff 3 × 3, Lv 1–10)
+Lead and bend the minds of every enemy in a 3 × 3 square at the target so they turn on the caster (**not bosses**: they show "Immune"). A monster under it has **less DEF from VIT (soft DEF)** but **hits harder**. Range 9 tiles (⚠ not in the spec; RO Provoke range). A purple ring shows under each monster while it lasts.
+
+| Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Soft DEF | −10% | −15% | −20% | −25% | −30% | −35% | −40% | −45% | −50% | −55% |
+| Monster ATK | +5% | +8% | +11% | +14% | +17% | +20% | +23% | +26% | +29% | +32% |
+| Time | 5 s | 5 s | 5 s | 5 s | 5 s | 10 s | 10 s | 10 s | 10 s | 10 s |
+| SP | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 |
+
+Every level: no cast, Global Delay 0.3 s, Cooldown 1 s. ⚠ "Def ลดลงตามค่า Vit" is read as **soft DEF only** (the part that comes from VIT); hard DEF (armor %) is not touched. Code: `GL_D`, `GL_A`, `mo.gas` / `mprof()`.
+
+## 3t. Forbear (Self Cast, Buff, Lv 1–10) — needs Gaslighting Lv 3
+A mind steady as a bear: **physical hits do not make the Fighter flinch**, so they can run or strike back. Forbear holds for 7 hits; the 8th physical hit ends it (and that hit flinches). Magic hits do not count. **MDEF +1% per level** (⚠ read as %, the game's MDEF is a %).
+
+| Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Time | 10 s | 13 s | 16 s | 19 s | 22 s | 25 s | 28 s | 31 s | 34 s | 37 s |
+| MDEF | +1% | +2% | +3% | +4% | +5% | +6% | +7% | +8% | +9% | +10% |
+
+Every level: SP 10, no cast, Global Delay 0, Cooldown 10 s.
+
+**Flinch (new in v22e, every archetype):** a physical hit from a monster (basic attack or a non-magic monster skill) stops the player's feet for 0.3 s (`player.flinch`); attacks and skills are not stopped. Before v22e there was no flinch, so Forbear would have had nothing to remove.
+
+### Balance check (simulator, v22e)
+Same method as §3n (300 s × seeds 1–3, auto stats, no gear, every skill at max level; the simulator counts every skill, old and new, and assumes a shield). Fighter AI: Forbear while fighting, Gaslighting on a pack (not bosses), then Crushing Blow / Cleave as before, **Timber!! before Power Strike**. Kills · DPS · deaths.
+
+| | Fighter v22d | **Fighter v22e** | Ranger | Spellcaster |
+|---|---|---|---|---|
+| Lv 10, Field 01 | 59.3 · 46 | **50.7 · 55** | 52.0 · 32 | 47.7 · 26 |
+| Lv 20, Field 02 | 53.3 · 75 | **49.7 · 78** | 44.0 · 55 | 46.0 · 53 |
+| Lv 30, Field 03 | 42.3 · 130 | **42.3 · 127** | 34.3 · 99 | 42.0 · 117 |
+| Lv 20, packs of 3 | 87 · 111 | **72 · 100** | 85 · 98 | 108 · 123 |
+| Lv 30, Geosyncline | 16.3 · 146 | **18.0 · 159 · 0 d** | 13.0 · 125 · 2 d | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 12.0 · 181 · 1 d | **12.0 · 175 · 0 d** | 7.3 · 138 · 3.3 d | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 598 / 1,090 / 1,576 | **705 / 1,173 / 1,712** | 510 / 789 / 1,196 | 233 / 546 / 971 |
+
+The Fighter is tougher (Shield Mastery DEF +20%, STR / VIT +10; no deaths on the Geosyncline or the Ruins) and hits harder per swing, but **Shield Mastery Lv 10 slows the basic attack by 20%**, which costs about as much as Timber!! adds: on packs of 3 the Fighter drops 87 → 72 kills (with attack speed unchanged it would be 84 kills · 119 DPS). CP still rises 1,576 → 1,712 (+9%), so the gap to the Ranger (1,196) grows. Per cast at Lv 30 against a neutral dummy: Timber!! Lv 10 ≈ 570 damage (+70% on each neighbour), Power Strike 272, Aim Strike 221, Fire Bolt Lv 5 (10 fireballs) 834. The flinch is not in the simulator.
+
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**
 - Skill points come from **Job Lv**: 1 Job Lv = 1 skill point. At Job Lv 1 a character has none; **Job Lv 2 gives the first point**.
