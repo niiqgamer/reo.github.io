@@ -29,6 +29,8 @@
 
 Ranger (v21f): **Ranger Mastery** adds DEX +Lv and AGI +Lv to the stats and HIT +Lv; **Focusing** then multiplies DEX and AGI by 1.03–1.12 (floored) while it runs (`derive`, `p.focus`).
 
+**Range (v22c).** The player's attack and skill range is a square, like RO: a target is in range when `max(|dx|, |dy|) ≤ range` (`rdist`), so range 9 covers the 19 × 19 tiles round the player and diagonals reach as far as straight lines. Monsters (aggro, chase, their own skills) still measure a straight line (`dist`). Skill areas written A × A are the whole width (3 × 3 = 1.5 tiles each way).
+
 Stat points: 48 at creation, `⌊lv/5⌋ + 3` per level (1,273 total at Lv 99). Raising `x → x+1` costs `⌊(x−1)/10⌋ + 2` (628 for 1 → 99).
 
 ## 2. Physical damage

@@ -602,7 +602,7 @@ let archSel="fighter";
 P.archetype=()=>{
   const a=ARCH.find(x=>x.id===archSel),mx={hp:55,sp:11,watk:40};
   const bar=(l,v,max,txt)=>`<div class="statbar" style="--c:${a.c}"><span>${l}</span><div class="bar"><i style="width:${Math.round(v/max*100)}%"></i></div><b>${txt}</b></div>`;
-  return `<div class="page">${head("Archetype","ระบบ Archetype","Archetype คือกลุ่มบทบาทหลักของตัวละคร มี 4 สาย เลือกครั้งเดียวผ่าน Archetype Trial เมื่อถึง Job Lv 10 และเปลี่ยนภายหลังไม่ได้")}
+  return `<div class="page">${head("Archetype","ระบบ Archetype","Archetype คือกลุ่มบทบาทหลักของตัวละคร มี 4 สาย เลือกครั้งเดียวผ่าน Archetype Trial เมื่อถึง Job Lv 10 และเปลี่ยนภายหลังไม่ได้ · ระยะโจมตี / ระยะสกิลนับเป็นช่องจากตัวละครแบบสี่เหลี่ยมเหมือน RO: ระยะ 9 = ยิงได้ทุกช่องในสี่เหลี่ยม 19×19 รอบตัว (แนวเฉียงไกลเท่าแนวตรง) ส่วนพื้นที่สกิลแบบ 3×3 / 5×5 / 7×7 คือความกว้างทั้งหมด")}
   <div class="archsel">${ARCH.map(x=>`<button class="ab ${x.id===archSel?"on":""}" data-arch="${x.id}" style="--c:${x.c}" type="button">${cell(sv(x.weapon,"weapon"))}<b>${x.n}</b><span class="th">${x.th} · ${x.type}</span></button>`).join("")}</div>
   <div class="grid g2" style="grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:start">
     <div class="card" style="border-top:5px solid ${a.c}"><h2 style="font-size:24px">${a.n} <span class="th">· ${a.th}</span></h2>

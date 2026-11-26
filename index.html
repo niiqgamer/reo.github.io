@@ -4815,6 +4815,7 @@ function walkTo(c,tx,ty,onArrive){
   c.path=smooth(c.x,c.y,raw);c.onArrive=onArrive||null;return true;
 }
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const rdist=(a,b)=>Math.max(Math.abs(a.x-b.x),Math.abs(a.y-b.y));   // v22c: the PLAYER's attack / skill range is a square like RO (range 9 = 19 x 19 tiles round the player); monsters still use dist
 
 /* ================= characters ================= */
 const PAL={
@@ -8010,7 +8011,7 @@ function gainJob(n){if(S.jlv>=jcap()){S.jexp=0;return}S.jexp+=n;while(S.jlv<jcap
 const rnd=Math.random;
 const ELC={fire:"#ff7a3a",water:"#4fb8ff",wind:"#9cf06a",earth:"#c8964a",holy:"#ffe9a0",neutral:"#cccccc"};
 const mprof=mo=>mo.elite?REOC.eliteOf(REOC.MONC[mo.type]):REOC.MONC[mo.type];
-function nearestMon(max,noElite){let best=null,bd=max||99;for(const m of liveMon()){if(noElite&&(m.boss||(m.elite&&S.lv<mLv(m)+3)))continue;const d=dist(m,player);if(d<bd){bd=d;best=m}}return best}
+function nearestMon(max,noElite){let best=null,bd=max||99;for(const m of liveMon()){if(noElite&&(m.boss||(m.elite&&S.lv<mLv(m)+3)))continue;const d=rdist(m,player);if(d<bd){bd=d;best=m}}return best}
 function applyHit(mo,res,o){
   if(!mo||mo.dead||mo.dieT>0)return;AUD.sfx(res&&res.miss?"miss":(res&&(res.crit||res.over))?"crit":"hit");
   player.combatT=0;if(!mo.aggro){mo.aggro=true;mo.speed=MON[mo.type].speed*1.6;packAggro(mo)}
@@ -8156,8 +8157,8 @@ function updateCombat(dt){
   /* v20.4: a pending melee skill walks in to its own range, then fires (gives up after 4 s or on a new target) */
   const pe=player.pend;let R=pd().range;
   if(pe){pe.t-=dt;const k=REOC.SK[pe.id];if(pe.tg!==tg||pe.t<=0||!k){if(pe.t<=0)player.pendNo=performance.now()+3000;player.pend=null}
-    else{R=Math.min(R,(k.aoe&&k.at==="self"&&!k.range?k.aoe*.85:k.range)+.3);if(dist(player,tg)<=R){player.pend=null;player.path=[];player.moving=false;useSkill(pe.id,true,pe.lv);return}}}
-  const d=dist(player,tg);
+    else{R=Math.min(R,(k.aoe&&k.at==="self"&&!k.range?k.aoe*.85:k.range)+.3);if(rdist(player,tg)<=R){player.pend=null;player.path=[];player.moving=false;useSkill(pe.id,true,pe.lv);return}}}
+  const d=rdist(player,tg);   // v22c: square range
   if(d>R){player.chaseT-=dt;if(player.chaseT<=0||!player.path.length){player.chaseT=.35;walkTo(player,Math.floor(tg.x),Math.floor(tg.y))}}
   else{player.path=[];player.moving=false;faceToward(player,tg.x,tg.y);if(player.atkCd<=0&&!(S.idle&&!S.iset.atk)){player.atkCd=pd().interval;basicAttack(tg)}}
 }
@@ -8447,11 +8448,11 @@ function useSkill(id,auto,lvArg){
     const R=skillTargetRange(k,d)+.3;
     tg=alive(player.target)?player.target:null;
     /* v20.4: a melee skill on a target a few tiles away: walk in to the skill range, then use it (player.pend) */
-    if(tg&&!k.ranged&&dist(tg,player)>R&&dist(tg,player)<=d.range+6){
+    if(tg&&!k.ranged&&rdist(tg,player)>R&&rdist(tg,player)<=d.range+6){
       if(player.pend&&player.pend.id===id&&player.pend.tg===tg)return true;
       if(auto&&performance.now()<(player.pendNo||0))return false;   // could not reach it a moment ago: Idle keeps hitting normally for 3 s
       player.pend={id,lv,tg,t:4};player.chaseT=0;return true}
-    if(!tg||dist(tg,player)>R)tg=nearestMon(R);
+    if(!tg||rdist(tg,player)>R)tg=nearestMon(R);
     if(!tg){if(!auto)toast(t("noTarget"));return false}
     player.target=tg;faceToward(player,tg.x,tg.y);
   }
@@ -8923,7 +8924,7 @@ function autoPickId(){   // the built-in skill choice (used when every skill set
   const tg=alive(player.target)?player.target:null,d=pd();
   const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0,nearMe=liveMon().filter(m=>(m===tg||m.aggro)&&Math.max(Math.abs(m.x-player.x),Math.abs(m.y-player.y))<=3.5).length;
   return REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0,focus:BF.focus>0},
-    dist:tg?dist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,brn:tg.brn,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
+    dist:tg?rdist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,brn:tg.brn,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
 }
 const isGrpOf=id=>{const k=REOC.SK[id];if(!k)return null;for(const g in IS_GRP)if(IS_GRP[g].includes(k.kind))return g;return null};
 function idleSkills(){
@@ -8931,7 +8932,7 @@ function idleSkills(){
   if(!["skAtk","skBuff","skHeal","skMove"].some(g=>I[g].some(Boolean))){const id=autoPickId(),g=id&&isGrpOf(id);if(g&&I[IS_TOG[g]])useSkill(id,true,lvFor(id));return}
   const d=pd(),tg=alive(player.target)?player.target:null;
   const use=s=>{if(!s||skLvOf(s.id)<1)return false;const k=REOC.SK[s.id];
-    if((k.kind==="phys"||k.kind==="magic")&&!(k.aoe&&k.at==="self")){if(!tg)return false;if(dist(tg,player)>skillTargetRange(k,d)+.3&&(k.kind!=="phys"||k.ranged))return false}
+    if((k.kind==="phys"||k.kind==="magic")&&!(k.aoe&&k.at==="self")){if(!tg)return false;if(rdist(tg,player)>skillTargetRange(k,d)+.3&&(k.kind!=="phys"||k.ranged))return false}
     if((k.kind==="phys"||k.kind==="magic")&&k.aoe&&k.at==="self"){const inA=m=>k.sq?Math.max(Math.abs(m.x-player.x),Math.abs(m.y-player.y))<=k.aoe:dist(m,player)<=k.aoe;
       if(!liveMon().some(inA)){if(!tg||CD[s.id]>0||player.gd>0||performance.now()<(player.pendNo||0)||S.sp<Math.ceil(k.sp*d.spCost))return false;player.pend={id:s.id,lv:s.lv||lvFor(s.id),tg,t:4};player.chaseT=0;return true}}   // a self-area skill walks in to the target first
     return useSkill(s.id,true,s.lv||lvFor(s.id))};

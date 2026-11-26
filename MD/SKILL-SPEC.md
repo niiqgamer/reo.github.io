@@ -13,7 +13,7 @@
 | เป้าหมาย | Target (for example one enemy) and the **hit type** (§2) |
 | การใช้ (Targeting) | **Self Cast** (กดแล้วร่ายเลย ไม่ต้องเลือกเป้าหมาย; may still have a cast time) or **Target Cast** (must pick an enemy or ally first). Do not write “Instant Cast”: in MMOs it means *no cast time* |
 | ระยะห่างระหว่างฮิต | For multi-hit skills: seconds between two hits, and what happens if the target dies in the middle |
-| ระยะ | Maximum range in tiles |
+| ระยะ | Maximum range in tiles, counted from the caster as a **square** like RO (v22c): range 9 reaches every tile of the 19 × 19 square round the player, diagonals as far as straight lines. An area written A × A (3 × 3, 5 × 5, 7 × 7) is the whole width |
 | เงื่อนไขก่อนเรียน | Prerequisite skills. “None” means it can be learned right away |
 | อัตราเกินพิกัด | `overMul` for magic (`COMBAT-FORMULAS.md` §3b). **Not stated = 0: the skill cannot Overload** |
 | ร่ายแปรผัน (VCT) | Variable cast time in seconds; DEX and INT shorten it (`COMBAT-FORMULAS.md` §2b). Not stated = 0 |

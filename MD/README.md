@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v22b. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v22c. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -49,7 +49,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v22b (this update)
+## Changes in v22c (this update)
+- **Player range is a square, like RO** (NIIQ): basic attacks, skills, the pick-nearest target and the Idle / AI range checks use `max(|dx|, |dy|)` (`rdist`) instead of a straight line. Range 9 = the 19 × 19 tiles round the player; diagonals reach as far as straight lines (before: a circle, about 6 tiles on a diagonal). Monsters are unchanged. `COMBAT-FORMULAS.md`, `SKILL-SPEC.md` §1, wiki.
+
+## Changes in v22b
 - **Old Ranger skills removed** (NIIQ): Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye and Steady Aim are out of the Ranger tree. The Ranger now has No Arrow, Ranger Mastery, Focusing, Aim Strike and Aiming Shower. Range 12 → 9 and no distance bonus (they came from Eagle Eye / Steady Aim). Old saves get those skill points back; their hotbar slots are cleared. Ranger intro text (Archetype Helper, mechanic line) updated in en / th / jp; wiki and docs updated.
 - ⚠ **Balance:** Ranger CP Lv 10 / 20 / 30 = 510 / 789 / 1,196 (v22a 656 / 1,044 / 1,761; Fighter 598 / 1,090 / 1,576); Ruins DPS 138. Details in `SKILL-SPEC.md` §3n.
 
