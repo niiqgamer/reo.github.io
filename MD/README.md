@@ -49,11 +49,18 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v22e (this update)
+## Changes in v22f (this update)
+- **Buff column:** buffs and debuffs are now big icons in a column under the player card, with a countdown on each icon and a badge for stacks / hits; click one for a popover with its name, Buff or Debuff, what it does and time left. Herbs and Forbear are listed too. `UI-UX.md` §31.
+- **Monster status chips** under the HP bar of the monster panel (Stun, Freeze, Petrifaction, Burning, Gaslighting, with seconds left; click for details).
+- **Gaslighting!** shows the full skill name once over the area.
+- **Illustrated status icons:** buffs and debuffs (player column and monster chips) use full-colour pictures (skill icons, herb art, new Momentum / Burning / Slow / Stun pictures) in a gem frame with a clock sweep for the time left. `UI-UX.md` §31.
+
+## Changes in v22e
 - **Five Fighter skills** (from NIIQ, `SKILL-SPEC.md` §3o–3t): **Weapons Mastery** (passive Lv 1–10, ATK +4 per level; replaces Weapon Mastery +20 ATK +5 HIT), **Shield Mastery** (passive Lv 1–10, with a shield: STR / VIT +Lv, DEF +2% × Lv, attack speed −2% × Lv), **Timber!!** (Lv 1–10: 130–400% ATK, HIT +5–50, 70% on 3 × 3 round the target, 20% Stun 3 s, VCT 0.5 s, GD 0.5 s, CD 1.5 s, SP 8 / 15), **Gaslighting** (Lv 1–10: ground 3 × 3, non-boss monsters turn on you, soft DEF −10–55%, their ATK +5–32%, 5 / 10 s, SP 4–13), **Forbear** (Self Cast Lv 1–10: no flinch for 10–37 s or 7 hits, MDEF +1–10%, SP 10, CD 10 s; needs Gaslighting Lv 3). New icons, Skills Tree rows, Skill Info lines, text in en / th / jp. The old Fighter skills stay.
 - **Flinch** (new, every archetype): a physical monster hit stops the player's feet for 0.3 s. Forbear removes it.
 - Fighter AI (Idle built-in choice, simulator): Forbear while fighting, Gaslighting on a pack, Timber!! before Power Strike. Gaslighting can go in the Idle attack skill set.
 - ⚠ Read as: Gaslighting lowers **soft DEF** (from VIT) only; Forbear MDEF is %; Gaslighting range 9 tiles (not in the spec).
+- **Timber!! effect** (no spell circle): during the 0.5 s wind-up the Fighter raises the weapon, embers rush in, a gold aura rises, pebbles hop, and a hologram log forms high over the target; on release the log drops (0.15 s), damage lands on impact with a flash over the 3 × 3 square, a shockwave, ground cracks, dust and a small screen shake, then the log breaks into light. `UI-UX.md` §27.
 - Balance: Fighter CP Lv 10 / 20 / 30 = 705 / 1,173 / 1,712 (was 598 / 1,090 / 1,576). Shield Mastery Lv 10 (−20% attack speed) costs pack damage: packs of 3 87 → 72 kills. `SKILL-SPEC.md` §3t.
 
 ## Changes in v22d
