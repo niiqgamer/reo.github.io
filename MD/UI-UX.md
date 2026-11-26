@@ -730,3 +730,9 @@ Status effects on monsters are drawn in `drawMon` (helpers `stRecolor`, `stIceBa
 - **Focusing:** a ring at the feet and the buff icon (eye, ranger green) in the status island with its time left.
 - **Skills Tree requirements:** a skill whose requirement is not met shows a pill with the skill and level it needs (for example "No Arrow 3") instead of its level; tapping it says "Learn No Arrow Lv 3 first". Skill Info shows a **Requires:** line (red while not met). Lowering a draft of No Arrow drops the drafts that needed it.
 - **Status window bonus (v21f):** the green "+N" after a base stat is the derived stat minus the base (`d.s[k] − S.stats[k]`): gear, Blessing, Ranger Mastery and Focusing all show there (for example DEX 35 +15 with Ranger Mastery Lv 10 and Focusing Lv 10).
+
+## 31. Buff column and monster status chips (v22f)
+- **Player buffs / debuffs** (`#fxRow.col`, `fxList()` / `renderFx()`): a column under the player card, one 38 px rounded icon per effect, stacked downward. A dark pill under each icon counts the time left (blinks gold at 3 s or less); a gold badge top-right shows a count (Momentum stacks, Forbear hits left). Debuffs (Burning, Slow) have a red border. Covered: Momentum, Forbear, War Cry, Focusing, Evasive Leap, leap shot, Overload Energy, Blessing, Grace shield, Sanctuary, the four herbs, Burning, Slow.
+- **Click an icon** to open a popover beside it (`#fxTip`): name, Buff / Debuff tag, what it does, time left (live), Forbear hits left. Click it again, or anywhere else, to close it.
+- **Monster status chips** (`#moSt`, `mobStatus()`): under the HP bar in the monster panel, one chip per status with seconds left: Stun, Freeze, Petrifaction, Burning, Gaslighting (Stun is hidden while Freeze / Petrifaction holds the monster). Click a chip for its name and effect.
+- **Gaslighting text:** the full skill name ("Gaslighting!") floats once over the 3 × 3 square, larger, instead of a short word on every monster.

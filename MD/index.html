@@ -429,6 +429,21 @@ body.dnd-on,body.dnd-on *{cursor:grabbing !important}
 .P .net{font-size:10px;gap:3px 6px;padding:5px 6px}
 .P .ns>svg{width:12px;height:12px}
 .P .fx{font-size:10px;padding:1px 6px 1px 2px}
+/* v22f buff / debuff column under the player card: big icons stacked downward, a countdown on each, click for details */
+.fx-row.col{flex-direction:column;flex-wrap:nowrap;align-items:flex-start;gap:6px;margin-top:2px}
+.fxb{position:relative;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--c);border:2px solid rgba(255,255,255,.85);box-shadow:0 2px 6px rgba(10,14,40,.35),inset 0 1px 0 rgba(255,255,255,.5),inset 0 -4px 8px rgba(0,0,0,.2);cursor:pointer;pointer-events:auto;-webkit-user-select:none;user-select:none;padding:0}
+.fxb svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1px rgba(0,0,0,.4))}
+.fxb.debuff{border-color:#ff5a6e;box-shadow:0 0 0 1px rgba(120,0,20,.5),0 2px 6px rgba(10,14,40,.35),inset 0 -4px 8px rgba(0,0,0,.2)}
+.fxb .fxt{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);min-width:26px;padding:0 4px;border-radius:7px;background:rgba(14,16,36,.88);color:#fff;font-size:10.5px;font-weight:700;line-height:14px;text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+.fxb .fxn{position:absolute;right:-5px;top:-5px;min-width:16px;height:16px;padding:0 3px;border-radius:8px;background:#ffcf3f;color:#3a2600;font-size:10px;font-weight:800;line-height:16px;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.4)}
+.fxb.low .fxt{color:#ffd27a;animation:bbblink .5s steps(2) infinite}
+.fxb.on{outline:3px solid #ffc83a;outline-offset:1px}
+#fxTip{position:fixed;z-index:60;max-width:240px;padding:8px 11px;border-radius:11px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);font-size:12.5px;line-height:1.4;color:var(--ink);pointer-events:auto}
+#fxTip b{display:block;font-size:13.5px}#fxTip em{font-style:normal;font-size:11px;font-weight:700;padding:0 6px;border-radius:7px;margin-left:6px;background:rgba(60,170,110,.18);color:#1d7a46}#fxTip em.deb{background:rgba(211,48,74,.16);color:#c0283e}
+#fxTip .ft{color:var(--ink2);font-size:11.5px;margin-top:3px;font-variant-numeric:tabular-nums}
+.mo-st{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:4px}.mo-st:empty{display:none}
+.mo-st span{display:inline-flex;align-items:center;gap:3px;padding:1px 7px 1px 2px;border-radius:10px;background:rgba(14,16,36,.55);color:#fff;font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums;cursor:pointer;pointer-events:auto}
+.mo-st i{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;background:var(--c)}.mo-st i svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .P .fx .fxi{width:17px;height:17px}
 .P .fx-row{margin-top:0}
 /* ---- v5 archetypes + minimal status ---- */
@@ -1752,7 +1767,7 @@ svg.ski{fill:none!important;stroke:#1b2030!important;stroke-width:1.6!important;
           </div>
           <div class="pc-foot"><span class="cp-isl">CP <b id="cpV">0</b></span><span class="sc-isl" title="Scandium"><i></i><b id="wSc">0</b><em id="scLbl">Scandiums</em></span></div>
         </div>
-        <div id="fxRow" class="fx-row"></div>
+        <div id="fxRow" class="fx-row col"></div>
       </div>
 
       <div id="announce" class="hidden" role="status" aria-live="polite"><span class="an-ic"><svg viewBox="0 0 24 24"><path d="M4 10v4h3l6 4V6L7 10z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></span><span class="an-tag" id="anTag"></span><span class="an-txt" id="anTxt"></span></div>
@@ -1766,7 +1781,7 @@ svg.ski{fill:none!important;stroke:#1b2030!important;stroke-width:1.6!important;
         <div id="hint"></div>
       </div>
       <div id="mobC">
-        <div id="mobBar" class="hidden"><div class="mo-l1"><span class="mo-tag" id="moTag"></span><b class="mo-name" id="moName"></b><span class="mo-lv" id="moLv"></span><span class="mo-el" id="moEl"></span></div><div class="mo-hp"><i class="mo-trail" id="moTrail"></i><i class="mo-fill" id="moFill"></i><span class="mo-t" id="moT"></span><div class="mo-dmg" id="moDmg"></div></div><div class="mo-warn" id="moWarn"></div></div>
+        <div id="mobBar" class="hidden"><div class="mo-l1"><span class="mo-tag" id="moTag"></span><b class="mo-name" id="moName"></b><span class="mo-lv" id="moLv"></span><span class="mo-el" id="moEl"></span></div><div class="mo-hp"><i class="mo-trail" id="moTrail"></i><i class="mo-fill" id="moFill"></i><span class="mo-t" id="moT"></span><div class="mo-dmg" id="moDmg"></div></div><div class="mo-st" id="moSt"></div><div class="mo-warn" id="moWarn"></div></div>
       </div>
 
       <div id="netBar" aria-live="off"></div>
@@ -4122,6 +4137,8 @@ let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
  na_nosc:["Not enough Scandium for an arrow ({c} Sc).","Scandium ไม่พอยิงธนู ({c} Sc)","矢を射るスカンジウムが足りません（{c} Sc）。"],
  off_arrows:["Scandium arrows: −{c} Sc","ค่าลูกธนู Scandium: −{c} Sc","スカンジウムの矢：−{c} Sc"]
 };for(const k in L){D.en[k]=L[k][0];D.th[k]=L[k][1];D.jp[k]=L[k][2]}}
+/* v22f buff column and monster status chips: text */
+{const L={"fx_buff": ["Buff", "บัฟ", "バフ"], "fx_debuff": ["Debuff", "ดีบัฟ", "デバフ"], "fx_left": ["{s} left", "เหลือ {s}", "残り {s}"], "fx_fb_d": ["Physical hits do not make you flinch. MDEF up.", "โดนโจมตีกายภาพแล้วไม่ชะงัก · MDEF เพิ่มขึ้น", "物理攻撃で怯まない。MDEF上昇。"], "fx_fb_hits": ["{n} hits left", "รับได้อีก {n} ครั้ง", "あと {n} 回"], "mst_stun": ["Stun", "Stun (มึนงง)", "スタン"], "mst_stun_d": ["Cannot move or attack.", "ขยับและโจมตีไม่ได้", "移動・攻撃できない。"], "mst_frz": ["Freeze", "Freeze (แช่แข็ง)", "凍結"], "mst_frz_d": ["Frozen in place; takes +50% Wind damage.", "ถูกแช่แข็งอยู่กับที่ · โดนธาตุลม +50%", "その場で凍結。風属性ダメージ+50%。"], "mst_ptr": ["Petrifaction", "Petrifaction (กลายเป็นหิน)", "石化"], "mst_ptr_d": ["Turned to stone; takes +50% Fire damage.", "กลายเป็นหินอยู่กับที่ · โดนธาตุไฟ +50%", "石になって動けない。火属性ダメージ+50%。"], "mst_brn": ["Burning", "Burning (ติดไฟ)", "炎上"], "mst_brn_d": ["Burns for 10% MATK Fire every second; takes +50% Water damage.", "ไหม้ 10% MATK ธาตุไฟทุกวินาที · โดนธาตุน้ำ +50%", "毎秒MATK10%の火属性ダメージ。水属性ダメージ+50%。"], "mst_gas": ["Gaslighting", "Gaslighting (โดนปั่นหัว)", "ガスライティング"], "mst_gas_d": ["Turned on the Fighter: soft DEF down, ATK up.", "หันมาสนใจผู้ใช้ · Def จาก VIT ลดลง · พลังโจมตีเพิ่มขึ้น", "術者に引き寄せられる：VITのDEF低下、攻撃力上昇。"]};for(const k in L){D.en[k]=L[k][0];D.th[k]=L[k][1];D.jp[k]=L[k][2]}}
 /* v22e Fighter skills (SKILL-SPEC.md §3o-3t): names, descriptions, Skill Info lines, messages */
 {const L={"sk_weapon_mastery":["Weapons Mastery","Weapons Mastery","ウェポンズマスタリー"],
  "skd_weapon_mastery":["Master the knife and the sword and draw out everything the weapon holds. ATK +4 per level (Lv 10: +40) with a knife or sword (every Fighter weapon for now).","เชี่ยวชาญ และสามารถดึงศักยภาพของอาวุธประเภทมีดหรือดาบ ออกมาได้อย่างมีประสิทธิภาพ เพิ่มพลังโจมตีเมื่อใช้อาวุธ มีด หรือ ดาบ ATK +4 ต่อเลเวล (Lv 10: +40) (ตอนนี้นับอาวุธ Fighter ทุกชิ้น)","ナイフと剣を極め、武器の力を引き出す。ナイフ・剣装備時に攻撃力 +4／レベル（Lv 10：+40）。（今は Fighter の武器すべてが対象）"],
@@ -8605,11 +8622,12 @@ function finishSkill(id,tg,lv,gp){
    case "debuff":{   // v22e Gaslighting: a 3x3 square on the ground at the target; every non-boss monster inside turns on the Fighter
      const c=gp||(tg?{x:tg.x,y:tg.y,map:cur.id}:null);if(!c||c.map!==cur.id)break;
      fx.push({k:"sqarea",x:c.x,y:c.y,t:0,d:.9,c:col,r:k.aoe});fx.push({k:"burst",x:c.x,y:c.y,t:0,d:.6,c:col,n:16,z:6});
-     for(const m of liveMon()){if(!inA(m,c.x,c.y))continue;
+     let n=0;for(const m of liveMon()){if(!inA(m,c.x,c.y))continue;
        if(m.boss){fx.push({k:"dmg",x:m.x,y:m.y,t:0,d:.8,txt:t("immune"),c:"#bfe8ff",ox:0,h:MON[m.type].h*mSize(m)});continue}
        m.gas=k.dur;m.gasD=k.defD;m.gasA=k.atkU;
        if(!m.aggro){m.aggro=true;m.speed=MON[m.type].speed*1.6}
-       fx.push({k:"dmg",x:m.x,y:m.y,t:0,d:.9,txt:t("fx_gas"),c:col,ox:0,h:MON[m.type].h*mSize(m)})}
+       n++}
+     if(n)fx.push({k:"dmg",x:c.x,y:c.y,t:0,d:1.3,txt:t("sk_gaslighting")+"!",c:col,big:true,ox:0,h:84});   // v22f: the full skill name once over the square, not a short word on every monster
      break}
    case "heal":{const h=REOC.healAmount(d,k),over=Math.max(0,S.hp+h-hpMax());S.hp=Math.min(hpMax(),S.hp+h);
      if(d.shieldCap&&over>0)BF.shield=Math.min(hpMax()*d.shieldCap,BF.shield+over);
@@ -8868,24 +8886,53 @@ const REO_SERVER=null;
 const NET={fps:0,fpsN:0,fpsT:0,ping:null,pingSim:true};
 function updateFx(){}   // buff timers tick in updateCombat
 const fmtSec=s=>{const x=Math.max(0,Math.ceil(s));return x>=60?`${Math.floor(x/60)}:${String(x%60).padStart(2,"0")}`:x+"s"};
+/* v22f: one entry per buff / debuff: {id, ic, c, nk (name key or text), dk (what it does), left (s) | val (label), max (s, for the low warning), n (badge), deb} */
+const FXBG={red:"linear-gradient(135deg,#ff8b78,#b52a24)",burn:"linear-gradient(135deg,#ffb060,#d8340a)",slow:"linear-gradient(135deg,#bfe8ff,#3a78c8)",herb:"linear-gradient(135deg,#a8f0c0,#2f9a5a)"};
+function fxList(){
+  const L=[];
+  if(BF.momentum>0)L.push({id:"mom",ic:"sword",c:SKG.fighter,nk:"fx_momentum",dk:"fx_momentum_d",left:BF.momT,max:5,n:BF.momentum});
+  if(BF.forbear>0)L.push({id:"fb",ic:"shield",c:"linear-gradient(135deg,#ffd27a,#c07a14)",nk:"sk_forbear",dk:"fx_fb_d",left:BF.forbear,max:37,n:Math.max(0,REOC.SK.forbear.fbHits-BF.fbN)});
+  if(BF.warCry>0)L.push({id:"wc",ic:"shout",c:SKG.fighter,nk:"sk_war_cry",dk:"fx_warcry_d",left:BF.warCry,max:8});
+  if(BF.focus>0)L.push({id:"fo",ic:"aim",c:SKG.ranger,nk:"sk_focusing",dk:"fx_focus_d",left:BF.focus});
+  if(BF.leap>0)L.push({id:"lp",ic:"wing",c:SKG.ranger,nk:"sk_evasive_leap",dk:"fx_leap_d",left:BF.leap});
+  if(BF.leapShot)L.push({id:"ls",ic:"pierce",c:SKG.ranger,nk:"fx_leapshot",dk:"fx_leapshot_d",val:"+60%"});
+  if(BF.overEn>0)L.push({id:"oe",ic:"sparkle",c:SKG.spellcaster,nk:"sk_overload_energy",dk:"fx_overEn_d",left:BF.overEn});
+  if(BF.blessing>0)L.push({id:"bl",ic:"star",c:SKG.supporter,nk:"sk_blessing",dk:"fx_bless_d",left:BF.blessing});
+  if(BF.shield>0)L.push({id:"gr",ic:"shield",c:SKG.supporter,nk:"fx_grace",dk:"fx_grace_d",val:num(BF.shield)});
+  if(BF.zone)L.push({id:"sa",ic:"halo",c:SKG.supporter,nk:"sk_sanctuary",dk:"fx_sanct_d",left:BF.zone.t});
+  if(BF.regen>0)L.push({id:"hg",ic:"leaf",c:FXBG.herb,nk:{raw:itemName("herb_glow")},dk:"buff_regen",left:BF.regen,max:15});
+  if(BF.herbAtk>0)L.push({id:"he",ic:"leaf",c:"linear-gradient(135deg,#ffc27a,#e0661c)",nk:{raw:itemName("herb_ember")},dk:"buff_atk",left:BF.herbAtk,max:60});
+  if(BF.herbDef>0)L.push({id:"hf",ic:"leaf",c:"linear-gradient(135deg,#c6f3ff,#3aa8e6)",nk:{raw:itemName("herb_frost")},dk:"buff_def",left:BF.herbDef,max:60});
+  if(BF.sage>0)L.push({id:"hs",ic:"leaf",c:"linear-gradient(135deg,#e2d6ff,#7a5ad8)",nk:{raw:itemName("herb_sage")},dk:"buff_sp",left:BF.sage,max:60});
+  if(BF.burn>0)L.push({id:"bn",ic:"flame",c:FXBG.burn,nk:"fx_burn",dk:"fx_burn_d",left:BF.burn,deb:1});
+  if(BF.slow>0)L.push({id:"sl",ic:"drop",c:FXBG.slow,nk:"fx_slow",dk:"fx_slow_d",left:BF.slow,deb:1});
+  return L}
+const fxName=x=>typeof x.nk==="object"?x.nk.raw:t(x.nk);
+const fxLeft=x=>x.left!=null?fmtSec(x.left):(x.val||"");
+let fxSel=null;
 function renderFx(){
-  const list=[];
-  if(BF.momentum>0)list.push({ic:"flame",c:SKG.fighter,nk:"fx_momentum",dk:"fx_momentum_d",val:"×"+BF.momentum});
-  if(BF.warCry>0)list.push({ic:"shout",c:SKG.fighter,nk:"sk_war_cry",dk:"fx_warcry_d",val:fmtSec(BF.warCry)});
-  if(BF.focus>0)list.push({ic:"aim",c:SKG.ranger,nk:"sk_focusing",dk:"fx_focus_d",val:fmtSec(BF.focus)});
-  if(BF.leap>0)list.push({ic:"wing",c:SKG.ranger,nk:"sk_evasive_leap",dk:"fx_leap_d",val:fmtSec(BF.leap)});
-  if(BF.leapShot)list.push({ic:"pierce",c:SKG.ranger,nk:"fx_leapshot",dk:"fx_leapshot_d",val:"+60%"});
-  if(BF.overEn>0)list.push({ic:"sparkle",c:SKG.spellcaster,nk:"sk_overload_energy",dk:"fx_overEn_d",val:fmtSec(BF.overEn)});
-  if(BF.blessing>0)list.push({ic:"star",c:SKG.supporter,nk:"sk_blessing",dk:"fx_bless_d",val:fmtSec(BF.blessing)});
-  if(BF.shield>0)list.push({ic:"shield",c:SKG.supporter,nk:"fx_grace",dk:"fx_grace_d",val:num(BF.shield)});
-  if(BF.zone)list.push({ic:"halo",c:SKG.supporter,nk:"sk_sanctuary",dk:"fx_sanct_d",val:fmtSec(BF.zone.t)});
-  if(BF.burn>0)list.push({ic:"flame",c:"linear-gradient(135deg,#ffb060,#d8340a)",nk:"fx_burn",dk:"fx_burn_d",val:fmtSec(BF.burn),deb:1});
-  if(BF.slow>0)list.push({ic:"drop",c:"linear-gradient(135deg,#bfe8ff,#3a78c8)",nk:"fx_slow",dk:"fx_slow_d",val:fmtSec(BF.slow),deb:1});
-  const key=lang+list.map(x=>x.nk+x.val).join("|");
-  if(key===renderFx.key)return;renderFx.key=key;
-  $("#fxRow").innerHTML=list.map(x=>`<span class="fx${x.deb?" debuff":""}" title="${t(x.nk)} — ${t(x.dk)}"><span class="fxi" style="--c:${x.c}">${svg(x.ic)}</span><b>${x.val}</b></span>`).join("");
-}
-$("#fxRow").addEventListener("click",e=>{const c=e.target.closest(".fx");if(c)toast(c.title)});
+  const list=fxList();
+  const key=lang+list.map(x=>x.id+fxLeft(x)+(x.n!=null?"n"+x.n:"")+(x.id===fxSel?"*":"")).join("|");
+  if(key!==renderFx.key){renderFx.key=key;
+    $("#fxRow").innerHTML=list.map(x=>`<button type="button" class="fxb${x.deb?" debuff":""}${x.left!=null&&x.left<=3?" low":""}${x.id===fxSel?" on":""}" data-fx="${x.id}" style="--c:${x.c}" aria-label="${fxName(x)}">${svg(x.ic)}${x.n!=null?`<span class="fxn">${x.n}</span>`:""}<span class="fxt">${fxLeft(x)}</span></button>`).join("")}
+  fxTipUpdate(list)}
+function fxTipUpdate(list){
+  const tip=$("#fxTip");if(!fxSel){if(tip)tip.remove();return}
+  const x=(list||fxList()).find(v=>v.id===fxSel),btn=document.querySelector(`.fxb[data-fx="${fxSel}"]`);
+  if(!x||!btn){fxSel=null;if(tip)tip.remove();return}
+  let el=tip;if(!el){el=document.createElement("div");el.id="fxTip";el.setAttribute("role","tooltip");document.body.appendChild(el)}
+  const h=`<b>${fxName(x)}<em class="${x.deb?"deb":""}">${t(x.deb?"fx_debuff":"fx_buff")}</em></b><div>${t(x.dk)}</div>${x.left!=null?`<div class="ft">${fmt("fx_left",{s:fmtSec(x.left)})}</div>`:""}${x.n!=null&&x.id==="fb"?`<div class="ft">${fmt("fx_fb_hits",{n:x.n})}</div>`:""}`;
+  if(el.innerHTML!==h)el.innerHTML=h;
+  const r=btn.getBoundingClientRect();el.style.left=Math.min(innerWidth-el.offsetWidth-8,r.right+10)+"px";el.style.top=Math.max(8,r.top-4)+"px"}
+$("#fxRow").addEventListener("click",e=>{const c=e.target.closest(".fxb");if(!c)return;e.stopPropagation();AUD.sfx("click");fxSel=fxSel===c.dataset.fx?null:c.dataset.fx;renderFx.key="";renderFx()});
+document.addEventListener("pointerdown",e=>{if(fxSel&&!e.target.closest(".fxb")&&!e.target.closest("#fxTip")){fxSel=null;renderFx.key="";renderFx()}},true);
+/* v22f status chips under the monster's HP bar (monster panel): Stun, Freeze, Petrifaction, Burning, Gaslighting, with seconds left */
+const MST=[["stun","star","linear-gradient(135deg,#fff3a0,#e0a10c)"],["frz","snow","linear-gradient(135deg,#d6f6ff,#3a9ae0)"],["ptr","rock","linear-gradient(135deg,#d8c8a8,#7a6440)"],["brn","flame","linear-gradient(135deg,#ffb060,#d8340a)"],["gas","eye","linear-gradient(135deg,#e2b8ff,#7a35e0)"]];
+function mobStatus(m){
+  const box=$("#moSt"),L=m&&m.dieT<=0?MST.filter(([k])=>m[k]>0&&!(k==="stun"&&(m.frz>0||m.ptr>0))):[];
+  const h=L.map(([k,ic,c])=>`<span data-mst="${k}" title="${t("mst_"+k)} — ${t("mst_"+k+"_d")}"><i style="--c:${c}">${svg(ic)}</i>${fmtSec(m[k])}</span>`).join("");
+  if(box.innerHTML!==h)box.innerHTML=h}
+$("#moSt").addEventListener("click",e=>{const c=e.target.closest("[data-mst]");if(c)toast(c.title)});
 function measurePing(){
   if(REO_SERVER){const t0=performance.now();fetch(REO_SERVER,{method:"HEAD",cache:"no-store"}).then(()=>{NET.ping=Math.round(performance.now()-t0);NET.pingSim=false}).catch(()=>{NET.ping=null;NET.pingSim=false});return}
   NET.ping=Math.round(12+Math.random()*14+(Math.random()<.08?30:0));NET.pingSim=true;
@@ -10062,6 +10109,7 @@ function updateMobBar(dt){
   if(mobHold>0)mobHold-=dt;else mobTrail=Math.max(pct,mobTrail-dt*.7);
   $("#moFill").style.width=(pct*100).toFixed(1)+"%";$("#moTrail").style.width=(mobTrail*100).toFixed(1)+"%";
   const tx=`${num(Math.ceil(Math.max(0,m.hp)))} / ${num(m.maxHp)}`;if($("#moT").textContent!==tx)$("#moT").textContent=tx;
+  mobStatus(m);
   const w=$("#moWarn"),wt=m.boss&&m.tele?t(MON[m.type].warnK||"slam_warn"):"";if(w.textContent!==wt){w.textContent=wt;w.classList.toggle("on",!!wt)}
 }
 
