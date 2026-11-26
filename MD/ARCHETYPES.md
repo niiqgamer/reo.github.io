@@ -25,8 +25,17 @@ Basic hits and Power Strike add Momentum (max 5, lost after 5 s without hitting)
 
 | Passive | Effect |
 |---|---|
-| Weapon Mastery | +20 ATK, +5 HIT |
+| Weapons Mastery (Lv 1–10, v22e) | ATK +4 per level with a knife or sword (every Fighter weapon for now). Was Weapon Mastery: +20 ATK, +5 HIT, one level |
+| Shield Mastery (Lv 1–10, v22e) | While a shield is worn: STR and VIT +Lv, DEF +2% × Lv, attack speed −2% × Lv |
 | Iron Body | +15% Max HP, VIT-based DEF ×1.5 |
+
+v22e adds three actives from NIIQ (full tables: `SKILL-SPEC.md` §3o–3t):
+
+| New skill | Effect | SP | Needs |
+|---|---|---|---|
+| Timber!! (Lv 1–10) | 130–400% ATK on one enemy, HIT +5–50, 70% ATK on the others in 3 × 3 round it, 20% Stun 3 s, no crit. VCT 0.5 s, GD 0.5 s, CD 1.5 s | 8 (Lv 1–5) / 15 | – |
+| Gaslighting (Lv 1–10) | Ground 3 × 3 at the target: non-boss monsters turn on the Fighter, soft DEF −10–55%, their ATK +5–32%, 5 s (Lv 1–5) / 10 s. GD 0.3 s, CD 1 s | 4–13 | – |
+| Forbear (Self Cast, Lv 1–10) | No flinch from physical hits for 10–37 s, ends after 7 hits; MDEF +1–10%. CD 10 s | 10 | Gaslighting 3 |
 
 ## Ranger — Scandium arrows
 Range 9 tiles, 10–12 with Ranger Mastery (v22d). Every arrow is a Scandium arrow once No Arrow is learned (costs Scandium per shot). v21f adds five skills from NIIQ (full tables: `SKILL-SPEC.md` §3i–3n); the four that are not No Arrow need it first. **v22b: the prototype skills (Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim) are removed**, and with them the distance bonus (+2% per tile beyond 3), the +3 range (now 9 instead of 12), +10 HIT, +5% crit and the escape leap.

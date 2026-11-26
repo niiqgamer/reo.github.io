@@ -42,7 +42,7 @@ The gear badge on the Idle button opens **Idle Settings**. Rows whose buttons do
 | Setting | Rule |
 |---|---|
 | Basic attack (ON default) | Can be turned off only while Skill attacks is on. Turning Skill attacks off turns Basic attack back on |
-| Skill attacks + Attack skill set (9 slots) | Physical and magic skills only. **Rotation:** after slot *n* fires, the next try starts at slot *n*+1 and wraps (1 → 2 → 1 → 2 …); a skill that is not ready (cooldown, SP) is skipped. A self-area skill (Petrifaction) walks in until the target is inside its area, then fires (gives up after 4 s) |
+| Skill attacks + Attack skill set (9 slots) | Physical and magic skills only (and the Fighter's Gaslighting debuff, v22e). **Rotation:** after slot *n* fires, the next try starts at slot *n*+1 and wraps (1 → 2 → 1 → 2 …); a skill that is not ready (cooldown, SP) is skipped. A self-area skill (Petrifaction) walks in until the target is inside its area, then fires (gives up after 4 s) |
 | Buff skills + Buff skill set (9) | Buff skills only. Same rotation as the attack set (after slot *n* comes *n*+1, wrapping). A buff that still has more than 1 s left is skipped, so it is cast again only when it is about to run out |
 | Healing skills + Healing skill set (9) + "Heal when HP is below" (5–95%, default 60%) | Heal and zone skills (Heal, First Aid, Sanctuary). Sanctuary is not recast while one is up |
 | Movement skills + Movement skill set (9) | Movement skills (none at the moment: Evasive Leap was removed in v22b). Used when an attacking monster is within 2 tiles |

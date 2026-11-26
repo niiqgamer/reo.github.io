@@ -49,7 +49,14 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v22d (this update)
+## Changes in v22e (this update)
+- **Five Fighter skills** (from NIIQ, `SKILL-SPEC.md` §3o–3t): **Weapons Mastery** (passive Lv 1–10, ATK +4 per level; replaces Weapon Mastery +20 ATK +5 HIT), **Shield Mastery** (passive Lv 1–10, with a shield: STR / VIT +Lv, DEF +2% × Lv, attack speed −2% × Lv), **Timber!!** (Lv 1–10: 130–400% ATK, HIT +5–50, 70% on 3 × 3 round the target, 20% Stun 3 s, VCT 0.5 s, GD 0.5 s, CD 1.5 s, SP 8 / 15), **Gaslighting** (Lv 1–10: ground 3 × 3, non-boss monsters turn on you, soft DEF −10–55%, their ATK +5–32%, 5 / 10 s, SP 4–13), **Forbear** (Self Cast Lv 1–10: no flinch for 10–37 s or 7 hits, MDEF +1–10%, SP 10, CD 10 s; needs Gaslighting Lv 3). New icons, Skills Tree rows, Skill Info lines, text in en / th / jp. The old Fighter skills stay.
+- **Flinch** (new, every archetype): a physical monster hit stops the player's feet for 0.3 s. Forbear removes it.
+- Fighter AI (Idle built-in choice, simulator): Forbear while fighting, Gaslighting on a pack, Timber!! before Power Strike. Gaslighting can go in the Idle attack skill set.
+- ⚠ Read as: Gaslighting lowers **soft DEF** (from VIT) only; Forbear MDEF is %; Gaslighting range 9 tiles (not in the spec).
+- Balance: Fighter CP Lv 10 / 20 / 30 = 705 / 1,173 / 1,712 (was 598 / 1,090 / 1,576). Shield Mastery Lv 10 (−20% attack speed) costs pack damage: packs of 3 87 → 72 kills. `SKILL-SPEC.md` §3t.
+
+## Changes in v22d
 - **No Arrow:** 20 / 16 / 12 / 8 / 4 Scandium per arrow (was 20 / 18 / 15 / 13 / 10). At Lv 5 the Ranger now makes Scandium on every map.
 - **Ranger Mastery:** range +1 tile at Lv 1, 6 and 10 (Lv 10: range 9 → 12). Skill text en / th / jp.
 - Aim Strike stays at SP 10 (the new spec sheet listed SP 12–20; ⚠ to confirm). Balance: CP unchanged (510 / 789 / 1,196); the Ranger is still ~24% under the Fighter. `SKILL-SPEC.md` §3n.
