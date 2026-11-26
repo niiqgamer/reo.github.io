@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v22i. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v22j. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -49,7 +49,10 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v22i (this update)
+## Changes in v22j (this update)
+- **Spellcaster rebalance (NIIQ).** **Fire Bolt** 120 / 130 / 140 / 150 / 160% MATK per fireball (120–1,600% in total), FCT 0.5 s at every level, Lv 5 gap 0.1 s and SP 32, Global Delay 0.5 s. **Freezer** FCT 0.2 + VCT 0.5 s, splash 5 × 5. **Lightning Spear** 100–180% MATK per spear, SP 30 / 34 / 38 / 42 / 46, FCT 0.5 + VCT 1 s, Global Delay 1 s (Lv 5 cast at Lv 30: 2.6 s → 1.1 s). **Petrifaction** 100–140% MATK, VCT 0.5 s. **Overload Energy** needs Elemental Attunement Lv 5, 13 × 13, VCT 0.5 s, lasts 20–100 s with the same cooldown. **Elemental Attunement** also gives MATK +2% per level. Mana Flow unchanged. CP Lv 10 / 20 / 30: 233 / 546 / 971 → 265 / 561 / 1,024 (`SKILL-SPEC.md` §3–3g, `ARCHETYPES.md`, `COMBAT-FORMULAS.md` §5, wiki).
+
+## Changes in v22i
 - **Archetype Supporter skills** (NIIQ): the prototype kit (Holy Light, Blessing, Sanctuary, Divine Grace, Guardian Aura, overheal Grace shield) is replaced by **Edict of Collapse / Edict of Radiance** (Lv 1 passives, only one can be learned: melee physical hits from MATK with +50% attack speed, or a 100% MATK Holy Radiance from 9 tiles), **Heal** Lv 1–10 (new formula, kept out of player text; self + party 7 × 7), **Teleport** Lv 1–2 (random spot / nearest town), **Cloud Flare** Lv 1–5 (5 × 5 holy ground magic, 1–5 beams × 120–160% MATK), **Accelerator** Lv 1–10 (walk +25%, AGI, attack speed) and **Star Bless** Lv 1–10 (All Stats, HIT). Without an Edict the Supporter swings the mace in melee. Old saves get the removed skills' points back; hotbar slots clear. `SKILL-SPEC.md` §3v–3ab, `ARCHETYPES.md`, `COMBAT-FORMULAS.md` §4.
 - Advanced icons for all seven skills (Cloud Flare uses NIIQ's own animated SVG art) and a full effect set: column of light + seal (Heal), atom break-up (Teleport), storm cloud + falling beams on a gold circle (Cloud Flare), racing cyan rings (Accelerator), a galaxy sinking into the hero (Star Bless), Radiance / Collapse basic hits, auras while the buffs last. Buff column entries. Text en / th / jp. `UI-UX.md`.
 - Idle Settings → Teleport: "Warp with Teleport skill" works now (Teleport Lv 1 before Fly Wings). `IDLE.md`.

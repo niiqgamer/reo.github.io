@@ -1939,11 +1939,11 @@ const SK={
  aim_strike:{arch:"ranger",kind:"phys",ratio:2,sp:10,cd:1,gd:1,vct:.5,fct:.5,gap:.1,range:12,ranged:true,canCrit:true,critMul:.5,split:3,splitCh:.38,splash:.5,splashR:1.5,lv:10,ic:"aim"},   // v21h: 1 arrow of ratio x ATK in total; splitCh: it splits into `split` arrows (0.1 s apart) that share the ratio; every arrow splashes 50% of its share on a 3x3 square
  aiming_shower:{arch:"ranger",kind:"phys",ratio:2.5,sp:20,cd:1,gd:.1,vct:.5,fct:.5,range:12,ranged:true,knock:2,lv:10,ic:"arrows"},   // 1 arrow, pushes the target 2 tiles back (bosses too), cannot crit. v22a: FCT 0.5, VCT 0.5, GD 0.1, CD 1
  // spellcaster — Casting (DEX and INT shorten the variable cast) + elemental weakness; spells never miss
- fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.2,hits:10,sp:40,cd:0,gd:1,vct:0,fct:1,gap:.2,range:7,overMul:.5,splash:.5,splashR:1.5,st:"brn",stCh:.7,stDur:7,debuff:true,lv:5,ic:"flame"},   // v20.18: Lv 5 row (Lv 1-5); skAt() gives every level (SKILL-SPEC.md §3)
- freezer:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.0,sp:25,cd:0,gd:.5,vct:.64,fct:.16,range:7,st:"frz",stCh:.75,stDur:7,debuff:true,splash:.5,splashR:1.5,splashOn:"frz",lv:5,ic:"snow"},   // v20.18 (was Frost Nova): 1 enemy + Freeze (Wind resistance -50%)
- lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:1,hits:10,sp:78,cd:0,gd:2,vct:1.8,fct:1.5,gap:.1,range:7,aoe:2.5,at:"target",sq:true,ground:true,overMul:.5,lv:5,ic:"bolt"},   // v20.18: ground magic, spears fall 0.1 s apart on a 5x5 area fixed where the cast started
- petrifaction:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:1,sp:35,cd:0,gd:0,vct:.8,fct:.2,aoe:3.5,at:"self",sq:true,st:"ptr",stCh:.75,stDur:7,debuff:true,lv:5,ic:"rock"},   // v20.18 (was Stone Spike): Self Cast, 7x7 around the caster + Petrifaction (Fire resistance -50%)
- overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:120,sp:110,cd:60,gd:1,vct:2,fct:0,area:6,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 50/65/80/95/110
+ fire_bolt:{arch:"spellcaster",kind:"magic",elem:"fire",ratio:1.6,hits:10,sp:32,cd:0,gd:.5,vct:0,fct:.5,gap:.1,range:7,overMul:.5,splash:.5,splashR:1.5,st:"brn",stCh:.7,stDur:7,debuff:true,lv:5,ic:"flame"},   // v20.18: Lv 5 row (Lv 1-5); skAt() gives every level (SKILL-SPEC.md §3)
+ freezer:{arch:"spellcaster",kind:"magic",elem:"water",ratio:2.0,sp:25,cd:0,gd:.5,vct:.5,fct:.2,range:7,st:"frz",stCh:.75,stDur:7,debuff:true,splash:.5,splashR:2.5,splashOn:"frz",lv:5,ic:"snow"},   // v20.18 (was Frost Nova): 1 enemy + Freeze (Wind resistance -50%)
+ lightning_spear:{arch:"spellcaster",kind:"magic",elem:"wind",ratio:1.8,hits:10,sp:46,cd:0,gd:1,vct:1,fct:.5,gap:.1,range:7,aoe:2.5,at:"target",sq:true,ground:true,overMul:.5,lv:5,ic:"bolt"},   // v20.18: ground magic, spears fall 0.1 s apart on a 5x5 area fixed where the cast started
+ petrifaction:{arch:"spellcaster",kind:"magic",elem:"earth",ratio:1.4,sp:35,cd:0,gd:0,vct:.5,fct:.2,aoe:3.5,at:"self",sq:true,st:"ptr",stCh:.75,stDur:7,debuff:true,lv:5,ic:"rock"},   // v20.18 (was Stone Spike): Self Cast, 7x7 around the caster + Petrifaction (Fire resistance -50%)
+ overload_energy:{arch:"spellcaster",kind:"buff",buff:"overEn",over:5,dur:100,sp:110,cd:100,gd:1,vct:.5,fct:0,area:6.5,lv:5,ic:"sparkle"},   // v20.6: Lv 5 row; skAt() gives every level. +Lv% Overload Rate to self and party within 6 tiles (12x12). SP 50/65/80/95/110
  // supporter. v22i: Holy Light, Blessing and Sanctuary are no longer in ARCH.supporter (kept here unused). Lv rows; skAt() gives every level.
  heal:{arch:"supporter",kind:"heal",sp:40,cd:1,gd:0,vct:0,fct:0,area:3,lv:10,ic:"plus"},   // v22i (SKILL-SPEC.md §3x): Self Cast, self + party members in a 7x7 square (area 3); HP from healAmount(); Recovery Effect +Lv%
  teleport:{arch:"supporter",kind:"warp",sp:20,cd:0,gd:0,lv:2,ic:"wing"},   // v22i (§3y): Lv 1 = a random spot on this map, Lv 2 = the safe area of the nearest town
@@ -1963,7 +1963,7 @@ const PASSIVE={
  no_arrow:{arch:"ranger"},          // v21f: Lv 1-5, every arrow shot costs NA_SC Scandium (handled by the game, not by derive)
  ranger_mastery:{arch:"ranger"},    // v21f: Lv 1-10, DEX +Lv, HIT +Lv, AGI +Lv; v22d: range +1 at Lv 1, 6 and 10 (+3 at Lv 10)
  mana_flow:{arch:"spellcaster"},              // v20.6: Lv 1-10, see manaFlow()
- elemental_attunement:{arch:"spellcaster",per:.05},   // v20.6: Lv 1-5, +5% weakness bonus per level
+ elemental_attunement:{arch:"spellcaster",per:.05,matk:.02},   // v20.6: Lv 1-5, +5% weakness bonus per level; v22j: + MATK +2% per level
  divine_grace:{arch:"supporter",healPct:.2,shieldCap:.2},
  guardian_aura:{arch:"supporter",def:.08,mdef:.10},
  edict_collapse:{arch:"supporter",aspd:.5},   // v22i (§3v): basic attack = melee physical hit whose ATK is the MATK roll; attack speed +50%. Not with Edict of Radiance (SKX)
@@ -1996,7 +1996,8 @@ function derive(p){
   // REO (v20): weaponMATK is flat. The staff's base grows with level (stands in for gear upgrades); staff gear adds more below.
   const wm=Math.round((A.weapon.matkBase||0)+(A.weapon.matkLv||0)*(p.lv-1));
   // iRO: MATK min = INT + [INT/7]^2 ; max = INT + [INT/5]^2
-  const matkMin=fl((s.int+fl(s.int/7)**2)*mm)+wm,matkMax=fl((s.int+fl(s.int/5)**2)*mm)+wm;
+  const atM=1+PASSIVE.elemental_attunement.matk*pl("elemental_attunement");   // v22j Elemental Attunement: MATK +2% per level
+  const matkMin=fl((fl((s.int+fl(s.int/7)**2)*mm)+wm)*atM),matkMax=fl((fl((s.int+fl(s.int/5)**2)*mm)+wm)*atM);
   const baseHP=300+A.hpLv*(p.lv-1),baseSP=80+A.spLv*(p.lv-1);
   // iRO: Max HP +1% per VIT ; Max SP +1% per INT
   const maxHP=fl(baseHP*(1+s.vit/100)*(has("iron_body")?1+PASSIVE.iron_body.hpPct:1));
@@ -2132,7 +2133,7 @@ const SKLV={fire_bolt:{max:5,def:5},freezer:{max:5,def:5},lightning_spear:{max:5
   weapon_mastery:{max:10,def:10},shield_mastery:{max:10,def:10},timber:{max:10,def:10},gaslighting:{max:10,def:10},forbear:{max:10,def:10},logging:{max:10,def:10},   // v22e Fighter
   heal:{max:10,def:10},teleport:{max:2,def:2},cloud_flare:{max:5,def:5},accelerator:{max:10,def:10},star_bless:{max:10,def:10}};   // v22i Supporter (the Edicts are one level)
 /* v21f skill requirements: {skill: {needed skill: level}} (Skills Tree locks the tile until they are met) */
-const SKREQ={teleport:{heal:2},cloud_flare:{heal:2},accelerator:{heal:5},star_bless:{accelerator:5},logging:{timber:3},ranger_mastery:{no_arrow:1},focusing:{no_arrow:3},aim_strike:{no_arrow:5},aiming_shower:{no_arrow:5}};
+const SKREQ={overload_energy:{elemental_attunement:5},teleport:{heal:2},cloud_flare:{heal:2},accelerator:{heal:5},star_bless:{accelerator:5},logging:{timber:3},ranger_mastery:{no_arrow:1},focusing:{no_arrow:3},aim_strike:{no_arrow:5},aiming_shower:{no_arrow:5}};
 const SKX={edict_collapse:"edict_radiance",edict_radiance:"edict_collapse"};   // v22i: skills that cannot be learned together
 const CF_R=[1.2,1.3,1.4,1.5,1.6];   // v22i Cloud Flare: MATK per beam; beams = Lv, SP 18+2*Lv, gap 0.1 s (Lv 2-5); VCT 1, FCT 0, GD 1, CD 0
 const NA_SC=[20,16,12,8,4];                                                                     // No Arrow: Scandium per arrow shot, Lv 1-5
@@ -2142,23 +2143,23 @@ const TB_R=[1.3,1.6,1.9,2.2,2.5,2.8,3.1,3.4,3.7,4],TB_SP=[8,8,8,8,8,15,15,15,15,
 const GL_D=[.1,.15,.2,.25,.3,.35,.4,.45,.5,.55],GL_A=[.05,.08,.11,.14,.17,.2,.23,.26,.29,.32];   // v22e Gaslighting: soft DEF down, ATK up; time 5 s (Lv 1-5) / 10 s (Lv 6-10); SP 3+Lv; GD 0.3, CD 1
 const LG_P=[.2,.4,.6,.9,1.2,1.5,2,2.4,2.8,3.5],LG_N=[2,2,2,3,3,3,4,4,4,5],LG_SP=[20,20,20,30,30,30,40,40,40,50];   // v22h Logging (rev. 2): ATK per log, logs to bundle (max 5), SP
 const AW_R=[1.6,1.7,1.8,1.9,2,2.1,2.2,2.3,2.4,2.5];                                              // Aiming Shower: SP 20, FCT 0.1, GD 0.1   // v20.6: passives with levels too (derive reads them)
-const OE_DUR=[20,40,60,80,120],OE_VCT=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, VCT (FCT 0), SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
-const FB_N=[1,3,5,7,10],FB_SP=[12,17,22,27,40],FB_GAP=[0,.3,.3,.2,.2],FB_FCT=[.5,.6,.7,.8,1];   // Fire Bolt: 120% MATK per fireball, VCT 0, GD 1 s, CD 0
+const OE_DUR=[20,40,60,80,100];   // v22j Overload Energy Lv 1-5: +Lv% Overload Rate for 20-100 s, cooldown = duration, SP 35+15*Lv; VCT 0.5, FCT 0, Global Delay 1 s at every level; needs Elemental Attunement Lv 5
+const FB_N=[1,3,5,7,10],FB_R=[1.2,1.3,1.4,1.5,1.6],FB_SP=[12,17,22,27,32],FB_GAP=[0,.3,.3,.2,.1];   // v22j Fire Bolt: 120-160% MATK per fireball (120/390/700/1050/1600% in total), FCT 0.5, VCT 0, GD 0.5 s, CD 0
 const FB_CH=[.3,.4,.5,.6,.7];                                                                    // v21e Fire Bolt: Burning chance; each fireball splashes 50% MATK on a 3x3 square around the target
-const FZ_R=[1.1,1.3,1.5,1.7,2],FZ_CH=[.35,.45,.55,.65,.75];                                     // Freezer: SP 25, FCT 0.16, VCT 0.64, GD 0.5 s, CD 0
-const LS_SP=[30,42,54,66,78],LS_VCT=[1,1.2,1.4,1.6,1.8];                                         // Lightning Spear: 2 spears per Lv, 100% MATK each, 0.1 s apart, FCT 1.5, GD 2 s, CD 0
-const PT_R=[.75,.8,.85,.9,1],PT_CH=[.3,.4,.55,.65,.75],PT_SP=[25,27,28,32,35];                   // Petrifaction: FCT 0.2, VCT 0.8, GD 0, CD 0
+const FZ_R=[1.1,1.3,1.5,1.7,2],FZ_CH=[.35,.45,.55,.65,.75];                                     // Freezer: SP 25, FCT 0.2, VCT 0.5, GD 0.5 s, CD 0; v22j splash 5x5
+const LS_SP=[30,34,38,42,46],LS_R=[1,1.2,1.4,1.6,1.8];                                           // v22j Lightning Spear: 2 spears per Lv, 100-180% MATK each, 0.1 s apart, FCT 0.5, VCT 1, GD 1 s, CD 0
+const PT_R=[1,1.1,1.2,1.3,1.4],PT_CH=[.3,.4,.55,.65,.75],PT_SP=[25,27,28,32,35];                  // v22j Petrifaction: 100-140% MATK, FCT 0.2, VCT 0.5, GD 0, CD 0
 const ST_DUR=[3,4,5,6,7];   // ASSUMPTION: Burning / Freeze / Petrifaction time by skill level (not given yet), before the target's MDEF
 const skMax=id=>SKLV[id]?SKLV[id].max:1;   // every other skill is learn-only (one level) until its levels are designed
 function skAt(id,lv){
   const k=SK[id];if(!k||!SKLV[id])return k;
   const L=clamp(Math.floor(lv)||SKLV[id].def,1,SKLV[id].max);
   const i=L-1;
-  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:FB_N[i],sp:FB_SP[i],gap:FB_GAP[i],fct:FB_FCT[i],stCh:FB_CH[i],stDur:ST_DUR[i]});
+  if(id==="fire_bolt")return Object.assign({},k,{lv:L,hits:FB_N[i],ratio:FB_R[i],sp:FB_SP[i],gap:FB_GAP[i],stCh:FB_CH[i],stDur:ST_DUR[i]});
   if(id==="freezer")return Object.assign({},k,{lv:L,ratio:FZ_R[i],stCh:FZ_CH[i],stDur:ST_DUR[i]});
-  if(id==="lightning_spear")return Object.assign({},k,{lv:L,hits:2*L,sp:LS_SP[i],vct:LS_VCT[i]});
+  if(id==="lightning_spear")return Object.assign({},k,{lv:L,hits:2*L,ratio:LS_R[i],sp:LS_SP[i]});
   if(id==="petrifaction")return Object.assign({},k,{lv:L,ratio:PT_R[i],stCh:PT_CH[i],sp:PT_SP[i],stDur:ST_DUR[i]});
-  if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[L-1],vct:OE_VCT[L-1],sp:35+15*L});
+  if(id==="overload_energy")return Object.assign({},k,{lv:L,over:L,dur:OE_DUR[i],cd:OE_DUR[i],sp:35+15*L});
   if(id==="focusing")return Object.assign({},k,{lv:L,focus:FO_P[i],dur:40+20*L,sp:20+5*L});
   if(id==="aim_strike")return Object.assign({},k,{lv:L,ratio:AS_R[i],split:AS_N[i],splitCh:AS_CH[i],sp:AS_SP[i]});
   if(id==="aiming_shower")return Object.assign({},k,{lv:L,ratio:AW_R[i]});
@@ -2577,7 +2578,7 @@ D2.en.skd_eagle_eye="+3 range (12 tiles) and +10 HIT.";D2.th.skd_eagle_eye="ร�
 D2.en.sk_steady_aim="Steady Aim";D2.th.sk_steady_aim="Steady Aim";
 D2.en.skd_steady_aim="Distance bonus (+2% per tile beyond 3) and +5% crit.";D2.th.skd_steady_aim="โบนัสระยะ (+2% ต่อช่องที่เกิน 3) และคริติคอล +5%";
 D2.en.sk_fire_bolt="Fire Bolt";D2.th.sk_fire_bolt="Fire Bolt";
-D2.en.skd_fire_bolt="Strikes one enemy with fireballs that fall one by one, 120% MATK Fire magic damage each (1 / 3 / 5 / 7 / 10 fireballs). Each fireball that hits also splashes 50% MATK Fire damage on a 3 × 3 area around the target, and the volley has a 30–70% chance to set it Burning: it burns for 10% MATK Fire every second and its resistance to Water drops by 50% (a Freeze puts the fire out). Every fireball always falls, even if the target dies first. Can Overload.";D2.th.skd_fire_bolt="โจมตีศัตรูด้วยลูกไฟที่ตกลงมาทีละลูก สร้างความเสียหายทางเวทมนตร์ธาตุ Fire ลูกละ 120% MATK (1 / 3 / 5 / 7 / 10 ลูก) ลูกไฟที่โดนเป้าหมายจะ Splash ธาตุ Fire รอบเป้าหมายกว้าง 3 × 3 ช่องด้วย MATK 50% และมีโอกาส 30–70% ทำให้ติดสถานะ Burning (ติดไฟ) ไหม้ 10% MATK ธาตุ Fire ทุกวินาที และลดความต้านทานต่อธาตุ Water ลง 50% (ติด Freeze แล้วไฟจะดับ) ลูกไฟตกครบตามจำนวนเสมอ แม้เป้าหมายจะตายก่อน ติด Overload ได้";
+D2.en.skd_fire_bolt="Strikes one enemy with fireballs that fall one by one, 120–160% MATK Fire magic damage each by level (1 / 3 / 5 / 7 / 10 fireballs, 120% → 1,600% MATK in total). Each fireball that hits also splashes 50% MATK Fire damage on a 3 × 3 area around the target, and the volley has a 30–70% chance to set it Burning: it burns for 10% MATK Fire every second and its resistance to Water drops by 50% (a Freeze puts the fire out). Every fireball always falls, even if the target dies first. Can Overload.";D2.th.skd_fire_bolt="โจมตีศัตรูด้วยลูกไฟที่ตกลงมาทีละลูก สร้างความเสียหายทางเวทมนตร์ธาตุ Fire ลูกละ 120–160% MATK ตามเลเวล (1 / 3 / 5 / 7 / 10 ลูก รวม 120% → 1,600% MATK) ลูกไฟที่โดนเป้าหมายจะ Splash ธาตุ Fire รอบเป้าหมายกว้าง 3 × 3 ช่องด้วย MATK 50% และมีโอกาส 30–70% ทำให้ติดสถานะ Burning (ติดไฟ) ไหม้ 10% MATK ธาตุ Fire ทุกวินาที และลดความต้านทานต่อธาตุ Water ลง 50% (ติด Freeze แล้วไฟจะดับ) ลูกไฟตกครบตามจำนวนเสมอ แม้เป้าหมายจะตายก่อน ติด Overload ได้";
 D2.en.skpLine="Skill points: {n} (1 per Job Lv)";D2.th.skpLine="แต้มสกิล: {n} (1 Job Lv = 1 แต้ม)";
 D2.en.gdLbl="Global Delay";D2.th.gdLbl="ดีเลย์รวม";
 D2.en.fbLbl="Fireballs";D2.th.fbLbl="ลูกไฟ";
@@ -2585,22 +2586,22 @@ D2.en.dnd_item_no="This item can't be placed here.";D2.th.dnd_item_no="\u0e44\u0
 D2.en.skNone="Not learned";D2.th.skNone="ยังไม่ได้เรียน";
 D2.en.skNotLearned="Skill not learned yet. Spend a skill point in the Skills window.";D2.th.skNotLearned="ยังไม่ได้เรียนสกิลนี้ ใช้แต้มสกิลในหน้าสกิล";
 D2.en.sk_freezer="Freezer";D2.th.sk_freezer="Freezer";
-D2.en.skd_freezer="Grips the target with the power of ice: Water magic damage to one enemy and a chance of Freeze, which also cuts its resistance to Wind by 50%. While the target is frozen, Freezer also splashes 50% MATK Water damage on a 3 × 3 area around it. The chance and time of Freeze change with the skill level and the target's MDEF and LUK.";D2.th.skd_freezer="ยึดจับและเหนี่ยวนำด้วยพลังน้ำแข็ง สร้างความเสียหายทางเวทมนตร์ธาตุ Water ต่อศัตรู 1 ตัว และมีโอกาสทำให้ติดสถานะ Freeze (แช่แข็ง) ที่ลดความต้านทานต่อธาตุ Wind ลง 50% เมื่อเป้าหมายติด Freeze จะ Splash ธาตุ Water รอบเป้าหมายกว้าง 3 × 3 ช่องด้วย MATK 50% โอกาสและระยะเวลาติด Freeze เปลี่ยนตามเลเวลสกิล พลังป้องกันเวทมนตร์ และ LUK ของเป้าหมาย";
+D2.en.skd_freezer="Grips the target with the power of ice: Water magic damage to one enemy and a chance of Freeze, which also cuts its resistance to Wind by 50%. While the target is frozen, Freezer also splashes 50% MATK Water damage on a 5 × 5 area around it. The chance and time of Freeze change with the skill level and the target's MDEF and LUK.";D2.th.skd_freezer="ยึดจับและเหนี่ยวนำด้วยพลังน้ำแข็ง สร้างความเสียหายทางเวทมนตร์ธาตุ Water ต่อศัตรู 1 ตัว และมีโอกาสทำให้ติดสถานะ Freeze (แช่แข็ง) ที่ลดความต้านทานต่อธาตุ Wind ลง 50% เมื่อเป้าหมายติด Freeze จะ Splash ธาตุ Water รอบเป้าหมายกว้าง 5 × 5 ช่องด้วย MATK 50% โอกาสและระยะเวลาติด Freeze เปลี่ยนตามเลเวลสกิล พลังป้องกันเวทมนตร์ และ LUK ของเป้าหมาย";
 D2.en.sk_lightning_spear="Lightning Spear";D2.th.sk_lightning_spear="Lightning Spear";
-D2.en.skd_lightning_spear="Ground magic: spears of lightning strike a 5 × 5 area one after another (2 per level, 0.1 s apart), each dealing 100% MATK Wind magic damage to every enemy inside. The area is where the target stood when the cast started. Can Overload.";D2.th.skd_lightning_spear="เวทพื้นที่: สร้างหอกแห่งสายฟ้าฟาดลงมาที่พื้นที่ 5×5 ช่องทีละเล่ม (เลเวลละ 2 เล่ม ห่างกัน 0.1 วิ) แต่ละเล่มสร้างความเสียหายทางเวทมนตร์ธาตุ Wind 100% MATK ต่อศัตรูทุกตัวในพื้นที่ พื้นที่คือจุดที่เป้าหมายยืนตอนเริ่มร่าย เกินพิกัดได้";
+D2.en.skd_lightning_spear="Ground magic: spears of lightning strike a 5 × 5 area one after another (2 per level, 0.1 s apart), each dealing 100–180% MATK Wind magic damage by level to every enemy inside. The area is where the target stood when the cast started. Can Overload.";D2.th.skd_lightning_spear="เวทพื้นที่: สร้างหอกแห่งสายฟ้าฟาดลงมาที่พื้นที่ 5×5 ช่องทีละเล่ม (เลเวลละ 2 เล่ม ห่างกัน 0.1 วิ) แต่ละเล่มสร้างความเสียหายทางเวทมนตร์ธาตุ Wind 100–180% MATK ตามเลเวล ต่อศัตรูทุกตัวในพื้นที่ พื้นที่คือจุดที่เป้าหมายยืนตอนเริ่มร่าย เกินพิกัดได้";
 D2.en.sk_petrifaction="Petrifaction";D2.th.sk_petrifaction="Petrifaction";
-D2.en.skd_petrifaction="Bends the geology of all matter into fossil: Earth magic damage to enemies in the 7 × 7 area around you and a chance of Petrifaction, which also cuts their resistance to Fire by 50%. The chance and time of Petrifaction change with the skill level and the target's MDEF and LUK.";D2.th.skd_petrifaction="เรียนรู้กระบวนการทางธรณีศาสตร์ ปรับมวลสารทุกสรรพสิ่งให้เป็นซากฟอสซิล สร้างความเสียหายทางเวทมนตร์ธาตุ Earth ต่อศัตรูโดยรอบ 7×7 ช่องรอบตัวเอง และมีโอกาสทำให้ติดสถานะ Petrifaction (แข็งเป็นหิน) ที่ลดความต้านทานต่อธาตุ Fire ลง 50% เพิ่มเติม โอกาสและระยะเวลาติดสถานะเปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย";
+D2.en.skd_petrifaction="Bends the geology of all matter into fossil: Earth magic damage (100–140% MATK by level) to enemies in the 7 × 7 area around you and a chance of Petrifaction, which also cuts their resistance to Fire by 50%. The chance and time of Petrifaction change with the skill level and the target's MDEF and LUK.";D2.th.skd_petrifaction="เรียนรู้กระบวนการทางธรณีศาสตร์ ปรับมวลสารทุกสรรพสิ่งให้เป็นซากฟอสซิล สร้างความเสียหายทางเวทมนตร์ธาตุ Earth (100–140% MATK ตามเลเวล) ต่อศัตรูโดยรอบ 7×7 ช่องรอบตัวเอง และมีโอกาสทำให้ติดสถานะ Petrifaction (แข็งเป็นหิน) ที่ลดความต้านทานต่อธาตุ Fire ลง 50% เพิ่มเติม โอกาสและระยะเวลาติดสถานะเปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย";
 D2.en.sk_mana_flow="Mana Flow";D2.th.sk_mana_flow="Mana Flow";
 D2.en.skd_mana_flow="Trains SP to flow through the whole body as efficiently as possible. Max SP, SP regeneration and SP cost improve with each level (Lv 10: +12% / +30% / −12%).";D2.th.skd_mana_flow="ฝึกการไหลเวียน SP ทั่วทั้งร่างกาย ให้มีประสิทธิภาพสูงสุด เพิ่ม Max SP ฟื้น SP เร็วขึ้น และใช้ SP น้อยลงตามเลเวล (Lv 10: +12% / +30% / −12%)";
 D2.en.pe_mf="Max SP +{a}%, SP regen +{b}%, SP cost −{c}%";D2.th.pe_mf="Max SP +{a}% ฟื้น SP เร็วขึ้น {b}% ใช้ SP น้อยลง {c}%";
-D2.en.pe_ea="weakness bonus +{a}% (hits for {b}%)";D2.th.pe_ea="ตีจุดอ่อนธาตุแรงขึ้น +{a}% (รวม {b}%)";
+D2.en.pe_ea="MATK +{c}%, weakness bonus +{a}% (hits for {b}%)";D2.th.pe_ea="MATK +{c}%, ตีจุดอ่อนธาตุแรงขึ้น +{a}% (รวม {b}%)";
 D2.en.pe_next="Next:";D2.th.pe_next="เลเวลถัดไป:";
 D2.en.durLbl="Duration";D2.th.durLbl="ระยะเวลา";
 D2.en.sk_overload_energy="Overload Energy";D2.th.sk_overload_energy="Overload Energy";
-D2.en.skd_overload_energy="Focus with unwavering resolve to draw on every power of the universe: raises the Overload Rate of yourself and every party member within a 12 × 12 area around you (+1% per level). Cooldown 60 s.";D2.th.skd_overload_energy="ตั้งสมาธิอันแน่วแน่ที่จะดึงทุกพลังของจักรวาล มาเพิ่มอัตราเกินพิกัดให้ตัวเองและสมาชิกปาร์ตี้ทั้งหมดในระยะ 12×12 ช่องรอบตัว (+1% ต่อเลเวล) คูลดาวน์ 60 วิ";
+D2.en.skd_overload_energy="Focus with unwavering resolve to draw on every power of the universe: raises the Overload Rate of yourself and every party member within a 13 × 13 area around you (+1% per level, 20–100 s; the cooldown is as long as the buff). Requires Elemental Attunement Lv 5.";D2.th.skd_overload_energy="ตั้งสมาธิอันแน่วแน่ที่จะดึงทุกพลังของจักรวาล มาเพิ่มอัตราเกินพิกัดให้ตัวเองและสมาชิกปาร์ตี้ทั้งหมดในระยะ 13×13 ช่องรอบตัว (+1% ต่อเลเวล นาน 20–100 วิ คูลดาวน์เท่าระยะเวลา) ต้องมี Elemental Attunement Lv 5";
 D2.en.fx_overEn_d="Overload Rate raised (Overload Energy).";D2.th.fx_overEn_d="อัตราเกินพิกัดเพิ่มขึ้น (Overload Energy)";
 D2.en.sk_elemental_attunement="Elemental Attunement";D2.th.sk_elemental_attunement="Elemental Attunement";
-D2.en.skd_elemental_attunement="Learn the weaknesses of the universe's main elements. Hitting an element's weakness deals +5% more per level (150% → 175% at Lv 5).";D2.th.skd_elemental_attunement="เรียนรู้จุดอ่อนเกี่ยวกับธาตุหลักในจักรวาล ตีจุดอ่อนธาตุแรงเพิ่มขึ้น +5% ต่อเลเวล (150% → 175% ที่ Lv 5)";
+D2.en.skd_elemental_attunement="Learn the weaknesses of the universe's main elements. MATK +2% per level, and hitting an element's weakness deals +5% more per level (Lv 5: MATK +10%, weakness 150% → 175%).";D2.th.skd_elemental_attunement="เรียนรู้จุดอ่อนเกี่ยวกับธาตุหลักในจักรวาล MATK +2% ต่อเลเวล และตีจุดอ่อนธาตุแรงเพิ่มขึ้น +5% ต่อเลเวล (Lv 5: MATK +10%, จุดอ่อน 150% → 175%)";
 D2.en.sk_heal="Heal";D2.th.sk_heal="ฮีล";
 
 D2.en.sk_holy_light="Holy Light";D2.th.sk_holy_light="Holy Light";
@@ -3491,7 +3492,7 @@ D.jp={
   "sk_steady_aim":"狙い澄まし",
   "skd_steady_aim":"距離ボーナス（3マスを超えた分1マスにつき+2%）とクリティカル+5%。",
   "sk_fire_bolt":"ファイアボルト",
-  "skd_fire_bolt":"1体の敵に火球を1つずつ落とし、各火球が火属性の魔法ダメージ（MATK 120%）を与えます（1 / 3 / 5 / 7 / 10個）。命中した火球は対象の周囲3×3マスに火属性のスプラッシュ（MATK 50%）を与え、30–70%の確率で炎上させます。炎上中は毎秒MATK 10%の火属性ダメージを受け、水属性への耐性が50%下がります（凍結すると火は消えます）。対象が先に倒れても、火球はすべて落ちます。オーバーロード可能。",
+  "skd_fire_bolt":"1体の敵に火球を1つずつ落とし、各火球が火属性の魔法ダメージ（LvによりMATK 120–160%）を与えます（1 / 3 / 5 / 7 / 10個、合計 MATK 120% → 1,600%）。命中した火球は対象の周囲3×3マスに火属性のスプラッシュ（MATK 50%）を与え、30–70%の確率で炎上させます。炎上中は毎秒MATK 10%の火属性ダメージを受け、水属性への耐性が50%下がります（凍結すると火は消えます）。対象が先に倒れても、火球はすべて落ちます。オーバーロード可能。",
   "skpLine":"スキルポイント：{n}（ジョブLv 1ごとに1）",
   "gdLbl":"グローバルディレイ",
   "fbLbl":"火球",
@@ -3501,22 +3502,22 @@ D.jp={
   "skNone":"未習得",
   "skNotLearned":"まだ習得していません。スキル画面でスキルポイントを使ってください。",
   "sk_freezer":"フリーザー",
-  "skd_freezer":"氷の力で捕らえ、敵1体に水属性の魔法ダメージ。一定確率で凍結させ、さらに風属性への耐性を50%下げます。対象が凍結している間は周囲3×3マスに水属性のスプラッシュ（MATK 50%）を与えます。凍結の確率と時間はスキルLv、対象の魔法防御とLUKで変わります。",
+  "skd_freezer":"氷の力で捕らえ、敵1体に水属性の魔法ダメージ。一定確率で凍結させ、さらに風属性への耐性を50%下げます。対象が凍結している間は周囲5×5マスに水属性のスプラッシュ（MATK 50%）を与えます。凍結の確率と時間はスキルLv、対象の魔法防御とLUKで変わります。",
   "sk_lightning_spear":"ライトニングスピア",
-  "skd_lightning_spear":"地面魔法：雷の槍を5×5マスの範囲に1本ずつ落とし（Lvごとに2本、0.1秒間隔）、範囲内の全ての敵に風属性の魔法ダメージ（各 MATK 100%）。範囲は詠唱開始時に対象がいた場所。オーバーロード可能。",
+  "skd_lightning_spear":"地面魔法：雷の槍を5×5マスの範囲に1本ずつ落とし（Lvごとに2本、0.1秒間隔）、範囲内の全ての敵に風属性の魔法ダメージ（LvによりそれぞれMATK 100–180%）。範囲は詠唱開始時に対象がいた場所。オーバーロード可能。",
   "sk_petrifaction":"ペトリファクション",
-  "skd_petrifaction":"地質の理で万物を化石に変え、自分の周囲7×7マスの敵に地属性の魔法ダメージ。一定確率で石化させ、さらに火属性への耐性を50%下げます。石化の確率と時間はスキルLv、対象の魔法防御とLUKで変わります。",
+  "skd_petrifaction":"地質の理で万物を化石に変え、自分の周囲7×7マスの敵に地属性の魔法ダメージ（LvによりMATK 100–140%）。一定確率で石化させ、さらに火属性への耐性を50%下げます。石化の確率と時間はスキルLv、対象の魔法防御とLUKで変わります。",
   "sk_mana_flow":"マナフロー",
   "skd_mana_flow":"SPを全身にめぐらせ、できるだけ効率よく流す修練。Lvごとに最大SP・SP回復・SP消費が改善（Lv10：+12% / +30% / −12%）。",
   "pe_mf":"最大SP +{a}%、SP回復 +{b}%、SP消費 −{c}%",
-  "pe_ea":"弱点ボーナス +{a}%（{b}%ヒット）",
+  "pe_ea":"MATK +{c}%、弱点ボーナス +{a}%（{b}%ヒット）",
   "pe_next":"次のLv：",
   "durLbl":"持続時間",
   "sk_overload_energy":"オーバーロードエナジー",
-  "skd_overload_energy":"揺るがぬ意志で宇宙のあらゆる力を引き出します。自分の周囲12×12の範囲内にいる自分とパーティメンバー全員のオーバーロード率を上昇させます（Lvごとに+1%）。クールダウン60秒。",
+  "skd_overload_energy":"揺るがぬ意志で宇宙のあらゆる力を引き出します。自分の周囲13×13の範囲内にいる自分とパーティメンバー全員のオーバーロード率を上昇させます（Lvごとに+1%、20–100秒。クールダウンは効果時間と同じ）。属性習熟Lv5が必要。",
   "fx_overEn_d":"オーバーロード率が上昇（オーバーロードエナジー）。",
   "sk_elemental_attunement":"属性習熟",
-  "skd_elemental_attunement":"宇宙の主要な属性の弱点を学びます。弱点属性に当てると、Lvごとに+5%のダメージ増加（Lv5で150% → 175%）。",
+  "skd_elemental_attunement":"宇宙の主要な属性の弱点を学びます。LvごとにMATK +2%、弱点属性に当てるとLvごとに+5%のダメージ増加（Lv5：MATK +10%、弱点150% → 175%）。",
   "sk_heal":"ヒール",
   "sk_holy_light":"ホーリーライト",
   "skd_holy_light":"敵1体に魔法攻撃200%の聖属性。",
@@ -8396,7 +8397,7 @@ function pasEffAt(id,lv){
   if(id==="ranger_mastery")return fmt("pe_rm",{a:lv,r:lv>=10?3:lv>=6?2:1});
   if(id==="weapon_mastery")return fmt("pe_wm",{a:lv*REOC.PASSIVE.weapon_mastery.atk});
   if(id==="shield_mastery")return fmt("pe_sm",{a:lv,b:Math.round(lv*REOC.PASSIVE.shield_mastery.def*100)});
-  if(id==="elemental_attunement")return fmt("pe_ea",{a:Math.round(lv*REOC.PASSIVE.elemental_attunement.per*100),b:Math.round(150+lv*REOC.PASSIVE.elemental_attunement.per*100)});
+  if(id==="elemental_attunement")return fmt("pe_ea",{a:Math.round(lv*REOC.PASSIVE.elemental_attunement.per*100),b:Math.round(150+lv*REOC.PASSIVE.elemental_attunement.per*100),c:Math.round(lv*REOC.PASSIVE.elemental_attunement.matk*100)});
   return ""}
 function pasEff(id){if(!REOC.SKLV[id])return "";const L=skLvOf(id),mx=skMaxOf(id),a=L?pasEffAt(id,L):"",n=L<mx?pasEffAt(id,L+1):"";
   return `<small>${a?`<b>Lv ${L}:</b> ${a}`:""}${a&&n?" · ":""}${n?`${t("pe_next")} ${n}`:""}</small>`}
@@ -8721,7 +8722,7 @@ function finishSkill(id,tg,lv,gp){
      if(k.focus){BF.focusV=k.focus;_pdKey="";fx.push({k:"ring",x,y,t:0,d:.7,c:col,r:56})}   // v21f Focusing: DEX and AGI +%
      if(k.buff==="logging"){BF.logN=0;BF.logPer=k.per;BF.logMax=k.logMax;fx.push({k:"ring",x,y,t:0,d:.8,c:col,r:70});fx.push({k:"burst",x,y,t:0,d:.7,c:col,n:18,z:30})}   // v22h Logging
      if(k.buff==="forbear"){BF.fbV=k.mdef;BF.fbN=0;_pdKey="";fx.push({k:"ring",x,y,t:0,d:.7,c:col,r:56})}   // v22e Forbear: no flinch for 7 physical hits, MDEF +%
-     if(k.over){BF.overEnV=k.over;_pdKey="";   // v20.6 Overload Energy: self + party members within 6 tiles (a 12x12 square). Party members are simulated (no combat stats yet), so on them it is only shown
+     if(k.over){BF.overEnV=k.over;_pdKey="";   // v22j Overload Energy: self + party members within 6.5 tiles (a 13x13 square). Party members are simulated (no combat stats yet), so on them it is only shown
        fx.push({k:"ring",x,y,t:0,d:.8,c:col,r:k.area*48});
        if(S.party&&cur===town)for(const m of S.party.members){const w=findPlayer(m.name);if(w&&Math.abs(w.x-x)<=k.area&&Math.abs(w.y-y)<=k.area)fx.push({k:"rise",x:w.x,y:w.y,t:0,d:1.1,c:col})}}
      if(k.taunt){for(const m of liveMon())if(dist(m,player)<=k.taunt&&!m.aggro){m.aggro=true;m.speed=MON[m.type].speed*1.6}fx.push({k:"ring",x,y,t:0,d:.6,c:col,r:k.taunt*45})}
