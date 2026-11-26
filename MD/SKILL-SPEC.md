@@ -426,7 +426,7 @@ Damage does not move (CP Lv 10 / 20 / 30 = 510 / 789 / 1,196, same as v22b): the
 (v22b, old Ranger skills removed.) So a Ranger with No Arrow loses Scandium on Field 01–02 even at Lv 5, only just breaks even on the Geosyncline and Ruins at Lv 5, and loses on every map at Lv 1. Every other archetype keeps all of it. See `ECONOMY.md`.
 
 ## 3o. Fighter skills (v22e, from NIIQ)
-Five Fighter skills. The old Fighter skills (Power Strike, Whirlwind Cleave, Crushing Blow, War Cry, Iron Body) stay for now; Weapon Mastery becomes **Weapons Mastery** (Lv 1–10). Forbear needs Gaslighting Lv 3 (`SKREQ`); the others need nothing. The five cost 50 points at max; a C1 Fighter has 49.
+Five Fighter skills. Weapon Mastery becomes **Weapons Mastery** (Lv 1–10). **v22g:** the old Fighter skills (Power Strike, Whirlwind Cleave, Crushing Blow, War Cry, Iron Body) and Momentum are removed (old saves get the points back; their hotbar slots clear). Forbear needs Gaslighting Lv 3 (`SKREQ`); the others need nothing. The five cost 50 points at max; a C1 Fighter has 49.
 
 ## 3p. Weapons Mastery (passive, Lv 1–10)
 Master the knife and the sword and draw out what the weapon holds: **ATK +4 per level** (Lv 10: +40) while a knife or sword is held. The game has no knife / sword weapon types yet, so every Fighter weapon counts. Replaces the old Weapon Mastery (+20 ATK +5 HIT, one level): an old save keeps its one level (+4 ATK) and can raise it. `PASSIVE.weapon_mastery.atk` = 4 per level; the mastery ATK goes into `(statusATK + weapon + mastery)` (`COMBAT-FORMULAS.md` §2).
@@ -488,6 +488,21 @@ Same method as §3n (300 s × seeds 1–3, auto stats, no gear, every skill at m
 | **CP Lv 10 / 20 / 30** | 598 / 1,090 / 1,576 | **705 / 1,173 / 1,712** | 510 / 789 / 1,196 | 233 / 546 / 971 |
 
 The Fighter is tougher (Shield Mastery DEF +20%, STR / VIT +10; no deaths on the Geosyncline or the Ruins) and hits harder per swing, but **Shield Mastery Lv 10 slows the basic attack by 20%**, which costs about as much as Timber!! adds: on packs of 3 the Fighter drops 87 → 72 kills (with attack speed unchanged it would be 84 kills · 119 DPS). CP still rises 1,576 → 1,712 (+9%), so the gap to the Ranger (1,196) grows. Per cast at Lv 30 against a neutral dummy: Timber!! Lv 10 ≈ 570 damage (+70% on each neighbour), Power Strike 272, Aim Strike 221, Fire Bolt Lv 5 (10 fireballs) 834. The flinch is not in the simulator.
+
+### Balance check (simulator, v22g: old Fighter skills removed)
+Same method. The Fighter now has only the five v22e skills; AI: Forbear while fighting, Gaslighting on a pack, then Timber!!.
+
+| | Fighter v22e | **Fighter v22g** | Ranger | Spellcaster |
+|---|---|---|---|---|
+| Lv 10, Field 01 | 50.7 · 55 | **50.7 · 55** | 52.0 · 32 | 47.7 · 26 |
+| Lv 20, Field 02 | 49.7 · 78 | **49.0 · 77** | 44.0 · 55 | 46.0 · 53 |
+| Lv 30, Field 03 | 42.3 · 127 | **40.0 · 126** | 34.3 · 99 | 42.0 · 117 |
+| Lv 20, packs of 3 | 72 · 100 | **66 · 96** | 85 · 98 | 108 · 123 |
+| Lv 30, Geosyncline | 18.0 · 159 · 0 d | **17.0 · 150 · 0 d** | 13.0 · 125 · 2 d | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 12.0 · 175 · 0 d | **11.7 · 174 · 1 d** | 7.3 · 138 · 3.3 d | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 705 / 1,173 / 1,712 | **634 / 1,038 / 1,469** | 510 / 789 / 1,196 | 233 / 546 / 971 |
+
+The Fighter loses Iron Body (+15% Max HP) and Whirlwind Cleave (the old pack skill), so CP drops 1,712 → 1,469 (still above the Ranger's 1,196; v22d Fighter was 1,576). Packs of 3 drop to 66 kills: Timber!!'s 70% splash is the only area damage left and Shield Mastery Lv 10 still slows the basic attack 20%. Single targets barely change.
 
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**
