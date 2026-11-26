@@ -36,7 +36,7 @@ v20.18: NIIQ now writes the fields in English. They map to the rows above: **Ski
 
 Today’s code already rolls damage per hit (a skill with `hits` loops and calls the damage function once per hit), but it resolves all hits at the same instant. Fire Bolt will be the first skill with a gap between hits.
 
-## 3. Fire Bolt (v20.18, from NIIQ: Lv 1–5; splash + Burning v21e)
+## 3. Fire Bolt (v20.18, from NIIQ: Lv 1–5; splash + Burning v21e; rebalanced v22j)
 
 | | |
 |---|---|
@@ -47,29 +47,30 @@ Today’s code already rolls damage per hit (a skill with `hits` loops and calls
 | Target | 1 enemy, **True multi-hit**, fireballs dropped **one at a time**, **Splash Damage** (v21e) |
 | Type (v21e) | Magic, Debuff (Burning) |
 | Elements | Fire |
-| Overload Rate | True (⚠ the game keeps `overMul` 0.5 on the chance, see below) |
-| Overload Damage | ×0.5 (⚠ see below) |
+| Overload Rate | **×0.5** (v22j, NIIQ: the 0.5 is on the Overload *rate*, which is how the game already worked: `overMul` 0.5) |
 | ระยะ | 7 tiles |
-| Global Delay | **1 s** at every level |
+| Global Delay | **0.5 s** at every level (v22j; was 1 s) |
 | Skill Cooldown | **0 s** at every level |
-| Detail | โจมตีศัตรูด้วยลูกไฟ สร้างความเสียหายทางเวทมนตร์ธาตุ Fire เท่ากับ MATK 100% → **120% MATK per fireball** (NIIQ: the level table is right, "100%" was a typo) เมื่อลูกไฟโดนเป้าหมายจะ Splash Damage Fire รอบเป้าหมายกว้าง 3x3 ช่อง ด้วย MATK 50% และสร้างผลทำให้ติดสถานะ **Burning (ติดไฟ)** ที่ลดความต้านทานต่อธาตุ Water ลง 50% เพิ่มเติม โอกาสและระยะเวลาติดสถานะ Burning เปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย |
+| Detail | โจมตีศัตรูด้วยลูกไฟ สร้างความเสียหายทางเวทมนตร์ธาตุ Fire ตาม MATK ในตาราง (v22j: **120 / 130 / 140 / 150 / 160% MATK per fireball** by level) เมื่อลูกไฟโดนเป้าหมายจะ Splash Damage Fire รอบเป้าหมายกว้าง 3x3 ช่อง ด้วย MATK 50% สร้างผลทำให้ติดสถานะ **Burning (ติดไฟ)** ทำความเสียหายทางเวทมนตร์ธาตุ Fire แบบ DoT ไม่คิด Overload วินาทีละ 10% และลดความต้านทานต่อธาตุ Water ลง 50% เพิ่มเติม โอกาสและระยะเวลาติดสถานะ Burning เปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย |
 
-| Lv | Fireballs | MATK in total | Burning chance | Gaps | FCT | VCT | SP |
-|---|---|---|---|---|---|---|---|
-| 1 | 1 | 120% | 30% | 0 s | 0.5 s | 0 s | 12 |
-| 2 | 3 | 360% | 40% | 0.3 s | 0.6 s | 0 s | 17 |
-| 3 | 5 | 600% | 50% | 0.3 s | 0.7 s | 0 s | 22 |
-| 4 | 7 | 840% | 60% | 0.2 s | 0.8 s | 0 s | 27 |
-| 5 | 10 | 1,200% | 70% | 0.2 s | 1.0 s | 0 s | 40 |
+| Lv | Fireballs | MATK each | MATK in total | Burning chance | Gaps | FCT | VCT | SP |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 1 | 120% | 120% | 30% | 0 s | 0.5 s | 0 s | 12 |
+| 2 | 3 | 130% | 390% | 40% | 0.3 s | 0.5 s | 0 s | 17 |
+| 3 | 5 | 140% | 700% | 50% | 0.3 s | 0.5 s | 0 s | 22 |
+| 4 | 7 | 150% | 1,050% | 60% | 0.2 s | 0.5 s | 0 s | 27 |
+| 5 | 10 | 160% | 1,600% | 70% | 0.1 s | 0.5 s | 0 s | 32 |
 
-- **Splash (v21e):** every fireball that hits a live target also hits every *other* monster in a 3 × 3 square round it (1.5 tiles each way) for 50% of the fireball's MATK (60% MATK), Fire, no Overload. Fireballs that land after the target died do not splash.
+v22j (NIIQ): MATK per fireball 120 → 160% by level, FCT 0.5 s at every level (was 0.5–1.0), Lv 5 gap 0.1 s (was 0.2) and SP 32 (was 40), Global Delay 0.5 s (was 1).
+
+- **Splash (v21e):** every fireball that hits a live target also hits every *other* monster in a 3 × 3 square round it (1.5 tiles each way) for 50% of the fireball's MATK (60–80% MATK), Fire, no Overload. Fireballs that land after the target died do not splash.
 - **Burning (v21e):** rolled **once per cast**, on the first fireball that hits (Lv 1–5: 30–70%). See §3h. It is rolled once per cast, not per fireball (confirmed by NIIQ).
 
 - The cast is all **FCT**, so DEX and INT do not shorten it (only gear `fct` does).
 - **Every fireball always falls**, even if the target dies first (NIIQ, v20.18). Fireballs that land after the target died hit nothing (a small burst on the spot). SP is not refunded.
 - No basic-attack bolt flies from the caster's hand the moment a spell goes off: casting a magic skill restarts the basic-attack timer (NIIQ, v20.18).
 - The first fireball is released the moment the cast ends and the next ones follow every gap; a fireball takes (gap − 0.02) s to fall (Lv 1: 0.28 s) and deals its damage when it lands. The caster is free to act while the volley falls.
-- ⚠ **Overload fields.** The spec now says “Overload Rate: True” and “Overload Damage: ×0.5”. The game keeps what it did before: the skill can Overload, the chance is `(CRIT + bonus − LUK/5) × 0.5` and an Overload hit does ×1.3. If “×0.5” is meant for the damage instead (for example half the Overload bonus, +15% instead of +30%), it is a one-line change.
+- **Overload Rate ×0.5** (settled v22j): the chance is `(CRIT + bonus − LUK/5) × 0.5`; an Overload hit does ×1.3 like any other.
 
 **Before v20.18:** Lv 1–10, Lv N fireballs of 100% MATK, SP 12 + 2 × (Lv − 1), VCT 0.5 + 0.3 × (Lv − 1) s, Global Delay 1.4 s, fireballs stopped when the target died. Before that, the prototype: 3 × 100% MATK, SP 12, cast 1.0 s, CD 0.5 s.
 
@@ -136,36 +137,48 @@ Pattern Lv 1–9: Max SP +Lv%, regen +(8 + 2 × Lv)%, cost −Lv%; Lv 10 is a ju
 | MAX Lv | 5 |
 | ประเภท | Passive |
 | รายละเอียด | เรียนรู้จุดอ่อนเกี่ยวกับธาตุหลักในจักรวาล |
-| Per level | ตีจุดอ่อนธาตุแรงเพิ่มขึ้นอีก +5% |
+| Per level | **MATK +2%** (v22j), ตีจุดอ่อนธาตุแรงเพิ่มขึ้นอีก +5% |
 
-⚠ Read as **cumulative**: the weakness multiplier is 1.5 + 0.05 × Lv (Lv 1 = 155%, Lv 5 = 175%, the same as the old one-level passive). Applies to the basic attack and every spell that hits a weakness.
+| Lv | MATK | Weakness hit |
+|---|---|---|
+| 1 | +2% | 155% |
+| 2 | +4% | 160% |
+| 3 | +6% | 165% |
+| 4 | +8% | 170% |
+| 5 | +10% | 175% |
 
-## 3d. Overload Energy (v20.6, from NIIQ)
+⚠ Read as **cumulative**: the weakness multiplier is 1.5 + 0.05 × Lv (Lv 1 = 155%, Lv 5 = 175%, the same as the old one-level passive). Applies to the basic attack and every spell that hits a weakness. The MATK bonus (v22j) multiplies MATK min and max (INT part + weaponMATK) by 1 + 0.02 × Lv.
+
+## 3d. Overload Energy (v20.6, from NIIQ; rebalanced v22j)
 
 | | |
 |---|---|
 | MAX Lv | 5 |
 | ประเภท | Buff |
 | การใช้ | **Self Cast**: กดแล้วร่ายเลย ไม่ต้องเลือกเป้าหมาย (still has the cast time below) |
-| เป้าหมาย | ตัวเอง และสมาชิกใน Party ทั้งหมดในระยะ 12 × 12 ช่องรอบตัวเอง (6 tiles each way, a square) |
-| คูลดาวน์ | 60 s at every level |
+| Skill Requirement | **Elemental Attunement Lv 5** (v22j) |
+| เป้าหมาย | ตัวเอง และสมาชิกใน Party ทั้งหมดในระยะ **13 × 13** ช่องรอบตัวเอง (6.5 tiles each way, a square; v22j, was 12 × 12) |
+| คูลดาวน์ | **= the duration**: 20 / 40 / 60 / 80 / 100 s (v22j, was 60 s) |
+| FCT / VCT | 0 s / **0.5 s** at every level (v22j) |
 | Global Delay | 1 s at every level |
 | รายละเอียด | ตั้งสมาธิอันแน่วแน่ที่จะดึงทุกพลังของจักรวาล มาเพิ่มอัตราเกินพิกัดให้ตัวเองและเพื่อน |
 
-| Lv | Overload Rate | Duration | VCT (FCT 0) | SP |
+| Lv | Overload Rate | Duration | Cooldown | SP |
 |---|---|---|---|---|
-| 1 | +1% | 20 s | 1.0 s | 50 |
-| 2 | +2% | 40 s | 1.2 s | 65 |
-| 3 | +3% | 60 s | 1.4 s | 80 |
-| 4 | +4% | 80 s | 1.6 s | 95 |
-| 5 | +5% | 120 s | 2.0 s | 110 |
+| 1 | +1% | 20 s | 20 s | 50 |
+| 2 | +2% | 40 s | 40 s | 65 |
+| 3 | +3% | 60 s | 60 s | 80 |
+| 4 | +4% | 80 s | 80 s | 95 |
+| 5 | +5% | 100 s | 100 s | 110 |
+
+Before v22j: VCT 1 / 1.2 / 1.4 / 1.6 / 2 s, Lv 5 lasted 120 s, cooldown 60 s, 12 × 12, no requirement. Saves with Overload Energy learned and Elemental Attunement under Lv 5 lose it on load and get its points back (the tree's requirement check, v21f).
 
 SP = 35 + 15 × Lv (lowered by Mana Flow like every skill).
 
 How it is built:
 - The bonus is added to the base Overload Rate before the target's LUK and the skill's overMul: `max(0, CRIT + bonus − targetLUK/5) × overMul` (`COMBAT-FORMULAS.md` §3b). It does not raise physical CRIT.
 - Self Cast (NIIQ: the spec's “Instant Cast” meant “press and it casts, no target needed”). The VCT in the table applies, shortened by DEX and INT like every spell (FCT 0); the buff takes effect the moment the cast ends.
-- Party members are simulated players (no combat stats yet), so the buff only works on the caster; party members in town within the 12 × 12 area get the visual effect. It will apply to them when party combat exists.
+- Party members are simulated players (no combat stats yet), so the buff only works on the caster; party members in town within the 13 × 13 area get the visual effect. It will apply to them when party combat exists.
 - Recasting refreshes the duration and replaces the bonus with the new level's.
 - Idle casts it when the target is in range and the buff is not up. The simulator (CP, offline estimate) does the same at Lv 5.
 
@@ -183,10 +196,10 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 | Elements | Water |
 | Overload Rate | False (cannot Overload) |
 | ระยะ | 7 tiles |
-| FCT / VCT | 0.16 s / 0.64 s at every level |
+| FCT / VCT | **0.2 s / 0.5 s** at every level (v22j; was 0.16 / 0.64) |
 | Global Delay | 0.5 s · Cooldown 0 s |
 | SP | 25 at every level |
-| Detail | ยึดจับและเหนี่ยวนำด้วยพลังน้ำแข็ง สร้างความเสียหายทางเวทมนตร์ธาตุ Water ต่อศัตรู 1 ตัว และสร้างผลทำให้ติดสถานะ **Freeze (แช่แข็ง)** ที่ลดความต้านทานต่อธาตุ Wind ลง 50% เพิ่มเติม เมื่อเป้าหมายติดสถานะ Freeze จะ Splash Damage Water รอบเป้าหมายกว้าง 3x3 ช่อง ด้วย MATK 50% โอกาสและระยะเวลาติดสถานะเปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย |
+| Detail | ยึดจับและเหนี่ยวนำด้วยพลังน้ำแข็ง สร้างความเสียหายทางเวทมนตร์ธาตุ Water ต่อศัตรู 1 ตัว และสร้างผลทำให้ติดสถานะ **Freeze (แช่แข็ง)** ที่ลดความต้านทานต่อธาตุ Wind ลง 50% เพิ่มเติม เมื่อเป้าหมายติดสถานะ Freeze จะ Splash Damage Water รอบเป้าหมายกว้าง **5x5** ช่อง (v22j, was 3x3) ด้วย MATK 50% โอกาสและระยะเวลาติดสถานะเปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย |
 
 | Lv | MATK | Freeze chance |
 |---|---|---|
@@ -196,9 +209,9 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 | 4 | 170% | 65% |
 | 5 | 200% | 75% |
 
-- **Splash (v21e):** when the target is Frozen after the hit (newly, or still frozen from before), every *other* monster in a 3 × 3 square round it takes 50% of Freezer's MATK as Water (Lv 5: 100% MATK).
+- **Splash (v21e):** when the target is Frozen after the hit (newly, or still frozen from before), every *other* monster in a 5 × 5 square round it (v22j; 3 × 3 before) takes 50% of Freezer's MATK as Water (Lv 5: 100% MATK).
 
-## 3f. Lightning Spear (v20.18, from NIIQ)
+## 3f. Lightning Spear (v20.18, from NIIQ; rebalanced v22j)
 
 | | |
 |---|---|
@@ -208,24 +221,26 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 | Type | **Ground Magic** |
 | Target | Enemies in a **5 × 5** tile square, **True multi-hit**: each spear hits every enemy inside |
 | Elements | Wind |
-| Overload Rate | True · Overload Damage ×0.5 (⚠ same reading as Fire Bolt, §3) |
+| Overload Rate | ×0.5 (on the rate, as Fire Bolt, §3) |
 | ระยะ | 7 tiles |
 | Gaps | 0.1 s |
-| FCT | 1.5 s at every level |
-| Global Delay | 2 s · Cooldown 0 s |
+| FCT / VCT | **0.5 s / 1 s** at every level (v22j; was 1.5 s / 1.0–1.8 s) |
+| Global Delay | **1 s** (v22j; was 2 s) · Cooldown 0 s |
 | Detail | สร้างหอกแห่งสายฟ้า และฟาดลงมาที่พื้นที่อย่างรุนแรง สร้างความเสียหายทางเวทมนตร์ธาตุ Wind เป็นวงกว้าง 5x5 ช่อง |
 
-| Lv | Spears | MATK per spear | VCT | SP |
-|---|---|---|---|---|
-| 1 | 2 | 100% | 1.0 s | 30 |
-| 2 | 4 | 100% | 1.2 s | 42 |
-| 3 | 6 | 100% | 1.4 s | 54 |
-| 4 | 8 | 100% | 1.6 s | 66 |
-| 5 | 10 | 100% | 1.8 s | 78 |
+| Lv | Spears | MATK per spear | SP |
+|---|---|---|---|
+| 1 | 2 | 100% | 30 |
+| 2 | 4 | 120% | 34 |
+| 3 | 6 | 140% | 38 |
+| 4 | 8 | 160% | 42 |
+| 5 | 10 | 180% | 46 |
+
+Lv 5 cast with typical Lv 30 stats (INT 36, DEX 25): 0.5 + 1 × 0.6 = **1.1 s** (was 2.57 s), then 1 s Global Delay.
 
 - ⚠ Ground magic is built as: the 5 × 5 square is centred where the target stood **when the cast started** and stays there; monsters that walk out during the cast are missed. The spears fall one by one, 0.1 s apart, at random points inside the square, and every spear hits **every** enemy inside at that moment. The square is drawn on the ground while the spears fall.
 
-## 3g. Petrifaction (v20.18, from NIIQ; replaces Stone Spike)
+## 3g. Petrifaction (v20.18, from NIIQ; replaces Stone Spike; rebalanced v22j)
 
 | | |
 |---|---|
@@ -236,17 +251,19 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
 | Target | Enemies in the **7 × 7** tile square around the caster |
 | Elements | Earth |
 | Overload Rate | False (cannot Overload) |
-| FCT / VCT | 0.2 s / 0.8 s at every level |
+| FCT / VCT | 0.2 s / **0.5 s** at every level (v22j; was 0.8) |
 | Global Delay | 0 s · Cooldown 0 s |
 | Detail | เรียนรู้กระบวนการทางธรณีศาสตร์ ปรับมวลสารทุกสรรพสิ่งให้เป็นซากฟอสซิล สร้างความเสียหายทางเวทมนตร์ธาตุ Earth ต่อศัตรูโดยรอบ 7x7 รอบตัวเอง และสร้างผลทำให้ติดสถานะ **Petrifaction (แข็งเป็นหิน)** ที่ลดความต้านทานต่อธาตุ Fire ลง 50% เพิ่มเติม โอกาสและระยะเวลาติดสถานะเปลี่ยนไปตามเลเวล พลังป้องกันทางเวทมนตร์ และ LUK ของเป้าหมาย |
 
 | Lv | MATK | Petrifaction chance | SP |
 |---|---|---|---|
-| 1 | 75% | 30% | 25 |
-| 2 | 80% | 40% | 27 |
-| 3 | 85% | 55% | 28 |
-| 4 | 90% | 65% | 32 |
-| 5 | 100% | 75% | 35 |
+| 1 | 100% | 30% | 25 |
+| 2 | 110% | 40% | 27 |
+| 3 | 120% | 55% | 28 |
+| 4 | 130% | 65% | 32 |
+| 5 | 140% | 75% | 35 |
+
+v22j: MATK 75–100% → 100–140%.
 
 ## 3h. Freeze, Petrifaction and Burning (status debuffs, v20.18; Burning v21e)
 - A Frozen or Petrified monster **cannot move or attack** until it ends (it takes damage normally; damage does not break it). A **Burning** monster keeps moving and attacking, but **burns for 10% MATK Fire every second** (`STATUS.brn.dot`, no Overload, MDEF and soft MDEF apply as for any magic hit; one last tick when it ends). **A Freeze puts the fire out** (Burning ends, a puff of steam), so Fire Bolt → Freezer trades the burn for the Freeze (NIIQ, v21e).
@@ -256,6 +273,9 @@ Balance check (simulator, 3 seeds, 300 s, every skill and passive at max): Spell
   - Time = `3 / 4 / 5 / 6 / 7 s` by skill level (Burning too), `× (1 − target MDEF%)`.
   - Bosses are immune (as they already are to stun). Elites are not.
 - Looks (v21e, `UI-UX.md` §29): Freeze turns the monster icy blue inside a block of ice crystals with frost on the ground; Petrifaction turns it to grey cracked stone with rubble; Burning tints it orange with flames, embers and smoke; a stun (Crushing Blow) shows stars circling the head. The pose stops while Frozen or Petrified, and the ice / stone shatters when it ends. The text แช่แข็ง! / แข็งเป็นหิน! / ติดไฟ! pops over it.
+
+### Balance check (simulator, v22j)
+v22j rebalance (Fire Bolt, Freezer, Lightning Spear, Petrifaction, Overload Energy, Elemental Attunement MATK), seed 3, every skill and passive at max, no gear: **CP Lv 10 / 20 / 30 = 265 / 561 / 1,024** (v21e: 233 / 546 / 971). Lv 30 vs Field 03 monsters, 300 s: **61** kills alone (v21e: 50), **147** in packs of 3 (v21e: 108). Lightning Spear Lv 5 now casts in about 1.1 s at Lv 30 (was 2.6 s), so packs fall much faster; the Fighter is at 1,576 CP for scale.
 
 ### Balance check (simulator, v21e)
 v21e (Fire Bolt splash + Burning, Freezer splash), same method as below, seed 3: **CP Lv 10 / 20 / 30 = 233 / 546 / 971** with the Burning DoT (v20.18: 236 / 496 / 922). Lv 30 vs Field 03 monsters, 300 s: 50 kills alone (v20.18: 51), **108** in packs of 3 (v20.18: 105). The AI values Burning at a quarter of a Freeze (it does not stop the monster), and a spell that only gives Burning still needs a weakness to be cast outside a pack.
@@ -640,7 +660,7 @@ New side effect of stopping fireballs when the target dies: CP counts damage dea
 ## 7. ⚠ Open items
 1. Max level and per-level effects of the old prototype skills (one level each; none of them is in a skill tree any more). Every Spellcaster, Ranger (v21f), Fighter (v22e) and Supporter (v22i) skill has levels.
 1d. Ranger v21f–v22b (§3i–3n): v22b Ranger is weaker after the old skills left (CP −32%); Scandium negative on most maps; Aim Strike "in total" read as shared between split arrows (single target it is slightly worse than shooting); the Scandium cost of No Arrow against monster Scandium; whether the old Ranger skills stay; "ATK +X%" read as X% ATK; free arrows without No Arrow.
-1a. Freeze / Petrifaction / Burning time, the Burning damage over time (10% MATK/s, §3h; soft MDEF often cuts it to 1 on low-MATK characters), the exact MDEF / LUK resistance, boss immunity (§3h); the meaning of “Overload Damage ×0.5” (§3).
+1a. Freeze / Petrifaction / Burning time, the Burning damage over time (10% MATK/s, §3h; soft MDEF often cuts it to 1 on low-MATK characters), the exact MDEF / LUK resistance, boss immunity (§3h).
 1c. Spellcaster CP fell about 20% with the v20.18 spells (§3h).
 1b. Overload Energy: party members without combat stats (§3d).
 2. Potion and wing slots (§5).

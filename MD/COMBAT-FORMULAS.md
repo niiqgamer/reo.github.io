@@ -130,11 +130,11 @@ Edict of Collapse (v22i): the Supporter's basic attack is a physical hit whose A
 | Wind | 1.0 | **1.5** | 0.75 | 0.75 |
 | Earth | 0.75 | 1.0 | **1.5** | 0.75 |
 
-Neutral and Holy deal 1.0 to these elements. Elemental Attunement adds +0.05 per level (Lv 1–5): 1.5 → 1.75 at Lv 5. **REO:** classic weak multipliers go lower than 0.75.
+Neutral and Holy deal 1.0 to these elements. Elemental Attunement adds +0.05 per level (Lv 1–5): 1.5 → 1.75 at Lv 5, and (v22j) multiplies MATK min and max by 1 + 0.02 × Lv. **REO:** classic weak multipliers go lower than 0.75.
 
 **Status debuffs (v20.18, Burning v21e).** A **Frozen** monster (Freezer) takes **+0.5** on the Wind multiplier, a **Petrified** one (Petrifaction) **+0.5** on the Fire multiplier, a **Burning** one (Fire Bolt) **+0.5** on the Water multiplier, added after the table and Attunement: `element = table (+ Attunement) + 0.5`. Freeze and Petrifaction stop the monster from moving and attacking; Burning does not, but it burns for `magicHit(ratio 0.1, Fire)` every second (no Overload). A new Freeze ends Burning.
 
-**Splash (v21e).** Fire Bolt (every fireball that hits) and Freezer (only while its target is Frozen) hit every other monster in a 3 × 3 square round the target for **50%** of the skill's MATK ratio, same element, no Overload. ⚠ Placeholders until NIIQ gives them: chance `skill% × (1 − MDEF%) − LUK/5`, time `3–7 s by skill level × (1 − MDEF%)`, bosses immune (`SKILL-SPEC.md` §3h).
+**Splash (v21e).** Fire Bolt (every fireball that hits) and Freezer (only while its target is Frozen) hit every other monster in a square round the target (Fire Bolt 3 × 3, Freezer 5 × 5 since v22j) round the target for **50%** of the skill's MATK ratio, same element, no Overload. ⚠ Placeholders until NIIQ gives them: chance `skill% × (1 − MDEF%) − LUK/5`, time `3–7 s by skill level × (1 − MDEF%)`, bosses immune (`SKILL-SPEC.md` §3h).
 
 | Monster | Lv | Element | HP | ATK | Hard DEF | Soft DEF | MDEF | HIT | FLEE |
 |---|---|---|---|---|---|---|---|---|---|

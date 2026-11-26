@@ -52,16 +52,16 @@ Every spell has a variable cast (VCT) reduced by DEX and INT (×(1 − √((DEX 
 
 | Active (Lv 1–5) | Effect | SP | CD · Global Delay | Cast (FCT + VCT) |
 |---|---|---|---|---|
-| Fire Bolt | Fire, 1 enemy: 1 / 3 / 5 / 7 / 10 fireballs of 120% MATK, 0.3 s apart (0.2 s at Lv 4–5); every fireball always falls | 12 / 17 / 22 / 27 / 40 | 0 s · 1 s | FCT 0.5 / 0.6 / 0.7 / 0.8 / 1.0 s, VCT 0 |
-| Freezer (was Frost Nova) | Water, 1 enemy: 110 / 130 / 150 / 170 / 200% MATK; Freeze 35–75% (Wind +50% on it) | 25 | 0 s · 0.5 s | FCT 0.16 + VCT 0.64 s |
-| Lightning Spear | Wind, ground magic on a 5 × 5 area: 2 / 4 / 6 / 8 / 10 spears of 100% MATK, 0.1 s apart, each hits every enemy inside | 30 / 42 / 54 / 66 / 78 | 0 s · 2 s | FCT 1.5 + VCT 1.0–1.8 s |
-| Petrifaction (was Stone Spike) | Earth, Self Cast, 7 × 7 around the caster: 75 / 80 / 85 / 90 / 100% MATK; Petrifaction 30–75% (Fire +50% on it) | 25 / 27 / 28 / 32 / 35 | 0 s · 0 s | FCT 0.2 + VCT 0.8 s |
-| Overload Energy (buff) | +Lv% Overload Rate to self and party within a 12 × 12 area; lasts 20 / 40 / 60 / 80 / 120 s | 50 / 65 / 80 / 95 / 110 | 60 s · 1 s | VCT 1 / 1.2 / 1.4 / 1.6 / 2 s |
+| Fire Bolt | Fire, 1 enemy: 1 / 3 / 5 / 7 / 10 fireballs of 120 / 130 / 140 / 150 / 160% MATK (120 / 390 / 700 / 1,050 / 1,600% in total), 0.3 s apart (0.2 s at Lv 4, 0.1 s at Lv 5); splash 50% on 3 × 3; Burning 30–70%; every fireball always falls | 12 / 17 / 22 / 27 / 32 | 0 s · 0.5 s | FCT 0.5 s, VCT 0 |
+| Freezer (was Frost Nova) | Water, 1 enemy: 110 / 130 / 150 / 170 / 200% MATK; Freeze 35–75% (Wind +50% on it); splash 50% on 5 × 5 while Frozen | 25 | 0 s · 0.5 s | FCT 0.2 + VCT 0.5 s |
+| Lightning Spear | Wind, ground magic on a 5 × 5 area: 2 / 4 / 6 / 8 / 10 spears of 100 / 120 / 140 / 160 / 180% MATK, 0.1 s apart, each hits every enemy inside | 30 / 34 / 38 / 42 / 46 | 0 s · 1 s | FCT 0.5 + VCT 1 s |
+| Petrifaction (was Stone Spike) | Earth, Self Cast, 7 × 7 around the caster: 100 / 110 / 120 / 130 / 140% MATK; Petrifaction 30–75% (Fire +50% on it) | 25 / 27 / 28 / 32 / 35 | 0 s · 0 s | FCT 0.2 + VCT 0.5 s |
+| Overload Energy (buff; needs Elemental Attunement Lv 5) | +Lv% Overload Rate to self and party within a 13 × 13 area; lasts 20 / 40 / 60 / 80 / 100 s | 50 / 65 / 80 / 95 / 110 | 20 / 40 / 60 / 80 / 100 s · 1 s | VCT 0.5 s, FCT 0 |
 
 | Passive | Effect |
 |---|---|
 | Mana Flow (Lv 1–10) | Lv N: Max SP +N%, SP regen +(8 + 2N)%, skill SP cost −N%. Lv 10: +12% / +30% / −12% |
-| Elemental Attunement (Lv 1–5) | Weakness bonus +5% per level: 150% → 155 / 160 / 165 / 170 / 175% |
+| Elemental Attunement (Lv 1–5) | MATK +2% per level (+10% at Lv 5) and weakness bonus +5% per level: 150% → 155 / 160 / 165 / 170 / 175% |
 
 Full per-level tables: `SKILL-SPEC.md` §3b–3d.
 
