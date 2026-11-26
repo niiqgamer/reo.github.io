@@ -462,7 +462,7 @@ Lead and bend the minds of every enemy in a 3 × 3 square at the target so they 
 
 Every level: no cast, Global Delay 0.3 s, Cooldown 1 s. ⚠ "Def ลดลงตามค่า Vit" is read as **soft DEF only** (the part that comes from VIT); hard DEF (armor %) is not touched. Code: `GL_D`, `GL_A`, `mo.gas` / `mprof()`.
 
-## 3t. Forbear (Self Cast, Buff, Lv 1–10) — needs Gaslighting Lv 3
+## 3t. Forbear (Self Cast, Buff, Lv 1–10) — needs Gaslighting Lv 3 — **removed in v22h (replaced by Logging, §3u)**
 A mind steady as a bear: **physical hits do not make the Fighter flinch**, so they can run or strike back. Forbear holds for 7 hits; the 8th physical hit ends it (and that hit flinches). Magic hits do not count. **MDEF +1% per level** (⚠ read as %, the game's MDEF is a %).
 
 | Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
@@ -503,6 +503,36 @@ Same method. The Fighter now has only the five v22e skills; AI: Forbear while fi
 | **CP Lv 10 / 20 / 30** | 705 / 1,173 / 1,712 | **634 / 1,038 / 1,469** | 510 / 789 / 1,196 | 233 / 546 / 971 |
 
 The Fighter loses Iron Body (+15% Max HP) and Whirlwind Cleave (the old pack skill), so CP drops 1,712 → 1,469 (still above the Ranger's 1,196; v22d Fighter was 1,576). Packs of 3 drop to 66 kills: Timber!!'s 70% splash is the only area damage left and Shield Mastery Lv 10 still slows the basic attack 20%. Single targets barely change.
+
+## 3u. Logging (Self Cast, Buff, Lv 1–10, v22h, from NIIQ) — needs Timber!! Lv 3
+Gather **Timber Logging** from Timber!! hits. Once enough is gathered the logs are bound together and all of them are hurled at the target for a very heavy blow over a **5 × 5** area. Replaces Forbear; Momentum's idea (build with hits, spend in a finisher) now lives on Timber!!.
+
+| Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Time | 10 s | 20 s | 30 s | 40 s | 50 s | 60 s | 70 s | 80 s | 90 s | 100 s |
+| ATK per log | +20% | +40% | +60% | +80% | +100% | +120% | +140% | +160% | +180% | +200% |
+| Logs to bundle | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+| Cooldown | 10 s | 20 s | 30 s | 40 s | 50 s | 60 s | 70 s | 80 s | 90 s | 100 s |
+
+Every level: SP 20, FCT 0, **VCT 5 s**, Global Delay 0. Code: `SK.logging`, `addLog()`, `BF.logN`.
+
+How it is read (⚠ to confirm):
+- Each Timber!! that **hits** while Logging lasts adds 1 log (a miss adds none).
+- When the logs reach the limit they fly at once at the Timber!! target: **one physical hit of logs × ATK-per-log** (Lv 10: 11 × 200% = **2,200% ATK**) on every monster in the 5 × 5 square round it, no crit. The damage lands 0.7 s later, when the bundle hits.
+- The buff keeps running after a bundle, so another bundle can be built in the same buff (Lv 10: ~17 s of Timber!! per bundle). Logs not bundled when the buff ends are lost.
+
+### Balance check (simulator, v22h: Forbear → Logging)
+| | Fighter v22g | **Fighter v22h** | Ranger | Spellcaster |
+|---|---|---|---|---|
+| Lv 10, Field 01 | 50.7 · 55 | **49.7 · 56** | 52.0 · 32 | 47.7 · 26 |
+| Lv 20, Field 02 | 49.0 · 77 | **47.0 · 78** | 44.0 · 55 | 46.0 · 53 |
+| Lv 30, Field 03 | 40.0 · 126 | **38.7 · 124** | 34.3 · 99 | 42.0 · 117 |
+| Lv 20, packs of 3 | 66 · 96 | **64 · 99** | 85 · 98 | 108 · 123 |
+| Lv 30, Geosyncline | 17.0 · 150 · 0 d | **16.7 · 160 · 0 d** | 13.0 · 125 · 2 d | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 11.7 · 174 · 1 d | **12.7 · 199 · 1 d** | 7.3 · 138 · 3.3 d | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 634 / 1,038 / 1,469 | **658 / 1,021 / 1,410** | 510 / 789 / 1,196 | 233 / 546 / 971 |
+
+Logging pays off on long fights (Ruins DPS 174 → 199, level with the Spellcaster) but costs time on quick ones: the 5 s cast stops attacks, and the bundle needs 11 Timber!! hits at Lv 10. CP (a 3-minute fight against weak monsters) drops a little.
 
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**
