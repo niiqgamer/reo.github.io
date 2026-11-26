@@ -60,7 +60,6 @@
 - **Flinch** (new, every archetype): a physical monster hit stops the player's feet for 0.3 s. Forbear removes it.
 - Fighter AI (Idle built-in choice, simulator): Forbear while fighting, Gaslighting on a pack, Timber!! before Power Strike. Gaslighting can go in the Idle attack skill set.
 - ⚠ Read as: Gaslighting lowers **soft DEF** (from VIT) only; Forbear MDEF is %; Gaslighting range 9 tiles (not in the spec).
-- **Timber!! effect** (no spell circle): during the 0.5 s wind-up the Fighter raises the weapon, embers rush in, a gold aura rises, pebbles hop, and a hologram log forms high over the target; on release the log drops (0.15 s), damage lands on impact with a flash over the 3 × 3 square, a shockwave, ground cracks, dust and a small screen shake, then the log breaks into light. `UI-UX.md` §27.
 - Balance: Fighter CP Lv 10 / 20 / 30 = 705 / 1,173 / 1,712 (was 598 / 1,090 / 1,576). Shield Mastery Lv 10 (−20% attack speed) costs pack damage: packs of 3 87 → 72 kills. `SKILL-SPEC.md` §3t.
 
 ## Changes in v22d
