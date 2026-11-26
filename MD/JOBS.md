@@ -47,7 +47,7 @@ Every Beginner has one skill, **Basic Skill**, with **10 levels**. Lv 1 is given
 | 1 | **Fighter** | `MELEE` | 1–3 | Physical close-quarters combat |
 | 2 | **Ranger** | `RANGED` | 1–9 | Physical long-range engagements |
 | 3 | **Spellcaster** | `MAGIC` | 1–7 | Combat spells at medium range |
-| 4 | **Supporter** | `SUPPORT` | 1–15 | Team assistance over a massive range |
+| 4 | **Supporter** | `SUPPORT` | 1.8 or 1–9 (Edict); party skills 7 × 7 | Team assistance: heal and buff the party, holy area damage |
 
 ---
 
@@ -80,7 +80,7 @@ Every Beginner has one skill, **Basic Skill**, with **10 levels**. Lv 1 is given
 | 3.3 Witch | 3.3.1 Shaman | 3.3.2 Necromancer |
 | 3.4 Illusionist | 3.4.1 Creator | 3.4.2 Summoner |
 
-### 4. Supporter — SUPPORT (1–15 tiles)
+### 4. Supporter — SUPPORT (1.8 or 1–9 tiles by Edict, v22i)
 
 | Class (C1) | Job (C2) | Job (C2) |
 |---|---|---|

@@ -44,7 +44,7 @@ The gear badge on the Idle button opens **Idle Settings**. Rows whose buttons do
 | Basic attack (ON default) | Can be turned off only while Skill attacks is on. Turning Skill attacks off turns Basic attack back on |
 | Skill attacks + Attack skill set (9 slots) | Physical and magic skills only (and the Fighter's Gaslighting debuff, v22e). **Rotation:** after slot *n* fires, the next try starts at slot *n*+1 and wraps (1 → 2 → 1 → 2 …); a skill that is not ready (cooldown, SP) is skipped. A self-area skill (Petrifaction) walks in until the target is inside its area, then fires (gives up after 4 s) |
 | Buff skills + Buff skill set (9) | Buff skills only. Same rotation as the attack set (after slot *n* comes *n*+1, wrapping). A buff that still has more than 1 s left is skipped, so it is cast again only when it is about to run out |
-| Healing skills + Healing skill set (9) + "Heal when HP is below" (5–95%, default 60%) | Heal and zone skills (Heal, First Aid, Sanctuary). Sanctuary is not recast while one is up |
+| Healing skills + Healing skill set (9) + "Heal when HP is below" (5–95%, default 60%) | Heal skills (Heal, First Aid; zone skills if any come back) |
 | Movement skills + Movement skill set (9) | Movement skills (none at the moment: Evasive Leap was removed in v22b). Used when an attacking monster is within 2 tiles |
 | Sit to rest + "Rest when below" (5–95%, default 40%, OFF by default) | Sits when HP **or** SP is below the bar and no attacking monster is within 8 tiles; stands at 95% of both or when a monster comes. Needs Basic Skill Lv 2 |
 
@@ -63,7 +63,7 @@ Idle uses at most one potion or item every 0.6 s, straight from the bag (no hotb
 | Setting | Rule |
 |---|---|
 | Warp with Fly Wing (OFF default) | No wanted monster in sight (12 tiles) for 3 s → uses a Fly Wing. While it is on and wings are left, Idle only looks 12 tiles around; otherwise it searches 40 tiles and walks |
-| Warp with Teleport skill | Supporter only. **Mockup:** the skill does not exist yet, so the switch is disabled ("Soon") |
+| Warp with Teleport skill (OFF default) | Supporter only; the switch is disabled until Teleport is learned (v22i). No wanted monster in sight (12 tiles) for 3 s → Teleport **Lv 1** (SP 10, random spot on this map); it goes before the Fly Wing, which is used only when SP is short. Idle never uses Lv 2 |
 | Return to town when full (OFF default) | Bag full → warps to town (price as on the World Map; walks if Scandium is short) and ends Idle there with the summary. **Hidden while VIP Auto Pocket Dimension is on** |
 
 ### 5. Loot

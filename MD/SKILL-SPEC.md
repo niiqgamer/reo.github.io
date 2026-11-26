@@ -536,6 +536,76 @@ How it is read (⚠ to confirm):
 
 (rev. 2 numbers; the first draft with up to 11 logs gave CP 658 / 1,021 / 1,410 and Ruins DPS 199.) With at most 5 logs a bundle comes every ~8 s of Timber!!, so Logging pays off sooner: Ruins DPS 174 → 214 (above the Spellcaster's 200), CP up a little. The 5 s cast still stops attacks, which costs time on quick fights (Field 03).
 
+## 3v. Supporter skills (v22i, from NIIQ)
+The Supporter's prototype kit (Holy Light, Blessing, Sanctuary, Divine Grace, Guardian Aura; Heal at a fixed Lv 5) is replaced. Old saves get the points of removed skills back and their hotbar slots clear (`skFix`). Tree (`SKT_ROWS.supporter`): row 1 Edict of Collapse, Edict of Radiance; row 2 Heal, Teleport, Cloud Flare; row 3 Accelerator, Star Bless. Requirements (`SKREQ`): Teleport and Cloud Flare need Heal Lv 2, Accelerator needs Heal Lv 5, Star Bless needs Accelerator Lv 5. The two Edicts exclude each other (`SKX`): a learned or drafted Edict locks the other tile ("Locked") and an old save holding both keeps Collapse.
+
+Without an Edict the basic attack is a mace swing (melee physical, ATK, 1.8 tiles). `derive()` returns the attack really used (`d.basic`), its range and `d.type` (MELEE / MAGIC). The simulator (no learned passives) uses Radiance unless `opt.edict === "collapse"`; Combat Power therefore counts Radiance.
+
+### 3v-a. Edict of Collapse (Passive, Lv 1, Melee Physical)
+Basic attacks are melee physical hits (1.8 tiles) whose ATK is the **MATK roll** (`physHit` with `o.matk`: MATK min..max instead of status ATK + weapon ATK; a crit uses MATK max × 1.4; HIT, FLEE, hard and soft DEF apply as usual). **Attack speed +50%** (the attack delay is divided by 1.5 + Accelerator). Cannot be learned with Edict of Radiance.
+
+### 3w. Edict of Radiance (Passive, Lv 1, Magic)
+Basic attacks release **Radiance** at the target: Holy magic, 100% MATK, range 9 (never misses, takes MDEF; no Overload). Cannot be learned with Edict of Collapse.
+
+### 3x. Heal (Active, Self Cast, Recovery, Lv 1–10)
+Self + party members in a 7 × 7 square. HP restored (not shown to players):
+`⌊(BaseLv + INT) / 5⌋ × SkillLv × 3 × (1 + RecoveryEffect% + H.PLUS%) + MATK`, where Recovery Effect = +1% per level and H.PLUS = the gear's healing bonus (Heal%). MATK is one roll between MATK min and max.
+
+| Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Recovery Effect | +1% | +2% | +3% | +4% | +5% | +6% | +7% | +8% | +9% | +10% |
+| SP | 13 | 16 | 19 | 22 | 25 | 28 | 31 | 34 | 37 | 40 |
+
+Every level: FCT 0, VCT 0, Global Delay 0, Cooldown 1 s. Example (Lv 20, auto stats, MATK average): Lv 1 → 62 HP, Lv 5 → 164, Lv 10 → 302.
+
+### 3y. Teleport (Active, Self Cast, Support, Lv 1–2) — needs Heal Lv 2
+Move your own atoms to another place. **Lv 1** (SP 10): a random walkable spot on this map (as a Fly Wing). **Lv 2** (SP 20): back to the safe area of the nearest town (the Gadolinium plaza, `TOWN_SPAWN`; in town it moves you there). Monsters lose track of you. No cast, no delay. Lv 1 and Lv 2 can sit on separate hotkeys. Idle Settings → Teleport: "Warp with Teleport skill" uses Lv 1 (SP) after 3 s without a monster in sight, before any Fly Wing (`IDLE.md`).
+
+### 3z. Cloud Flare (Active, Ground Magic 5 × 5, Holy, Lv 1–5) — needs Heal Lv 2
+A holy cloud gathers over a 5 × 5 square at the target (fixed where the cast started) and pours Lv beams on it; **every beam hits every enemy in the square**. Overload Rate ×1 (`overMul` 1). Range 9.
+
+| Lv | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|
+| Beams | 1 | 2 | 3 | 4 | 5 |
+| MATK per beam | 120% | 130% | 140% | 150% | 160% |
+| Gap | 0 s | 0.1 s | 0.1 s | 0.1 s | 0.1 s |
+| SP | 20 | 22 | 24 | 26 | 28 |
+
+Every level: FCT 0, VCT 1 s, Global Delay 1 s, Cooldown 0.
+
+### 3aa. Accelerator (Active, Self Cast, Buff, Lv 1–10) — needs Heal Lv 5
+Self + party in 7 × 7. **Walk speed +25%** at every level, plus:
+
+| Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| AGI | +3 | +4 | +5 | +6 ⚠ | +7 | +8 | +9 | +10 | +11 | +12 |
+| Attack speed | +1% | +2% | +3% | +4% | +5% | +6% | +7% | +8% | +9% | +10% |
+| Time | 60 s | 80 s | 100 s | 120 s | 140 s | 160 s | 180 s | 200 s | 220 s | 240 s |
+| SP | 18 | 21 | 24 | 27 | 30 | 33 | 36 | 39 | 42 | 45 |
+
+Every level: FCT 0.2 s, VCT 0.5 s, Global Delay 0.4 s, Cooldown 0. ⚠ NIIQ's table says AGI +3 at Lv 4; read as +6 (2 + Lv like every other row). Attack speed divides the attack delay (with Edict of Collapse: ÷ (1 + 0.5 + Lv%)).
+
+### 3ab. Star Bless (Active, Self Cast, Buff, Lv 1–10) — needs Accelerator Lv 5
+Self + party in 7 × 7: **All Stats +Lv, HIT +2 × Lv**, time 40 + 20 × Lv s (60–240 s), SP 24 + 4 × Lv (28–64). Every level: FCT 0.2 s, VCT 0.5 s, Global Delay 0.4 s, Cooldown 0.
+
+### Supporter AI (idle with empty skill sets, simulator)
+Heal below 55% HP → keep Star Bless and Accelerator up → Cloud Flare on the target (SP above 20%, or 2+ monsters). Teleport is never picked (only the Idle Settings switch uses it).
+
+### Balance check (simulator, v22i)
+Same method as §3n (300 s × seeds 1–3, auto stats, no gear, every skill at max level). Kills · DPS · deaths; Supporter with Radiance (Collapse in brackets).
+
+| | Supporter v22h | **Supporter v22i** | Fighter | Ranger | Spellcaster |
+|---|---|---|---|---|---|
+| Lv 10, Field 01 | 36.3 · 19 · 0 d | **51.7 · 29 · 0 d** (51.0 · 29) | 51.3 · 56 | 52.0 · 32 | 47.7 · 26 |
+| Lv 20, Field 02 | 33.0 · 36 · 0 d | **48.3 · 55 · 0 d** (51.7 · 57) | 47.7 · 80 | 44.0 · 55 | 46.0 · 53 |
+| Lv 30, Field 03 | 26.0 · 70 · 0 d | **50.3 · 138 · 0 d** (50.0 · 136) | 37.3 · 125 | 34.3 · 99 | 42.0 · 117 |
+| Lv 20, packs of 3 | 48 · 53 · 0 d | **127 · 144 · 0 d** (132 · 149) | 67 · 97 | 85 · 98 | 108 · 123 |
+| Lv 30, Geosyncline | 10.0 · 84 · 0 d | **20.0 · 175 · 0 d** (21.0 · 179) | 16.7 · 162 · 0 d | 13.0 · 125 · 2 d | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 7.0 · 93 · 0 d | **14.0 · 195 · 0 d** (14.0 · 196) | 14.0 · 214 · 1 d | 7.3 · 138 · 3.3 d | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 217 / 407 / 699 | **405 / 657 / 953** | 692 / 1,067 / 1,496 | 510 / 789 / 1,196 | 233 / 546 / 971 |
+
+The Supporter goes from the weakest farmer to one of the strongest: Cloud Flare Lv 5 is 5 beams × 160% MATK on the whole 5 × 5 square for 28 SP with no cooldown, so on packs it beats every other role (127 kills vs the Spellcaster's 108). Still no deaths anywhere. Collapse and Radiance end up about even. ⚠ For NIIQ: if packs feel too easy, the lever is Cloud Flare's SP or a cooldown.
+
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**
 - Skill points come from **Job Lv**: 1 Job Lv = 1 skill point. At Job Lv 1 a character has none; **Job Lv 2 gives the first point**.
@@ -568,7 +638,7 @@ Cause: every gear slot adds `m × 0.35` to the primary stat, and MATK has an `�
 New side effect of stopping fireballs when the target dies: CP counts damage dealt, and the old simulator counted overkill. With 2 common pieces the Spellcaster’s CP falls from 3,126 (old prototype) to about 2,140 with Fire Bolt Lv 5 and the staff × 1 (3,515 vs 6,698 with 5 pieces). Note that the CP simulation (and the Idle offline estimate) uses Fire Bolt Lv 5 and counts every skill and passive as learned. Nothing was changed for this.
 
 ## 7. ⚠ Open items
-1. Max level and per-level effects of the Fighter and Supporter skills and the old Ranger prototype skills (one level each). Every Spellcaster skill and the five v21f Ranger skills have levels.
+1. Max level and per-level effects of the old prototype skills (one level each; none of them is in a skill tree any more). Every Spellcaster, Ranger (v21f), Fighter (v22e) and Supporter (v22i) skill has levels.
 1d. Ranger v21f–v22b (§3i–3n): v22b Ranger is weaker after the old skills left (CP −32%); Scandium negative on most maps; Aim Strike "in total" read as shared between split arrows (single target it is slightly worse than shooting); the Scandium cost of No Arrow against monster Scandium; whether the old Ranger skills stay; "ATK +X%" read as X% ATK; free arrows without No Arrow.
 1a. Freeze / Petrifaction / Burning time, the Burning damage over time (10% MATK/s, §3h; soft MDEF often cuts it to 1 on low-MATK characters), the exact MDEF / LUK resistance, boss immunity (§3h); the meaning of “Overload Damage ×0.5” (§3).
 1c. Spellcaster CP fell about 20% with the v20.18 spells (§3h).
