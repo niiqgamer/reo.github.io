@@ -448,7 +448,7 @@ One blow on the target as heavy as a giant log falling on its head. **20% chance
 | HIT bonus | +5 | +10 | +15 | +20 | +25 | +30 | +35 | +40 | +45 | +50 |
 | SP | 8 | 8 | 8 | 8 | 8 | 15 | 15 | 15 | 15 | 15 |
 
-Every level: FCT 0, **VCT 0.5 s**, Global Delay 0.5 s, Cooldown 1.5 s. Range 1.8 tiles (the Fighter walks in first). The damage lands when the hologram log hits, 0.15 s after release (effect: `UI-UX.md` §27). Code: `TB_R`, `TB_SP`, `timber()`.
+Every level: FCT 0, **VCT 0.5 s**, Global Delay 0.5 s, Cooldown 1.5 s. Range 1.8 tiles (the Fighter walks in first). Code: `TB_R`, `TB_SP`, `timber()`.
 
 ## 3s. Gaslighting (Active, Ground Debuff 3 × 3, Lv 1–10)
 Lead and bend the minds of every enemy in a 3 × 3 square at the target so they turn on the caster (**not bosses**: they show "Immune"). A monster under it has **less DEF from VIT (soft DEF)** but **hits harder**. Range 9 tiles (⚠ not in the spec; RO Provoke range). A purple ring shows under each monster while it lasts.
