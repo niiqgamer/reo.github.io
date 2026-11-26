@@ -53,6 +53,7 @@
 - **Buff column:** buffs and debuffs are now big icons in a column under the player card, with a countdown on each icon and a badge for stacks / hits; click one for a popover with its name, Buff or Debuff, what it does and time left. Herbs and Forbear are listed too. `UI-UX.md` §31.
 - **Monster status chips** under the HP bar of the monster panel (Stun, Freeze, Petrifaction, Burning, Gaslighting, with seconds left; click for details).
 - **Gaslighting!** shows the full skill name once over the area.
+- **Illustrated status icons:** buffs and debuffs (player column and monster chips) use full-colour pictures (skill icons, herb art, new Momentum / Burning / Slow / Stun pictures) in a gem frame with a clock sweep for the time left. `UI-UX.md` §31.
 
 ## Changes in v22e
 - **Five Fighter skills** (from NIIQ, `SKILL-SPEC.md` §3o–3t): **Weapons Mastery** (passive Lv 1–10, ATK +4 per level; replaces Weapon Mastery +20 ATK +5 HIT), **Shield Mastery** (passive Lv 1–10, with a shield: STR / VIT +Lv, DEF +2% × Lv, attack speed −2% × Lv), **Timber!!** (Lv 1–10: 130–400% ATK, HIT +5–50, 70% on 3 × 3 round the target, 20% Stun 3 s, VCT 0.5 s, GD 0.5 s, CD 1.5 s, SP 8 / 15), **Gaslighting** (Lv 1–10: ground 3 × 3, non-boss monsters turn on you, soft DEF −10–55%, their ATK +5–32%, 5 / 10 s, SP 4–13), **Forbear** (Self Cast Lv 1–10: no flinch for 10–37 s or 7 hits, MDEF +1–10%, SP 10, CD 10 s; needs Gaslighting Lv 3). New icons, Skills Tree rows, Skill Info lines, text in en / th / jp. The old Fighter skills stay.
