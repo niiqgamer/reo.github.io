@@ -1878,7 +1878,7 @@ const ARCH={
    actives:["power_strike","cleave","crushing_blow","war_cry"],passives:["weapon_mastery","iron_body"]},
  ranger:{type:"RANGED",range:9,hpLv:38,spLv:6,aspd:1.0,weapon:{atk:34,lvAtk:2.2,ranged:true},armor:.10,
    tpl:{str:0,agi:4,vit:1,int:0,dex:6,luk:2},basic:{kind:"phys",ratio:1},
-   actives:["focusing","aim_strike","aiming_shower","double_strafe","arrow_shower","piercing_shot","evasive_leap"],passives:["no_arrow","ranger_mastery","eagle_eye","steady_aim"]},
+   actives:["focusing","aim_strike","aiming_shower"],passives:["no_arrow","ranger_mastery"]},   // v22b: the prototype skills (Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim) are out of the Ranger
  spellcaster:{type:"MAGIC",range:7,hpLv:30,spLv:11,aspd:1.3,weapon:{atk:12,lvAtk:1,ranged:false,matkBase:2,matkLv:.65},armor:.05,
    tpl:{str:0,agi:0,vit:2,int:6,dex:4,luk:0},basic:{kind:"magic",ratio:.7,elem:"neutral"},
    actives:["fire_bolt","freezer","lightning_spear","petrifaction","overload_energy"],passives:["mana_flow","elemental_attunement"]},
@@ -1899,7 +1899,7 @@ const SK={
  cleave:{arch:"fighter",kind:"phys",ratio:2.0,sp:14,cd:3.5,range:1.8,aoe:2,at:"self",ic:"cleave"},
  crushing_blow:{arch:"fighter",kind:"phys",ratio:1.8,perStack:.5,sp:12,cd:5,range:1.8,spend:true,stunAt:3,stun:1.5,ic:"hammer"},
  war_cry:{arch:"fighter",kind:"buff",buff:"warCry",dur:8,sp:15,cd:20,taunt:5,ic:"shout"},
- // ranger — Distance: +2% damage per tile beyond 3 (max +18% at 12)
+ // ranger. v22b: the four prototype actives below and Eagle Eye / Steady Aim are no longer in ARCH.ranger (kept here unused)
  double_strafe:{arch:"ranger",kind:"phys",ratio:1.25,hits:2,sp:10,cd:1.2,range:12,ranged:true,ic:"arrows"},
  arrow_shower:{arch:"ranger",kind:"phys",ratio:.9,sp:14,cd:4,range:12,aoe:1.6,at:"target",ranged:true,ic:"rain"},
  piercing_shot:{arch:"ranger",kind:"phys",ratio:3.2,ignoreDef:.5,canCrit:true,critMul:2,sp:18,cd:6,range:12,ranged:true,ic:"pierce"},
@@ -1926,7 +1926,7 @@ const PASSIVE={
  eagle_eye:{arch:"ranger",range:3,hit:10},
  steady_aim:{arch:"ranger",perTile:.02,crit:5},
  no_arrow:{arch:"ranger"},          // v21f: Lv 1-5, every arrow shot costs NA_SC Scandium (handled by the game, not by derive)
- ranger_mastery:{arch:"ranger"},    // v21f: Lv 1-10, DEX +Lv, HIT +Lv, AGI +Lv
+ ranger_mastery:{arch:"ranger"},    // v21f: Lv 1-10, DEX +Lv, HIT +Lv, AGI +Lv; v22d: range +1 at Lv 1, 6 and 10 (+3 at Lv 10)
  mana_flow:{arch:"spellcaster"},              // v20.6: Lv 1-10, see manaFlow()
  elemental_attunement:{arch:"spellcaster",per:.05},   // v20.6: Lv 1-5, +5% weakness bonus per level
  divine_grace:{arch:"supporter",healPct:.2,shieldCap:.2},
@@ -1977,7 +1977,7 @@ function derive(p){
   const GA=(p.gear&&p.gear.ab)||{},cut=v=>Math.max(0,1-(v||0)/100);
   const vctStat=Math.max(0,1-Math.sqrt((s.dex*2+s.int)/530));
   const vctMul=vctStat*cut(GA.vct),fctMul=cut(GA.fct),cdMul=cut(GA.cdr),gdMul=cut(GA.gd);
-  const range=A.range+(has("eagle_eye")?PASSIVE.eagle_eye.range:0);
+  const range=A.range+(has("eagle_eye")?PASSIVE.eagle_eye.range:0)+(rm>=10?3:rm>=6?2:rm>=1?1:0);   // v22d Ranger Mastery: range +1 at Lv 1, 6 and 10
   // iRO natural regen (per tick) adapted to per-second: HP = MaxHP/200 + VIT/5 ; SP = MaxSP/100 + INT/6 + 1
   const hpRegen=(maxHP/200+s.vit/5)/4;
   const spRegen=(maxSP/100+s.int/6+1)/2*(1+mf.regen);
@@ -2084,7 +2084,7 @@ const SKLV={fire_bolt:{max:5,def:5},freezer:{max:5,def:5},lightning_spear:{max:5
   no_arrow:{max:5,def:5},ranger_mastery:{max:10,def:10},focusing:{max:10,def:10},aim_strike:{max:10,def:10},aiming_shower:{max:10,def:10}};   // v21f Ranger
 /* v21f skill requirements: {skill: {needed skill: level}} (Skills Tree locks the tile until they are met) */
 const SKREQ={ranger_mastery:{no_arrow:1},focusing:{no_arrow:3},aim_strike:{no_arrow:5},aiming_shower:{no_arrow:5}};
-const NA_SC=[20,18,15,13,10];                                                                     // No Arrow: Scandium per arrow shot, Lv 1-5
+const NA_SC=[20,16,12,8,4];                                                                     // No Arrow: Scandium per arrow shot, Lv 1-5
 const FO_P=[.03,.04,.05,.06,.07,.08,.09,.1,.11,.12];                                              // Focusing: DEX / AGI +%, time 40+20*Lv s, SP 20+5*Lv; no cast, GD 0, CD 0
 const AS_R=[1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,2],AS_N=[2,2,2,2,2,3,3,3,3,3],AS_CH=[.2,.22,.24,.26,.28,.3,.32,.34,.36,.38],AS_SP=[10,10,10,10,10,10,10,10,10,10];   // Aim Strike (v21h): ATK in total, arrows when split, split chance, SP (v22a: 10 at every level); FCT 0.5, VCT 0.5, GD 1, CD 1
 const AW_R=[1.6,1.7,1.8,1.9,2,2.1,2.2,2.3,2.4,2.5];                                              // Aiming Shower: SP 20, FCT 0.1, GD 0.1   // v20.6: passives with levels too (derive reads them)
@@ -2130,14 +2130,9 @@ function pickSkill(ctx){
     if(reserve&&ready("power_strike"))return "power_strike";return null;
    case "ranger":
     if(!ctx.buffs.focus&&ctx.dist<=d.range+3&&ready("focusing"))return "focusing";   // v21f: keep Focusing up while fighting
-    if(ctx.dist<=1.6&&ready("evasive_leap"))return "evasive_leap";
     if(ctx.dist>d.range)return null;
     if(ctx.dist<=2.5&&ready("aiming_shower"))return "aiming_shower";   // v21f: push a monster that came close back 2 tiles
-    if(ready("piercing_shot"))return "piercing_shot";
-    if(ctx.near>=2&&ready("aim_strike"))return "aim_strike";   // v22a: Aim Strike first on packs (splash); on one target Double Strafe gives more per SP
-    if(ctx.near>=2&&ready("arrow_shower"))return "arrow_shower";
-    if(reserve&&ready("double_strafe"))return "double_strafe";
-    if(reserve&&ready("aim_strike"))return "aim_strike";return null;
+    if((reserve||ctx.near>=2)&&ready("aim_strike"))return "aim_strike";return null;   // v22b: the old Ranger skills are gone
    case "spellcaster":{
     if(!ctx.buffs.overEn&&ctx.dist<=d.range&&ready("overload_energy"))return "overload_energy";   // v20.6: keep the Overload Energy buff up while fighting
     if(ctx.dist>d.range)return null;
@@ -2484,7 +2479,7 @@ D2.en.st_thisMap="This map";D2.th.st_thisMap="แมพนี้";
 D2.en.st_sim="Ping and player counts are simulated until a game server is connected.";D2.th.st_sim="Ping และจำนวนผู้เล่นเป็นค่าจำลองจนกว่าจะเชื่อมต่อเซิร์ฟเวอร์";
 D2.en.mech_beginner="Beginner: raise Basic Skill (Lv 1–10) with your skill points to learn First Aid, Heavy Strike and everyday abilities.";D2.th.mech_beginner="Beginner: ใช้แต้มสกิลอัป Basic Skill (Lv 1–10) เพื่อเรียน First Aid, โจมตีหนักหน่วง และความสามารถพื้นฐาน"
 D2.en.mech_fighter="Momentum: basic hits and Power Strike build up to 5 stacks (lost after 5 s without hitting). Crushing Blow spends them for +50% damage each and stuns at 3+.";D2.th.mech_fighter="Momentum: ตีปกติและ Power Strike สะสมได้สูงสุด 5 สแตก (หายถ้าไม่ตี 5 วิ) Crushing Blow ใช้สแตกทั้งหมด +50% ต่อสแตก และสตันเมื่อมี 3 ขึ้นไป";
-D2.en.mech_ranger="Distance: +2% damage per tile beyond 3 (max +18% at 12 tiles). Evasive Leap jumps away and empowers your next shot.";D2.th.mech_ranger="ระยะห่าง: ดาเมจ +2% ต่อช่องที่เกิน 3 (สูงสุด +18% ที่ 12 ช่อง) Evasive Leap กระโดดหนีและเพิ่มพลังลูกถัดไป";
+D2.en.mech_ranger="Scandium arrows: shoots from up to 9 tiles with arrows made of Scandium (No Arrow; each arrow costs Scandium). Aim Strike can split one arrow into several with a splash, and Aiming Shower pushes a monster 2 tiles back.";D2.th.mech_ranger="ลูกธนู Scandium: ยิงไกลได้ 9 ช่องด้วยลูกธนู Scandium (No Arrow ทุกดอกเสีย Scandium) Aim Strike แยกลูกธนูเป็นหลายดอกพร้อม Splash และ Aiming Shower ผลักมอนถอยหลัง 2 ช่อง";
 D2.en.mech_spellcaster="Casting + elements: spells have a variable cast (DEX and INT shorten it) plus a fixed cast (only gear shortens it) and never miss. Hitting an element's weakness deals 150% (up to 175% with Elemental Attunement Lv 5).";D2.th.mech_spellcaster="ร่ายเวท + ธาตุ: เวทมีเวลาร่ายแปรผัน (DEX และ INT ลดได้) กับเวลาร่ายคงที่ (ลดได้จากไอเท็มเท่านั้น) และไม่มีวันพลาด โจมตีธาตุที่แพ้ได้ 150% (สูงสุด 175% เมื่อ Elemental Attunement Lv 5)";
 D2.en.mech_supporter="Sustain: Heal uses the iRO formula; overhealing becomes a Grace shield (up to 20% Max HP). Buffs reach 15 tiles.";D2.th.mech_supporter="ฟื้นฟูต่อเนื่อง: Heal ใช้สูตร iRO ฮีลเกินเลือดเต็มจะกลายเป็นโล่ Grace (สูงสุด 20% HP) บัฟไกลได้ 15 ช่อง";
 D2.en.sk_bash="Heavy Strike";D2.th.sk_bash="โจมตีหนักหน่วง";
@@ -2565,7 +2560,7 @@ D2.en.fx_sanct_d="Healing zone is active.";D2.th.fx_sanct_d="เขตฟื้�
 D2.en.n_helper="Archetype Helper Sera";D2.th.n_helper="ผู้แนะแนวอาร์คีไทป์ เซร่า";
 D2.en.helper_i0="Hello, traveler. I help Beginners find their path. Every adventurer eventually chooses one Archetype — a way of fighting that shapes everything after.";D2.th.helper_i0="สวัสดีนักเดินทาง ข้ามีหน้าที่ช่วย Beginner หาเส้นทางของตัวเอง นักผจญภัยทุกคนจะต้องเลือกอาร์คีไทป์หนึ่งสาย ซึ่งเป็นวิธีต่อสู้ที่กำหนดทุกอย่างหลังจากนี้";
 D2.en.helper_i1="Fighters stand in front, 1–3 tiles away. They build Momentum with every hit and unleash it in a crushing finisher. The toughest of all.";D2.th.helper_i1="Fighter ยืนแนวหน้า ระยะ 1–3 ช่อง สะสม Momentum จากทุกการโจมตีแล้วปลดปล่อยเป็นท่าปิดฉาก ทนทานที่สุด";
-D2.en.helper_i2="Rangers strike from up to 12 tiles. The farther the target, the harder they hit — and they leap away when cornered.";D2.th.helper_i2="Ranger โจมตีไกลได้ถึง 12 ช่อง ยิ่งเป้าไกลยิ่งแรง และกระโดดหนีได้เมื่อถูกประชิด";
+D2.en.helper_i2="Rangers strike from up to 9 tiles with arrows of Scandium. Their arrows can split in mid-air, and a heavy shot pushes any monster back, even a boss.";D2.th.helper_i2="Ranger โจมตีไกลได้ถึง 9 ช่องด้วยลูกธนู Scandium ลูกธนูแยกกลางอากาศได้ และยิงดอกหนักผลักมอนถอยหลังได้ แม้แต่บอส";
 D2.en.helper_i3="Spellcasters cast from 7 tiles. Spells never miss, and striking a monster's elemental weakness deals far more damage.";D2.th.helper_i3="Spellcaster ร่ายเวทจากระยะ 7 ช่อง เวทไม่มีวันพลาด และโจมตีธาตุที่ศัตรูแพ้จะแรงกว่ามาก";
 D2.en.helper_i4="Supporters heal and bless across 15 tiles. They hit softly, but almost never fall — and overhealing becomes a shield.";D2.th.helper_i4="Supporter ฮีลและบัฟได้ไกล 15 ช่อง ตีเบาแต่แทบไม่ล้ม และฮีลที่เกินจะกลายเป็นโล่";
 D2.en.helper_notyet="You can only choose once, so learn your craft first. Come back when you reach Job Lv 10 (you're Job Lv {j}).";D2.th.helper_notyet="เลือกได้ครั้งเดียวเท่านั้น ฝึกฝนให้ดีก่อน กลับมาเมื่อถึง Job Lv 10 นะ (ตอนนี้ Job Lv {j})";
@@ -3400,7 +3395,7 @@ D.jp={
   "st_thisMap":"このマップ",
   "mech_beginner":"初心者：スキルポイントで基本スキル（Lv 1–10）を上げると、ファーストエイドやヘビーストライクなどの能力を覚えます。",
   "mech_fighter":"勢い：通常攻撃とパワーストライクで勢いが最大5スタックまで溜まります（5秒間攻撃しないと失われます）。クラッシングブローは消費して1スタックにつき与ダメージ+50%、3スタック以上で気絶させます。",
-  "mech_ranger":"距離：3マスを超えた分、1マスごとにダメージ+2%（12マスで最大+18%）。回避跳躍で飛び退き、次の一撃を強化します。",
+  "mech_ranger":"スカンジウムの矢：最大9マス先からスカンジウムの矢で攻撃します（ノーアロー、矢1本ごとにスカンジウムを消費）。エイムストライクは矢を複数に分けてスプラッシュを起こし、エイミングシャワーはモンスターを2マス押し戻します。",
   "mech_spellcaster":"詠唱と属性：魔法には変動詠唱（DEXとINTで短縮）と固定詠唱（装備でのみ短縮）があり、外れません。モンスターの弱点属性に当てると150%のダメージ（属性習熟Lv5で最大175%）。",
   "mech_supporter":"持続：ヒールはiROの計算式を使い、過剰回復は恩寵のシールドになります（最大HPの20%まで）。バフは15マスまで届きます。",
   "sk_bash":"ヘビーストライク",
@@ -3482,7 +3477,7 @@ D.jp={
   "n_helper":"アーキタイプ・ヘルパーのセラ",
   "helper_i0":"ようこそ、旅人さん。私は初心者の方が進むべき道を見つけるお手伝いをしています。冒険者は皆、いつかアーキタイプ（戦い方の型）をひとつ選びます。それがその後のすべてを形作るのです。",
   "helper_i1":"ファイターは前線に立ち、1–3マスの距離で戦います。一撃ごとに勢いを溜め、強烈なフィニッシュで解き放ちます。最も頑強な型です。",
-  "helper_i2":"レンジャーは最大12マス先から攻撃します。遠い相手ほど強く当たり、追い詰められると跳び退きます。",
+  "helper_i2":"レンジャーは最大9マス先からスカンジウムの矢で攻撃します。矢は空中で分かれることがあり、重い一射はボスさえも押し戻します。",
   "helper_i3":"スペルキャスターは7マスから魔法を放ちます。魔法は外れず、モンスターの弱点属性に当てると大きなダメージを与えます。",
   "helper_i4":"サポーターは15マスにわたって回復と祝福を届けます。攻撃は弱めですが、ほとんど倒れません。過剰回復はシールドになります。",
   "helper_notyet":"選べるのは一度だけです。まずは技を磨いてください。ジョブLv 10になったら戻ってきてください（現在ジョブLv {j}）。",
@@ -4082,13 +4077,13 @@ let lang=(window.REO_AUTH&&window.REO_AUTH.lang)||"th";
 /* v21f Ranger skills (SKILL-SPEC.md §3i-3n): names, descriptions, Skill Info lines, messages */
 {const L={
  sk_no_arrow:["No Arrow","No Arrow","ノーアロー"],
- skd_no_arrow:["Arrows made of Rare Earth ore are rarer than rare, so the Ranger ancestors turned to alchemy until they found how to loose every arrow without holding a single one: they shoot arrows of Scandium. Every arrow shot costs Scandium (20 / 18 / 15 / 13 / 10 Sc by level); with too little Scandium the bow stays silent. Needed for every other new Ranger skill.",
-  "ลูกธนูที่ทำมาจากแร่ Rare Earth นั้นหายากยิ่ง เหล่าบรรพบุรุษแห่ง Ranger จึงได้เล่นแร่แปรธาตุ จนเจอวิธีการที่จะยิงลูกธนูแต่ละดอกออกไป โดยไม่ต้องถือลูกธนูเลยสักดอก นั่นคือการยิงออกไปด้วยลูกธนู Scandium ทุกลูกธนูที่ยิงออกไปเสีย Scandium (20 / 18 / 15 / 13 / 10 Sc ตามเลเวล) ถ้า Scandium ไม่พอจะยิงไม่ได้ เป็นสกิลพื้นฐานของสกิล Ranger ชุดใหม่ทั้งหมด",
-  "レアアース鉱石の矢は希少中の希少。レンジャーの祖先は錬金術を重ね、矢を1本も持たずに射る方法にたどり着きました――スカンジウムの矢を射るのです。矢を1本射るごとにスカンジウムを消費します（Lvにより20 / 18 / 15 / 13 / 10 Sc）。足りないと射てません。新しいレンジャースキルすべての前提です。"],
+ skd_no_arrow:["Arrows made of Rare Earth ore are rarer than rare, so the Ranger ancestors turned to alchemy until they found how to loose every arrow without holding a single one: they shoot arrows of Scandium. Every arrow shot costs Scandium (20 / 16 / 12 / 8 / 4 Sc by level); with too little Scandium the bow stays silent. Needed for every other new Ranger skill.",
+  "ลูกธนูที่ทำมาจากแร่ Rare Earth นั้นหายากยิ่ง เหล่าบรรพบุรุษแห่ง Ranger จึงได้เล่นแร่แปรธาตุ จนเจอวิธีการที่จะยิงลูกธนูแต่ละดอกออกไป โดยไม่ต้องถือลูกธนูเลยสักดอก นั่นคือการยิงออกไปด้วยลูกธนู Scandium ทุกลูกธนูที่ยิงออกไปเสีย Scandium (20 / 16 / 12 / 8 / 4 Sc ตามเลเวล) ถ้า Scandium ไม่พอจะยิงไม่ได้ เป็นสกิลพื้นฐานของสกิล Ranger ชุดใหม่ทั้งหมด",
+  "レアアース鉱石の矢は希少中の希少。レンジャーの祖先は錬金術を重ね、矢を1本も持たずに射る方法にたどり着きました――スカンジウムの矢を射るのです。矢を1本射るごとにスカンジウムを消費します（Lvにより20 / 16 / 12 / 8 / 4 Sc）。足りないと射てません。新しいレンジャースキルすべての前提です。"],
  pe_na:["{a} Scandium per arrow","ลูกธนูละ {a} Scandium","矢1本につき {a} スカンジウム"],
  sk_ranger_mastery:["Ranger Mastery","Ranger Mastery","レンジャーマスタリー"],
- skd_ranger_mastery:["Learn the instincts of the hunter: more skill with the bow, better aim and better dodging. DEX, HIT and AGI +1 per level.","เรียนรู้สัญชาตญาณแห่งนักล่า เพิ่มความเชี่ยวชาญในการถือธนู ความแม่นยำ และการหลบหลีก DEX, HIT และ AGI +1 ต่อเลเวล","狩人の本能を身につけ、弓の扱い・命中・回避を高めます。LvごとにDEX・HIT・AGI +1。"],
- pe_rm:["DEX +{a}, HIT +{a}, AGI +{a}","DEX +{a}, HIT +{a}, AGI +{a}","DEX +{a}、HIT +{a}、AGI +{a}"],
+ skd_ranger_mastery:["Learn the instincts of the hunter: more skill with the bow, better aim and better dodging. DEX, HIT and AGI +1 per level, and range +1 tile at Lv 1, 6 and 10.","เรียนรู้สัญชาตญาณแห่งนักล่า เพิ่มความเชี่ยวชาญในการถือธนู ความแม่นยำ และการหลบหลีก DEX, HIT และ AGI +1 ต่อเลเวล และระยะยิง +1 ช่องที่ Lv 1, 6 และ 10","狩人の本能を身につけ、弓の扱い・命中・回避を高めます。LvごとにDEX・HIT・AGI +1。Lv 1・6・10で射程 +1マス。"],
+ pe_rm:["DEX +{a}, HIT +{a}, AGI +{a}, range +{r}","DEX +{a}, HIT +{a}, AGI +{a}, ระยะยิง +{r} ช่อง","DEX +{a}、HIT +{a}、AGI +{a}、射程 +{r}"],
  sk_focusing:["Focusing","Focusing","フォーカシング"],
  skd_focusing:["Steady the mind and push your senses through the mass of space to raise your own abilities: DEX and AGI +3–12% for 60–240 s. Self Cast, no cast time.","ตั้งสมาธิให้แน่วแน่ เพ่งกระแสจิตทะลุมวลอวกาศ เพื่อเพิ่มความสามารถให้ตัวเอง DEX และ AGI +3–12% นาน 60–240 วินาที ร่ายใส่ตัวเอง ไม่มีเวลาร่าย","心を研ぎ澄まし、宇宙の質量を貫くほど意識を集中して自分の力を高めます。DEXとAGI +3–12%（60–240秒）。自己詠唱、詠唱なし。"],
  si_fo:["DEX and AGI +{a}% for {b} seconds · SP {c}","DEX, AGI +{a}% ระยะเวลา {b} วินาที · SP {c}","DEX・AGI +{a}%、{b} 秒間 · SP {c}"],
@@ -4820,6 +4815,7 @@ function walkTo(c,tx,ty,onArrive){
   c.path=smooth(c.x,c.y,raw);c.onArrive=onArrive||null;return true;
 }
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+const rdist=(a,b)=>Math.max(Math.abs(a.x-b.x),Math.abs(a.y-b.y));   // v22c: the PLAYER's attack / skill range is a square like RO (range 9 = 19 x 19 tiles round the player); monsters still use dist
 
 /* ================= characters ================= */
 const PAL={
@@ -8015,7 +8011,7 @@ function gainJob(n){if(S.jlv>=jcap()){S.jexp=0;return}S.jexp+=n;while(S.jlv<jcap
 const rnd=Math.random;
 const ELC={fire:"#ff7a3a",water:"#4fb8ff",wind:"#9cf06a",earth:"#c8964a",holy:"#ffe9a0",neutral:"#cccccc"};
 const mprof=mo=>mo.elite?REOC.eliteOf(REOC.MONC[mo.type]):REOC.MONC[mo.type];
-function nearestMon(max,noElite){let best=null,bd=max||99;for(const m of liveMon()){if(noElite&&(m.boss||(m.elite&&S.lv<mLv(m)+3)))continue;const d=dist(m,player);if(d<bd){bd=d;best=m}}return best}
+function nearestMon(max,noElite){let best=null,bd=max||99;for(const m of liveMon()){if(noElite&&(m.boss||(m.elite&&S.lv<mLv(m)+3)))continue;const d=rdist(m,player);if(d<bd){bd=d;best=m}}return best}
 function applyHit(mo,res,o){
   if(!mo||mo.dead||mo.dieT>0)return;AUD.sfx(res&&res.miss?"miss":(res&&(res.crit||res.over))?"crit":"hit");
   player.combatT=0;if(!mo.aggro){mo.aggro=true;mo.speed=MON[mo.type].speed*1.6;packAggro(mo)}
@@ -8161,8 +8157,8 @@ function updateCombat(dt){
   /* v20.4: a pending melee skill walks in to its own range, then fires (gives up after 4 s or on a new target) */
   const pe=player.pend;let R=pd().range;
   if(pe){pe.t-=dt;const k=REOC.SK[pe.id];if(pe.tg!==tg||pe.t<=0||!k){if(pe.t<=0)player.pendNo=performance.now()+3000;player.pend=null}
-    else{R=Math.min(R,(k.aoe&&k.at==="self"&&!k.range?k.aoe*.85:k.range)+.3);if(dist(player,tg)<=R){player.pend=null;player.path=[];player.moving=false;useSkill(pe.id,true,pe.lv);return}}}
-  const d=dist(player,tg);
+    else{R=Math.min(R,(k.aoe&&k.at==="self"&&!k.range?k.aoe*.85:k.range)+.3);if(rdist(player,tg)<=R){player.pend=null;player.path=[];player.moving=false;useSkill(pe.id,true,pe.lv);return}}}
+  const d=rdist(player,tg);   // v22c: square range
   if(d>R){player.chaseT-=dt;if(player.chaseT<=0||!player.path.length){player.chaseT=.35;walkTo(player,Math.floor(tg.x),Math.floor(tg.y))}}
   else{player.path=[];player.moving=false;faceToward(player,tg.x,tg.y);if(player.atkCd<=0&&!(S.idle&&!S.iset.atk)){player.atkCd=pd().interval;basicAttack(tg)}}
 }
@@ -8280,7 +8276,7 @@ function skMaxOf(id){return REOC.skMax(id)}
 function pasEffAt(id,lv){
   if(id==="mana_flow"){const f=REOC.manaFlow(lv);return fmt("pe_mf",{a:Math.round(f.sp*100),b:Math.round(f.regen*100),c:Math.round(f.cost*100)})}
   if(id==="no_arrow")return fmt("pe_na",{a:REOC.NA_SC[lv-1]});
-  if(id==="ranger_mastery")return fmt("pe_rm",{a:lv});
+  if(id==="ranger_mastery")return fmt("pe_rm",{a:lv,r:lv>=10?3:lv>=6?2:1});
   if(id==="elemental_attunement")return fmt("pe_ea",{a:Math.round(lv*REOC.PASSIVE.elemental_attunement.per*100),b:Math.round(150+lv*REOC.PASSIVE.elemental_attunement.per*100)});
   return ""}
 function pasEff(id){if(!REOC.SKLV[id])return "";const L=skLvOf(id),mx=skMaxOf(id),a=L?pasEffAt(id,L):"",n=L<mx?pasEffAt(id,L+1):"";
@@ -8311,7 +8307,7 @@ const skTabs=()=>[S.arch];   // one tab: the Beginner tree, or the archetype tre
 const skTabNow=()=>{const L=skTabs();return L.includes(skTab)?skTab:L[L.length-1]};
 const skTreeIds=tab=>tab==="beginner"?[BASIC_T,...BASIC_ACT]:[BASIC_T,...BASIC_ACT,...REOC.ARCH[tab].passives,...REOC.ARCH[tab].actives];
 /* tree layout: rows of up to 4 archetype skills (columns 2-5); column 1 holds Basic Skill, First Aid, Heavy Strike. Default: passives, then actives */
-const SKT_ROWS={ranger:[["no_arrow","ranger_mastery","eagle_eye","steady_aim"],["focusing","aim_strike","aiming_shower"],["double_strafe","arrow_shower","piercing_shot","evasive_leap"]],spellcaster:[["mana_flow","elemental_attunement","overload_energy"],["fire_bolt","freezer","lightning_spear","petrifaction"]]};
+const SKT_ROWS={ranger:[["no_arrow","ranger_mastery"],["focusing","aim_strike","aiming_shower"]],spellcaster:[["mana_flow","elemental_attunement","overload_energy"],["fire_bolt","freezer","lightning_spear","petrifaction"]]};
 function skGrid(tab){
   const col=[BASIC_T,...BASIC_ACT],A=REOC.ARCH[tab],rows=[];
   if(tab!=="beginner")for(const r of SKT_ROWS[tab]||[A.passives,A.actives])for(let i=0;i<r.length;i+=4)rows.push(r.slice(i,i+4));
@@ -8452,11 +8448,11 @@ function useSkill(id,auto,lvArg){
     const R=skillTargetRange(k,d)+.3;
     tg=alive(player.target)?player.target:null;
     /* v20.4: a melee skill on a target a few tiles away: walk in to the skill range, then use it (player.pend) */
-    if(tg&&!k.ranged&&dist(tg,player)>R&&dist(tg,player)<=d.range+6){
+    if(tg&&!k.ranged&&rdist(tg,player)>R&&rdist(tg,player)<=d.range+6){
       if(player.pend&&player.pend.id===id&&player.pend.tg===tg)return true;
       if(auto&&performance.now()<(player.pendNo||0))return false;   // could not reach it a moment ago: Idle keeps hitting normally for 3 s
       player.pend={id,lv,tg,t:4};player.chaseT=0;return true}
-    if(!tg||dist(tg,player)>R)tg=nearestMon(R);
+    if(!tg||rdist(tg,player)>R)tg=nearestMon(R);
     if(!tg){if(!auto)toast(t("noTarget"));return false}
     player.target=tg;faceToward(player,tg.x,tg.y);
   }
@@ -8928,7 +8924,7 @@ function autoPickId(){   // the built-in skill choice (used when every skill set
   const tg=alive(player.target)?player.target:null,d=pd();
   const near=tg?liveMon().filter(m=>(m===tg||m.aggro)&&dist(m,tg)<=2.5).length:0,nearMe=liveMon().filter(m=>(m===tg||m.aggro)&&Math.max(Math.abs(m.x-player.x),Math.abs(m.y-player.y))<=3.5).length;
   return REOC.pickSkill({learned:learnedAct(),skLv:Object.fromEntries(Object.keys(REOC.SKLV).map(i=>[i,lvFor(i)])),gd:player.gd||0,d,hp:S.hp,sp:S.sp,cd:CD,momentum:BF.momentum,buffs:{warCry:BF.warCry>0,blessing:BF.blessing>0,overEn:BF.overEn>0,focus:BF.focus>0},
-    dist:tg?dist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,brn:tg.brn,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
+    dist:tg?rdist(tg,player):99,near,nearMe,tgtSt:tg?{frz:tg.frz,ptr:tg.ptr,brn:tg.brn,stun:tg.stun}:null,boss:!!(tg&&tg.boss),tgtElem:tg?mprof(tg).elem:null,inZone:!!BF.zone,engaged:tg?tg.aggro:false});
 }
 const isGrpOf=id=>{const k=REOC.SK[id];if(!k)return null;for(const g in IS_GRP)if(IS_GRP[g].includes(k.kind))return g;return null};
 function idleSkills(){
@@ -8936,7 +8932,7 @@ function idleSkills(){
   if(!["skAtk","skBuff","skHeal","skMove"].some(g=>I[g].some(Boolean))){const id=autoPickId(),g=id&&isGrpOf(id);if(g&&I[IS_TOG[g]])useSkill(id,true,lvFor(id));return}
   const d=pd(),tg=alive(player.target)?player.target:null;
   const use=s=>{if(!s||skLvOf(s.id)<1)return false;const k=REOC.SK[s.id];
-    if((k.kind==="phys"||k.kind==="magic")&&!(k.aoe&&k.at==="self")){if(!tg)return false;if(dist(tg,player)>skillTargetRange(k,d)+.3&&(k.kind!=="phys"||k.ranged))return false}
+    if((k.kind==="phys"||k.kind==="magic")&&!(k.aoe&&k.at==="self")){if(!tg)return false;if(rdist(tg,player)>skillTargetRange(k,d)+.3&&(k.kind!=="phys"||k.ranged))return false}
     if((k.kind==="phys"||k.kind==="magic")&&k.aoe&&k.at==="self"){const inA=m=>k.sq?Math.max(Math.abs(m.x-player.x),Math.abs(m.y-player.y))<=k.aoe:dist(m,player)<=k.aoe;
       if(!liveMon().some(inA)){if(!tg||CD[s.id]>0||player.gd>0||performance.now()<(player.pendNo||0)||S.sp<Math.ceil(k.sp*d.spCost))return false;player.pend={id:s.id,lv:s.lv||lvFor(s.id),tg,t:4};player.chaseT=0;return true}}   // a self-area skill walks in to the target first
     return useSkill(s.id,true,s.lv||lvFor(s.id))};

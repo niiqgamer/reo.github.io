@@ -625,12 +625,12 @@ SP shown is the real cost (after Mana Flow).
 | | War Cry | gold war horn with red sound waves |
 | | Weapon Mastery (passive) | crossed swords on a gold burst |
 | | Iron Body (passive) | steel shield, red band, gold heart |
-| Ranger | Double Strafe | two arrows with light trails |
-| | Arrow Shower | arrows raining on a red target ring |
-| | Piercing Shot | arrow through a cracked stone shield |
-| | Evasive Leap | white-green wing with dash lines |
-| | Eagle Eye (passive) | golden eagle eye under a brow |
-| | Steady Aim (passive) | scope lens with a red reticle |
+| Ranger | Double Strafe (removed v22b, icon kept) | two arrows with light trails |
+| | Arrow Shower (removed v22b, icon kept) | arrows raining on a red target ring |
+| | Piercing Shot (removed v22b, icon kept) | arrow through a cracked stone shield |
+| | Evasive Leap (removed v22b, icon kept) | white-green wing with dash lines |
+| | Eagle Eye (passive) (removed v22b, icon kept) | golden eagle eye under a brow |
+| | Steady Aim (passive) (removed v22b, icon kept) | scope lens with a red reticle |
 | | No Arrow (passive, v21f) | glowing Scandium arrow rising out of an empty quiver inside a gold alchemy circle, "Sc 21" element tile |
 | | Ranger Mastery (passive, v21f) | recurve bow with a nocked arrow, laurel branch, green up chevrons and a gold star |
 | | Focusing (v21f) | green hunter's eye with a red reticle over a starry space disc, focus rings and converging lines |

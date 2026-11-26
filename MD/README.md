@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v22a. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v22d. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -49,7 +49,19 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v22a (this update)
+## Changes in v22d (this update)
+- **No Arrow:** 20 / 16 / 12 / 8 / 4 Scandium per arrow (was 20 / 18 / 15 / 13 / 10). At Lv 5 the Ranger now makes Scandium on every map.
+- **Ranger Mastery:** range +1 tile at Lv 1, 6 and 10 (Lv 10: range 9 → 12). Skill text en / th / jp.
+- Aim Strike stays at SP 10 (the new spec sheet listed SP 12–20; ⚠ to confirm). Balance: CP unchanged (510 / 789 / 1,196); the Ranger is still ~24% under the Fighter. `SKILL-SPEC.md` §3n.
+
+## Changes in v22c
+- **Player range is a square, like RO** (NIIQ): basic attacks, skills, the pick-nearest target and the Idle / AI range checks use `max(|dx|, |dy|)` (`rdist`) instead of a straight line. Range 9 = the 19 × 19 tiles round the player; diagonals reach as far as straight lines (before: a circle, about 6 tiles on a diagonal). Monsters are unchanged. `COMBAT-FORMULAS.md`, `SKILL-SPEC.md` §1, wiki.
+
+## Changes in v22b
+- **Old Ranger skills removed** (NIIQ): Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye and Steady Aim are out of the Ranger tree. The Ranger now has No Arrow, Ranger Mastery, Focusing, Aim Strike and Aiming Shower. Range 12 → 9 and no distance bonus (they came from Eagle Eye / Steady Aim). Old saves get those skill points back; their hotbar slots are cleared. Ranger intro text (Archetype Helper, mechanic line) updated in en / th / jp; wiki and docs updated.
+- ⚠ **Balance:** Ranger CP Lv 10 / 20 / 30 = 510 / 789 / 1,196 (v22a 656 / 1,044 / 1,761; Fighter 598 / 1,090 / 1,576); Ruins DPS 138. Details in `SKILL-SPEC.md` §3n.
+
+## Changes in v22a
 - **Ranger balance (NIIQ):** Aim Strike VCT 1 → 0.5 s, Global Delay 2 → 1 s, cooldown 2 → 1 s, **SP 10 at every level** (was 12–20; damage and split unchanged). Aiming Shower cooldown 2 → 1 s.
 - **Ranger AI (Idle built-in choice and simulator):** Aim Strike first only when 2+ monsters are close (splash); against one target Double Strafe comes first (more damage per SP), then Aim Strike.
 - Ranger CP Lv 10 / 20 / 30 = 656 / 1,044 / 1,761 (Fighter 598 / 1,090 / 1,576); Ruins DPS 200 (Fighter 181, Spellcaster 200). `SKILL-SPEC.md` §3m, §3n.

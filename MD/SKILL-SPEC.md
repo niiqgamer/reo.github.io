@@ -13,7 +13,7 @@
 | เป้าหมาย | Target (for example one enemy) and the **hit type** (§2) |
 | การใช้ (Targeting) | **Self Cast** (กดแล้วร่ายเลย ไม่ต้องเลือกเป้าหมาย; may still have a cast time) or **Target Cast** (must pick an enemy or ally first). Do not write “Instant Cast”: in MMOs it means *no cast time* |
 | ระยะห่างระหว่างฮิต | For multi-hit skills: seconds between two hits, and what happens if the target dies in the middle |
-| ระยะ | Maximum range in tiles |
+| ระยะ | Maximum range in tiles, counted from the caster as a **square** like RO (v22c): range 9 reaches every tile of the 19 × 19 square round the player, diagonals as far as straight lines. An area written A × A (3 × 3, 5 × 5, 7 × 7) is the whole width |
 | เงื่อนไขก่อนเรียน | Prerequisite skills. “None” means it can be learned right away |
 | อัตราเกินพิกัด | `overMul` for magic (`COMBAT-FORMULAS.md` §3b). **Not stated = 0: the skill cannot Overload** |
 | ร่ายแปรผัน (VCT) | Variable cast time in seconds; DEX and INT shorten it (`COMBAT-FORMULAS.md` §2b). Not stated = 0 |
@@ -276,7 +276,7 @@ Simulator on the game's combat module, 300 s, 3 seeds, auto stats, every skill a
 With every spell fixed at Lv 5 (no level choice) CP would be 724: Fire Bolt Lv 5 spends 40 SP and drops 10 fireballs on monsters that die after 2–3, so SP runs out. The CP drop matters for the gates (Geosyncline 2,000, Ruins 3,000; `CORE-LOOP.md`).
 
 ## 3i. Ranger skills (v21f, from NIIQ)
-Five new Ranger skills. They are written to this standard and added next to the Ranger prototype skills (Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim), which stay as they were. **Skill requirements** are new in v21f (`SKREQ`): the Skills Tree does not let a skill be learned (or drafted) until the skills it needs reach their level; a draft counts. If a requirement is lost (points taken back), the skill that needed it goes back to Lv 0 and its points return.
+Five new Ranger skills, written to this standard. **v22b: they are the whole Ranger tree**; the prototype skills (Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim) are removed (NIIQ). Old saves get their points back and those hotbar slots are cleared. **Skill requirements** are new in v21f (`SKREQ`): the Skills Tree does not let a skill be learned (or drafted) until the skills it needs reach their level; a draft counts. If a requirement is lost (points taken back), the skill that needed it goes back to Lv 0 and its points return.
 
 ## 3j. No Arrow (passive)
 | | |
@@ -288,7 +288,8 @@ Five new Ranger skills. They are written to this standard and added next to the 
 
 | Lv | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|
-| Scandium per arrow | 20 | 18 | 15 | 13 | 10 |
+| Scandium per arrow (v22d) | 20 | 16 | 12 | 8 | 4 |
+| (v21f–v22c) | 20 | 18 | 15 | 13 | 10 |
 
 Built as (`NA_SC`, `payArrows`):
 - Every arrow that **leaves the bow** costs Scandium: a basic attack 1, Double Strafe 2, Arrow Shower / Piercing Shot / Aim Strike / Aiming Shower 1. The extra arrows of an Aim Strike split come out of the same arrow and cost nothing more (⚠ assumption).
@@ -303,7 +304,7 @@ Built as (`NA_SC`, `payArrows`):
 | Skill Requirement | No Arrow Lv 1 |
 | Skill Form | Passive |
 | Detail | เรียนรู้สัญชาตญาณแห่งนักล่า เพิ่มความเชี่ยวชาญในการถือธนู ความแม่นยำ และการหลบหลีก |
-| Per level | Lv N: **DEX +N, HIT +N, AGI +N** (Lv 10: +10 each) |
+| Per level | Lv N: **DEX +N, HIT +N, AGI +N** (Lv 10: +10 each). **v22d: range +1 tile at Lv 1, 6 and 10** (Lv 1–5 +1, Lv 6–9 +2, Lv 10 +3: range 9 → 12) |
 
 Built as stat points on top of the character's DEX and AGI (they count for ATK, ASPD, FLEE, cast time) plus flat HIT.
 
@@ -390,17 +391,39 @@ Gain by skill (Lv 35 Ruins DPS): old 192 → +Ranger Mastery 221 → +Focusing 2
 
 **v22a is balanced.** The Ranger sits level with the Fighter and with the Spellcaster on the Ruins (CP Lv 30 1,761, Ruins DPS 200). The shorter cast and 1 s delay alone barely moved the numbers, because the Ranger runs out of SP before it runs out of time (~1.9 SP/s regen at Lv 30); the AI order (Double Strafe before Aim Strike on one target) and **SP 20 → 10** did. Against one target Aim Strike is now close to just shooting (220 → 215 on the Ruins); it gains on packs through the splash. Aiming Shower costs a little DPS on the Ruins because the AI also spends 20 SP to push back every monster that comes close; that buys safety, not damage.
 
+### Balance check (simulator, v22b: old Ranger skills removed)
+Same method. The Ranger loses the distance bonus (+2% per tile beyond 3, up to +18%), range 12 → 9, +10 HIT, +5% crit, Double Strafe and Piercing Shot.
+
+| | Fighter | Ranger v22a | **Ranger v22b** | Spellcaster |
+|---|---|---|---|---|
+| Lv 10, Field 01 | 59.3 · 46 | 58.7 · 44 | **52.0 · 32** | 47.7 · 26 |
+| Lv 20, Field 02 | 53.3 · 75 | 50.7 · 77 | **44.0 · 55** | 46.0 · 53 |
+| Lv 30, Field 03 | 42.3 · 130 | 44.0 · 136 | **34.3 · 99** | 42.0 · 117 |
+| Lv 20, packs of 3 | 87 · 111 | 84 · 101 | **85 · 98** | 108 · 123 |
+| Lv 30, Geosyncline | 16.3 · 146 | 17.7 · 174 · 1.3 d | **13.0 · 125 · 2 d** | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 12.0 · 181 · 1 d | 12.0 · 200 · 3 d | **7.3 · 138 · 3.3 d** | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 598 / 1,090 / 1,576 | 656 / 1,044 / 1,761 | **510 / 789 / 1,196** | 233 / 546 / 971 |
+
+**⚠ v22b leaves the Ranger weaker:** CP Lv 30 −32% (1,761 → 1,196; Fighter 1,576), Ruins DPS 200 → 138. Only packs hold up (splash). Scandium also gets worse, because more arrows are needed per kill (table below). Open for NIIQ: give some of it back (for example base range 12, the distance bonus as part of Ranger Mastery, or more ATK on Aim Strike).
+
+### Balance check (simulator, v22d)
+v22d changes (NIIQ): No Arrow 20 / 16 / 12 / 8 / 4 Sc per arrow; Ranger Mastery range +1 at Lv 1, 6, 10 (range 12 at Lv 10, the range Eagle Eye used to give). The spec sheet for this pass listed Aim Strike at SP 12–20; the game keeps **SP 10** (NIIQ's previous decision) until NIIQ confirms. With SP 12–20 the Ranger is weaker still: CP Lv 30 1,145, Ruins 5.0 kills · 123 DPS · 4 deaths, packs of 3 68 kills · 82 DPS.
+
+Damage does not move (CP Lv 10 / 20 / 30 = 510 / 789 / 1,196, same as v22b): the simulator places a ranged fighter at min(range, 8) tiles, so range above 8 does not show there. In the game, range 12 gives about 1.3 more tiles of free shots before a monster arrives than range 9 did with the old distance bonus gone. **⚠ The Ranger stays about 24% below the Fighter (CP 1,196 vs 1,576; Ruins DPS 138 vs 181)**: what the old kit gave and v22d does not give back is the distance bonus (+2% per tile beyond 3, up to +18%), +5% crit, and Double Strafe / Piercing Shot as SP-cheap damage.
+
+**Scandium is now positive everywhere at No Arrow Lv 5** (4 Sc per arrow): net per hour Field 01 +1.5k, Field 02 +4.2k, Field 03 +18.6k, Geosyncline +14.9k, Ruins +11.8k. At Lv 1 (20 Sc) it is still negative everywhere (table below).
+
 **⚠ Scandium cost against income** (simulator, 600 s × 3 seeds, kills and arrows per hour; income = average monster Scandium, no drops sold):
 
 | Map (Lv) | Kills/h | Arrows/h (per kill) | Income Sc/h | Net at 10 Sc/arrow (No Arrow 5) | Net at 20 Sc/arrow (No Arrow 1) |
 |---|---|---|---|---|---|
-| Field 01 (10) | 684 | 1,174 (1.7) | 7,068 | **−4,672** | **−16,412** |
-| Field 02 (20) | 588 | 1,692 (2.9) | 13,132 | **−3,788** | **−20,708** |
-| Field 03 (30) | 494 | 2,300 (4.7) | 35,568 | +12,568 | **−10,432** |
-| Geosyncline (30) | 206 | 3,496 (17.0) | 37,080 | +2,120 | **−32,840** |
-| Ruins (35) | 148 | 3,698 (25.0) | 43,167 | +6,187 | **−30,793** |
+| Field 01 (10) | 620 | 1,220 (2.0) | 6,407 | **−5,793** | **−17,993** |
+| Field 02 (20) | 504 | 1,756 (3.5) | 11,256 | **−6,304** | **−23,864** |
+| Field 03 (30) | 392 | 2,414 (6.2) | 28,224 | +4,084 | **−20,056** |
+| Geosyncline (30) | 152 | 3,116 (20.5) | 27,360 | **−3,800** | **−34,960** |
+| Ruins (35) | 82 | 3,022 (36.9) | 23,917 | **−6,303** | **−36,523** |
 
-(v22a.) So a Ranger with No Arrow loses Scandium on Field 01–02 even at Lv 5, only just breaks even on the Geosyncline and Ruins at Lv 5, and loses on every map at Lv 1. Every other archetype keeps all of it. See `ECONOMY.md`.
+(v22b, old Ranger skills removed.) So a Ranger with No Arrow loses Scandium on Field 01–02 even at Lv 5, only just breaks even on the Geosyncline and Ruins at Lv 5, and loses on every map at Lv 1. Every other archetype keeps all of it. See `ECONOMY.md`.
 
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**
@@ -435,7 +458,7 @@ New side effect of stopping fireballs when the target dies: CP counts damage dea
 
 ## 7. ⚠ Open items
 1. Max level and per-level effects of the Fighter and Supporter skills and the old Ranger prototype skills (one level each). Every Spellcaster skill and the five v21f Ranger skills have levels.
-1d. Ranger v21f–v21h (§3i–3n): Aim Strike "in total" read as shared between split arrows (single target it is slightly worse than shooting); the Scandium cost of No Arrow against monster Scandium; whether the old Ranger skills stay; "ATK +X%" read as X% ATK; free arrows without No Arrow.
+1d. Ranger v21f–v22b (§3i–3n): v22b Ranger is weaker after the old skills left (CP −32%); Scandium negative on most maps; Aim Strike "in total" read as shared between split arrows (single target it is slightly worse than shooting); the Scandium cost of No Arrow against monster Scandium; whether the old Ranger skills stay; "ATK +X%" read as X% ATK; free arrows without No Arrow.
 1a. Freeze / Petrifaction / Burning time, the Burning damage over time (10% MATK/s, §3h; soft MDEF often cuts it to 1 on low-MATK characters), the exact MDEF / LUK resistance, boss immunity (§3h); the meaning of “Overload Damage ×0.5” (§3).
 1c. Spellcaster CP fell about 20% with the v20.18 spells (§3h).
 1b. Overload Energy: party members without combat stats (§3d).
