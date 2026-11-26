@@ -674,8 +674,6 @@ The player is drawn from sprite sheets instead of the canvas chibi. Two sets: **
 - **Settings > Graphic > Character look:** My character (default since v20.17, see §28), Male, Female or Classic (the old chibi). Saved as `S.look` (`"custom"`, `"male"`, `"female"`, `"classic"`; a v20.11 save with `"new"` reads as Male). The sprite sets stay for testing.
 - Missing art for later: true SW and NW death rows for the male set.
 
-
-**Timber!! (v22e): a melee wind-up, not a spell.** A physical skill with a cast time (`physCast`) never shows the casting circles: the code-drawn hero holds the sword-attack pose and raises the weapon over the cast (sprite sets play their attack animation). `timberCharge` draws embers rushing to the raised weapon, a gold body aura with rising flames, hopping pebbles and a heat shimmer, and a cyan **hologram log** (scan lines, gold grain, glitch slices while it forms) high over the target. On release `fx` "tlog" drops the log in 0.15 s with speed lines; the damage lands at impact (`timber()`, 150 ms later), with a flash over the 3 × 3 square, a double shockwave ring, cyan / gold light shards, `fx` "crack" (ground cracks and dust) and a 0.2 s screen shake (off with reduced motion). The cast bar stays.
 ## 28. Code-drawn hero and character creator (v20.17)
 
 The player's own character is now drawn in code (`drawHero8`), with the look chosen in a character creator. It is the default look (`S.look="custom"`); the sprite sets of §27 and the classic chibi stay in Settings.
