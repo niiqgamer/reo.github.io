@@ -29,7 +29,7 @@
 
 Ranger (v21f): **Ranger Mastery** adds DEX +Lv and AGI +Lv to the stats and HIT +Lv; **Focusing** then multiplies DEX and AGI by 1.03–1.12 (floored) while it runs (`derive`, `p.focus`).
 
-Fighter (v22e): **Weapons Mastery** adds ATK +4 per level to `mastery`; **Shield Mastery** (while a shield is worn) adds STR +Lv and VIT +Lv to the stats, multiplies soft and hard DEF by `1 + 0.02 × Lv` and the attack delay by `1 + 0.02 × Lv`; **Forbear** (removed v22h) added MDEF +Lv%; **Logging** (v22h) hurls logs × (20–200%) ATK at a 5 × 5 square (physical, no crit, same formula as §2); **Gaslighting** lowers a monster's soft DEF by 10–55% and raises its ATK by 5–32% (`mprof()`); **Timber!!** adds its HIT bonus (+5 per level) to the hit formula below (`hitBonus`).
+Fighter (v22e): **Weapons Mastery** adds ATK +4 per level to `mastery`; **Shield Mastery** (while a shield is worn) adds STR +Lv and VIT +Lv to the stats, multiplies soft and hard DEF by `1 + 0.02 × Lv` and the attack delay by `1 + 0.02 × Lv`; **Forbear** (removed v22h) added MDEF +Lv%; **Logging** (v22h) hurls logs × (20–350%) ATK (2–5 logs) at a 5 × 5 square (physical, no crit, same formula as §2); **Gaslighting** lowers a monster's soft DEF by 10–55% and raises its ATK by 5–32% (`mprof()`); **Timber!!** adds its HIT bonus (+5 per level) to the hit formula below (`hitBonus`).
 
 **Flinch (v22e).** A physical hit from a monster (basic attack or non-magic monster skill) stops the player's movement for 0.3 s (`player.flinch`); attacks and skills go on. Forbear removed it for 7 hits until v22h; nothing removes it now.
 

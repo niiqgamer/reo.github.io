@@ -1926,7 +1926,7 @@ const SK={
  // v22e Fighter skills from NIIQ (SKILL-SPEC.md §3o-3t). Lv 10 rows; skAt() gives every level.
  timber:{arch:"fighter",kind:"phys",ratio:4,sp:15,cd:1.5,gd:.5,vct:.5,fct:0,range:1.8,hitBonus:50,splashAll:.7,splashR:1.5,stunCh:.2,stunT:3,lv:10,ic:"hammer"},   // 1 enemy + 70% ATK on the others in a 3x3 square round it; 20% Stun 3 s (bosses immune); cannot crit; HIT bonus +5 per level
  gaslighting:{arch:"fighter",kind:"debuff",ground:true,at:"target",aoe:1.5,sq:true,range:9,defD:.55,atkU:.32,dur:10,sp:13,cd:1,gd:.3,lv:10,ic:"eye"},   // ground 3x3 at the target: every non-boss monster inside turns on the caster, soft DEF (from VIT) -10..55%, its ATK +5..32%, for 5 / 10 s
- logging:{arch:"fighter",kind:"buff",buff:"logging",dur:100,sp:20,cd:100,gd:0,vct:5,fct:0,per:2,logMax:11,melee:true,lv:10,ic:"hammer"},   // v22h (SKILL-SPEC.md §3u): Self Cast; while it lasts every Timber!! hit adds a Timber Logging; at logMax they are bundled and hurled at the target: logs x per x ATK on a 5x5 square. melee: wind-up pose, no spell circle
+ logging:{arch:"fighter",kind:"buff",buff:"logging",dur:100,sp:50,cd:100,gd:0,vct:5,fct:0,per:3.5,logMax:5,melee:true,lv:10,ic:"hammer"},   // v22h (SKILL-SPEC.md §3u): Self Cast; while it lasts every Timber!! hit adds a Timber Logging; at logMax they are bundled and hurled at the target: logs x per x ATK on a 5x5 square. melee: wind-up pose, no spell circle
  forbear:{arch:"fighter",kind:"buff",buff:"forbear",dur:37,sp:10,cd:10,gd:0,fbHits:7,mdef:.10,lv:10,ic:"shield"},   // Self Cast: physical hits do not make the Fighter flinch; ends after 7 hits; MDEF +1..10%
  war_cry:{arch:"fighter",kind:"buff",buff:"warCry",dur:8,sp:15,cd:20,taunt:5,ic:"shout"},
  // ranger. v22b: the four prototype actives below and Eagle Eye / Steady Aim are no longer in ARCH.ranger (kept here unused)
@@ -2124,6 +2124,7 @@ const FO_P=[.03,.04,.05,.06,.07,.08,.09,.1,.11,.12];                            
 const AS_R=[1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,2],AS_N=[2,2,2,2,2,3,3,3,3,3],AS_CH=[.2,.22,.24,.26,.28,.3,.32,.34,.36,.38],AS_SP=[10,10,10,10,10,10,10,10,10,10];   // Aim Strike (v21h): ATK in total, arrows when split, split chance, SP (v22a: 10 at every level); FCT 0.5, VCT 0.5, GD 1, CD 1
 const TB_R=[1.3,1.6,1.9,2.2,2.5,2.8,3.1,3.4,3.7,4],TB_SP=[8,8,8,8,8,15,15,15,15,15];   // v22e Timber!!: ATK, SP; HIT bonus +5 per level; FCT 0, VCT 0.5, GD 0.5, CD 1.5
 const GL_D=[.1,.15,.2,.25,.3,.35,.4,.45,.5,.55],GL_A=[.05,.08,.11,.14,.17,.2,.23,.26,.29,.32];   // v22e Gaslighting: soft DEF down, ATK up; time 5 s (Lv 1-5) / 10 s (Lv 6-10); SP 3+Lv; GD 0.3, CD 1
+const LG_P=[.2,.4,.6,.9,1.2,1.5,2,2.4,2.8,3.5],LG_N=[2,2,2,3,3,3,4,4,4,5],LG_SP=[20,20,20,30,30,30,40,40,40,50];   // v22h Logging (rev. 2): ATK per log, logs to bundle (max 5), SP
 const AW_R=[1.6,1.7,1.8,1.9,2,2.1,2.2,2.3,2.4,2.5];                                              // Aiming Shower: SP 20, FCT 0.1, GD 0.1   // v20.6: passives with levels too (derive reads them)
 const OE_DUR=[20,40,60,80,120],OE_VCT=[1,1.2,1.4,1.6,2];   // Overload Energy Lv 1-5: +Lv% Overload Rate, duration, VCT (FCT 0), SP 35+15*Lv; cooldown 60 s and Global Delay 1 s at every level
 const FB_N=[1,3,5,7,10],FB_SP=[12,17,22,27,40],FB_GAP=[0,.3,.3,.2,.2],FB_FCT=[.5,.6,.7,.8,1];   // Fire Bolt: 120% MATK per fireball, VCT 0, GD 1 s, CD 0
@@ -2148,7 +2149,7 @@ function skAt(id,lv){
   if(id==="timber")return Object.assign({},k,{lv:L,ratio:TB_R[i],sp:TB_SP[i],hitBonus:5*L});
   if(id==="gaslighting")return Object.assign({},k,{lv:L,defD:GL_D[i],atkU:GL_A[i],dur:L>5?10:5,sp:3+L});
   if(id==="forbear")return Object.assign({},k,{lv:L,dur:7+3*L,mdef:L/100});
-  if(id==="logging")return Object.assign({},k,{lv:L,dur:10*L,cd:10*L,per:.2*L,logMax:L+1});   // v22h Logging: 10-100 s, ATK +20-200% per log, 2-11 logs; VCT 5, SP 20
+  if(id==="logging")return Object.assign({},k,{lv:L,dur:10*L,cd:10*L,per:LG_P[i],logMax:LG_N[i],sp:LG_SP[i]});   // v22h Logging: 10-100 s; VCT 5
   return k;
 }
 // v20.9: real cast time in seconds for skill row k and derived stats d (VCT cut by stats and gear, FCT by gear only)

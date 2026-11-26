@@ -50,10 +50,10 @@
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
 ## Changes in v22h (this update)
-- **Forbear → Logging** (NIIQ): Forbear leaves the Fighter. New **Logging** (Self Cast Lv 1–10, needs Timber!! Lv 3, SP 20, VCT 5 s, CD 10–100 s): for 10–100 s every Timber!! that hits adds a Timber Logging; at 2–11 logs they are bound and hurled at the target for logs × 20–200% ATK on a 5 × 5 square (no crit), then a new bundle can start. Momentum's idea moves onto Timber!!. Old saves get Forbear's points back.
+- **Forbear → Logging** (NIIQ): Forbear leaves the Fighter. New **Logging** (Self Cast Lv 1–10, needs Timber!! Lv 3, SP 20–50, VCT 5 s, CD 10–100 s): for 10–100 s every Timber!! that hits adds a Timber Logging; at 2–5 logs (rev. 2: max 5 so a bundle does not take long) they are bound and hurled at the target for logs × 20–350% ATK on a 5 × 5 square (no crit; Lv 10: 1,750%), then a new bundle can start; logs left when the buff ends are lost. Momentum's idea moves onto Timber!!. Old saves get Forbear's points back.
 - Advanced icon (a bundle of logs tied with glowing green ropes flying at a 5 × 5 grid) and a **green hologram** effect set to go with Timber!!'s cyan one: wind-up with logs appearing round the Fighter, logs circling while they build, then the bundle is bound, hurled and smashes the 5 × 5. Buff column shows the log count. Text en / th / jp. `SKILL-SPEC.md` §3u, `UI-UX.md` §31.
-- ⚠ Read as: a bundle every time the limit is reached (the buff keeps running); logs left at the end are lost. The flinch from v22e stays although Forbear is gone.
-- Balance: Fighter CP 658 / 1,021 / 1,410; Ruins DPS 174 → 199.
+- Read as: a bundle every time the limit is reached (the buff keeps running). The flinch from v22e stays although Forbear is gone (NIIQ: keep it for now).
+- Balance: Fighter CP 692 / 1,067 / 1,496; Ruins DPS 174 → 214.
 
 ## Changes in v22g
 - **Old Fighter skills removed** (NIIQ): Power Strike, Whirlwind Cleave, Crushing Blow, War Cry and Iron Body are out of the Fighter tree, and with them **Momentum** (basic hits no longer build stacks). The Fighter now has Weapons Mastery, Shield Mastery, Timber!!, Gaslighting and Forbear. Old saves get those skill points back; their hotbar slots clear. Fighter intro text (Archetype Helper, mechanic line) updated in en / th / jp; wiki and docs updated.

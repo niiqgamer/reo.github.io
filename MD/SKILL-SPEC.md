@@ -510,29 +510,31 @@ Gather **Timber Logging** from Timber!! hits. Once enough is gathered the logs a
 | Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Time | 10 s | 20 s | 30 s | 40 s | 50 s | 60 s | 70 s | 80 s | 90 s | 100 s |
-| ATK per log | +20% | +40% | +60% | +80% | +100% | +120% | +140% | +160% | +180% | +200% |
-| Logs to bundle | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+| ATK per log | +20% | +40% | +60% | +90% | +120% | +150% | +200% | +240% | +280% | +350% |
+| Logs to bundle (max) | 2 | 2 | 2 | 3 | 3 | 3 | 4 | 4 | 4 | 5 |
+| Bundle hit | 40% | 80% | 120% | 270% | 360% | 450% | 800% | 960% | 1,120% | 1,750% |
+| SP | 20 | 20 | 20 | 30 | 30 | 30 | 40 | 40 | 40 | 50 |
 | Cooldown | 10 s | 20 s | 30 s | 40 s | 50 s | 60 s | 70 s | 80 s | 90 s | 100 s |
 
-Every level: SP 20, FCT 0, **VCT 5 s**, Global Delay 0. Code: `SK.logging`, `addLog()`, `BF.logN`.
+Every level: FCT 0, **VCT 5 s**, Global Delay 0. v22h rev. 2 (NIIQ): at most 5 logs so a bundle does not take long, with more ATK per log to make up for it (first draft: 2–11 logs, +20–200%, SP 20). Code: `LG_P`, `LG_N`, `LG_SP`, `addLog()`, `BF.logN`.
 
 How it is read (⚠ to confirm):
 - Each Timber!! that **hits** while Logging lasts adds 1 log (a miss adds none).
-- When the logs reach the limit they fly at once at the Timber!! target: **one physical hit of logs × ATK-per-log** (Lv 10: 11 × 200% = **2,200% ATK**) on every monster in the 5 × 5 square round it, no crit. The damage lands 0.7 s later, when the bundle hits.
-- The buff keeps running after a bundle, so another bundle can be built in the same buff (Lv 10: ~17 s of Timber!! per bundle). Logs not bundled when the buff ends are lost.
+- When the logs reach the limit they fly at once at the Timber!! target: **one physical hit of logs × ATK-per-log** (Lv 10: 5 × 350% = **1,750% ATK**) on every monster in the 5 × 5 square round it, no crit. The damage lands 0.7 s later, when the bundle hits.
+- The buff keeps running after a bundle, so another bundle can be built in the same buff (Lv 10: 5 Timber!! hits, about 8 s, per bundle). **Logs not bundled when the buff ends are lost** (NIIQ).
 
 ### Balance check (simulator, v22h: Forbear → Logging)
 | | Fighter v22g | **Fighter v22h** | Ranger | Spellcaster |
 |---|---|---|---|---|
-| Lv 10, Field 01 | 50.7 · 55 | **49.7 · 56** | 52.0 · 32 | 47.7 · 26 |
-| Lv 20, Field 02 | 49.0 · 77 | **47.0 · 78** | 44.0 · 55 | 46.0 · 53 |
-| Lv 30, Field 03 | 40.0 · 126 | **38.7 · 124** | 34.3 · 99 | 42.0 · 117 |
-| Lv 20, packs of 3 | 66 · 96 | **64 · 99** | 85 · 98 | 108 · 123 |
-| Lv 30, Geosyncline | 17.0 · 150 · 0 d | **16.7 · 160 · 0 d** | 13.0 · 125 · 2 d | 25.0 · 218 · 1 d |
-| Lv 35, Ruins | 11.7 · 174 · 1 d | **12.7 · 199 · 1 d** | 7.3 · 138 · 3.3 d | 13.7 · 200 · 1 d |
-| **CP Lv 10 / 20 / 30** | 634 / 1,038 / 1,469 | **658 / 1,021 / 1,410** | 510 / 789 / 1,196 | 233 / 546 / 971 |
+| Lv 10, Field 01 | 50.7 · 55 | **51.3 · 56** | 52.0 · 32 | 47.7 · 26 |
+| Lv 20, Field 02 | 49.0 · 77 | **47.7 · 80** | 44.0 · 55 | 46.0 · 53 |
+| Lv 30, Field 03 | 40.0 · 126 | **37.3 · 125** | 34.3 · 99 | 42.0 · 117 |
+| Lv 20, packs of 3 | 66 · 96 | **67 · 97** | 85 · 98 | 108 · 123 |
+| Lv 30, Geosyncline | 17.0 · 150 · 0 d | **16.7 · 162 · 0 d** | 13.0 · 125 · 2 d | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 11.7 · 174 · 1 d | **14.0 · 214 · 1 d** | 7.3 · 138 · 3.3 d | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 634 / 1,038 / 1,469 | **692 / 1,067 / 1,496** | 510 / 789 / 1,196 | 233 / 546 / 971 |
 
-Logging pays off on long fights (Ruins DPS 174 → 199, level with the Spellcaster) but costs time on quick ones: the 5 s cast stops attacks, and the bundle needs 11 Timber!! hits at Lv 10. CP (a 3-minute fight against weak monsters) drops a little.
+(rev. 2 numbers; the first draft with up to 11 logs gave CP 658 / 1,021 / 1,410 and Ruins DPS 199.) With at most 5 logs a bundle comes every ~8 s of Timber!!, so Logging pays off sooner: Ruins DPS 174 → 214 (above the Spellcaster's 200), CP up a little. The 5 s cast still stops attacks, which costs time on quick fights (Field 03).
 
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**
