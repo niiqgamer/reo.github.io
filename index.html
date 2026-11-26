@@ -6380,11 +6380,12 @@ function castHandFx(T,r,flat){
   for(let i=0;i<8;i++){const ph=(T*.9+i/8)%1,an=i*2.3;g.fillStyle=`rgba(255,250,220,${(1-ph).toFixed(2)})`;g.beginPath();g.arc(Math.cos(an)*ph*r*1.25,Math.sin(an)*ph*r*1.25-ph*5,1.1,0,TAU);g.fill()}}
 const OCT_OF_ROW=DIR8.map((_,r)=>DIR8.indexOf(r));   // sheet row -> screen octant (0 = E, clockwise)
 /* draws the hero with its feet at (X,Y); sc is in drawChibi units. Returns false if the sheet is not ready. */
+const physCast=c=>!!(c&&c.casting&&REOC.SK[c.casting.id]&&REOC.SK[c.casting.id].kind==="phys");   // v22e: a melee skill with a cast time (Timber!!) winds up instead of casting a spell
 function drawHero(c,X,Y,sc=1,o={}){
   if(heroCustom())return drawHeroApp(c,X,Y,sc,o);
   const H=HERO[heroSet()];heroLoad(H);const sit=!!c.sit&&!c.moving,mv=!!c.moving&&!sit,ok=x=>x&&x.ok;
   /* pose: dead > casting > walking > attack/cast flash (c.pose for c.poseT s) > sitting > idle */
-  let a=c.dead&&ok(H.death)?H.death:ok(H.cast)&&c.casting?H.cast:mv?H.walk:c.poseT>0&&ok(H[c.pose])?H[c.pose]:sit&&ok(H.sit)?H.sit:H.idle;
+  let a=c.dead&&ok(H.death)?H.death:physCast(c)&&ok(H.attack)?H.attack:ok(H.cast)&&c.casting&&!physCast(c)?H.cast:mv?H.walk:c.poseT>0&&ok(H[c.pose])?H[c.pose]:sit&&ok(H.sit)?H.sit:H.idle;
   if(!a.ok)return false;const squash=sit&&a===H.idle;
   const row=c.f8!=null?c.f8:(c.back?(c.dir>0?3:5):(c.dir>0?1:7));
   const fr=a===H.death?Math.min(a.n-1,Math.floor(Math.max(0,T-(c.dieAt||0))*a.fps)):a===H.walk?Math.floor((c.phase||0)/TAU*a.n)%a.n:(o.still||a.n<2?0:Math.floor(T*a.fps+(c.seed||0))%a.n),bob=a!==H.idle||a.n>1?0:Math.sin(T*2.4+(c.seed||0))*.7,fw=a.fw||H.fw,ax=a.ax||H.ax,ay=a.ay||H.ay,rs=a.res||1;
@@ -6809,6 +6810,7 @@ function drawHeroApp(c,X,Y,sc,o){
   const sit=!!c.sit&&!c.moving,dir=c.f8!=null?c.f8:(c.back?(c.dir>0?3:5):(c.dir>0?1:7));
   const q=Object.assign(appOpts(S.app),{dir,t:o.still?0:T+(c.seed||0),noShadow:o.noShadow});
   if(c.dead){q.pose="death";q.dt=Math.max(0,T-(c.dieAt||0))}
+  else if(physCast(c)){const u=Math.max(0,Math.min(1,1-c.casting.t/c.casting.total));q.pose="attack";q.p=.04+.34*u*(2-u)}   // v22e wind-up: the weapon rises overhead, no spell circle
   else if(c.casting)q.pose="cast";
   else if(c.moving){q.pose="walk";q.phase=c.phase||0}
   else if(c.poseT>0){const u=Math.max(0,Math.min(1,1-c.poseT/.36));if(c.pose==="cast")q.pose="cast";else if(S.arch==="ranger"){q.pose="bow";q.p=.5+u*.35}else{q.pose="attack";q.p=.4+u*.3}}
@@ -8544,10 +8546,13 @@ function knockBack(m,n){const dx=m.x-player.x,dy=m.y-player.y,l=Math.hypot(dx,dy
 /* v22e Timber!! (SKILL-SPEC.md §3r): one heavy blow on the target (HIT bonus, no crit), then 70% ATK on every other monster in the
    3x3 square round it. 20% chance to Stun the target for 3 s (bosses are immune: updateMon clears it). */
 function timber(tg,k,o,col){
-  fx.push({k:"slash",x:tg.x,y:tg.y,t:0,d:.35,c:col,dir:player.dir});fx.push({k:"sqarea",x:tg.x,y:tg.y,t:0,d:.4,c:col,r:k.splashR});fx.push({k:"burst",x:tg.x,y:tg.y,t:0,d:.5,c:"#ffcf3f",n:16,z:4});
-  const res=physAttack(tg,o);
-  for(const m of liveMon())if(m!==tg&&Math.max(Math.abs(m.x-tg.x),Math.abs(m.y-tg.y))<=k.splashR)physAttack(m,{ratio:k.splashAll,canCrit:false,c:col});
-  if(res&&!res.miss&&alive(tg)&&!tg.boss&&Math.random()<k.stunCh){tg.stun=Math.max(tg.stun||0,k.stunT);fx.push({k:"ring",x:tg.x,y:tg.y,t:0,d:.6,c:"#ffe28a",r:40})}
+  const cx=tg.x,cy=tg.y,mp=cur.id;
+  fx.push({k:"slash",x:cx,y:cy,t:0,d:.3,c:col,dir:player.dir});fx.push({k:"tlog",x:cx,y:cy,t:0,d:.75,r:k.splashR});
+  later(150,()=>{if(cur.id!==mp)return;   // the log lands: damage, cracks, dust, a small screen shake
+    fx.push({k:"crack",x:cx,y:cy,t:0,d:.9,seed:Math.floor(Math.random()*999)});if(!FXRM)shakeT=Math.max(shakeT,.2);
+    const res=alive(tg)?physAttack(tg,o):null;
+    for(const m of liveMon())if(m!==tg&&Math.max(Math.abs(m.x-cx),Math.abs(m.y-cy))<=k.splashR)physAttack(m,{ratio:k.splashAll,canCrit:false,c:col});
+    if(res&&!res.miss&&alive(tg)&&!tg.boss&&Math.random()<k.stunCh){tg.stun=Math.max(tg.stun||0,k.stunT);fx.push({k:"ring",x:tg.x,y:tg.y,t:0,d:.6,c:"#ffe28a",r:40})}});
 }
 function finishSkill(id,tg,lv,gp){
   const k=lv?REOC.skAt(id,lv):REOC.SK[id],d=pd(),x=player.x,y=player.y,col=SKC[id]||"#fff";
@@ -8734,6 +8739,42 @@ function fballDraw(f){
   fxDisc(bx,by,Math.round(5.4*k),FXF[3]);fxDisc(bx,by,Math.round(4.4*k),FXF[2]);fxDisc(bx,by,Math.round(3*k),FXF[1]);fxDisc(bx,by,Math.max(1,Math.round(1.4*k)),FXF[0]);
   const fk=Math.floor(f.t*28);for(let i=0;i<6;i++){const a=hash(i,fk)*TAU,rr2=(6+hash(i+9,fk)*7)*k;fxSq(bx+Math.cos(a)*rr2,by+Math.sin(a)*rr2-3,1,FXF[1+(i%3)])}
 }
+/* ---- v22e Timber!! effects: no spell circle. While it winds up the Fighter draws power in (embers rushing to the raised weapon,
+   pebbles hopping, a heat shimmer) and a hologram log forms high over the target; on release the log drops, hits, cracks the
+   ground across the 3x3 square and breaks up into light. ---- */
+function holoLog(x,y,ang,len,rad,al,gl){   // a hologram log centred at x,y (screen), turned by ang; gl = 0..1 glitch
+  g.save();g.translate(x,y);g.rotate(ang);g.globalAlpha=al;
+  const L=len/2,cy=rad;
+  const body=()=>{g.beginPath();g.moveTo(-L,-cy);g.lineTo(L,-cy);g.ellipse(L,0,rad*.42,cy,0,-Math.PI/2,Math.PI/2);g.lineTo(-L,cy);g.ellipse(-L,0,rad*.42,cy,0,Math.PI/2,Math.PI*1.5);g.closePath()};
+  body();const gr=g.createLinearGradient(0,-cy,0,cy);gr.addColorStop(0,"rgba(190,250,255,.42)");gr.addColorStop(.5,"rgba(90,210,255,.2)");gr.addColorStop(1,"rgba(40,150,230,.38)");g.fillStyle=gr;g.fill();
+  g.save();body();g.clip();   // scan lines and wood grain inside the log
+  g.strokeStyle="rgba(200,250,255,.35)";g.lineWidth=1;const off=(T*40)%4;for(let yy=-cy-4+off;yy<cy;yy+=4){g.beginPath();g.moveTo(-L-rad,yy);g.lineTo(L+rad,yy);g.stroke()}
+  g.strokeStyle="rgba(255,230,150,.55)";g.lineWidth=1.3;for(const [a,b,w] of [[-.7,-.1,-.35],[-.2,.5,.15],[-.5,.2,.5],[.1,.8,-.2]]){g.beginPath();g.moveTo(L*a,cy*w);g.lineTo(L*b,cy*w);g.stroke()}
+  g.restore();
+  body();g.strokeStyle="rgba(170,245,255,.95)";g.lineWidth=2;g.shadowColor="rgba(90,220,255,.9)";g.shadowBlur=12;g.stroke();g.shadowBlur=0;
+  for(let i=0;i<3;i++){g.strokeStyle=i?"rgba(255,220,140,.7)":"rgba(220,255,255,.95)";g.lineWidth=1.2;g.beginPath();g.ellipse(L,0,rad*.42*(1-i*.3),cy*(1-i*.3),0,0,TAU);g.stroke()}   // end grain rings
+  if(gl>0){for(let i=0;i<4;i++){const yy=-cy+hash(i,Math.floor(T*30))*cy*2,h=2+hash(i+5,Math.floor(T*30))*4,dx=(hash(i+9,Math.floor(T*30))-.5)*24*gl;g.fillStyle="rgba(150,240,255,.5)";g.fillRect(-L+dx,yy,len,h)}}
+  g.restore()}
+function timberCharge(x,y){
+  const c=player.casting,u=Math.max(0,Math.min(1,1-c.t/c.total)),hx=x+player.dir*6,hy=y-58-u*10;   // the raised weapon
+  g.save();g.globalCompositeOperation="lighter";
+  glow(hx,hy,(14+u*22)*(1+.08*Math.sin(T*40)),"rgba(255,190,80,"+(.35+u*.4).toFixed(2)+")");
+  glow(x,y-28,34+u*14,"rgba(255,170,60,"+(.18+u*.25).toFixed(2)+")");   // body aura
+  for(let k=0;k<8;k++){const ph=(T*1.6+hash(k,13))%1,ox=(hash(k,14)-.5)*34,h=10+u*16;   // gold flames rising round the body
+    g.strokeStyle="rgba(255,"+(200+Math.round(hash(k,15)*50))+",110,"+((1-ph)*(.35+u*.55)).toFixed(2)+")";g.lineWidth=2.4*(1-ph)+.6;
+    g.beginPath();g.moveTo(x+ox,y-4-ph*50);g.quadraticCurveTo(x+ox+Math.sin(T*9+k)*4,y-4-ph*50-h*.5,x+ox*.8,y-4-ph*50-h);g.stroke()}
+  for(let k=0;k<14;k++){const ph=(T*2.2+hash(k,3))%1,a=hash(k,11)*TAU,r=(70-60*ph)*(.7+hash(k,2)*.5);   // embers rushing in to the weapon
+    const px=hx+Math.cos(a)*r,py=hy+Math.sin(a)*r*.75,qx=hx+Math.cos(a)*(r+10),qy=hy+Math.sin(a)*(r+10)*.75;
+    g.strokeStyle="rgba(255,"+(170+Math.round(hash(k,5)*70))+",90,"+(.85*ph*(.4+u*.6)).toFixed(2)+")";g.lineWidth=2.2*ph+.4;g.beginPath();g.moveTo(qx,qy);g.lineTo(px,py);g.stroke()}
+  g.globalCompositeOperation="source-over";
+  for(let k=0;k<7;k++){const ph=(T*3+hash(k,8))%1,b=Math.sin(ph*Math.PI)*(4+u*10);ell(x+(hash(k,4)-.5)*46,y+3+(hash(k,6)-.5)*14-b,2+hash(k,1)*1.5,1.6+hash(k,1),"rgba(120,96,70,"+(.75*u).toFixed(2)+")")}   // pebbles hop
+  g.globalAlpha=.25*u;g.strokeStyle="#fff1c8";g.lineWidth=1.4;for(let k=0;k<3;k++){const yy=y-20-k*16,w=Math.sin(T*18+k)*3;g.beginPath();g.moveTo(x-16,yy);g.quadraticCurveTo(x,yy-6+w,x+16,yy);g.stroke()}   // heat shimmer
+  g.restore();
+  const tg=c.tg;if(tg&&alive(tg)){const [tx,ty]=P(tg.x,tg.y),z=150+Math.sin(T*5)*4;   // the hologram log forms high over the target
+    g.save();g.globalCompositeOperation="lighter";
+    g.globalAlpha=.25*u;ell(tx,ty,30*u,12*u,"rgba(120,220,255,.6)");   // its shadow-light on the ground
+    g.strokeStyle="rgba(140,235,255,"+(.35*u).toFixed(2)+")";g.lineWidth=1;g.setLineDash([2,5]);g.beginPath();g.moveTo(tx,ty-z+16);g.lineTo(tx,ty);g.stroke();g.setLineDash([]);
+    holoLog(tx,ty-z,-.18,70*(.55+.45*u),12*(.55+.45*u),.25+.7*u,1-u);g.restore()}}
 function fireRune(x,y){   // while casting Fire Bolt: a turning ring of fire at the caster's feet and rising embers
   const c=player.casting,u=1-c.t/c.total;g.save();g.globalCompositeOperation="lighter";
   for(let i=0;i<2;i++){g.strokeStyle=i?"rgba(255,215,130,.55)":"rgba(255,110,50,.75)";g.lineWidth=2;g.setLineDash(i?[3,5]:[10,6]);g.lineDashOffset=(i?1:-1)*T*40;
@@ -8774,6 +8815,20 @@ function drawFx(f){
   else if(f.k==="proj"){const [tx,ty]=P(f.tx,f.ty);const px=x+(tx-x)*p,py=y-26+(ty-y)*p-Math.sin(p*Math.PI)*30;ell(px,py,6,6,f.c);ell(px,py,3,3,"#fff");g.globalAlpha=.5;ell(px-(tx-x)*.06,py+4,5,5,f.c)}
   else if(f.k==="arrow"){arrowDraw(f,x,y,p)}
   else if(f.k==="fball"){g.globalCompositeOperation="source-over";fballDraw(f)}
+  else if(f.k==="tlog"){   // v22e Timber!! release: the hologram log drops (0-0.15 s), hits, then breaks into light
+    const tf=.15,fall=Math.min(1,f.t/tf),z=150*(1-fall*fall),after=Math.max(0,f.t-tf),q=after/(f.d-tf);
+    if(f.t<tf){g.strokeStyle="rgba(170,240,255,.6)";g.lineWidth=2;for(let i=0;i<4;i++){const ox=(i-1.5)*12;g.beginPath();g.moveTo(x+ox,y-z-30-i*6);g.lineTo(x+ox,y-z-80);g.stroke()}}   // speed lines
+    if(q<.7)holoLog(x,y-Math.max(10,z)-(f.t<tf?0:q*8),-.18+fall*.18,70,12,f.t<tf?.95:Math.max(0,1-q/.7),f.t<tf?0:q*1.6);
+    if(f.t>=tf){const r=f.r,c=[[f.x-r,f.y-r],[f.x+r,f.y-r],[f.x+r,f.y+r],[f.x-r,f.y+r]].map(v=>P(v[0],v[1]));   // a flash over the 3x3 square, no dashed edge
+      g.globalAlpha=.45*Math.max(0,1-q*2.2);g.fillStyle="rgba(255,200,110,1)";g.beginPath();c.forEach((v,i)=>i?g.lineTo(v[0],v[1]):g.moveTo(v[0],v[1]));g.closePath();g.fill();
+      g.globalAlpha=1-q;glow(x,y-8,60*(1-q*.5),"rgba(255,230,160,.8)");
+      for(let i=0;i<2;i++){const rr=(i?52:30)+q*70;g.globalAlpha=(1-q)*(i?.55:.9);g.strokeStyle=i?"rgba(255,190,90,1)":"rgba(255,245,210,1)";g.lineWidth=(i?3:5)*(1-q)+1;g.beginPath();g.ellipse(x,y,rr,rr*.5,0,0,TAU);g.stroke()}   // shockwave
+      for(let i=0;i<14;i++){const a=hash(i,21)*TAU,d=(18+hash(i,4)*40)*(.3+q),up=Math.sin(Math.min(1,q*1.4)*Math.PI)*(14+hash(i,7)*26);   // light shards (the log breaking up)
+        g.globalAlpha=1-q;g.fillStyle=i%3?"rgba(150,235,255,1)":"rgba(255,220,140,1)";g.save();g.translate(x+Math.cos(a)*d,y+Math.sin(a)*d*.5-up);g.rotate(a+q*6);g.fillRect(-3.5,-1.2,7,2.4);g.restore()}}}
+  else if(f.k==="crack"){   // v22e ground cracks and dust from Timber!!
+    g.globalCompositeOperation="source-over";const a=Math.min(1,p*8)*(1-Math.max(0,p-.6)/.4);g.globalAlpha=a;g.strokeStyle="rgba(40,24,14,.85)";g.lineWidth=2.2;g.lineCap="round";
+    for(let i=0;i<7;i++){const an=hash(i,f.seed)*TAU,L=(26+hash(i+3,f.seed)*34)*Math.min(1,p*6);let px=x,py=y;g.beginPath();g.moveTo(px,py);for(let s=1;s<=3;s++){const aa=an+(hash(i*7+s,f.seed)-.5)*.8;px=x+Math.cos(aa)*L*s/3;py=y+Math.sin(aa)*L*s/3*.5;g.lineTo(px,py)}g.stroke()}
+    for(let i=0;i<9;i++){const an=hash(i,f.seed+1)*TAU,d=20+p*46*(.6+hash(i,2)*.6),rr=(5+hash(i,3)*6)*(.6+p);ell(x+Math.cos(an)*d,y+Math.sin(an)*d*.5-p*10,rr,rr*.6,"rgba(176,150,120,"+(.55*(1-p)).toFixed(2)+")")}}
   else if(f.k==="sqarea"){const a=Math.min(1,p*6)*(1-Math.max(0,p-.8)*5),r=f.r,c=[[f.x-r,f.y-r],[f.x+r,f.y-r],[f.x+r,f.y+r],[f.x-r,f.y+r]].map(q=>P(q[0],q[1]));   // v20.18 square area on the ground (5x5 / 7x7)
     g.globalAlpha=.35*a;g.fillStyle=f.c;g.beginPath();c.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.closePath();g.fill();g.globalAlpha=.9*a;g.strokeStyle=f.c;g.lineWidth=2;g.setLineDash([6,4]);g.stroke();g.setLineDash([])}
   else if(f.k==="float"){g.globalCompositeOperation="source-over";g.globalAlpha=1-p*p;g.font=`600 13px ${FONT}`;g.textAlign="center";g.textBaseline="middle";g.lineWidth=3;g.strokeStyle="rgba(20,10,30,.8)";const yy=y-70-(f.oy||0)-p*30;g.strokeText(f.txt,x,yy);g.fillStyle=f.c;g.fillText(f.txt,x,yy)}
@@ -8889,7 +8944,7 @@ function render(){
       const ew=g.measureText(lbl).width;ell(o.sx-ew/2-7,ly,3.4,3.4,ELC[REOC.MONC[mo.type].elem]||"#ccc");g.strokeStyle="rgba(10,12,26,.85)";g.lineWidth=1;g.stroke()}
     else if(o.kind==="char"){const c=o.c;
       if(c.npc){npcPlate(o.sx,o.sy-100,t(c.nameK),t("npcr_"+c.id),"#ffd76a");if(talkNpc.has(c.id)||(c.id==="helper"&&S.arch==="beginner"&&S.jlv>=10&&hasBasic("arch")&&!S.q.arch))questMark(o.sx,o.sy-132)}
-      else if(c.me){nameTag(o.sx,o.sy+14,c.name,"#ffffff",11.5);if(c.status&&c.sit&&!c.dead)statusPlate(o.sx,o.sy-74,c.status);if(player.casting&&!c.dead){if(player.casting.id==="fire_bolt")fireRune(o.sx,o.sy);castBar(o.sx,o.sy-(S.idle?96:82))}
+      else if(c.me){nameTag(o.sx,o.sy+14,c.name,"#ffffff",11.5);if(c.status&&c.sit&&!c.dead)statusPlate(o.sx,o.sy-74,c.status);if(player.casting&&!c.dead){if(player.casting.id==="fire_bolt")fireRune(o.sx,o.sy);if(player.casting.id==="timber")timberCharge(o.sx,o.sy);castBar(o.sx,o.sy-(S.idle?96:82))}
         if(S.idle&&!c.dead){g.font=`600 9px ${FONT}`;rr(o.sx-17,o.sy-78,34,14,7);g.fillStyle="rgba(63,198,168,.92)";g.fill();g.fillStyle="#04261d";g.textAlign="center";g.textBaseline="middle";g.fillText(t("auto"),o.sx,o.sy-70.5)}}
       else nameTag(o.sx,o.sy+14,c.name,inMyParty(c.name)?"#8ec0ff":"#bfe3ff");   // party members get the party colour
       if(c.bubble)bubble(o.sx,o.sy-(c.me&&S.idle?84:c.me&&c.status&&c.sit?104:68),typeof c.bubble.txt==="string"?c.bubble.txt:PT(c.bubble.txt));
