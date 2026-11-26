@@ -288,7 +288,8 @@ Five new Ranger skills, written to this standard. **v22b: they are the whole Ran
 
 | Lv | 1 | 2 | 3 | 4 | 5 |
 |---|---|---|---|---|---|
-| Scandium per arrow | 20 | 18 | 15 | 13 | 10 |
+| Scandium per arrow (v22d) | 20 | 16 | 12 | 8 | 4 |
+| (v21f–v22c) | 20 | 18 | 15 | 13 | 10 |
 
 Built as (`NA_SC`, `payArrows`):
 - Every arrow that **leaves the bow** costs Scandium: a basic attack 1, Double Strafe 2, Arrow Shower / Piercing Shot / Aim Strike / Aiming Shower 1. The extra arrows of an Aim Strike split come out of the same arrow and cost nothing more (⚠ assumption).
@@ -303,7 +304,7 @@ Built as (`NA_SC`, `payArrows`):
 | Skill Requirement | No Arrow Lv 1 |
 | Skill Form | Passive |
 | Detail | เรียนรู้สัญชาตญาณแห่งนักล่า เพิ่มความเชี่ยวชาญในการถือธนู ความแม่นยำ และการหลบหลีก |
-| Per level | Lv N: **DEX +N, HIT +N, AGI +N** (Lv 10: +10 each) |
+| Per level | Lv N: **DEX +N, HIT +N, AGI +N** (Lv 10: +10 each). **v22d: range +1 tile at Lv 1, 6 and 10** (Lv 1–5 +1, Lv 6–9 +2, Lv 10 +3: range 9 → 12) |
 
 Built as stat points on top of the character's DEX and AGI (they count for ATK, ASPD, FLEE, cast time) plus flat HIT.
 
@@ -404,6 +405,13 @@ Same method. The Ranger loses the distance bonus (+2% per tile beyond 3, up to +
 | **CP Lv 10 / 20 / 30** | 598 / 1,090 / 1,576 | 656 / 1,044 / 1,761 | **510 / 789 / 1,196** | 233 / 546 / 971 |
 
 **⚠ v22b leaves the Ranger weaker:** CP Lv 30 −32% (1,761 → 1,196; Fighter 1,576), Ruins DPS 200 → 138. Only packs hold up (splash). Scandium also gets worse, because more arrows are needed per kill (table below). Open for NIIQ: give some of it back (for example base range 12, the distance bonus as part of Ranger Mastery, or more ATK on Aim Strike).
+
+### Balance check (simulator, v22d)
+v22d changes (NIIQ): No Arrow 20 / 16 / 12 / 8 / 4 Sc per arrow; Ranger Mastery range +1 at Lv 1, 6, 10 (range 12 at Lv 10, the range Eagle Eye used to give). The spec sheet for this pass listed Aim Strike at SP 12–20; the game keeps **SP 10** (NIIQ's previous decision) until NIIQ confirms. With SP 12–20 the Ranger is weaker still: CP Lv 30 1,145, Ruins 5.0 kills · 123 DPS · 4 deaths, packs of 3 68 kills · 82 DPS.
+
+Damage does not move (CP Lv 10 / 20 / 30 = 510 / 789 / 1,196, same as v22b): the simulator places a ranged fighter at min(range, 8) tiles, so range above 8 does not show there. In the game, range 12 gives about 1.3 more tiles of free shots before a monster arrives than range 9 did with the old distance bonus gone. **⚠ The Ranger stays about 24% below the Fighter (CP 1,196 vs 1,576; Ruins DPS 138 vs 181)**: what the old kit gave and v22d does not give back is the distance bonus (+2% per tile beyond 3, up to +18%), +5% crit, and Double Strafe / Piercing Shot as SP-cheap damage.
+
+**Scandium is now positive everywhere at No Arrow Lv 5** (4 Sc per arrow): net per hour Field 01 +1.5k, Field 02 +4.2k, Field 03 +18.6k, Geosyncline +14.9k, Ruins +11.8k. At Lv 1 (20 Sc) it is still negative everywhere (table below).
 
 **⚠ Scandium cost against income** (simulator, 600 s × 3 seeds, kills and arrows per hour; income = average monster Scandium, no drops sold):
 

@@ -29,12 +29,12 @@ Basic hits and Power Strike add Momentum (max 5, lost after 5 s without hitting)
 | Iron Body | +15% Max HP, VIT-based DEF ×1.5 |
 
 ## Ranger — Scandium arrows
-Range 9 tiles. Every arrow is a Scandium arrow once No Arrow is learned (costs Scandium per shot). v21f adds five skills from NIIQ (full tables: `SKILL-SPEC.md` §3i–3n); the four that are not No Arrow need it first. **v22b: the prototype skills (Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim) are removed**, and with them the distance bonus (+2% per tile beyond 3), the +3 range (now 9 instead of 12), +10 HIT, +5% crit and the escape leap.
+Range 9 tiles, 10–12 with Ranger Mastery (v22d). Every arrow is a Scandium arrow once No Arrow is learned (costs Scandium per shot). v21f adds five skills from NIIQ (full tables: `SKILL-SPEC.md` §3i–3n); the four that are not No Arrow need it first. **v22b: the prototype skills (Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim) are removed**, and with them the distance bonus (+2% per tile beyond 3), the +3 range (now 9 instead of 12), +10 HIT, +5% crit and the escape leap.
 
 | New skill | Effect | SP | Needs |
 |---|---|---|---|
-| No Arrow (passive, Lv 1–5) | Shoot Scandium arrows: every arrow shot costs 20 / 18 / 15 / 13 / 10 Sc. Not enough Sc = no shot | – | – |
-| Ranger Mastery (passive, Lv 1–10) | DEX +Lv, HIT +Lv, AGI +Lv | – | No Arrow 1 |
+| No Arrow (passive, Lv 1–5) | Shoot Scandium arrows: every arrow shot costs 20 / 16 / 12 / 8 / 4 Sc (v22d). Not enough Sc = no shot | – | – |
+| Ranger Mastery (passive, Lv 1–10) | DEX +Lv, HIT +Lv, AGI +Lv; range +1 at Lv 1, 6, 10 (range 9 → 12 at Lv 10) | – | No Arrow 1 |
 | Focusing (Self Cast, Lv 1–10) | DEX and AGI +3–12% for 60–240 s | 25–70 | No Arrow 3 |
 | Aim Strike (Lv 1–10) | 1 arrow of 100–200% ATK in total; 20–38% chance to split into 2–3 arrows (0.1 s apart) that share it; each splashes 50% of its share on a 3 × 3 area; crit chance ×0.5. FCT 0.5 s, VCT 0.5 s, GD 1 s, CD 1 s | 10 | No Arrow 5 |
 | Aiming Shower (Lv 1–10) | 1 arrow of 160–250% ATK, pushes the target 2 tiles back (bosses too); no crit. FCT 0.5 s, VCT 0.5 s, GD 0.1 s, CD 1 s | 20 | No Arrow 5 |
