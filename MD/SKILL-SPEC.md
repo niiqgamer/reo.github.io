@@ -426,7 +426,7 @@ Damage does not move (CP Lv 10 / 20 / 30 = 510 / 789 / 1,196, same as v22b): the
 (v22b, old Ranger skills removed.) So a Ranger with No Arrow loses Scandium on Field 01–02 even at Lv 5, only just breaks even on the Geosyncline and Ruins at Lv 5, and loses on every map at Lv 1. Every other archetype keeps all of it. See `ECONOMY.md`.
 
 ## 3o. Fighter skills (v22e, from NIIQ)
-Five Fighter skills. The old Fighter skills (Power Strike, Whirlwind Cleave, Crushing Blow, War Cry, Iron Body) stay for now; Weapon Mastery becomes **Weapons Mastery** (Lv 1–10). Forbear needs Gaslighting Lv 3 (`SKREQ`); the others need nothing. The five cost 50 points at max; a C1 Fighter has 49.
+Five Fighter skills. Weapon Mastery becomes **Weapons Mastery** (Lv 1–10). **v22g:** the old Fighter skills (Power Strike, Whirlwind Cleave, Crushing Blow, War Cry, Iron Body) and Momentum are removed (old saves get the points back; their hotbar slots clear). Forbear needs Gaslighting Lv 3 (`SKREQ`); the others need nothing. The five cost 50 points at max; a C1 Fighter has 49.
 
 ## 3p. Weapons Mastery (passive, Lv 1–10)
 Master the knife and the sword and draw out what the weapon holds: **ATK +4 per level** (Lv 10: +40) while a knife or sword is held. The game has no knife / sword weapon types yet, so every Fighter weapon counts. Replaces the old Weapon Mastery (+20 ATK +5 HIT, one level): an old save keeps its one level (+4 ATK) and can raise it. `PASSIVE.weapon_mastery.atk` = 4 per level; the mastery ATK goes into `(statusATK + weapon + mastery)` (`COMBAT-FORMULAS.md` §2).
@@ -462,7 +462,7 @@ Lead and bend the minds of every enemy in a 3 × 3 square at the target so they 
 
 Every level: no cast, Global Delay 0.3 s, Cooldown 1 s. ⚠ "Def ลดลงตามค่า Vit" is read as **soft DEF only** (the part that comes from VIT); hard DEF (armor %) is not touched. Code: `GL_D`, `GL_A`, `mo.gas` / `mprof()`.
 
-## 3t. Forbear (Self Cast, Buff, Lv 1–10) — needs Gaslighting Lv 3
+## 3t. Forbear (Self Cast, Buff, Lv 1–10) — needs Gaslighting Lv 3 — **removed in v22h (replaced by Logging, §3u)**
 A mind steady as a bear: **physical hits do not make the Fighter flinch**, so they can run or strike back. Forbear holds for 7 hits; the 8th physical hit ends it (and that hit flinches). Magic hits do not count. **MDEF +1% per level** (⚠ read as %, the game's MDEF is a %).
 
 | Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
@@ -488,6 +488,53 @@ Same method as §3n (300 s × seeds 1–3, auto stats, no gear, every skill at m
 | **CP Lv 10 / 20 / 30** | 598 / 1,090 / 1,576 | **705 / 1,173 / 1,712** | 510 / 789 / 1,196 | 233 / 546 / 971 |
 
 The Fighter is tougher (Shield Mastery DEF +20%, STR / VIT +10; no deaths on the Geosyncline or the Ruins) and hits harder per swing, but **Shield Mastery Lv 10 slows the basic attack by 20%**, which costs about as much as Timber!! adds: on packs of 3 the Fighter drops 87 → 72 kills (with attack speed unchanged it would be 84 kills · 119 DPS). CP still rises 1,576 → 1,712 (+9%), so the gap to the Ranger (1,196) grows. Per cast at Lv 30 against a neutral dummy: Timber!! Lv 10 ≈ 570 damage (+70% on each neighbour), Power Strike 272, Aim Strike 221, Fire Bolt Lv 5 (10 fireballs) 834. The flinch is not in the simulator.
+
+### Balance check (simulator, v22g: old Fighter skills removed)
+Same method. The Fighter now has only the five v22e skills; AI: Forbear while fighting, Gaslighting on a pack, then Timber!!.
+
+| | Fighter v22e | **Fighter v22g** | Ranger | Spellcaster |
+|---|---|---|---|---|
+| Lv 10, Field 01 | 50.7 · 55 | **50.7 · 55** | 52.0 · 32 | 47.7 · 26 |
+| Lv 20, Field 02 | 49.7 · 78 | **49.0 · 77** | 44.0 · 55 | 46.0 · 53 |
+| Lv 30, Field 03 | 42.3 · 127 | **40.0 · 126** | 34.3 · 99 | 42.0 · 117 |
+| Lv 20, packs of 3 | 72 · 100 | **66 · 96** | 85 · 98 | 108 · 123 |
+| Lv 30, Geosyncline | 18.0 · 159 · 0 d | **17.0 · 150 · 0 d** | 13.0 · 125 · 2 d | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 12.0 · 175 · 0 d | **11.7 · 174 · 1 d** | 7.3 · 138 · 3.3 d | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 705 / 1,173 / 1,712 | **634 / 1,038 / 1,469** | 510 / 789 / 1,196 | 233 / 546 / 971 |
+
+The Fighter loses Iron Body (+15% Max HP) and Whirlwind Cleave (the old pack skill), so CP drops 1,712 → 1,469 (still above the Ranger's 1,196; v22d Fighter was 1,576). Packs of 3 drop to 66 kills: Timber!!'s 70% splash is the only area damage left and Shield Mastery Lv 10 still slows the basic attack 20%. Single targets barely change.
+
+## 3u. Logging (Self Cast, Buff, Lv 1–10, v22h, from NIIQ) — needs Timber!! Lv 3
+Gather **Timber Logging** from Timber!! hits. Once enough is gathered the logs are bound together and all of them are hurled at the target for a very heavy blow over a **5 × 5** area. Replaces Forbear; Momentum's idea (build with hits, spend in a finisher) now lives on Timber!!.
+
+| Lv | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Time | 10 s | 20 s | 30 s | 40 s | 50 s | 60 s | 70 s | 80 s | 90 s | 100 s |
+| ATK per log | +20% | +40% | +60% | +90% | +120% | +150% | +200% | +240% | +280% | +350% |
+| Logs to bundle (max) | 2 | 2 | 2 | 3 | 3 | 3 | 4 | 4 | 4 | 5 |
+| Bundle hit | 40% | 80% | 120% | 270% | 360% | 450% | 800% | 960% | 1,120% | 1,750% |
+| SP | 20 | 20 | 20 | 30 | 30 | 30 | 40 | 40 | 40 | 50 |
+| Cooldown | 10 s | 20 s | 30 s | 40 s | 50 s | 60 s | 70 s | 80 s | 90 s | 100 s |
+
+Every level: FCT 0, **VCT 5 s**, Global Delay 0. v22h rev. 2 (NIIQ): at most 5 logs so a bundle does not take long, with more ATK per log to make up for it (first draft: 2–11 logs, +20–200%, SP 20). Code: `LG_P`, `LG_N`, `LG_SP`, `addLog()`, `BF.logN`.
+
+How it is read (⚠ to confirm):
+- Each Timber!! that **hits** while Logging lasts adds 1 log (a miss adds none).
+- When the logs reach the limit they fly at once at the Timber!! target: **one physical hit of logs × ATK-per-log** (Lv 10: 5 × 350% = **1,750% ATK**) on every monster in the 5 × 5 square round it, no crit. The damage lands 0.7 s later, when the bundle hits.
+- The buff keeps running after a bundle, so another bundle can be built in the same buff (Lv 10: 5 Timber!! hits, about 8 s, per bundle). **Logs not bundled when the buff ends are lost** (NIIQ).
+
+### Balance check (simulator, v22h: Forbear → Logging)
+| | Fighter v22g | **Fighter v22h** | Ranger | Spellcaster |
+|---|---|---|---|---|
+| Lv 10, Field 01 | 50.7 · 55 | **51.3 · 56** | 52.0 · 32 | 47.7 · 26 |
+| Lv 20, Field 02 | 49.0 · 77 | **47.7 · 80** | 44.0 · 55 | 46.0 · 53 |
+| Lv 30, Field 03 | 40.0 · 126 | **37.3 · 125** | 34.3 · 99 | 42.0 · 117 |
+| Lv 20, packs of 3 | 66 · 96 | **67 · 97** | 85 · 98 | 108 · 123 |
+| Lv 30, Geosyncline | 17.0 · 150 · 0 d | **16.7 · 162 · 0 d** | 13.0 · 125 · 2 d | 25.0 · 218 · 1 d |
+| Lv 35, Ruins | 11.7 · 174 · 1 d | **14.0 · 214 · 1 d** | 7.3 · 138 · 3.3 d | 13.7 · 200 · 1 d |
+| **CP Lv 10 / 20 / 30** | 634 / 1,038 / 1,469 | **692 / 1,067 / 1,496** | 510 / 789 / 1,196 | 233 / 546 / 971 |
+
+(rev. 2 numbers; the first draft with up to 11 logs gave CP 658 / 1,021 / 1,410 and Ruins DPS 199.) With at most 5 logs a bundle comes every ~8 s of Timber!!, so Logging pays off sooner: Ruins DPS 174 → 214 (above the Spellcaster's 200), CP up a little. The 5 s cast still stops attacks, which costs time on quick fights (Field 03).
 
 ## 4. Skill levels and skill points
 **Decided (NIIQ):**

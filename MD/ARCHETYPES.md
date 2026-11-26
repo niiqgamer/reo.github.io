@@ -6,36 +6,26 @@
 
 | Archetype | Type | Range | Identity mechanic | Primary stats | Plays like |
 |---|---|---|---|---|---|
-| Fighter | MELEE | 1–3 (1.8) | **Momentum** stacks spent by a finisher | STR > VIT ≈ AGI > DEX | Tank / bruiser: highest effective HP, solid damage |
+| Fighter | MELEE | 1–3 (1.8) | **Shield & Log**: pull a pack, smash it with Timber!!, build Timber Logging and hurl the bundle | STR > VIT ≈ AGI > DEX | Tank / bruiser: highest effective HP, solid damage |
 | Ranger | RANGED | 1–9 | **Scandium arrows** (No Arrow) + split / push shots | DEX > AGI > LUK | Safest damage dealer: kills before monsters arrive |
 | Spellcaster | MAGIC | 1–7 | **Cast times + elemental weakness**, spells never miss | INT > DEX > VIT | Burst and area damage, must read monster elements |
 | Supporter | SUPPORT | 1–15 (heal/buff), 9 (attack) | **Sustain**: iRO Heal + overheal shield, zone | INT > VIT > DEX | Lowest solo damage, best survival; party glue later |
 
 ---
 
-## Fighter — Momentum
-Basic hits and Power Strike add Momentum (max 5, lost after 5 s without hitting). Crushing Blow spends all stacks.
-
-| Active | Effect | SP | CD | Notes |
-|---|---|---|---|---|
-| Power Strike | 250% ATK, one enemy | 8 | 1.5 s | +1 Momentum |
-| Whirlwind Cleave | 200% ATK to all within 2 tiles | 14 | 3.5 s | AoE around self |
-| Crushing Blow | 180% ATK **+50% per stack** | 12 | 5 s | Spends stacks; stun 1.5 s at 3+ |
-| War Cry | Taunt within 5 tiles, +20% DEF 8 s | 15 | 20 s | Tank tool |
+## Fighter — Shield & Log
+v22e skills from NIIQ (full tables: `SKILL-SPEC.md` §3o–3t). **v22g: the prototype skills (Power Strike, Whirlwind Cleave, Crushing Blow, War Cry, Iron Body) and Momentum are removed**; old saves get those skill points back and their hotbar slots clear. **v22h: Forbear is replaced by Logging** (Momentum's idea moved onto Timber!!).
 
 | Passive | Effect |
 |---|---|
 | Weapons Mastery (Lv 1–10, v22e) | ATK +4 per level with a knife or sword (every Fighter weapon for now). Was Weapon Mastery: +20 ATK, +5 HIT, one level |
 | Shield Mastery (Lv 1–10, v22e) | While a shield is worn: STR and VIT +Lv, DEF +2% × Lv, attack speed −2% × Lv |
-| Iron Body | +15% Max HP, VIT-based DEF ×1.5 |
 
-v22e adds three actives from NIIQ (full tables: `SKILL-SPEC.md` §3o–3t):
-
-| New skill | Effect | SP | Needs |
+| Active | Effect | SP | Needs |
 |---|---|---|---|
 | Timber!! (Lv 1–10) | 130–400% ATK on one enemy, HIT +5–50, 70% ATK on the others in 3 × 3 round it, 20% Stun 3 s, no crit. VCT 0.5 s, GD 0.5 s, CD 1.5 s | 8 (Lv 1–5) / 15 | – |
 | Gaslighting (Lv 1–10) | Ground 3 × 3 at the target: non-boss monsters turn on the Fighter, soft DEF −10–55%, their ATK +5–32%, 5 s (Lv 1–5) / 10 s. GD 0.3 s, CD 1 s | 4–13 | – |
-| Forbear (Self Cast, Lv 1–10) | No flinch from physical hits for 10–37 s, ends after 7 hits; MDEF +1–10%. CD 10 s | 10 | Gaslighting 3 |
+| Logging (Self Cast, Lv 1–10) | Buff for 10–100 s: every Timber!! that hits adds a Timber Logging; at 2–5 logs they are bound and hurled at the target: logs × (20–350%) ATK on a 5 × 5 square, no crit (Lv 10: 5 × 350% = 1,750%); then a new bundle can start; logs left when it ends are lost. VCT 5 s, CD 10–100 s | 20–50 | Timber!! 3 |
 
 ## Ranger — Scandium arrows
 Range 9 tiles, 10–12 with Ranger Mastery (v22d). Every arrow is a Scandium arrow once No Arrow is learned (costs Scandium per shot). v21f adds five skills from NIIQ (full tables: `SKILL-SPEC.md` §3i–3n); the four that are not No Arrow need it first. **v22b: the prototype skills (Double Strafe, Arrow Shower, Piercing Shot, Evasive Leap, Eagle Eye, Steady Aim) are removed**, and with them the distance bonus (+2% per tile beyond 3), the +3 range (now 9 instead of 12), +10 HIT, +5% crit and the escape leap.
