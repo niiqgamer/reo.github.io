@@ -1,6 +1,6 @@
 # REO (Rare Earth Online): Docs Index
 
-> Synced with `index.html` v22d. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
+> Synced with `index.html` v22i. Read `REO-INSTRUCTIONS.md` first; it is the rulebook.
 
 ## Core
 | File | What it covers |
@@ -49,7 +49,13 @@
 - Equipment: 5 classes × 10 slots × 10 tiers × 5 rarities = **2,500** pieces.
 - Save keys: guest `reo.gameState.v2`, accounts `reo.accounts.v1`, session `reo.session.v1` (see ACCOUNTS.md).
 
-## Changes in v22h (this update)
+## Changes in v22i (this update)
+- **Archetype Supporter skills** (NIIQ): the prototype kit (Holy Light, Blessing, Sanctuary, Divine Grace, Guardian Aura, overheal Grace shield) is replaced by **Edict of Collapse / Edict of Radiance** (Lv 1 passives, only one can be learned: melee physical hits from MATK with +50% attack speed, or a 100% MATK Holy Radiance from 9 tiles), **Heal** Lv 1–10 (new formula, kept out of player text; self + party 7 × 7), **Teleport** Lv 1–2 (random spot / nearest town), **Cloud Flare** Lv 1–5 (5 × 5 holy ground magic, 1–5 beams × 120–160% MATK), **Accelerator** Lv 1–10 (walk +25%, AGI, attack speed) and **Star Bless** Lv 1–10 (All Stats, HIT). Without an Edict the Supporter swings the mace in melee. Old saves get the removed skills' points back; hotbar slots clear. `SKILL-SPEC.md` §3v–3ab, `ARCHETYPES.md`, `COMBAT-FORMULAS.md` §4.
+- Advanced icons for all seven skills (Cloud Flare uses NIIQ's own animated SVG art) and a full effect set: column of light + seal (Heal), atom break-up (Teleport), storm cloud + falling beams on a gold circle (Cloud Flare), racing cyan rings (Accelerator), a galaxy sinking into the hero (Star Bless), Radiance / Collapse basic hits, auras while the buffs last. Buff column entries. Text en / th / jp. `UI-UX.md`.
+- Idle Settings → Teleport: "Warp with Teleport skill" works now (Teleport Lv 1 before Fly Wings). `IDLE.md`.
+- ⚠ Accelerator Lv 4 read as AGI +6 (NIIQ's table says +3). ⚠ Balance: Supporter CP 217 / 407 / 699 → 405 / 657 / 953; on packs of 3 it now out-farms every role (127 kills vs Spellcaster 108). `SKILL-SPEC.md` §3v.
+
+## Changes in v22h
 - **Forbear → Logging** (NIIQ): Forbear leaves the Fighter. New **Logging** (Self Cast Lv 1–10, needs Timber!! Lv 3, SP 20–50, VCT 5 s, CD 10–100 s): for 10–100 s every Timber!! that hits adds a Timber Logging; at 2–5 logs (rev. 2: max 5 so a bundle does not take long) they are bound and hurled at the target for logs × 20–350% ATK on a 5 × 5 square (no crit; Lv 10: 1,750%), then a new bundle can start; logs left when the buff ends are lost. Momentum's idea moves onto Timber!!. Old saves get Forbear's points back.
 - Advanced icon (a bundle of logs tied with glowing green ropes flying at a 5 × 5 grid) and a **green hologram** effect set to go with Timber!!'s cyan one: wind-up with logs appearing round the Fighter, logs circling while they build, then the bundle is bound, hurled and smashes the 5 × 5. Buff column shows the log count. Text en / th / jp. `SKILL-SPEC.md` §3u, `UI-UX.md` §31.
 - Read as: a bundle every time the limit is reached (the buff keeps running). The flinch from v22e stays although Forbear is gone (NIIQ: keep it for now).

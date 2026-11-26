@@ -648,12 +648,15 @@ SP shown is the real cost (after Mana Flow).
 | | Overload Energy | arcane orb with a star, orbit rings, green up arrow |
 | | Mana Flow (passive) | blue mana drop with a flowing stream |
 | | Elemental Attunement (passive) | four element orbs (fire, water, wind, earth) round a gem |
-| Supporter | Heal | red heart with a white cross |
-| | Holy Light | beam from a sun with a gold star |
-| | Blessing | gold star with white wings and a halo |
-| | Sanctuary | gold cross on a glowing ground ring |
-| | Divine Grace (passive) | white quill feather in a gold light ring |
-| | Guardian Aura (passive) | gold shield with a blue gem in an aura dome |
+| Supporter (v22i) | Edict of Collapse (passive) | holy mace with a violet core slamming cracked ground, gold shock rays, arcane arcs |
+| | Edict of Radiance (passive) | edict scroll with a radiant orb rising from it and a holy ray shooting out |
+| | Heal | green-gold cross in a column of light over a turning seal, a small heart |
+| | Teleport | atom (cyan nucleus, three orbits) breaking into pixels over a portal ring |
+| | Cloud Flare | **NIIQ's own animated SVG** (`cloud-flare.svg`, 256 × 256 with its gold frame and blue gems, drawn into the 64 × 64 tile): storm clouds lit gold from below, a holy orb and beam striking a horned red-eyed shadow beast on a turning gold sigil; rain, god rays, cloud lightning, motes and rings move (SMIL). Its gradients and filters sit in `#skdefs` with `cf_` ids |
+| | Accelerator | cyan chevrons racing over a speed gauge at full, a small wing |
+| | Star Bless | spiral galaxy on a night disc, constellation, a gold star in front |
+
+**Supporter effects (v22i, canvas, `supFx`):** Heal — a column of holy light, a turning green-gold seal, a helix of crosses and petals, a halo lifting away (party members in 7 × 7 get a smaller one). Teleport — three electron orbits wind up, a slit of light, the body breaks into atoms; at the new spot they pull back in with a ring. Cloud Flare — during the cast the 5 × 5 square draws its own dashed edge, a gold magic circle turns, light rises and the storm cloud gathers in a spiral; on release it hangs over the square with rain and gold rims while each beam drops (glow, 8-ray starburst, double shockwave, star sparks, a little screen shake). Accelerator — cyan rings with chevrons race up the body, wind spirals, speed lines burst out; while it lasts wind curls at the feet and streaks trail behind when walking. Star Bless — a violet galaxy turns over the head and sinks into the body, falling stars, a constellation round the hero; while it lasts three stars circle the head. Radiance (basic) — a mote of holy light with a sparkle trail, cross flare on hit. Collapse (basic) — a gold shaft slams the target, glowing cracks, shockwave and shards.
 
 They are drawn in code (no image files); any entry of `SKI` can be redrawn without touching the rest.
 
@@ -730,10 +733,10 @@ Status effects on monsters are drawn in `drawMon` (helpers `stRecolor`, `stIceBa
 - **Aiming Shower:** the target slides back 2 tiles (12 tiles/s, stops at a wall) with a puff of dust.
 - **Focusing:** a ring at the feet and the buff icon (eye, ranger green) in the status island with its time left.
 - **Skills Tree requirements:** a skill whose requirement is not met shows a pill with the skill and level it needs (for example "No Arrow 3") instead of its level; tapping it says "Learn No Arrow Lv 3 first". Skill Info shows a **Requires:** line (red while not met). Lowering a draft of No Arrow drops the drafts that needed it.
-- **Status window bonus (v21f):** the green "+N" after a base stat is the derived stat minus the base (`d.s[k] − S.stats[k]`): gear, Blessing, Ranger Mastery and Focusing all show there (for example DEX 35 +15 with Ranger Mastery Lv 10 and Focusing Lv 10).
+- **Status window bonus (v21f):** the green "+N" after a base stat is the derived stat minus the base (`d.s[k] − S.stats[k]`): gear, Blessing, Ranger Mastery, Focusing, Accelerator (AGI) and Star Bless (all stats) all show there (for example DEX 35 +15 with Ranger Mastery Lv 10 and Focusing Lv 10).
 
 ## 31. Buff column and monster status chips (v22f)
-- **Player buffs / debuffs** (`#fxRow.col`, `fxList()` / `renderFx()`): a column under the player card, one 38 px rounded icon per effect, stacked downward. A dark pill under each icon counts the time left (blinks gold at 3 s or less); a gold badge top-right shows a count (Momentum stacks, Forbear hits left). Debuffs (Burning, Slow) have a red border. Covered: Forbear, Momentum and War Cry (no longer reachable since v22g), Focusing, Evasive Leap, leap shot, Overload Energy, Blessing, Grace shield, Sanctuary, the four herbs, Burning, Slow.
+- **Player buffs / debuffs** (`#fxRow.col`, `fxList()` / `renderFx()`): a column under the player card, one 38 px rounded icon per effect, stacked downward. A dark pill under each icon counts the time left (blinks gold at 3 s or less); a gold badge top-right shows a count (Momentum stacks, Forbear hits left). Debuffs (Burning, Slow) have a red border. Covered: Forbear, Momentum and War Cry (no longer reachable since v22g), Focusing, Evasive Leap, leap shot, Overload Energy, **Accelerator and Star Bless (v22i; the tooltip adds the current AGI / attack speed or All Stats / HIT bonus)**, Blessing, Grace shield, Sanctuary (the last three no longer reachable since v22i), the four herbs, Burning, Slow.
 - **Click an icon** to open a popover beside it (`#fxTip`): name, Buff / Debuff tag, what it does, time left (live), Forbear hits left. Click it again, or anywhere else, to close it.
 - **Monster status chips** (`#moSt`, `mobStatus()`): under the HP bar in the monster panel, one chip per status with seconds left: Stun, Freeze, Petrifaction, Burning, Gaslighting (Stun is hidden while Freeze / Petrifaction holds the monster). Click a chip for its name and effect.
 - **Gaslighting text:** the full skill name ("Gaslighting!") floats once over the 3 × 3 square, larger, instead of a short word on every monster.

@@ -9,7 +9,7 @@
 | Fighter | MELEE | 1–3 (1.8) | **Shield & Log**: pull a pack, smash it with Timber!!, build Timber Logging and hurl the bundle | STR > VIT ≈ AGI > DEX | Tank / bruiser: highest effective HP, solid damage |
 | Ranger | RANGED | 1–9 | **Scandium arrows** (No Arrow) + split / push shots | DEX > AGI > LUK | Safest damage dealer: kills before monsters arrive |
 | Spellcaster | MAGIC | 1–7 | **Cast times + elemental weakness**, spells never miss | INT > DEX > VIT | Burst and area damage, must read monster elements |
-| Supporter | SUPPORT | 1–15 (heal/buff), 9 (attack) | **Sustain**: iRO Heal + overheal shield, zone | INT > VIT > DEX | Lowest solo damage, best survival; party glue later |
+| Supporter | SUPPORT | 1.8 (Collapse / no Edict) or 1–9 (Radiance); heal / buffs 7 × 7 | **Edicts & blessings**: one Edict sets the basic attack; Heal, Accelerator and Star Bless reach the party in 7 × 7; Cloud Flare rains holy beams | INT > VIT > DEX | Area damage + sustain; party glue |
 
 ---
 
@@ -69,22 +69,25 @@ Basic attack: Arcane Bolt, 70% MATK neutral, 7 tiles.
 
 All five Spellcaster actives have Lv 1–5 and follow `SKILL-SPEC.md` §3, §3d–3h (v20.18). Freeze and Petrifaction stop the monster and open a weakness (§3h). MATK includes a flat `weaponMATK` from the staff (`COMBAT-FORMULAS.md` §1).
 
-## Supporter — Sustain
-Heal follows iRO Classic: `[(BaseLv + INT) / 8] × (4 + 8 × SkillLv)`. Overhealing turns into a **Grace shield** (up to 20% Max HP) that absorbs damage.
+## Supporter — Edicts & Blessings
+v22i skills from NIIQ (full tables: `SKILL-SPEC.md` §3v–3ab). **Holy Light, Blessing, Sanctuary, Divine Grace and Guardian Aura are removed** (and with them the overheal Grace shield); old saves get those skill points back and their hotbar slots clear.
 
-| Active | Effect | SP | CD | Notes |
-|---|---|---|---|---|
-| Heal | iRO Heal ×1.2 (Divine Grace) | 13 | 1 s | Range 15 |
-| Holy Light | 200% MATK holy | 15 | 1.5 s | Cast 0.8 s, range 9 |
-| Blessing | +8 STR, INT, DEX for 120 s | 24 | 30 s | Range 15 |
-| Sanctuary | Zone 2.5 tiles, 8 s: heal 4% Max HP/s, 50% MATK holy/s to enemies | 35 | 18 s | |
-
-| Passive | Effect |
+| Passive (Lv 1) | Effect |
 |---|---|
-| Divine Grace | Healing +20%, overheal shield cap 20% Max HP |
-| Guardian Aura | +8% DEF, +10% MDEF (party-wide later) |
+| Edict of Collapse | Basic attack = melee physical hit (1.8 tiles) whose ATK is the **MATK roll**; attack speed +50%. Not with Radiance |
+| Edict of Radiance | Basic attack = **Radiance**, 100% MATK Holy magic from up to 9 tiles. Not with Collapse |
 
-Basic attack: Light Orb, 60% MATK holy, 9 tiles.
+Only one Edict can be learned (the Skills Tree locks the other one). Without an Edict the Supporter swings the mace: a normal melee physical hit (ATK), 1.8 tiles.
+
+| Active | Lv | Effect | SP | Cast / GD / CD | Needs |
+|---|---|---|---|---|---|
+| Heal | 1–10 | Self Cast, self + party in 7 × 7; Recovery Effect +Lv% | 10 + 3 × Lv | 0 / 0 / 1 s | – |
+| Teleport | 1–2 | Lv 1 random spot on this map, Lv 2 the safe area of the nearest town | 10 × Lv | 0 / 0 / 0 | Heal 2 |
+| Cloud Flare | 1–5 | Ground 5 × 5, Lv beams × (110 + 10 × Lv)% MATK Holy, each beam hits the whole square, Overload Rate ×1 | 18 + 2 × Lv | VCT 1 / 1 s / 0 | Heal 2 |
+| Accelerator | 1–10 | Self + party 7 × 7: walk speed +25%, AGI +(2 + Lv), attack speed +Lv%, 40 + 20 × Lv s | 15 + 3 × Lv | FCT 0.2 + VCT 0.5 / 0.4 s / 0 | Heal 5 |
+| Star Bless | 1–10 | Self + party 7 × 7: All Stats +Lv, HIT +2 × Lv, 40 + 20 × Lv s | 24 + 4 × Lv | FCT 0.2 + VCT 0.5 / 0.4 s / 0 | Accelerator 5 |
+
+Party members are simulated (no combat stats yet), so on them Heal and the buffs are only shown.
 
 ---
 
@@ -121,5 +124,5 @@ Players can switch auto-assign off and spend points by hand in the Character win
 ## Known gaps / next balancing pass
 1. **Melee travel time:** in live play on Field 01 (Lv 12, 25 s idle), Ranger killed 21 vs Fighter 11. The simulator places melee 2.2 tiles from each target, but real maps make Fighters walk further between targets. Next pass: add travel distance to the simulator, then consider +10–15% Fighter movement speed or a gap-closer.
 2. **Low levels:** before Lv ~8, Spellcaster and Supporter are weak (few INT points). This matches the design (C1 starts at Lv 10) but feels bad if you switch class at Lv 1 in the test picker.
-3. Supporter buffs and Guardian Aura are self-only until parties exist.
+3. Supporter Heal and buffs reach party members in 7 × 7, but those members are simulated, so only the effect is shown on them.
 4. Monster elements and DEF/MDEF/FLEE values are first-pass (`COMBAT-FORMULAS.md` §5).

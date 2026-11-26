@@ -112,11 +112,14 @@ over%    = max(0, CRIT + overBonus − targetLUK/5) × overMul                  
 1. Does the *Crit damage* ability (+10–30%) apply to Overload? Does Overload use the CRITICAL! floating text or its own label (for example OVERLOAD! / เกินพิกัด!)?
 2. How strong Overload should be. In the draft simulator (Lv 30, full tier-30 ★3 gear, CRIT ≈ 11, Fire Bolt Lv 5) it adds only about +1.0% damage at overMul 0.5 and ×1.3, +1.4% at overMul 1, +3.6% at overMul 2 with ×2.0. Spellcaster CRIT comes only from rings, bracelets and affixes, so it stays low.
 
-## 4. Heal (iRO Classic)
+## 4. Heal (v22i, NIIQ — not shown to players)
 ```
-Heal = ⌊(BaseLv + INT) / 8⌋ × (4 + 8 × SkillLv) × (1 + healing bonus)
+Heal = ⌊(BaseLv + INT) / 5⌋ × SkillLv × 3 × (1 + RecoveryEffect + H.PLUS) + MATK
 ```
-Example: Lv 20, INT 40, Heal Lv 5 → ⌊60/8⌋ × 44 = **308** (369 with Divine Grace).
+Recovery Effect = SkillLv % (Heal Lv 10: +10%); H.PLUS = the gear's healing bonus (Heal%); MATK = one roll between MATK min and max. First Aid stays flat (50 HP × healing bonus). In-game text and the wiki show only Recovery Effect, never the formula.
+Example: Lv 20 Supporter with auto stats, average MATK: Heal Lv 1 → 62, Lv 5 → 164, Lv 10 → 302.
+
+Edict of Collapse (v22i): the Supporter's basic attack is a physical hit whose ATK term is the MATK roll (`MATK min..max × ratio × element`, then hard / soft DEF; a crit uses MATK max × 1.4).
 
 ## 5. Elements
 
