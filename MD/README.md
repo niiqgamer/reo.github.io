@@ -42,6 +42,7 @@
 |---|---|
 | UI-UX.md | Screen layouts and components (not re-checked line by line) |
 | COMBAT-TEST-REPORT.md | Simulator results and balance evidence (historical) |
+| `../hero-poses.html` | Preview sheet of the code-drawn hero: 8 poses × 8 directions, gender / hairstyle / colour pickers. Re-sync with `python3 hero-poses-sync.py` after any `drawHero8` change |
 
 ## Key numbers (single source)
 - Recommended CP: Field 01 **150**, Field 02 **450**, Field 03 **900**, Path to the Geosyncline **2,000**, Road to the Ruins **3,000**, Ashfall Ruins **9,000**.
@@ -51,6 +52,7 @@
 
 ## Changes in v22k (this update)
 - **Hero head from the side (NIIQ).** In the 3/4 views (SE, SW) and the side view (E, W) the face no longer looks like a mask: the face and skull share one outline and one skin gradient. In 3/4 views the hair now covers the back of the head behind the ear, with a hairline curving in front of the ear, for every hairstyle; spiky / upright get nape tips; the bald head has no seam; the afro gets an outline behind the jaw. `UI-UX.md` §28.
+- **`hero-poses.html`** (repo root): a preview sheet of the main character, every pose in every direction, with the creator's gender / hairstyle / colour choices. `hero-poses-sync.py` copies `drawHero8` and the creator palettes into it from `index.html`; run it after any change to the hero.
 
 ## Changes in v22j
 - **Spellcaster rebalance (NIIQ).** **Fire Bolt** 120 / 130 / 140 / 150 / 160% MATK per fireball (120–1,600% in total), FCT 0.5 s at every level, Lv 5 gap 0.1 s and SP 32, Global Delay 0.5 s. **Freezer** FCT 0.2 + VCT 0.5 s, splash 5 × 5. **Lightning Spear** 100–180% MATK per spear, SP 30 / 34 / 38 / 42 / 46, FCT 0.5 + VCT 1 s, Global Delay 1 s (Lv 5 cast at Lv 30: 2.6 s → 1.1 s). **Petrifaction** 100–140% MATK, VCT 0.5 s. **Overload Energy** needs Elemental Attunement Lv 5, 13 × 13, VCT 0.5 s, lasts 20–100 s with the same cooldown. **Elemental Attunement** also gives MATK +2% per level. Mana Flow unchanged. CP Lv 10 / 20 / 30: 233 / 546 / 971 → 265 / 561 / 1,024 (`SKILL-SPEC.md` §3–3g, `ARCHETYPES.md`, `COMBAT-FORMULAS.md` §5, wiki).
